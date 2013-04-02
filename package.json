@@ -6,9 +6,10 @@
   "author": "Nijiko Yonskai",
   "license": "MIT",
   "readmeFilename": "README.md",
-  "dependencies": [
-    "mashape-oauth"
-  ],
+  "dependencies": {
+    "mashape-oauth": "*",
+    "express": "*"
+  },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
