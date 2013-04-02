@@ -1,0 +1,12 @@
+{
+  "name": "gatekeeper-server",
+  "version": "0.0.1",
+  "description": "Gatekeeper OAuth Server for Testing",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": "",
+  "author": "Nijiko Yonskai",
+  "license": "MIT"
+}
