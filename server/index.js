@@ -9,7 +9,7 @@ var config = require ('./config.js'),
 
 var app = Express();
 
-app.config(function () {
+app.configure(function () {
   app.set('view engine', 'ejs');
   app.set('views', __dirname + '/_views');
   app.use(express.static(__dirname + '/_assets'));
