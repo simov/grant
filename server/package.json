@@ -3,6 +3,10 @@
   "version": "0.0.1",
   "description": "Gatekeeper OAuth Server for Testing",
   "main": "index.js",
+  "dependencies": {
+    "express": "*",
+    "mashape-oauth": "*"
+  },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
