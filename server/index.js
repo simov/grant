@@ -12,10 +12,10 @@ var app = Express();
 app.configure(function () {
   app.set('view engine', 'ejs');
   app.set('views', __dirname + '/_views');
-  app.use(express.static(__dirname + '/_assets'));
-  app.use(express.bodyParser());
-  app.use(express.cookieParser('maeby, lets keep it a secret?'));
-  app.use(express.session());
+  app.use(Express.static(__dirname + '/_assets'));
+  app.use(Express.bodyParser());
+  app.use(Express.cookieParser('maeby, lets keep it a secret?'));
+  app.use(Express.session());
 });
 
 app.get('/oauth/:version/:leg/:action', function (req, res) {
