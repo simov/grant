@@ -1,0 +1,22 @@
+{
+  "name": "gatekeeper",
+  "version": "0.0.1",
+  "description": "Authentication Gateway Proxy",
+  "main": "index.js",
+  "author": "Nijiko Yonskai",
+  "license": "MIT",
+  "readmeFilename": "README.md",
+  "dependencies": [
+    "mashape-oauth"
+  ],
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git@github.com:Mashape/gatekeeper"
+  },
+  "keywords": [
+    "gatekeeper"
+  ]
+}
