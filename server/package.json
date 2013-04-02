@@ -5,6 +5,7 @@
   "main": "index.js",
   "dependencies": {
     "express": "*",
+    "jog": "*",
     "mashape-oauth": "*"
   },
   "scripts": {
