@@ -1,5 +1,6 @@
 var Express = require('express'),
     Log = require('log'),
+    Server = require('./lib/index'),
     Moth = require('mashape-oauth'),
     OAuth = Moth.OAuth,
     OAuth2 = Moth.OAuth2,
@@ -20,12 +21,18 @@ app.configure(function () {
 });
 
 app.post('/oauth/1.0a/:leg/:action', function (req, res) {
-  var leg = req.params.leg,
-      action = req.params.action;
+  var leg = req.params.leg, action = req.params.action, verifier;
 
-  log.info('leg: ' + leg);
-  log.info('action: ' + action);
-  log.info('headers: ' + JSON.stringify(utils.parseHeader(req.headers.authorization)));
+  // log.info('leg: ' + leg);
+  // log.info('action: ' + action);
+  // log.info('headers: ' + JSON.stringify(utils.parseHeader(req.headers.authorization)));
+
+  try {
+    verifier = Server.Verifier.OAuth.One(req);
+  } catch (e) {
+    log.error(e);
+  }
+
   res.send('client_token=hello_world&client_secret=whatever&body=this');
 });
 

@@ -1,12 +1,11 @@
-var Verifier = require('../verifier');
+var Verifier = require('../verifier'),
+    query = require('querystring'),
+    utils = require('mashape-oauth').utils;
 
 // OAuth One-Legged Flow Verification
 module.exports = exports = function (request) {
-  if (!request.headers || !request.headers.authorize)
+  if (!request.headers || !request.headers.authorization)
     throw new Error("MISSING_HEADER");
-
-  if (typeof data !== 'object')
-    this.data = query.parse(data);
 
   Verifier.OAuth.gatherDetails(request, this);
 
@@ -16,10 +15,10 @@ module.exports = exports = function (request) {
   if (!this.headers.oauth_consumer_key)
     throw new Error("MISSING_CONSUMER_KEY");
 
-  if (!this.headers.oauth_token)
+  if (this.headers.oauth_token === undefined)
     throw new Error("MISSING_OAUTH_TOKEN");
 
-  this.signature = Verifier.OAuth.signature(this, true);
+  this.signature = Verifier.OAuth.Signature(this, true);
 
   if (this.method === 'POST')
     if (this.contentType !== 'application/x-www-form-urlencoded' && Verifier.strict)

@@ -1,5 +1,5 @@
-module.exports = exports = {
-  Verifier: require('verifier')
+var Server = module.exports = exports = {
+  Verifier: require('./verifier')
 };
 
-Verifier.OAuth.One = require('flows/oauth_one');
+Server.Verifier.OAuth.One = require('./flows/oauth_one');

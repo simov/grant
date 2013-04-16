@@ -10,8 +10,8 @@ var Verifier = module.exports = exports = {
 };
 
 Verifier.OAuth.gatherDetails = function (request, context) {
-  context.headers = utils.parseHeader(request.headers.authorize);
-  context.contentType = substr(request.headers["content-type"], 0, 33);
+  context.headers = utils.parseHeader(request.headers.authorization);
+  context.contentType = request.headers["content-type"].substring(0, 33);
   context.method = (request.route.method || 'get').toUpperCase();
   context.query = request.query;
   context.body = request.body;
