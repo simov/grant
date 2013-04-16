@@ -1,5 +1,12 @@
 var Server = module.exports = exports = {
-  Verifier: require('./verifier')
+  OAuth: {
+    Flows: {},
+    request: require('./OAuth/request'),
+  },
+
+  OAuth2: {
+    Flows: {}
+  }
 };
 
-Server.Verifier.OAuth.One = require('./flows/oauth_one');
+Server.OAuth.Flows.One = require('./flows/OAuth/one');

@@ -21,14 +21,15 @@ app.configure(function () {
 });
 
 app.post('/oauth/1.0a/:leg/:action', function (req, res) {
-  var leg = req.params.leg, action = req.params.action, verifier;
+  var leg = req.params.leg, action = req.params.action, request;
 
   // log.info('leg: ' + leg);
   // log.info('action: ' + action);
   // log.info('headers: ' + JSON.stringify(utils.parseHeader(req.headers.authorization)));
 
   try {
-    verifier = Server.Verifier.OAuth.One(req);
+    request = Server.OAuth.Flows.One(req);
+    log.info(request.signature.getBase());
   } catch (e) {
     log.error(e);
   }

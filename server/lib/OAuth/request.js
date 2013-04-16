@@ -3,13 +3,11 @@ var query = require('querystring'),
     OAuth = require('mashape-oauth').OAuth,
     utils = require('mashape-oauth').utils;
 
-var Verifier = module.exports = exports = {
-  strict: false,
-  OAuth: {},
-  OAuth2: {}
+var Request = module.exports = exports = {
+  strict: false
 };
 
-Verifier.OAuth.gatherDetails = function (request, context) {
+Request.gatherDetails = function (request, context) {
   context.headers = utils.parseHeader(request.headers.authorization);
   context.contentType = request.headers["content-type"].substring(0, 33);
   context.method = (request.route.method || 'get').toUpperCase();
@@ -19,14 +17,14 @@ Verifier.OAuth.gatherDetails = function (request, context) {
   context.params = undefined;
 };
 
-Verifier.OAuth.Version = function (version) {
+Request.Version = function (version) {
   if (!version) return;
 
   if (version.toUpperCase() !== '1.0A' || version !== '1.0')
     throw new Error("INVALID_OAUTH_VERSION");
 };
 
-Verifier.OAuth.Signature = function (context, token_type) {
+Request.Signature = function (context, token_type) {
   var $this = this;
 
   $this.key = undefined;
@@ -44,13 +42,16 @@ Verifier.OAuth.Signature = function (context, token_type) {
   $this.getBase = function () {
     var params = JSON.parse(JSON.stringify(context.params));
 
-    if (params['oauth_signature'])
-      delete params['oauth_signature'];
+    // We don't utilize these in the original signature
+    // These two have been appended or generated after it's creation
+    if (params['oauth_signature']) delete params['oauth_signature'];
+    if (params['bearer']) delete params['bearer'];
 
+    // Here we normalize the arguments as if we were generating a request ourselves
     params = OAuth.normalizeArguments(params);
 
     var sections = context.url.split('?');
-    return OAuth.createSignatureBase(context.method, sections[0], params);
+    return [context.method.toUpperCase(), utils.encodeData(sections[0]), utils.encodeData(params)].join('&');
   };
 
   $this.getKey = function () {
@@ -72,7 +73,7 @@ Verifier.OAuth.Signature = function (context, token_type) {
       return utils.SHA1.hmacSha1(key, base);
   };
 
-  $this.check = function () {
+  $this.verify = function () {
     if (typeof context.headers !== 'object')
       context.headers = utils.parseHeader(context.headers);
 
@@ -80,7 +81,7 @@ Verifier.OAuth.Signature = function (context, token_type) {
       if (!context.headers[key])
         throw new Error("MISSING_SIGNATURE_PARAMETER[" + key + "]");
 
-    Verifier.OAuth.Version(context.headers.oauth_version);
+    Request.Version(context.headers.oauth_version);
 
     var signature = $this.build();
     if (signature != context.params.oauth_signature)
