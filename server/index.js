@@ -2,7 +2,8 @@ var Express = require('express'),
     Log = require('log'),
     Moth = require('mashape-oauth'),
     OAuth = Moth.OAuth,
-    OAuth2 = Moth.OAuth2;
+    OAuth2 = Moth.OAuth2,
+    utils = Moth.utils;
 
 var config = require ('./config.js'),
     log = new Log(config.environment.level);
@@ -18,14 +19,14 @@ app.configure(function () {
   app.use(Express.session());
 });
 
-app.get('/oauth/:version/:leg/:action', function (req, res) {
-  var version = req.params.version,
-      leg = req.params.leg,
+app.post('/oauth/1.0a/:leg/:action', function (req, res) {
+  var leg = req.params.leg,
       action = req.params.action;
 
-  log.info('Version: ' + version);
-  log.info('Leg: ' + leg);
-  log.info('Action: ' + action);
+  log.info('leg: ' + leg);
+  log.info('action: ' + action);
+  log.info('headers: ' + JSON.stringify(utils.parseHeader(req.headers.authorization)));
+  res.send('client_token=hello_world&client_secret=whatever&body=this');
 });
 
 app.listen(config.port);
