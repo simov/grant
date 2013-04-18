@@ -7,7 +7,11 @@
   "license": "MIT",
   "readmeFilename": "README.md",
   "dependencies": {
-    "mashape-oauth": "*"
+    "mashape-oauth": "*",
+    "express": "*",
+    "log": "*",
+    "redis": "*",
+    "connect-redis": "*"
   },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"

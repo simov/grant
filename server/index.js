@@ -11,6 +11,12 @@ var config = require ('./config.js'),
 
 var app = Express();
 
+var store = Server.Store({
+  uri: 'mongo://127.0.0.1/gatekeeper'
+});
+
+store.setup();
+
 app.configure(function () {
   app.set('view engine', 'ejs');
   app.set('views', __dirname + '/_views');

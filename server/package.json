@@ -6,7 +6,8 @@
   "dependencies": {
     "express": "*",
     "log": "*",
-    "mashape-oauth": "*"
+    "mashape-oauth": "*",
+    "mongode": "*"
   },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"

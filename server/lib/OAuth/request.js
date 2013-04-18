@@ -3,12 +3,36 @@ var query = require('querystring'),
     OAuth = require('mashape-oauth').OAuth,
     utils = require('mashape-oauth').utils;
 
-var Request = module.exports = exports = {
-  strict: false
+var Request = module.exports = exports = function (request, strict) {
+  Request.gatherDetails(request, this);
+  this.strict = strict || false;
+  this.req = request;
+  this.params = utils.extend(this.headers, (this.method === 'POST') ? this.body : this.query);
+
+  this.isSigned = function () {
+    return (this.params && this.params.oauth_signature);
+  };
+
+  this.verifySignature = function (token_type) {
+    var signed = false;
+    token_type = token_type || 'access';
+
+    if (this.params.oauth_consumer_key)
+      signed = this.verify(token_type);
+
+    return signed;
+  };
+
+  this.verify = function () {
+
+  };
 };
 
-Request.gatherDetails = function (request, context) {
-  context.headers = utils.parseHeader(request.headers.authorization);
+Request.gatherDetails = function (request) {
+  if (request.headers && request.headers.authorization)
+    context.headers = utils.parseHeader(request.headers.authorization);
+  else throw new Error("MISSING_AUTHORIZATION_HEADER");
+
   context.contentType = request.headers["content-type"].substring(0, 33);
   context.method = (request.route.method || 'get').toUpperCase();
   context.query = request.query;

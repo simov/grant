@@ -6,7 +6,9 @@ var Server = module.exports = exports = {
 
   OAuth2: {
     Flows: {}
-  }
+  },
+
+  Store: require('./store')
 };
 
 Server.OAuth.Flows.One = require('./flows/OAuth/one');
