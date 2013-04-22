@@ -33,8 +33,6 @@ app.post('/store', function (req, res) {
   // this is where they will post, and we will return a hash.
   // get for now to show the flow through the browser.
   // req.session.data = {
-  //   consumerKey: "wzdoOOVHXrswZMBlXWRsQ",
-  //   consumerSecret: "aJKCdYqnnyftIhbQIPJP7WVgB9lrijQhMdoKXdetfFY",
   //   requestUrl: "https://api.twitter.com/oauth/request_token",
   //   authorizeUrl: "https://api.twitter.com/oauth/authorize",
   //   accessUrl: "https://api.twitter.com/oauth/access_token",
