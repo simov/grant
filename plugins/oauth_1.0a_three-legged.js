@@ -55,7 +55,7 @@ module.exports = {
         log.info('Token: ' + response.token);
         log.info('Verifier: ' + response.verifier);
 
-        server.req.session.data.oauth_token = response.token;
+        // server.req.session.data.oauth_token = response.token;
         server.req.session.data.oauth_verifier = response.verifier;
 
         next();
@@ -65,11 +65,17 @@ module.exports = {
     3: {
       invoke: function (options) {
         var oa = generate(options);
-        oa.getOAuthAccessToken(options.parameters || {}, options.next);
+        var opts = {
+          parameters: options.parameters || {}
+        };
+
+        opts.parameters.oauth_verifier = options.oauth_verifier;
+        opts.parameters.oauth_token = options.oauth_token;
+        oa.getOAuthAccessToken(opts, options.next);
       },
 
       next: function (server, response) {
-        if (response.error) return log.info(response.error.message);
+        if (response.error) return console.log(response.error);
 
         log.info('access, token: ' + response.token);
         log.info('access, secret: ' + response.secret);

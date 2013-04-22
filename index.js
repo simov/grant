@@ -3,6 +3,7 @@ var express = require('express'),
     query   = require('querystring'),
     utils   = require('mashape-oauth').utils,
     plugin  = require('./plugins/oauth_1.0a_three-legged.js'),
+    nuu     = require('nuuid');
     logger  = require('log');
 
 /*
@@ -28,18 +29,38 @@ app.configure(function () {
   app.use(express.session({ store: RedisSession, key: 'gate.keeper', secret: 'no-more-secrets' }));
 });
 
-app.get('/store', function (req, res) {
+app.post('/store', function (req, res) {
   // this is where they will post, and we will return a hash.
   // get for now to show the flow through the browser.
-  req.session.data = {
-    requestUrl: "https://api.twitter.com/oauth/request_token",
-    authorizeUrl: "https://api.twitter.com/oauth/authorize",
-    accessUrl: "https://api.twitter.com/oauth/access_token",
-    callbackUrl: "http://67.169.69.70:3000/callback"
-  };
+  // req.session.data = {
+  //   consumerKey: "wzdoOOVHXrswZMBlXWRsQ",
+  //   consumerSecret: "aJKCdYqnnyftIhbQIPJP7WVgB9lrijQhMdoKXdetfFY",
+  //   requestUrl: "https://api.twitter.com/oauth/request_token",
+  //   authorizeUrl: "https://api.twitter.com/oauth/authorize",
+  //   accessUrl: "https://api.twitter.com/oauth/access_token",
+  //   callbackUrl: "http://67.169.69.70:3000/callback"
+  // };
 
-  if (!req.session.step) req.session.step = 1;
-  return res.redirect('/step/' + parseInt(req.session.step, 10));
+  var opts = {
+    consumerKey: req.param('consumer_key'),
+    consumerSecret: req.param('consumer_secret'),
+    callbackFinal: req.param('callback')
+  }, id = nuu.id(opts.consumerKey);
+
+  // Retrieve additional pylons here -- api authentication details
+  RedisClient.set(id, JSON.stringify(opts), redis.print);
+  RedisClient.expire(id, 10);
+
+  res.jsonp({ hash: id });
+});
+
+// For right now.
+app.get('/auth/:auth/:version/:leg', function (req, res) {
+  var hash = req.param('hash');
+  console.log('hash', hash);
+  var opts = RedisClient.get(hash, function (err, reply) {
+    res.jsonp(JSON.parse(reply));
+  });
 });
 
 app.get('/step/:number', function (req, res) {
@@ -94,10 +115,6 @@ app.get('/callback', function (req, res) {
     if ((step + 1) > plugin.steps) return res.redirect('/done');
     res.redirect('/step/' + (step + 1));
   });
-});
-
-app.get('/done', function (req, res) {
-  log.info('All steps have been completed.');
 });
 
 app.listen(3000);
