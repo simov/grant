@@ -11,7 +11,8 @@
     "express": "*",
     "log": "*",
     "redis": "*",
-    "connect-redis": "*"
+    "connect-redis": "*",
+    "optimist": "*"
   },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"

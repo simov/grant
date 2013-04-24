@@ -2,9 +2,17 @@ var express = require('express'),
     redis   = require('redis'),
     query   = require('querystring'),
     utils   = require('mashape-oauth').utils,
-    plugin  = require('./plugins/oauth_1.0a_three-legged.js'),
     nuu     = require('nuuid');
-    logger  = require('log');
+    logger  = require('log'),
+    args    = require('optimist').options('h', {
+      "alias": 'host',
+      "default": '67.169.69.70:3000'
+    }).options('p', {
+      "alias": 'protocol',
+      "default": 'http'
+    }).options('port', {
+      "default": 3000
+    }).argv;
 
 /*
   Setup Express & Logger
@@ -30,18 +38,19 @@ app.configure(function () {
 });
 
 app.post('/store', function (req, res) {
-  // this is where they will post, and we will return a hash.
-  // get for now to show the flow through the browser.
-  // req.session.data = {
-  //   requestUrl: "https://api.twitter.com/oauth/request_token",
-  //   authorizeUrl: "https://api.twitter.com/oauth/authorize",
-  //   accessUrl: "https://api.twitter.com/oauth/access_token",
-  //   callbackUrl: "http://67.169.69.70:3000/callback"
-  // };
-
   var opts = {
     consumerKey: req.param('consumer_key'),
     consumerSecret: req.param('consumer_secret'),
+    requestUrl: req.param('request_url'),
+    accessUrl: req.param('access_url'),
+    authorizeUrl: req.param('authorize_url'),
+    signatureMethod: req.param('signature_method'),
+    auth: {
+      type: (req.param('auth_type') || 'oauth').replace(/[^a-z]/, ''),
+      version: isNaN(parseInt(req.param('auth_version'), 10)) ? false : parseInt('auth_version', 10),
+      leg: isNaN(parseInt(req.param('auth_leg'), 10)) ? false : parseInt('auth_leg', 10)
+    },
+    callbackUrl: args.p + '://' + args.h + '/callback',
     callbackFinal: req.param('callback')
   }, id = nuu.id(opts.consumerKey);
 
@@ -52,31 +61,32 @@ app.post('/store', function (req, res) {
   res.jsonp({ hash: id });
 });
 
-// For right now.
-app.get('/auth/:auth/:version/:leg', function (req, res) {
-  var hash = req.param('hash');
-  console.log('hash', hash);
-  var opts = RedisClient.get(hash, function (err, reply) {
-    res.jsonp(JSON.parse(reply));
+app.get('/hash-check', function (req, res) {
+  var opts = RedisClient.get(req.param('hash'), function (err, reply) {
+    if (err) return res.send(500, err.message);
+    res.json(JSON.parse(reply));
+  });
+});
+
+app.get('/start', function (req, res) {
+  var opts = RedisClient.get(req.param('hash'), function (err, reply) {
+    if (err) return res.send(500, err.message);
+    req.session.data = JSON.parse(reply);
+    res.redirect('/step/1');
   });
 });
 
 app.get('/step/:number', function (req, res) {
+  // Fetch Data, Load Plugin, Continue.
+  var data = JSON.parse(JSON.stringify(req.session.data));
+  var plugin = require('./plugins/' + data.auth.type.toLowerCase() + (data.auth.version && typeof data.auth.version === 'number' ? '_' + data.auth.version + '_' : '') + (data.auth.leg && typeof data.auth.leg === 'number' ? '_' + data.auth.leg + '-legged' : '') + '.js');
   var step = parseInt(req.params.number, 10);
+
   if (step > plugin.steps || !req.session.data)
     return res.redirect('/done');
 
   // Store the current step
   req.session.data.step = step;
-
-  // here we grab the data previously set
-  var data = JSON.parse(JSON.stringify(req.session.data));
-
-  // Information we should probably detail from providers before making requests:
-  // signature_method
-  // request_url
-  // authorize_url
-  // access_url
 
   // Passing information
   data.res = res;
@@ -115,4 +125,4 @@ app.get('/callback', function (req, res) {
   });
 });
 
-app.listen(3000);
+app.listen(args.port);
