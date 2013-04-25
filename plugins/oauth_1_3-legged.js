@@ -1,22 +1,4 @@
-var OAuth = require('mashape-oauth').OAuth,
-    logger = require('log'),
-    log = new logger();
-
-function generate (options) {
-  return new OAuth({
-    echo: options.echo || undefined,
-    requestUrl: options.requestUrl,
-    accessUrl: options.accessUrl,
-    callback: options.callbackUrl || undefined,
-    headers: options.headers || undefined,
-    consumerKey: options.consumerKey || undefined,
-    consumerSecret: options.consumerSecret || undefined,
-    signatureMethod: options.signatureMethod || OAuth.signatures.hmac,
-    nonceLength: options.nonceLength || 32,
-    clientOptions: options.clientOptions || undefined,
-    version: options.version || '1.0A'
-  });
-}
+var helper = require('./helper'), log = helper.log;
 
 module.exports = {
   "category": "oauth",
@@ -25,15 +7,13 @@ module.exports = {
   "step": {
     1: {
       invoke: function (options) {
-        var oa = generate(options);
+        var oa = helper.getOAuth(options);
         oa.getOAuthRequestToken(options.parameters || {}, options.next);
       },
 
       next: function (server, response, next) {
-        if (response.error) return log.info(response.error.message);
-
-        log.info('Token: ' + response.token);
-        log.info('Secret: ' + response.secret);
+        if (response.error) 
+          return server.res.send(500, response.error.message);
 
         server.req.session.data.oauth_token = response.token;
         server.req.session.data.token_secret = response.secret;
@@ -50,12 +30,10 @@ module.exports = {
 
     callback: {
       next: function (server, response, next) {
-        if (response.error) return log.info(response.error.message);
+        if (response.error) 
+          return server.res.send(500, response.error.message);
 
-        log.info('Token: ' + response.token);
-        log.info('Verifier: ' + response.verifier);
-
-        // server.req.session.data.oauth_token = response.token;
+        server.req.session.data.oauth_token = response.token;
         server.req.session.data.oauth_verifier = response.verifier;
 
         next();
@@ -64,7 +42,7 @@ module.exports = {
 
     3: {
       invoke: function (options) {
-        var oa = generate(options);
+        var oa = helper.getOAuth(options);
         var opts = {
           parameters: options.parameters || {}
         };
@@ -74,11 +52,14 @@ module.exports = {
         oa.getOAuthAccessToken(opts, options.next);
       },
 
-      next: function (server, response) {
-        if (response.error) return console.log(response.error);
+      next: function (server, response, next) {
+        if (response.error) 
+          return server.res.send(500, response.error.message);
 
-        log.info('access, token: ' + response.token);
-        log.info('access, secret: ' + response.secret);
+        next({
+          access_token: response.token,
+          access_secret: response.secret
+        });
       }
     }
   }

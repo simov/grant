@@ -4,6 +4,9 @@ var express = require('express'),
     utils   = require('mashape-oauth').utils,
     nuu     = require('nuuid');
     logger  = require('log'),
+    http    = require('http'),
+    https   = require('https'),
+    url     = require('url'),
     args    = require('optimist').options('h', {
       "alias": 'host',
       "default": '67.169.69.70:3000'
@@ -47,16 +50,18 @@ app.post('/store', function (req, res) {
     signatureMethod: req.param('signature_method'),
     auth: {
       type: (req.param('auth_type') || 'oauth').replace(/[^a-z]/, ''),
-      version: isNaN(parseInt(req.param('auth_version'), 10)) ? false : parseInt('auth_version', 10),
-      leg: isNaN(parseInt(req.param('auth_leg'), 10)) ? false : parseInt('auth_leg', 10)
+      version: isNaN(parseInt(req.param('auth_version'), 10)) ? false : parseInt(req.param('auth_version'), 10),
+      leg: isNaN(parseInt(req.param('auth_leg'), 10)) ? false : parseInt(req.param('auth_version'), 10)
     },
     callbackUrl: args.p + '://' + args.h + '/callback',
-    callbackFinal: req.param('callback')
+    done: {
+      callback: req.param('callback')
+    }
   }, id = nuu.id(opts.consumerKey);
 
   // Retrieve additional pylons here -- api authentication details
   RedisClient.set(id, JSON.stringify(opts), redis.print);
-  RedisClient.expire(id, 10);
+  RedisClient.expire(id, 360);
 
   res.jsonp({ hash: id });
 });
@@ -68,10 +73,16 @@ app.get('/hash-check', function (req, res) {
   });
 });
 
-app.get('/start', function (req, res) {
+app.all('/start', function (req, res) {
   var opts = RedisClient.get(req.param('hash'), function (err, reply) {
     if (err) return res.send(500, err.message);
     req.session.data = JSON.parse(reply);
+
+    if (req.param('url')) req.session.data.call_url = req.param('url');
+    if (req.method) req.session.data.call_method = req.method;
+    if (req.body) req.session.data.call_body = req.body;
+    if (req.param('parameters')) req.session.data.parameters = req.param('parameters');
+
     res.redirect('/step/1');
   });
 });
@@ -79,7 +90,7 @@ app.get('/start', function (req, res) {
 app.get('/step/:number', function (req, res) {
   // Fetch Data, Load Plugin, Continue.
   var data = JSON.parse(JSON.stringify(req.session.data));
-  var plugin = require('./plugins/' + data.auth.type.toLowerCase() + (data.auth.version && typeof data.auth.version === 'number' ? '_' + data.auth.version + '_' : '') + (data.auth.leg && typeof data.auth.leg === 'number' ? '_' + data.auth.leg + '-legged' : '') + '.js');
+  var plugin = require('./plugins/' + data.auth.type.toLowerCase() + (data.auth.version && typeof data.auth.version === 'number' ? '_' + data.auth.version : '') + (data.auth.leg && typeof data.auth.leg === 'number' ? '_' + data.auth.leg + '-legged' : '') + '.js');
   var step = parseInt(req.params.number, 10);
 
   if (step > plugin.steps || !req.session.data)
@@ -98,12 +109,15 @@ app.get('/step/:number', function (req, res) {
       var args = Array.prototype.slice.call(arguments);
       if (args.length > 3) args = { error: args[0], token: args[1], secret: args[2], results: args[3] };
       else args = { error: args[0], data: args[1], response: args[2] };
-      return plugin.step[step].next({ req: req, res: res }, args, ((step + 1) > plugin.steps) ? undefined : function () {
+      return plugin.step[step].next({ req: req, res: res }, args, ((step + 1) > plugin.steps) ? function (data) {
+        if (!data.done.callback) return res.json(data);
+        return res.redirect(data.done.callback + '?' + query.stringify(data));
+      } : function () {
         return res.redirect('/step/' + (step + 1));
       });
     };
 
-  plugin.step[step].invoke(data);
+  plugin.step[step].invoke(data, { req: req, res: res });
 });
 
 app.get('/callback', function (req, res) {
@@ -115,8 +129,8 @@ app.get('/callback', function (req, res) {
 
   // Verifier & Token
   var args = {};
-  args.token = req.body.oauth_token || req.query.oauth_token;
-  args.verifier = req.body.oauth_verifier || req.query.oauth_verifier;
+  args.token = req.param('oauth_token');
+  args.verifier = req.param('oauth_verifier');
 
   // Next?
   plugin.step.callback.next({ req: req, res: res }, args, function () {
