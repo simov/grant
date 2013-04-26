@@ -26,6 +26,19 @@ helper.getOAuth = function (options) {
   });
 };
 
+helper.getOAuth2 = function (options) {
+  return new helper.OAuth2({
+    clientId: options.clientId,
+    clientSecret: options.clientSecret,
+    baseUrl: options.baseUrl,
+    authUrl: options.authorizeUrl,
+    authMethod: options.authorizeMethod,
+    accessTokenUrl: options.accessUrl,
+    accessTokenName: options.accessName,
+    headers: options.headers || undefined
+  });
+};
+
 helper.getOAuthHeader = function (options) {
   var oauth = helper.getOAuth(options);
   var parameters = oauth.prepareParameters({
