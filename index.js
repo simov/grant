@@ -42,11 +42,17 @@ app.configure(function () {
 
 app.post('/store', function (req, res) {
   var opts = {
+    clientId: req.param('client_id'),
+    clientSecret: req.param('client_secret'),
     consumerKey: req.param('consumer_key'),
     consumerSecret: req.param('consumer_secret'),
+    grantType: req.param('grant_type'),
+    baseUrl: req.param('base_url'),
     requestUrl: req.param('request_url'),
     accessUrl: req.param('access_url'),
+    accessName: req.param('access_name'),
     authorizeUrl: req.param('authorize_url'),
+    authorizeMethod: req.param('authorize_method'),
     signatureMethod: req.param('signature_method'),
     auth: {
       type: (req.param('auth_type') || 'oauth').replace(/[^a-z]/, ''),
