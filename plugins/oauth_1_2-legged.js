@@ -1,34 +1,48 @@
-var OAuth = require('mashape-oauth').OAuth;
+var helper = require('./helper');
 
 module.exports = {
   "category": "oauth",
   "type": "1.0a-three-legged",
-  "steps": {
+  "steps": 2,
+  "step": {
     // Authorize against service using signed request
     // https://github.com/Mashape/mashape-oauth/blob/master/FLOWS.md#oauth-10a-two-legged
-    1: function (options, auth) {
-      var oa = new OAuth({
-        echo: auth.echo || undefined,
-        requestUrl: auth.requestUrl,
-        accessUrl: auth.accessUrl,
-        headers: auth.headers || undefined,
-        consumerKey: auth.consumerKey || undefined,
-        consumerSecret: auth.consumerSecret || undefined,
-        signatureMethod: auth.signatureMethod || OAuth.signatures.hmac,
-        nonceLength: auth.nonceLength || 32,
-        clientOptions: auth.clientOptions || undefined,
-        version: auth.version || '1.0A'
-      });
+    1: {
+      invoke: function (options) {
+        var oa = helper.getOAuth(options);
+        oa.getOAuthRequestToken(options.parameters || {}, options.next);
+      },
 
-      var parameters = options.parameters || {};
-      parameters.oauth_token = "";
+      next: function (server, response, next) {
+        if (response.error) 
+          return server.res.send(500, response.error.message);
 
-      return oa[options.method]({
-        url: options.url,
-        body: options.body,
-        type: options.type,
-        parameters: parameters
-      }, options.next);
+        server.req.session.data.oauth_token = response.token;
+        server.req.session.data.token_secret = response.secret;
+
+        return next();
+      }
+    },
+
+    2: {
+      invoke: function (options) {
+        var oa = helper.getOAuth(options);
+        var opts = { parameters: options.parameters || {} };
+
+        opts.parameters.oauth_verifier = options.oauth_verifier;
+        opts.parameters.oauth_token = options.oauth_token;
+        oa.getOAuthAccessToken(opts, options.next);
+      },
+
+      next: function (server, response, next) {
+        if (response.error) 
+          return server.res.send(500, response.error.message);
+
+        next({
+          access_token: response.token,
+          access_secret: response.secret
+        });
+      }
     }
   }
 };
