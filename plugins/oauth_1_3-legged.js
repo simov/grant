@@ -43,9 +43,7 @@ module.exports = {
     3: {
       invoke: function (options) {
         var oa = helper.getOAuth(options);
-        var opts = {
-          parameters: options.parameters || {}
-        };
+        var opts = { parameters: options.parameters || {} };
 
         opts.parameters.oauth_verifier = options.oauth_verifier;
         opts.parameters.oauth_token = options.oauth_token;

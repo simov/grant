@@ -107,8 +107,8 @@ app.get('/step/:number', function (req, res) {
   if (plugin.step[step].next)
     data.next = function () {
       var args = Array.prototype.slice.call(arguments);
-      if (args.length > 3) args = { error: args[0], token: args[1], secret: args[2], results: args[3] };
-      else args = { error: args[0], data: args[1], response: args[2] };
+      if (args.length > 3) args = { error: args[0], token: args[1], secret: args[2], results: args[3], options: data };
+      else args = { error: args[0], data: args[1], response: args[2], options: data };
       return plugin.step[step].next({ req: req, res: res }, args, ((step + 1) > plugin.steps) ? function (data) {
         if (!data.done.callback) return res.json(data);
         return res.redirect(data.done.callback + '?' + query.stringify(data));
