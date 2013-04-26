@@ -55,7 +55,8 @@ app.post('/store', function (req, res) {
     authorizeMethod: req.param('authorize_method'),
     signatureMethod: req.param('signature_method'),
     auth: {
-      type: (req.param('auth_type') || 'oauth').replace(/[^a-z]/, ''),
+      type: (req.param('auth_type') || 'oauth').replace(/[^a-z]/g, ''),
+      flow: (req.param('auth_flow') || '').replace(/[^a-z\_]/g, ''),
       version: isNaN(parseInt(req.param('auth_version'), 10)) ? false : parseInt(req.param('auth_version'), 10),
       leg: isNaN(parseInt(req.param('auth_leg'), 10)) ? false : parseInt(req.param('auth_version'), 10)
     },
@@ -96,7 +97,7 @@ app.all('/start', function (req, res) {
 app.get('/step/:number', function (req, res) {
   // Fetch Data, Load Plugin, Continue.
   var data = JSON.parse(JSON.stringify(req.session.data));
-  var plugin = require('./plugins/' + data.auth.type.toLowerCase() + (data.auth.version && typeof data.auth.version === 'number' ? '_' + data.auth.version : '') + (data.auth.leg && typeof data.auth.leg === 'number' ? '_' + data.auth.leg + '-legged' : '') + '.js');
+  var plugin = require('./plugins/' + data.auth.type.toLowerCase() + (data.auth.flow ? data.auth.flow + '_' : '') + (data.auth.version && typeof data.auth.version === 'number' ? '_' + data.auth.version : '') + (data.auth.leg && typeof data.auth.leg === 'number' ? '_' + data.auth.leg + '-legged' : '') + '.js');
   var step = parseInt(req.params.number, 10);
 
   if (step > plugin.steps || !req.session.data)
