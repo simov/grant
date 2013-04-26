@@ -1,4 +1,4 @@
-var helper = require('./helper'), log = helper.log;
+var helper = require('./lib/helper'), log = helper.log;
 
 module.exports = {
   "category": "oauth",
