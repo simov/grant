@@ -97,7 +97,7 @@ app.all('/start', function (req, res) {
 app.get('/step/:number', function (req, res) {
   // Fetch Data, Load Plugin, Continue.
   var data = JSON.parse(JSON.stringify(req.session.data));
-  var plugin = require('./plugins/' + data.auth.type.toLowerCase() + (data.auth.flow ? data.auth.flow + '_' : '') + (data.auth.version && typeof data.auth.version === 'number' ? '_' + data.auth.version : '') + (data.auth.leg && typeof data.auth.leg === 'number' ? '_' + data.auth.leg + '-legged' : '') + '.js');
+  var plugin = require('./plugins/' + data.auth.type.toLowerCase() + (data.auth.flow ? '_' + data.auth.flow : '') + (data.auth.version && typeof data.auth.version === 'number' ? '_' + data.auth.version : '') + (data.auth.leg && typeof data.auth.leg === 'number' ? '_' + data.auth.leg + '-legged' : '') + '.js');
   var step = parseInt(req.params.number, 10);
 
   if (step > plugin.steps || !req.session.data)
