@@ -94,7 +94,7 @@ Once again, stored information by default lasts only `10` seconds.
 
     ALL /start
 
-Begins gatekeeper transactions and authentication steps.
+Begins gatekeeper transactions and authentication steps. These steps are passed with a `302` request and should be followed.
 
 #### Parameters
 
