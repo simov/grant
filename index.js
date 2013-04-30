@@ -63,7 +63,8 @@ app.post('/store', function (req, res) {
     callbackUrl: args.p + '://' + args.h + '/callback',
     done: {
       callback: req.param('callback')
-    }
+    },
+    version: req.param('version')
   }, id = nuu.id(opts.consumerKey);
 
   // Retrieve additional pylons here -- api authentication details
@@ -86,11 +87,11 @@ app.all('/start', function (req, res) {
     req.session.data = JSON.parse(reply);
 
     if (req.param('url')) req.session.data.call_url = req.param('url');
-    if (req.method) req.session.data.call_method = req.method;
-    if (req.body) req.session.data.call_body = req.body;
+    if (req.param('method')) req.session.data.call_method = req.param('method');
+    if (req.param('body')) req.session.data.call_body = req.param('body');
     if (req.param('parameters')) req.session.data.parameters = req.param('parameters');
 
-    res.redirect('/step/1');
+    res.redirect('/step/1', 302);
   });
 });
 
@@ -120,7 +121,7 @@ app.get('/step/:number', function (req, res) {
         if (!data.done.callback) return res.json(data);
         return res.redirect(data.done.callback + '?' + query.stringify(data));
       } : function () {
-        return res.redirect('/step/' + (step + 1));
+        return res.redirect('/step/' + (step + 1), 302);
       });
     };
 
