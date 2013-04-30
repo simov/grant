@@ -51,6 +51,7 @@ Stores information given, returns hash to be used later on. `10` second life on 
 - `consumer_key`
 - `consumer_secret`
 - `signature_method`
+- `oauth_token`
 
 **Authentication** *required*
 > General information regarding authentication flow to load plugin.
@@ -107,3 +108,15 @@ Begins gatekeeper transactions and authentication steps. These steps are passed 
 - `method` *Calling Method*
 - `body` *Calling Payload or Body*
 - `parameters` *Calling Parameters for Request Signatures or etc...*
+
+## Tests
+
+Each test in the test folder is based on an API or feature of gatekeeper rather than TDD or BDD based tests, we simply verify whether the authentication succeeds and we get a response from the API about the API information rather than Authentication information.
+
+Each API based test will require something of the likes:
+
+```
+$ node tests/api.js -k {Your Consumer/Client Key/Id} -s {Your Consumer/Client Secret}
+```
+
+You will recieve a response with the headers sent, and the returned response from the API.
