@@ -119,4 +119,4 @@ Each API based test will require something of the likes:
 $ node tests/api.js -k {Your Consumer/Client Key/Id} -s {Your Consumer/Client Secret}
 ```
 
-You will recieve a response with the headers sent, and the returned response from the API.
+You will recieve a response with the headers sent, and the returned response from the API, Gatekeeper must be running locally for these tests to work and on the port `3000`. Unless you alter these files~
