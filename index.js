@@ -54,6 +54,7 @@ app.post('/store', function (req, res) {
     authorizeUrl: req.param('authorize_url'),
     authorizeMethod: req.param('authorize_method'),
     signatureMethod: req.param('signature_method'),
+    oauth_token: req.param('oauth_token'),
     auth: {
       type: (req.param('auth_type') || 'oauth').replace(/[^a-z]/g, ''),
       flow: (req.param('auth_flow') || '').replace(/[^a-z\_]/g, ''),

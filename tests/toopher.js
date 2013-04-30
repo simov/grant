@@ -3,15 +3,20 @@ var request = require('request'),
   args = require('optimist').options('key', {alias: 'k'}).options('secret', {alias: 's'}).argv;
 
 var options = {
-  url: 'http://api.v3.factual.com/t/places',
-  method: 'GET'
+  url: 'https://api.toopher.com/v1/pairings/create',
+  method: 'POST',
+  form: {
+    pairing_phrase: 'generic-phrase',
+    user_name: 'gatekeeper',
+    user_id: 'gate.keeper'
+  }
 };
 
 if (!args.key) 
-  throw new Error('Missing Consumer Key! -key cli option');
+  throw new Error('Missing Consumer Key! -k cli option');
 
 if (!args.secret) 
-  throw new Error('Missing Consumer Secret! -secret cli option');
+  throw new Error('Missing Consumer Secret! -s cli option');
 
 request({
   method: 'POST',
@@ -19,11 +24,13 @@ request({
   form: {
     consumer_key: args.key,
     consumer_secret: args.secret,
-    signature_method: "HMAC-SHA1",
+    signature_method: "PLAINTEXT",
 
     auth_type: "oauth",
     auth_version: 1,
     auth_leg: 1,
+
+    oauth_token: "",
 
     callback: "oob",
     version: "1.0"
@@ -40,7 +47,8 @@ request({
 
       // Request Details
       method: options.method,
-      url: options.url
+      url: options.url,
+      parameters: options.form
     },
     followAllRedirects: true
   }, function (error, response, body) {
@@ -49,12 +57,14 @@ request({
     var req = request({
       method: options.method,
       uri: options.url,
+      form: options.form,
       headers: {
         "Authorization": auth
       }
     }, function (error, response, body) {
-      console.log(body);
+      console.log('BODY: ' + body);
     });
-    console.log(req.headers);
+    
+    console.log('HEADERS: ' + req.headers);
   });
 });
