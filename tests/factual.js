@@ -1,6 +1,10 @@
 var request = require('request'),
   query = require('querystring'),
-  args = require('optimist').options('key', {alias: 'k'}).options('secret', {alias: 's'}).argv;
+  args = require('optimist').
+    options('key', { alias: 'k' }).
+    options('secret', { alias: 's' }).
+    options('signature', { alias: 'm', default: "HMAC-SHA1" }).
+    argv;
 
 var options = {
   url: 'http://api.v3.factual.com/t/places',
@@ -19,7 +23,7 @@ request({
   form: {
     consumer_key: args.key,
     consumer_secret: args.secret,
-    signature_method: "HMAC-SHA1",
+    signature_method: args.signature,
 
     auth_type: "oauth",
     auth_version: 1,
