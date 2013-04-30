@@ -100,11 +100,10 @@ Begins gatekeeper transactions and authentication steps.
 
 - `hash`
 
-**Extras**
+**OAuth 1.0a**
+> Used in the OAuth 1.0a Signature Process for 1-Legged requests. [Example](https://github.com/Mashape/gatekeeper/blob/master/tests/factual.js#L43).
 
-These are unused, as far as I remember right now, but can be utilized by future plugins.
-
-- `url` *Calling URL*
+- `url` *Calling URL, query parameters from here are parsed so you don't need to place them in parameters... I don't think.*
 - `method` *Calling Method*
 - `body` *Calling Payload or Body*
 - `parameters` *Calling Parameters for Request Signatures or etc...*
