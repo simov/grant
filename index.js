@@ -145,7 +145,7 @@ app.get('/callback', function (req, res) {
   if (req.param('state')) args.state = req.param('state');
 
   // Next?
-  plugin.step.callback.next({ req: req, res: res }, args, function () {
+  plugin.step.callback.next({ req: req, res: res }, args, function (response) {
     if ((step + 1) > plugin.steps) return res.redirect('/done');
     res.redirect('/step/' + (step + 1));
   });

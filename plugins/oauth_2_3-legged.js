@@ -24,12 +24,15 @@ module.exports = {
     2: {
       invoke: function (options, server) {
         var oauth = helper.getOAuth2(options);
-        oauth.getOAuthAccessToken(options.code, {}, options.next);
+        oauth.getOAuthAccessToken(options.code, {
+          redirect_uri: options.callbackUrl
+        }, options.next);
       },
 
       next: function (server, response, next) {
         if (response.error)
-          return server.res.send(500, respond.error.message);
+          return server.res.send(500, response.error.message);
+
 
         next({
           access_token: response.token,
