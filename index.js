@@ -47,6 +47,8 @@ app.post('/store', function (req, res) {
     consumerKey: req.param('consumer_key'),
     consumerSecret: req.param('consumer_secret'),
     grantType: req.param('grant_type'),
+    state: req.param('state'),
+    scope: req.param('scope'),
     baseUrl: req.param('base_url'),
     requestUrl: req.param('request_url'),
     accessUrl: req.param('access_url'),
@@ -59,7 +61,7 @@ app.post('/store', function (req, res) {
       type: (req.param('auth_type') || 'oauth').replace(/[^a-z]/g, ''),
       flow: (req.param('auth_flow') || '').replace(/[^a-z\_]/g, ''),
       version: isNaN(parseInt(req.param('auth_version'), 10)) ? false : parseInt(req.param('auth_version'), 10),
-      leg: isNaN(parseInt(req.param('auth_leg'), 10)) ? false : parseInt(req.param('auth_version'), 10)
+      leg: isNaN(parseInt(req.param('auth_leg'), 10)) ? false : parseInt(req.param('auth_leg'), 10)
     },
     callbackUrl: args.p + '://' + args.h + '/callback',
     done: {
@@ -108,19 +110,15 @@ app.get('/step/:number', function (req, res) {
   // Store the current step
   req.session.data.step = step;
 
-  // Passing information
-  data.res = res;
-  data.req = req;
-
   // Next
   if (plugin.step[step].next)
     data.next = function () {
       var args = Array.prototype.slice.call(arguments);
       if (args.length > 3) args = { error: args[0], token: args[1], secret: args[2], results: args[3], options: data };
       else args = { error: args[0], data: args[1], response: args[2], options: data };
-      return plugin.step[step].next({ req: req, res: res }, args, ((step + 1) > plugin.steps) ? function (data) {
-        if (!data.done.callback) return res.json(data);
-        return res.redirect(data.done.callback + '?' + query.stringify(data));
+      return plugin.step[step].next({ req: req, res: res }, args, ((step + 1) > plugin.steps) ? function (response) {
+        if (!data.done.callback || data.done.callback == "oob") return res.json(response);
+        return res.redirect(data.done.callback + '?' + query.stringify(response));
       } : function () {
         return res.redirect('/step/' + (step + 1), 302);
       });
@@ -131,6 +129,9 @@ app.get('/step/:number', function (req, res) {
 
 app.get('/callback', function (req, res) {
   if (!req.session.data) throw new Error('MISSING_SESSION_DETAILS');
+
+  var data = JSON.parse(JSON.stringify(req.session.data));
+  var plugin = require('./plugins/' + data.auth.type.toLowerCase() + (data.auth.flow ? '_' + data.auth.flow : '') + (data.auth.version && typeof data.auth.version === 'number' ? '_' + data.auth.version : '') + (data.auth.leg && typeof data.auth.leg === 'number' ? '_' + data.auth.leg + '-legged' : '') + '.js');
   if (!plugin.step.callback) throw new Error('MISSING_CALLBACK_STEP');
 
   // here we grab the data previously set
@@ -138,8 +139,10 @@ app.get('/callback', function (req, res) {
 
   // Verifier & Token
   var args = {};
-  args.token = req.param('oauth_token');
-  args.verifier = req.param('oauth_verifier');
+  if (req.param('oauth_token')) args.token = req.param('oauth_token');
+  if (req.param('oauth_verifier')) args.verifier = req.param('oauth_verifier');
+  if (req.param('code')) args.code = req.param('code');
+  if (req.param('state')) args.state = req.param('state');
 
   // Next?
   plugin.step.callback.next({ req: req, res: res }, args, function () {

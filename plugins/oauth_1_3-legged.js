@@ -23,8 +23,8 @@ module.exports = {
     },
 
     2: {
-      invoke: function (options) {
-        options.res.redirect(options.authorizeUrl + '?oauth_token=' + (options.oauth_token || ''));
+      invoke: function (options, server) {
+        server.res.redirect(options.authorizeUrl + '?oauth_token=' + (options.oauth_token || ''));
       }
     },
 
