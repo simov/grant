@@ -41,9 +41,16 @@ Stores information given, returns hash to be used later on. `10` second life on 
 - `client_id`
 - `client_secret`
 - `grant_type`
+  *Highly dependant on flow state, and which flow you are accessing. Common values:*
+  - `authorization_code`
+  - `client_credentials`
+  - `password`
+  - `refresh_token`
 - `base_url`
-- `access_name` *access token name*
+- `access_name` *access token name, default `access_token`*
 - `authorize_method`
+- `state`
+- `scope`
 
 **OAuth 1**
 > Details specific to OAuth 1.0a
@@ -116,7 +123,7 @@ Each test in the test folder is based on an API or feature of gatekeeper rather 
 Each API based test will require something of the likes:
 
 ```
-$ node tests/api.js -k {Your Consumer/Client Key/Id} -s {Your Consumer/Client Secret}
+$ node tests/api.js -k {Your Consumer/Client Key/Id} -s {Your Consumer/Client Secret} -h {host, ie: localhost or domain}
 ```
 
 You will recieve a response with the headers sent, and the returned response from the API, Gatekeeper must be running locally for these tests to work and on the port `3000`. Unless you alter these files~
