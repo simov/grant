@@ -29,7 +29,7 @@ ascii.write("gatekeeper", "Thick", function (art) {
       redis   = require('redis'),
       query   = require('querystring'),
       utils   = require('mashape-oauth').utils,
-      nuu     = require('nuuid');
+      nuu     = require('nuuid'),
       logger  = require('log'),
       http    = require('http'),
       https   = require('https'),
