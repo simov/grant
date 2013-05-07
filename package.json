@@ -7,6 +7,8 @@
   "license": "MIT",
   "readmeFilename": "README.md",
   "dependencies": {
+    "colors": "*",
+    "asciimo": "*",
     "mashape-oauth": "*",
     "request": "*",
     "express": "*",

@@ -25,11 +25,13 @@ module.exports = {
       invoke: function (options, server) {
         var oauth = helper.getOAuth2(options);
         oauth.getOAuthAccessToken(options.code, {
-          redirect_uri: options.callbackUrl
+          redirect_uri: options.callbackUrl,
+          grant_type: options.grantType
         }, options.next);
       },
 
       next: function (server, response, next) {
+        console.log(JSON.stringify(response, null, 2));
         if (response.error)
           return server.res.send(500, response.error.message);
 
@@ -45,6 +47,8 @@ module.exports = {
 
     callback: {
       next: function (server, response, next) {
+        console.log(JSON.stringify(response, null, 2));
+
         // Place the code onto the options object under invoke methods
         server.req.session.data.code = response.code;
 
