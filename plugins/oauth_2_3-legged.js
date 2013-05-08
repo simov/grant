@@ -31,10 +31,8 @@ module.exports = {
       },
 
       next: function (server, response, next) {
-        console.log(JSON.stringify(response, null, 2));
         if (response.error)
           return server.res.send(500, response.error.message);
-
 
         next({
           access_token: response.token,
@@ -47,8 +45,6 @@ module.exports = {
 
     callback: {
       next: function (server, response, next) {
-        console.log(JSON.stringify(response, null, 2));
-
         // Place the code onto the options object under invoke methods
         server.req.session.data.code = response.code;
 

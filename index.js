@@ -36,7 +36,7 @@ ascii.write("gatekeeper", "Thick", function (art) {
     /* 
       Gatekeeper Setup 
     */
-    var gate    = require('./lib/core');
+    var gate    = require('./lib/core'), keeper;
 
     /*
       Express setup
@@ -126,16 +126,14 @@ ascii.write("gatekeeper", "Thick", function (art) {
         if (req.param('body')) req.session.data.call_body = req.param('body');
         if (req.param('parameters')) req.session.data.parameters = req.param('parameters');
 
-        if (!gate.invoked) 
-          gate = gate({ req: req, res: res });
-
-        gate.invokeStep(1);
+        keeper = gate({ req: req, res: res });
+        keeper.invokeStep(1);
       });
     });
 
     app.get('/step/:number', function (req, res) {
-      if (!gate.invoked) gate = gate({ req: req, res: res });
-      gate.invokeStep(parseInt(req.params.number, 10));
+      keeper = gate({ req: req, res: res });
+      keeper.invokeStep(parseInt(req.params.number, 10));
     });
 
     app.get('/callback', function (req, res) {
