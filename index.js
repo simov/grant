@@ -1,6 +1,7 @@
 var cluster = require('cluster'),
     ascii   = require('asciimo').Figlet,
     colors  = require('colors'),
+    winston = require('winston'),
     args    = require('optimist').options('h', {
       "alias": 'host',
       "default": '67.169.69.70:3000'
@@ -14,6 +15,16 @@ var cluster = require('cluster'),
       "default": 3000
     }).argv;
 
+/*
+  Logger setup
+*/
+var log = new (winston.Logger)({
+  transports: [
+    new (winston.transports.Console)(),
+    new (winston.transports.File)({ filename: './logs/console.log' })
+  ]
+});
+
 ascii.write("gatekeeper", "Thick", function (art) {
   if (cluster.isMaster) {
 
@@ -22,28 +33,31 @@ ascii.write("gatekeeper", "Thick", function (art) {
     var i = 0; for (i; i < args.workers; i++)
       cluster.fork();
   } else {
+    /* 
+      Gatekeeper Setup 
+    */
+    var gate    = require('./lib/core');
+
     /*
       Express setup
-     */
+    */
     var express = require('express'),
-      redis   = require('redis'),
-      query   = require('querystring'),
-      utils   = require('mashape-oauth').utils,
-      nuu     = require('nuuid'),
-      logger  = require('log'),
-      http    = require('http'),
-      https   = require('https'),
-      url     = require('url');
+        redis   = require('redis'),
+        query   = require('querystring'),
+        utils   = require('mashape-oauth').utils,
+        nuu     = require('nuuid'),
+        http    = require('http'),
+        https   = require('https'),
+        url     = require('url');
 
     /*
       Setup Express & Logger
-     */
+    */
     var app = express();
-    var log = new logger();
 
     /*
       Setup Redis Storage for Sessions
-     */
+    */
     var RedisStore = require('connect-redis')(express);
     var RedisClient = redis.createClient();
     var RedisSession = new RedisStore({ client: RedisClient });
@@ -112,37 +126,16 @@ ascii.write("gatekeeper", "Thick", function (art) {
         if (req.param('body')) req.session.data.call_body = req.param('body');
         if (req.param('parameters')) req.session.data.parameters = req.param('parameters');
 
-        res.redirect('/step/1', 302);
+        if (!gate.invoked) 
+          gate = gate({ req: req, res: res });
+
+        gate.invokeStep(1);
       });
     });
 
     app.get('/step/:number', function (req, res) {
-      // Fetch Data, Load Plugin, Continue.
-      var data = JSON.parse(JSON.stringify(req.session.data));
-      var plugin = require('./plugins/' + data.auth.type.toLowerCase() + (data.auth.flow ? '_' + data.auth.flow : '') + (data.auth.version && typeof data.auth.version === 'number' ? '_' + data.auth.version : '') + (data.auth.leg && typeof data.auth.leg === 'number' ? '_' + data.auth.leg + '-legged' : '') + '.js');
-      var step = parseInt(req.params.number, 10);
-
-      if (step > plugin.steps || !req.session.data)
-        return res.redirect('/done');
-
-      // Store the current step
-      req.session.data.step = step;
-
-      // Next
-      if (plugin.step[step].next)
-        data.next = function () {
-          var args = Array.prototype.slice.call(arguments);
-          if (args.length > 3) args = { error: args[0], token: args[1], secret: args[2], results: args[3], options: data };
-          else args = { error: args[0], data: args[1], response: args[2], options: data };
-          return plugin.step[step].next({ req: req, res: res }, args, ((step + 1) > plugin.steps) ? function (response) {
-            if (!data.done.callback || data.done.callback == "oob") return res.json(response);
-            return res.redirect(data.done.callback + '?' + query.stringify(response));
-          } : function () {
-            return res.redirect('/step/' + (step + 1), 302);
-          });
-        };
-
-      plugin.step[step].invoke(data, { req: req, res: res });
+      if (!gate.invoked) gate = gate({ req: req, res: res });
+      gate.invokeStep(parseInt(req.params.number, 10));
     });
 
     app.get('/callback', function (req, res) {
@@ -164,18 +157,28 @@ ascii.write("gatekeeper", "Thick", function (art) {
 
       // Next?
       plugin.step.callback.next({ req: req, res: res }, args, function (response) {
-        if ((step + 1) > plugin.steps) return res.redirect('/done');
+        if (response) {
+          if (!$this.data.done.callback || $this.data.done.callback == "oob") 
+            return response.json(data);
+
+          return response.redirect($this.data.done.callback + '?' + query.stringify(data));
+        }
+
+        if ((step + 1) > plugin.steps) 
+          return res.json(500, { error: 'All steps have been completed, authentication should have happened.' });
+
         res.redirect('/step/' + (step + 1));
       });
     });
 
     app.listen(args.port);
-    console.log('[Info] '.grey + 'Worker ' + ('#' + cluster.worker.id).green + ' on duty!');
+
+    log.info(('Worker #' + cluster.worker.id + ' on duty!').grey);
   }
 
   // Listen for dying workers
   cluster.on('exit', function (worker) {
-      console.log('[Info] '.grey + 'STAB!'.red + ' Another worker has died :( RIP Worker #' + worker.id + '!');
+      log.warn('STAB!'.red + (' Another worker has died :( RIP Worker #' + worker.id + '!').grey);
       cluster.fork();
   });
 });

@@ -1,24 +1,24 @@
 {
   "name": "gatekeeper",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "Authentication Gateway Proxy",
   "main": "index.js",
   "author": "Nijiko Yonskai",
   "license": "MIT",
   "readmeFilename": "README.md",
   "dependencies": {
-    "colors": "*",
-    "asciimo": "*",
     "mashape-oauth": "*",
-    "request": "*",
-    "express": "*",
-    "log": "*",
     "redis": "*",
     "connect-redis": "*",
+    "colors": "*",
+    "asciimo": "*",
+    "request": "*",
+    "express": "*",
+    "winston": "*",
     "optimist": "*"
   },
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Check the README on how to run tests!\" && exit 1"
   },
   "repository": {
     "type": "git",

@@ -1,11 +1,16 @@
-var moth = require('mashape-oauth'), log = require('log');
+var moth = require('mashape-oauth'), winston = require('winston');
 
 var helper = module.exports = exports = {
   OAuth: moth.OAuth,
   OAuth2: moth.OAuth2,
   http: require('http'),
   https: require('https'),
-  log: new log(),
+  log: new (winston.Logger)({
+    transports: [
+      new (winston.transports.Console)(),
+      new (winston.transports.File)({ filename: './logs/console.log' })
+    ]
+  }),
   url: require('url'),
   utils: moth.utils
 };
