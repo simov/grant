@@ -117,8 +117,19 @@ ascii.write("gatekeeper", "Thick", function (art) {
     });
 
     app.all('/start', function (req, res) {
-      var opts = RedisClient.get(req.param('hash'), function (err, reply) {
-        if (err) return res.send(500, err.message);
+      var original = req.param('hash');
+
+      // Clean and Check, Doctor Visit Y'all
+      var hash = (typeof original === 'string' ? original : '').replace(/[^a-z0-9\-]/gi, '');
+      if (hash != original)
+        return res.json(500, { message: 'Invalid hash sequence given. Please check hash and try again.' });
+
+      var opts = RedisClient.get(hash, function (err, reply) {
+        if (err)
+          return res.json(500, { message: err.message });
+        else if (!reply)
+          return res.json(500, { message: 'Hash (' + hash + ') has been expired.' });
+
         req.session.data = JSON.parse(reply);
 
         if (req.param('url')) req.session.data.call_url = req.param('url');

@@ -32,7 +32,10 @@ module.exports = {
 
       next: function (server, response, next) {
         if (response.error)
-          return server.res.send(500, response.error.message);
+          return server.res.json(500, { 
+            message: 'Could not authenticate with given credentials.',
+            data: response.error.data
+          });
 
         next({
           access_token: response.token,

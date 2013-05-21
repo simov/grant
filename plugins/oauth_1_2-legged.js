@@ -15,7 +15,10 @@ module.exports = {
 
       next: function (server, response, next) {
         if (response.error) 
-          return server.res.send(500, response.error.message);
+          return server.res.json(500, { 
+            message: 'Could not authenticate with given credentials for request token.',
+            data: response.error.data
+          });
 
         server.req.session.data.oauth_token = response.token;
         server.req.session.data.token_secret = response.secret;
@@ -36,7 +39,10 @@ module.exports = {
 
       next: function (server, response, next) {
         if (response.error) 
-          return server.res.send(500, response.error.message);
+          return server.res.json(500, {
+            message: 'Could not determine access_token and secret.',
+            data: response.error.data
+          });
 
         next({
           access_token: response.token,
