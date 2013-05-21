@@ -4,7 +4,7 @@ var cluster = require('cluster'),
     winston = require('winston'),
     args    = require('optimist').options('h', {
       "alias": 'host',
-      "default": '67.169.69.70:3000'
+      "default": 'localhost:3000'
     }).options('p', {
       "alias": 'protocol',
       "default": 'http'
