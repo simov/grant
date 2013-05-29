@@ -104,7 +104,7 @@ ascii.write("gatekeeper", "Thick", function (art) {
 
       // Retrieve additional pylons here -- api authentication details
       RedisClient.set(id, JSON.stringify(opts), redis.print);
-      RedisClient.expire(id, 360);
+      RedisClient.expire(id, 60);
 
       res.jsonp({ hash: id });
     });
@@ -156,6 +156,8 @@ ascii.write("gatekeeper", "Thick", function (art) {
 
       // here we grab the data previously set
       var step = req.session.data.step;
+
+      log.info(data);
 
       // Verifier & Token
       var args = {};

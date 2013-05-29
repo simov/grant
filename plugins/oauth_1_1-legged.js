@@ -10,8 +10,18 @@ module.exports = {
     1: {
       invoke: function (options, server) {
         var header = helper.getOAuthHeader(options);
-        server.res.set('Authorization', header);
-        server.res.json({'authorization': header });
+        
+        helper.handleCallback(options, server, {
+          status: 200,
+
+          headers: {
+            'Authorization': header
+          },
+
+          data: {
+            'authorization': header
+          }
+        });
       }
     }
   }

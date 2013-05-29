@@ -5,8 +5,6 @@ module.exports = {
   "type": "2.0-three-legged",
   "steps": 2,
   "step": {
-    // Authorize against service using signed request
-    // https://github.com/Mashape/mashape-oauth/blob/master/FLOWS.md#oauth-10a-one-legged
     1: {
       invoke: function (options, server) {
         var oauth = helper.getOAuth2(options);
@@ -32,9 +30,13 @@ module.exports = {
 
       next: function (server, response, next) {
         if (response.error)
-          return server.res.json(500, { 
-            message: 'Could not authenticate with given credentials.',
-            data: response.error.data
+          return helper.handleCallback(server.req.session.data, server, {
+            status: 500,
+
+            data: { 
+              message: 'Could not authenticate with given credentials for request token.',
+              data: response.error.data
+            }
           });
 
         next({

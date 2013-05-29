@@ -15,9 +15,13 @@ module.exports = {
 
       next: function (server, response, next) {
         if (response.error)
-          return server.res.json(500, { 
-            message: 'Could not authenticate with given credentials.',
-            data: response.error.data
+          return helper.handleCallback(server.req.session.data, server, {
+            status: 500,
+
+            data: { 
+              message: 'Could not authenticate with given credentials for request token.',
+              data: response.error.data
+            }
           });
 
         next({

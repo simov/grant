@@ -13,9 +13,13 @@ module.exports = {
 
       next: function (server, response, next) {
         if (response.error) 
-          return server.res.json(500, { 
-            message: 'Could not authenticate with given credentials for request token.',
-            data: response.error.data
+          return helper.handleCallback(server.req.session.data, server, {
+            status: 500,
+
+            data: { 
+              message: 'Could not authenticate with given credentials for request token.',
+              data: response.error.data
+            }
           });
 
         server.req.session.data.oauth_token = response.token;
@@ -34,9 +38,13 @@ module.exports = {
     callback: {
       next: function (server, response, next) {
         if (response.error) 
-          return server.res.json(500, {
-            message: 'Could not determine token and verifier.',
-            data: response.error.data
+          return helper.handleCallback(server.req.session.data, server, {
+            status: 500,
+
+            data: { 
+              message: 'Could not determine token and verifier.',
+              data: response.error.data
+            }
           });
 
         server.req.session.data.oauth_token = response.token;
@@ -58,9 +66,13 @@ module.exports = {
 
       next: function (server, response, next) {
         if (response.error) 
-          return server.res.json(500, {
-            message: 'Could not determine access_token and secret.',
-            data: response.error.data
+          return helper.handleCallback(server.req.session.data, server, {
+            status: 500,
+
+            data: { 
+              message: 'Could not determine access_token and access_secret.',
+              data: response.error.data
+            }
           });
 
         next({

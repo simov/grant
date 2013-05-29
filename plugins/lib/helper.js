@@ -58,6 +58,19 @@ helper.getOAuthHeader = function (options) {
   return oauth.buildAuthorizationHeaders(parameters);
 };
 
+helper.handleCallback = function (options, server, details) {
+  if (!options.done.callback || options.done.callback == "oob") {
+    if (details.headers)
+      for (var i in details.headers)
+        if (details.headers.hasOwnProperty(i))
+          server.res.set(i, details.headers[i]);
+
+    return server.res.json(details.status, details.data);
+  }
+
+  return server.res.redirect(options.done.callback + '?' + query.stringify(details.data));
+};
+
 helper.getProxy = function (req, res) {
   return (req.protocol === 'https' ? https : http).createClient(req.headers.host.match(/:/g) ? req.headers.host.split(":")[0] : 80, req.host);
 };

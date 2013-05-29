@@ -1,6 +1,6 @@
 {
-  "name": "gatekeeper",
-  "version": "0.0.3",
+  "name": "mashape-gatekeeper",
+  "version": "0.0.1",
   "description": "Authentication Gateway Proxy",
   "main": "index.js",
   "author": "Nijiko Yonskai",
@@ -25,6 +25,12 @@
     "url": "git@github.com:Mashape/gatekeeper"
   },
   "keywords": [
-    "gatekeeper"
+    "gatekeeper",
+    "authentication",
+    "gateway",
+    "proxy",
+    "oauth",
+    "plugin",
+    "plugins"
   ]
 }
