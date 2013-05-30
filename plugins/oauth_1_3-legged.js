@@ -23,7 +23,7 @@ module.exports = {
           });
 
         server.req.session.data.oauth_token = response.token;
-        server.req.session.data.token_secret = response.secret;
+        server.req.session.data.oauth_token_secret = response.secret;
 
         return next();
       }
@@ -61,6 +61,8 @@ module.exports = {
 
         opts.parameters.oauth_verifier = options.oauth_verifier;
         opts.parameters.oauth_token = options.oauth_token;
+        opts.oauth_token_secret = options.oauth_token_secret;
+
         oa.getOAuthAccessToken(opts, options.next);
       },
 

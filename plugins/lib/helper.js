@@ -1,4 +1,4 @@
-var moth = require('mashape-oauth'), winston = require('winston');
+var moth = require('mashape-oauth'), winston = require('winston'), query = require('querystring');
 
 var helper = module.exports = exports = {
   OAuth: moth.OAuth,
