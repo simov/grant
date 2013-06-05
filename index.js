@@ -102,6 +102,9 @@ ascii.write("gatekeeper", "Thick", function (art) {
         version: req.param('version')
       }, id = nuu.id(opts.consumerKey);
 
+      if (opts.signatureMethod && opts.signatureMethod.indexOf("_"))
+        opts.signatureMethod = opts.signatureMethod.replace('_', '-');
+
       // Retrieve additional pylons here -- api authentication details
       RedisClient.set(id, JSON.stringify(opts), redis.print);
       RedisClient.expire(id, 60);

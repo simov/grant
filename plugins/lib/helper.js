@@ -27,7 +27,7 @@ helper.getOAuth = function (options) {
     signatureMethod: options.signatureMethod || helper.OAuth.signatures.hmac,
     nonceLength: options.nonceLength || 32,
     clientOptions: options.clientOptions || undefined,
-    version: options.version || '1.0A'
+    version: options.version || '1.0'
   });
 };
 
