@@ -2,6 +2,7 @@ var cluster = require('cluster'),
     ascii   = require('asciimo').Figlet,
     colors  = require('colors'),
     winston = require('winston'),
+    fs      = require('fs'),
     args    = require('optimist').options('h', {
       "alias": 'host',
       "default": 'localhost:3000'
@@ -30,7 +31,7 @@ ascii.write("gatekeeper", "Thick", function (art) {
 
     console.info("\n" + art.rainbow);
 
-    var pidPath = config.homedir + "/.mashape-gatekeeper.pid";
+    var pidPath = "./.mashape-gatekeeper.pid";
     fs.writeFileSync(pidPath, process.pid, 'utf8');
     console.info(("Master started with PID " + process.pid + ", saved at: " + pidPath).grey);
 
