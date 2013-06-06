@@ -14,7 +14,16 @@ var cluster = require('cluster'),
       "default": require('os').cpus().length
     }).options('port', {
       "default": 3000
-    }).argv;
+    }).options('c', {
+      "alias": 'config',
+      "default": "default"
+    }).argv,
+    config = require('./config/' + args.config);
+
+for (var i in config)
+  if (config.hasOwnProperty(i))
+    if (typeof args[i] !== 'undefined' && args[i] !== config[i])
+      config[i] = args[i];
 
 /*
   Logger setup
@@ -35,7 +44,7 @@ ascii.write("gatekeeper", "Thick", function (art) {
     fs.writeFileSync(pidPath, process.pid, 'utf8');
     console.info(("Master started with PID " + process.pid + ", saved at: " + pidPath).grey);
 
-    var i = 0; for (i; i < args.workers; i++)
+    var i = 0; for (i; i < config.workers; i++)
       cluster.fork();
   } else {
     /* 
@@ -63,9 +72,17 @@ ascii.write("gatekeeper", "Thick", function (art) {
     /*
       Setup Redis Storage for Sessions
     */
+    var RedisOptions = {};
+    if (config.redis.pass) RedisOptions.no_ready_check = true;
+
     var RedisStore = require('connect-redis')(express);
-    var RedisClient = redis.createClient();
+    var RedisClient = redis.createClient(config.redis.port, config.redis.host, RedisOptions);
     var RedisSession = new RedisStore({ client: RedisClient });
+
+    if (config.redis.pass)
+      RedisClient.auth(config.redis.pass, function () {
+        log.info('Authenticated redis client!');
+      });
 
     // Configuration
     app.configure(function () {
@@ -100,7 +117,7 @@ ascii.write("gatekeeper", "Thick", function (art) {
           version: isNaN(parseInt(req.param('auth_version'), 10)) ? false : parseInt(req.param('auth_version'), 10),
           leg: isNaN(parseInt(req.param('auth_leg'), 10)) ? false : parseInt(req.param('auth_leg'), 10)
         },
-        callbackUrl: req.param('redirect') ? req.param('redirect') : args.p + '://' + args.h + '/callback',
+        callbackUrl: req.param('redirect') ? req.param('redirect') : config.port + '://' + config.host + '/callback',
         done: {
           callback: req.param('callback')
         },
@@ -168,14 +185,14 @@ ascii.write("gatekeeper", "Thick", function (art) {
       log.info(data);
 
       // Verifier & Token
-      var args = {};
-      if (req.param('oauth_token')) args.token = req.param('oauth_token');
-      if (req.param('oauth_verifier')) args.verifier = req.param('oauth_verifier');
-      if (req.param('code')) args.code = req.param('code');
-      if (req.param('state')) args.state = req.param('state');
+      var arguments = {};
+      if (req.param('oauth_token')) arguments.token = req.param('oauth_token');
+      if (req.param('oauth_verifier')) arguments.verifier = req.param('oauth_verifier');
+      if (req.param('code')) arguments.code = req.param('code');
+      if (req.param('state')) arguments.state = req.param('state');
 
       // Next?
-      plugin.step.callback.next({ req: req, res: res }, args, function (response) {
+      plugin.step.callback.next({ req: req, res: res }, arguments, function (response) {
         if (response) {
           if (!$this.data.done.callback || $this.data.done.callback == "oob") 
             return response.json(data);
@@ -190,7 +207,7 @@ ascii.write("gatekeeper", "Thick", function (art) {
       });
     });
 
-    app.listen(args.port);
+    app.listen(config.port);
 
     log.info(('Worker #' + cluster.worker.id + ' on duty!').grey);
   }
