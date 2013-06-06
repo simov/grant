@@ -16,7 +16,7 @@
     "express": "*",
     "winston": "*",
     "optimist": "*",
-	"nuuid" : "*"
+    "nuuid" : "*"
   },
   "scripts": {
     "test": "echo \"Check the README on how to run tests!\" && exit 1"
