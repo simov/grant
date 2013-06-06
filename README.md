@@ -1,4 +1,4 @@
-# gatekeeper
+# guardian
 
 Authentication gateway middle-man for simplifying OAuth requests with a plugin based architecture to allow quick iteration and implementation of new authentication schemes outside of normal or existing flows.
 
@@ -27,11 +27,11 @@ Basic Options:
   
   Default: `http`
 - `port`
-  *Port on which gatekeeper runs*
+  *Port on which guardian runs*
   
   Default: `3000`
 - `pid.dir`
-  *Directory where the `.gatekeeper.pid` file will be output, in production environments this is usually `/home/<user>/`, with trailing slash.*
+  *Directory where the `.guardian.pid` file will be output, in production environments this is usually `/home/<user>/`, with trailing slash.*
 
   Default: `./`
 - `redis.host`
@@ -117,14 +117,14 @@ Once again, stored information by default lasts only `10` seconds.
 
     ALL /start
 
-Begins gatekeeper transactions and authentication steps. These steps are passed with a `302` request and should be followed.
+Begins guardian transactions and authentication steps. These steps are passed with a `302` request and should be followed.
 
 #### Parameters
 
 - `hash`
 
 **OAuth 1.0a**
-> Used in the OAuth 1.0a Signature Process for 1-Legged requests. [Example](https://github.com/Mashape/gatekeeper/blob/master/tests/factual.js#L46).
+> Used in the OAuth 1.0a Signature Process for 1-Legged requests. [Example](https://github.com/Mashape/guardian/blob/master/tests/factual.js#L46).
 
 - `url` *Calling URL, query parameters from here are parsed so you don't need to place them in parameters... I don't think.*
 - `method` *Calling Method*
@@ -133,7 +133,7 @@ Begins gatekeeper transactions and authentication steps. These steps are passed 
 
 ## Tests
 
-Each test in the test folder is based on an API or feature of gatekeeper rather than TDD or BDD based tests, we simply verify whether the authentication succeeds and we get a response from the API about the API information rather than Authentication information.
+Each test in the test folder is based on an API or feature of guardian rather than TDD or BDD based tests, we simply verify whether the authentication succeeds and we get a response from the API about the API information rather than Authentication information.
 
 Each API based test will require something of the likes:
 
@@ -141,4 +141,4 @@ Each API based test will require something of the likes:
 $ node tests/api.js -k {Your Consumer/Client Key/Id} -s {Your Consumer/Client Secret} -h {host, ie: localhost or domain}
 ```
 
-You will recieve a response with the headers sent, and the returned response from the API, Gatekeeper must be running locally for these tests to work and on the port `3000`. Unless you alter these files~
+You will recieve a response with the headers sent, and the returned response from the API, guardian must be running locally for these tests to work and on the port `3000`. Unless you alter these files~

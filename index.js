@@ -24,12 +24,12 @@ var log = new (winston.Logger)({
 });
 
 // Start Master and Workers
-ascii.write("gatekeeper", "Thick", function (art) {
+ascii.write("guardian", "Thick", function (art) {
   if (cluster.isMaster) {
 
     console.info("\n" + art.rainbow);
 
-    var pidPath = "./.gatekeeper.pid";
+    var pidPath = "./.guardian.pid";
     fs.writeFileSync(pidPath, process.pid, 'utf8');
     console.info(("Master started with PID " + process.pid + ", saved at: " + pidPath).grey);
 
@@ -37,7 +37,7 @@ ascii.write("gatekeeper", "Thick", function (art) {
       cluster.fork();
   } else {
     /* 
-      Gatekeeper Setup 
+      guardian Setup 
     */
     var gate    = require('./lib/core'), keeper;
 
@@ -81,6 +81,10 @@ ascii.write("gatekeeper", "Thick", function (art) {
       app.use(express.bodyParser());
       app.use(express.cookieParser('maeby, lets keep it a secret?'));
       app.use(express.session({ store: RedisSession, key: 'gate.keeper', secret: 'no-more-secrets' }));
+      app.use(function (req, res, next) {
+        res.header("X-powered-by", "Guardian, the last Gatekeeper.");
+        next();
+      });
     });
 
     app.post('/store', function (req, res) {

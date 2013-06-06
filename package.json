@@ -1,5 +1,5 @@
 {
-  "name": "mashape-gatekeeper",
+  "name": "guardian",
   "version": "0.0.1",
   "description": "Authentication Gateway Proxy",
   "main": "index.js",
@@ -23,10 +23,13 @@
   },
   "repository": {
     "type": "git",
-    "url": "git@github.com:Mashape/gatekeeper"
+    "url": "git@github.com:Mashape/guardian"
   },
   "keywords": [
     "gatekeeper",
+    "sentinel",
+    "guardian",
+    "cato",
     "authentication",
     "gateway",
     "proxy",
