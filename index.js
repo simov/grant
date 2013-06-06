@@ -106,7 +106,7 @@ ascii.write("gatekeeper", "Thick", function (art) {
           version: isNaN(parseInt(req.param('auth_version'), 10)) ? false : parseInt(req.param('auth_version'), 10),
           leg: isNaN(parseInt(req.param('auth_leg'), 10)) ? false : parseInt(req.param('auth_leg'), 10)
         },
-        callbackUrl: req.param('redirect') ? req.param('redirect') : config.protocol + '://' + config.host + ':' + config.port '/callback',
+        callbackUrl: req.param('redirect') ? req.param('redirect') : config.protocol + '://' + config.host + '/callback',
         done: {
           callback: req.param('callback')
         },
