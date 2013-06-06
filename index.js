@@ -3,27 +3,11 @@ var cluster = require('cluster'),
     colors  = require('colors'),
     winston = require('winston'),
     fs      = require('fs'),
-    args    = require('optimist').options('h', {
-      "alias": 'host',
-      "default": 'localhost:3000'
-    }).options('p', {
-      "alias": 'protocol',
-      "default": 'http'
-    }).options('w', {
-      "alias": 'workers',
-      "default": require('os').cpus().length
-    }).options('port', {
-      "default": 3000
-    }).options('c', {
+    args    = require('optimist').options('c', {
       "alias": 'config',
       "default": "default"
     }).argv,
     config = require('./config/' + args.config);
-
-for (var i in config)
-  if (config.hasOwnProperty(i))
-    if (typeof args[i] !== 'undefined' && args[i] !== config[i])
-      config[i] = args[i];
 
 /*
   Logger setup

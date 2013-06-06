@@ -5,16 +5,20 @@ Authentication gateway middle-man for simplifying OAuth requests with a plugin b
 ## Starting
 
 ```bash
-$ node index.js <options>
+$ node index.js -c <configuration>
 ```
 
-Options:
+### Configuration
 
-- `host` or `h`
+Configuration files can be found in the `config` directory, when no configuration file is declared `default.js` is loaded.
+
+Basic Options:
+
+- `host`
   *You should set this to be the public ip or domain name as it is utilized to generate the callback uri.*
   
   Default: `localhost:3000`
-- `protocol` or `p`
+- `protocol`
   *Host protocol*
   
   Default: `http`
@@ -22,6 +26,9 @@ Options:
   *Port on which gatekeeper runs*
   
   Default: `3000`
+- `redis.host`
+- `redis.port`
+- `redis.pass`
 
 ## Routes
 
