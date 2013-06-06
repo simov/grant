@@ -10,7 +10,11 @@ $ node index.js -c <configuration>
 
 ### Configuration
 
-Configuration files can be found in the `config` directory, when no configuration file is declared `default.js` is loaded.
+Configuration files can be found in the `config` directory, when no configuration file is declared `default.js` is loaded, when declaring which file to use omit the `js` extension like so:
+
+```bash
+$ node index.js -c production
+```
 
 Basic Options:
 
