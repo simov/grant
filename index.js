@@ -1,3 +1,5 @@
+#!/usr/bin/env node
+
 var cluster = require('cluster'),
     ascii   = require('asciimo').Figlet,
     colors  = require('colors'),

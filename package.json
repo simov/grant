@@ -21,6 +21,7 @@
   "scripts": {
     "test": "echo \"Check the README on how to run tests!\" && exit 1"
   },
+  "bin" : { "gatekeeper" : "index.js" },
   "repository": {
     "type": "git",
     "url": "git@github.com:Mashape/guardian"
