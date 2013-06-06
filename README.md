@@ -30,6 +30,10 @@ Basic Options:
   *Port on which gatekeeper runs*
   
   Default: `3000`
+- `pid.dir`
+  *Directory where the `.gatekeeper.pid` file will be output, in production environments this is usually `/home/<user>/`, with trailing slash.*
+
+  Default: `./`
 - `redis.host`
 - `redis.port`
 - `redis.pass`

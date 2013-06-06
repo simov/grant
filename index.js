@@ -24,7 +24,7 @@ ascii.write("gatekeeper", "Thick", function (art) {
 
     console.info("\n" + art.rainbow);
 
-    var pidPath = "./.mashape-gatekeeper.pid";
+    var pidPath = "./.gatekeeper.pid";
     fs.writeFileSync(pidPath, process.pid, 'utf8');
     console.info(("Master started with PID " + process.pid + ", saved at: " + pidPath).grey);
 
