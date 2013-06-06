@@ -9,9 +9,13 @@ var cluster = require('cluster'),
     }).argv,
     config = require('./config/' + args.config);
 
-/*
-  Logger setup
-*/
+// Create logs directory
+fs.mkdir('./logs', function (e) {
+  if (e && e.errno != 47) console.log('Error creating logs directory: ' + e.errno);
+  else if (!e) console.log('Create logs directory!');
+});
+
+// Logging Setup
 var log = new (winston.Logger)({
   transports: [
     new (winston.transports.Console)(),
@@ -19,6 +23,7 @@ var log = new (winston.Logger)({
   ]
 });
 
+// Start Master and Workers
 ascii.write("gatekeeper", "Thick", function (art) {
   if (cluster.isMaster) {
 
