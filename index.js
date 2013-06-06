@@ -30,6 +30,10 @@ ascii.write("gatekeeper", "Thick", function (art) {
 
     console.info("\n" + art.rainbow);
 
+    var pidPath = config.homedir + "/.mashape-gatekeeper.pid";
+    fs.writeFileSync(pidPath, process.pid, 'utf8');
+    console.info(("Master started with PID " + process.pid + ", saved at: " + pidPath).grey);
+
     var i = 0; for (i; i < args.workers; i++)
       cluster.fork();
   } else {
