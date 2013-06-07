@@ -142,3 +142,7 @@ $ node tests/api.js -k {Your Consumer/Client Key/Id} -s {Your Consumer/Client Se
 ```
 
 You will recieve a response with the headers sent, and the returned response from the API, guardian must be running locally for these tests to work and on the port `3000`. Unless you alter these files~
+
+## About
+
+Originally called gatekeeper, but someone else had that and no other names seemed appropriate for what this does so we went with guardian which is another form of a gatekeeper.
