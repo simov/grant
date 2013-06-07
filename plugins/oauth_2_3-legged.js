@@ -24,7 +24,7 @@ module.exports = {
         var oauth = helper.getOAuth2(options);
         oauth.getOAuthAccessToken(options.code, {
           redirect_uri: options.callbackUrl,
-          grant_type: options.grantType
+          grant_type: "authorization_code"
         }, options.next);
       },
 
