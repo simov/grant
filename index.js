@@ -161,11 +161,19 @@ ascii.write("guardian", "Thick", function (art) {
     });
 
     app.get('/callback', function (req, res) {
-      if (!req.session.data) throw new Error('MISSING_SESSION_DETAILS');
+      if (!req.session.data) 
+        return res.json(500, { 
+          code: 'MISSING_SESSION_DETAILS', 
+          message: 'Session details are missing, perhaps the redirect url is on another server or the request timed out.' 
+        });
 
       var data = JSON.parse(JSON.stringify(req.session.data));
       var plugin = require('./plugins/' + data.auth.type.toLowerCase() + (data.auth.flow ? '_' + data.auth.flow : '') + (data.auth.version && typeof data.auth.version === 'number' ? '_' + data.auth.version : '') + (data.auth.leg && typeof data.auth.leg === 'number' ? '_' + data.auth.leg + '-legged' : '') + '.js');
-      if (!plugin.step.callback) throw new Error('MISSING_CALLBACK_STEP');
+      if (!plugin.step.callback) 
+        return res.json(500, { 
+          code: 'MISSING_CALLBACK_STEP', 
+          message: 'Callback step is missing, unable to continue authentication process.' 
+        });
 
       // here we grab the data previously set
       var step = req.session.data.step;
@@ -189,7 +197,10 @@ ascii.write("guardian", "Thick", function (art) {
         }
 
         if ((step + 1) > plugin.steps) 
-          return res.json(500, { error: 'All steps have been completed, authentication should have happened.' });
+          return res.json(500, { 
+            code: 'ALL_STEPS_COMPLETE', 
+            message: 'All steps have been completed, authentication should have happened.' 
+          });
 
         res.redirect('/step/' + (step + 1));
       });
