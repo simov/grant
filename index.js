@@ -119,7 +119,7 @@ ascii.write("guardian", "Thick", function (art) {
       RedisClient.set(id, JSON.stringify(opts), redis.print);
       RedisClient.expire(id, 60);
 
-      res.jsonp({ hash: id });
+      res.jsonp({ hash: id, url: config.protocol + '://' + config.host + '/start?hash=' + id });
     });
 
     app.get('/hash-check', function (req, res) {
