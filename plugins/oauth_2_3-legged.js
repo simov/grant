@@ -8,16 +8,20 @@ module.exports = {
     1: {
       invoke: function (options, server) {
         var oauth = helper.getOAuth2(options);
-
-        server.res.redirect(oauth.getAuthorizeUrl({
+        var settings = {
           redirect_uri: options.callbackUrl,
-          scope: options.scope || undefined,
-          state: options.state || undefined,
           response_type: 'code'
-        }));
+        };
+
+        if (options.scope)
+          settings.scope = options.scope;
+
+        if (options.state)
+          settings.state = options.state;
+
+        server.res.redirect(oauth.getAuthorizeUrl(settings));
       }
     },
-
 
     2: {
       invoke: function (options, server) {
