@@ -2,6 +2,12 @@
 
 Authentication gateway middle-man for simplifying OAuth requests with a plugin based architecture to allow quick iteration and implementation of new authentication schemes outside of normal or existing flows.
 
+## Install
+
+```bash
+$ npm install guardian
+```
+
 ## Starting
 
 ```bash
