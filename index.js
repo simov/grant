@@ -75,8 +75,8 @@ ascii.write("guardian", "Thick", function (art) {
       app.set('views', __dirname + '/_views');
       app.use(express.static(__dirname + '/_assets'));
       app.use(express.bodyParser());
-      app.use(express.cookieParser('maeby, lets keep it a secret?'));
-      app.use(express.session({ store: RedisSession, key: 'gate.keeper', secret: 'no-more-secrets' }));
+      //app.use(express.cookieParser('maeby, lets keep it a secret?'));
+      //app.use(express.session({ store: RedisSession, key: 'gate.keeper', secret: 'no-more-secrets' }));
       app.use(function (req, res, next) {
         res.header("X-powered-by", "Guardian, the last Gatekeeper.");
         next();

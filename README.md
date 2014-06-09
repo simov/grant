@@ -54,7 +54,7 @@ Each endpoint functions as a step.
 
     POST /store
 
-Stores information given, returns hash to be used later on. `10` second life on the hashed information by default.
+Stores information given, returns hash to be used later on. `60` second life on the hashed information by default.
 
 #### Parameters
 
