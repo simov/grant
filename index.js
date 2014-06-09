@@ -32,8 +32,8 @@ ascii.write("guardian", "Thick", function (art) {
     var i = 0; for (i; i < config.workers; i++)
       cluster.fork();
   } else {
-    /* 
-      guardian Setup 
+    /*
+      guardian Setup
     */
     var gate    = require('./lib/core'), keeper;
 
@@ -75,8 +75,8 @@ ascii.write("guardian", "Thick", function (art) {
       app.set('views', __dirname + '/_views');
       app.use(express.static(__dirname + '/_assets'));
       app.use(express.bodyParser());
-      //app.use(express.cookieParser('maeby, lets keep it a secret?'));
-      //app.use(express.session({ store: RedisSession, key: 'gate.keeper', secret: 'no-more-secrets' }));
+      app.use(express.cookieParser(config.cookie.secret));
+      app.use(express.session({ store: RedisSession, key: 'gate.keeper', secret: config.session.secret }));
       app.use(function (req, res, next) {
         res.header("X-powered-by", "Guardian, the last Gatekeeper.");
         next();
@@ -162,18 +162,25 @@ ascii.write("guardian", "Thick", function (art) {
     });
 
     app.get('/callback', function (req, res) {
-      if (!req.session.data) 
-        return res.json(500, { 
-          code: 'MISSING_SESSION_DETAILS', 
-          message: 'Session details are missing, perhaps the redirect url is on another server or the request timed out.' 
+      if (!req.session.data)
+        return res.json(500, {
+          code: 'MISSING_SESSION_DETAILS',
+          message: 'Session details are missing, perhaps the redirect url is on another server or the request timed out.'
         });
 
       var data = JSON.parse(JSON.stringify(req.session.data));
-      var plugin = require('./plugins/' + data.auth.type.toLowerCase() + (data.auth.flow ? '_' + data.auth.flow : '') + (data.auth.version && typeof data.auth.version === 'number' ? '_' + data.auth.version : '') + (data.auth.leg && typeof data.auth.leg === 'number' ? '_' + data.auth.leg + '-legged' : '') + '.js');
-      if (!plugin.step.callback) 
-        return res.json(500, { 
-          code: 'MISSING_CALLBACK_STEP', 
-          message: 'Callback step is missing, unable to continue authentication process.' 
+      var path = {
+        flow: data.auth.flow ? '_' + data.auth.flow : '',
+        version: data.auth.version && typeof data.auth.version === 'number' ? '_' + data.auth.version : '',
+        leg: data.auth.leg && typeof data.auth.leg === 'number' ? '_' + data.auth.leg + '-legged' : ''
+      };
+
+      var plugin = require('./plugins/' + data.auth.type.toLowerCase() + path.flow + path.version + path.leg + '.js');
+
+      if (!plugin.step.callback)
+        return res.json(500, {
+          code: 'MISSING_CALLBACK_STEP',
+          message: 'Callback step is missing, unable to continue authentication process.'
         });
 
       // here we grab the data previously set
@@ -182,25 +189,25 @@ ascii.write("guardian", "Thick", function (art) {
       log.info(data);
 
       // Verifier & Token
-      var arguments = {};
-      if (req.param('oauth_token')) arguments.token = req.param('oauth_token');
-      if (req.param('oauth_verifier')) arguments.verifier = req.param('oauth_verifier');
-      if (req.param('code')) arguments.code = req.param('code');
-      if (req.param('state')) arguments.state = req.param('state');
+      var args = {};
+      if (req.param('oauth_token')) args.token = req.param('oauth_token');
+      if (req.param('oauth_verifier')) args.verifier = req.param('oauth_verifier');
+      if (req.param('code')) args.code = req.param('code');
+      if (req.param('state')) args.state = req.param('state');
 
       // Next?
-      plugin.step.callback.next({ req: req, res: res }, arguments, function (response) {
+      plugin.step.callback.next({ req: req, res: res }, args, function (response) {
         if (response) {
-          if (!$this.data.done.callback || $this.data.done.callback == "oob") 
-            return response.json(data);
+          if (!data.done.callback || data.done.callback == "oob")
+            return res.json(response);
 
-          return response.redirect($this.data.done.callback + '?' + query.stringify(data));
+          return res.redirect(data.done.callback + '?' + query.stringify(response));
         }
 
-        if ((step + 1) > plugin.steps) 
-          return res.json(500, { 
-            code: 'ALL_STEPS_COMPLETE', 
-            message: 'All steps have been completed, authentication should have happened.' 
+        if ((step + 1) > plugin.steps)
+          return res.json(500, {
+            code: 'ALL_STEPS_COMPLETE',
+            message: 'All steps have been completed, authentication should have happened.'
           });
 
         res.redirect('/step/' + (step + 1));

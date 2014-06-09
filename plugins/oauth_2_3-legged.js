@@ -26,6 +26,7 @@ module.exports = {
     2: {
       invoke: function (options, server) {
         var oauth = helper.getOAuth2(options);
+
         oauth.getOAuthAccessToken(options.code, {
           redirect_uri: options.callbackUrl,
           grant_type: "authorization_code"
@@ -37,7 +38,7 @@ module.exports = {
           return helper.handleCallback(server.req.session.data, server, {
             status: 500,
 
-            data: { 
+            data: {
               message: 'Could not authenticate with given credentials for request token.',
               data: response.error.data
             }

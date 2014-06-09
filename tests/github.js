@@ -20,10 +20,10 @@ var options = {
   form: {}
 };
 
-if (!args.key) 
+if (!args.key)
   throw new Error('Missing Consumer Key! -k cli option');
 
-if (!args.secret) 
+if (!args.secret)
   throw new Error('Missing Consumer Secret! -s cli option');
 
 if (!args.host)

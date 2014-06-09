@@ -10,5 +10,11 @@ module.exports = {
     pass: null,
     host: "127.0.0.1",
     port: 6379
+  },
+  cookie: {
+    secret: 'maeby, lets keep it a secret?'
+  },
+  session: {
+    secret: 'no-more-secrets'
   }
-}; 
+};
