@@ -27,6 +27,7 @@ ascii.write("guardian", "Thick", function (art) {
     var pidPath = config.pid.dir + ".guardian.pid";
     fs.writeFileSync(pidPath, process.pid, 'utf8');
     console.info(("Master started with PID " + process.pid + ", saved at: " + pidPath).grey);
+    console.info("Starting server on port " + config.port)
 
     var i = 0; for (i; i < config.workers; i++)
       cluster.fork();
@@ -204,6 +205,27 @@ ascii.write("guardian", "Thick", function (art) {
 
         res.redirect('/step/' + (step + 1));
       });
+    });
+
+    app.use(function(req, res, next){
+      res.status(404);
+
+      // respond with html page
+      if (req.accepts('html')) {
+        res.send('<html><head><title>Guardian.js</title></head><body>This route doesn\'t exist. \
+                  Please read the <a href=\'https://github.com/Mashape/guardian\'>documentation</a> \
+                  to see the available routes.</body></html>');
+        return;
+      }
+
+      // respond with json
+      if (req.accepts('json')) {
+        res.send({ error: 'Not found' });
+        return;
+      }
+
+      // default to plain-text. send()
+      res.type('txt').send('Not found');
     });
 
     app.listen(config.port);
