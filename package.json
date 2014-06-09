@@ -7,21 +7,23 @@
   "license": "MIT",
   "readmeFilename": "README.md",
   "dependencies": {
-    "mashape-oauth": "*",
-    "redis": "*",
-    "connect-redis": "*",
-    "colors": "*",
     "asciimo": "*",
-    "request": "*",
-    "express": "*",
-    "winston": "*",
+    "colors": "*",
+    "connect-redis": "1.4.7",
+    "express": "3.x",
+    "mashape-oauth": "*",
+    "nuuid": "*",
     "optimist": "*",
-    "nuuid" : "*"
+    "redis": "*",
+    "request": "*",
+    "winston": "*"
   },
   "scripts": {
     "test": "echo \"Check the README on how to run tests!\" && exit 1"
   },
-  "bin" : { "guardian" : "index.js" },
+  "bin": {
+    "guardian": "index.js"
+  },
   "repository": {
     "type": "git",
     "url": "git@github.com:Mashape/guardian"
