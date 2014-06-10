@@ -152,7 +152,7 @@ Begins guardian transactions and authentication steps. These steps are passed wi
 **OAuth 1.0a**
 > Used in the OAuth 1.0a Signature Process for 1-Legged requests. [Example](https://github.com/Mashape/guardian/blob/master/tests/factual.js#L46).
 
-- `url` *Calling URL, query parameters from here are parsed so you don't need to place them in parameters... I don't think.*
+- `url` *Calling URL, query parameters will be parsed from here as well as parameters property.*
 - `method` *Calling Method*
 - `body` *Calling Payload or Body*
 - `parameters` *Calling Parameters for Request Signatures or etc...*
