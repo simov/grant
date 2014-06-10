@@ -1,6 +1,6 @@
 {
   "name": "guardian",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "description": "Authentication Gateway Proxy",
   "main": "index.js",
   "author": "Nijiko Yonskai",
