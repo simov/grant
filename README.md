@@ -105,7 +105,7 @@ Stores information given, returns hash to be used later on. `60` second life on 
 These are combined to create the plugin file name which is composed like so:
 
 ```js
-type.lower + (flow? '_' + flow : '') + (version? '_' + version : '') + (leg? '_' + leg : '')
+type.lower + (flow? '_' + flow : '') + (version? '_' + version : '') + (leg? '_' + leg + '-legged' : '')
 ```
 
 For example, OAuth 2 (3-legged) plugin:
