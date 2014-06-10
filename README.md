@@ -93,9 +93,9 @@ Stores information given, returns hash to be used later on. `60` second life on 
 
   Default: `oauth`
 - `auth_flow` *optional; a-z_ chars accepted only*
-  > This would be a specific flow, a niche if you may. Echo, Owner Resources, etc.. Optional.
+  > This would be a specific flow, a niche if you may. Echo, Owner Resources, etc..
 - `auth_version` *optional; numeric chars only*
-  > What version of `auth_type` are we dealing with? Can be optional.
+  > What version of `auth_type` are we dealing with?
 - `auth_leg` *optional; numeric chars only*
   > What leg of `auth_type` is this?
 
