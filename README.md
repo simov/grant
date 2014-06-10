@@ -28,15 +28,15 @@ Basic Options:
 
 - `host`
   *You should set this to be the public ip or domain name as it is utilized to generate the callback uri.*
-  
+
   Default: `localhost:3000`
 - `protocol`
   *Host protocol*
-  
+
   Default: `http`
 - `port`
   *Port on which guardian runs*
-  
+
   Default: `3000`
 - `pid.dir`
   *Directory where the `.guardian.pid` file will be output, in production environments this is usually `/home/<user>/`, with trailing slash.*
@@ -69,9 +69,12 @@ Stores information given, returns hash to be used later on. `60` second life on 
   - `client_credentials`
   - `password`
   - `refresh_token`
-- `base_url`
 - `access_name` *access token name, default `access_token`*
-- `authorize_method`
+- `authorize_method` *Optional; Authorization Header Method, default is `Bearer`*
+  - Some Possible Values:
+  - `Bearer` *default*
+  - `OAuth`
+  - `Digest`
 - `state`
 - `scope`
 
@@ -84,24 +87,36 @@ Stores information given, returns hash to be used later on. `60` second life on 
 - `oauth_token`
 
 **Authentication** *required*
-> General information regarding authentication flow to load plugin.
+> General information regarding authentication flow to load plugin, e.g.
 
 - `auth_type` *a-z chars accepted only*
-  
+
   Default: `oauth`
-- `auth_flow` *a-z_ chars accepted only*
+- `auth_flow` *optional; a-z_ chars accepted only*
   > This would be a specific flow, a niche if you may. Echo, Owner Resources, etc.. Optional.
-- `auth_version` *numeric chars only*
+- `auth_version` *optional; numeric chars only*
   > What version of `auth_type` are we dealing with? Can be optional.
-- `auth_leg` *numeric chars only*
+- `auth_leg` *optional; numeric chars only*
   > What leg of `auth_type` is this?
-  
+
 These are combined to create the plugin file name which is composed like so:
 
-```
+```js
 type.lower + (flow? '_' + flow : '') + (version? '_' + version : '') + (leg? '_' + leg : '')
 ```
-  
+
+For example, OAuth 2 (3-legged) plugin:
+
+```js
+// plugins/oauth_2_3-legged.js
+
+{
+  auth_type: 'oauth',
+  auth_version: 2,
+  auth_leg: 3
+}
+```
+
 **General**
 
 - `request_url`
@@ -112,7 +127,7 @@ type.lower + (flow? '_' + flow : '') + (version? '_' + version : '') + (leg? '_'
 ### Hash Check
 
     GET /hash-check
-    
+
 Allows you to preview / verify your stored information in-case of error or malformed response.
 
 Once again, stored information by default lasts only `10` seconds.

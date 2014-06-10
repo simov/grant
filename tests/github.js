@@ -11,11 +11,10 @@ var options = {
   url: 'https://api.github.com/users/nijikokun',
   method: 'POST',
   auth: {
-    base_url: 'https://github.com/',
     access_name: 'access_token',
-    authorize_url: 'login/oauth/authorize',
-    access_url: 'login/oauth/access_token',
-    request_url: 'login/oauth/request_url',
+    authorize_url: 'https://github.com/login/oauth/authorize',
+    access_url: 'https://github.com/login/oauth/access_token',
+    request_url: 'https://github.com/login/oauth/request_url',
   },
   form: {}
 };
