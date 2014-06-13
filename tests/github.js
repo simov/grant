@@ -62,10 +62,7 @@ app.get('/', function (req, res) {
       callback: "http://" + args.host + ":3001/callback"
     }
   }, function (error, response, body) {
-    if (error) return console.log(error);
-    body = JSON.parse(body);
-
-    res.send('<a href="http://' + args.host + ':3000/start?hash=' + body.hash + '">Start Process</a>');
+    res.json(JSON.parse(body));
   });
 });
 

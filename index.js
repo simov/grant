@@ -1,5 +1,7 @@
 #!/usr/bin/env node
 
+// jshint laxbreak: true
+
 var cluster = require('cluster'),
     ascii   = require('asciimo').Figlet,
     colors  = require('colors'),
@@ -21,16 +23,16 @@ var log = new (winston.Logger)({
 // Start Master and Workers
 ascii.write("guardian", "Thick", function (art) {
   if (cluster.isMaster) {
-
     console.info("\n" + art.rainbow);
 
+    var i = 0;
     var pidPath = config.pid.dir + ".guardian.pid";
+
     fs.writeFileSync(pidPath, process.pid, 'utf8');
     console.info(("Master started with PID " + process.pid + ", saved at: " + pidPath).grey);
-    console.info("Starting server on port " + config.port)
+    console.info("Starting server on port " + config.port);
 
-    var i = 0; for (i; i < config.workers; i++)
-      cluster.fork();
+    for (i; i < config.workers; i++) cluster.fork();
   } else {
     /*
       guardian Setup
@@ -84,7 +86,14 @@ ascii.write("guardian", "Thick", function (art) {
     });
 
     app.post('/store', function (req, res) {
-      var opts = {
+      var plugin;
+      var error;
+      var opts;
+      var path;
+      var id;
+
+      // Generate options object
+      opts = {
         clientId: req.param('client_id'),
         clientSecret: req.param('client_secret'),
         consumerKey: req.param('consumer_key'),
@@ -100,31 +109,67 @@ ascii.write("guardian", "Thick", function (art) {
         authorizeMethod: req.param('authorize_method'),
         signatureMethod: req.param('signature_method'),
         oauth_token: req.param('oauth_token'),
+        callbackUrl: req.param('redirect') ? req.param('redirect') : config.protocol + '://' + config.host + '/callback',
+        version: req.param('version'),
+
         auth: {
           type: (req.param('auth_type') || 'oauth').replace(/[^a-z]/g, ''),
           flow: (req.param('auth_flow') || '').replace(/[^a-z\_]/g, ''),
           version: isNaN(parseInt(req.param('auth_version'), 10)) ? false : parseInt(req.param('auth_version'), 10),
           leg: isNaN(parseInt(req.param('auth_leg'), 10)) ? false : parseInt(req.param('auth_leg'), 10)
         },
-        callbackUrl: req.param('redirect') ? req.param('redirect') : config.protocol + '://' + config.host + '/callback',
+
         done: {
           callback: req.param('callback')
-        },
-        version: req.param('version')
-      }, id = nuu.id(opts.consumerKey);
+        }
+      };
 
-      if (opts.signatureMethod && opts.signatureMethod.indexOf("_"))
-        opts.signatureMethod = opts.signatureMethod.replace('_', '-');
+      // 1. Load plugin
+      // 2. Run validation
+      // 3. Store options object
+      try {
+        path = gate.generatePluginPath(opts.auth);
+        plugin = gate.requirePlugin(opts.auth);
+        error = plugin.validate(opts);
 
-      // Retrieve additional pylons here -- api authentication details
-      RedisClient.set(id, JSON.stringify(opts), redis.print);
-      RedisClient.expire(id, 60);
+        // Check plugin
+        if (!plugin) {
+          throw new Error("PLUGIN_MISSING");
+        }
 
-      res.jsonp({ hash: id, url: config.protocol + '://' + config.host + '/start?hash=' + id });
+        // Check plugin validation
+        if (error) {
+          return res.jsonp(500, {
+            code: 'PLUGIN_VALIDATION',
+            message: error
+          });
+        }
+
+        // Convert underscores in signature method to dashes
+        if (opts.signatureMethod && opts.signatureMethod.indexOf("_"))
+          opts.signatureMethod = opts.signatureMethod.replace('_', '-');
+
+        // Generate hash
+        id = nuu.id(opts.consumerKey);
+
+        // Store options in redis with hash identifier
+        RedisClient.set(id, JSON.stringify(opts), redis.print);
+        RedisClient.expire(id, config.redis.expire);
+
+        console.log(id);
+
+        // Generate output
+        res.jsonp({ hash: id, url: config.protocol + '://' + config.host + '/start?hash=' + id });
+      } catch (e) {
+        res.jsonp(500, {
+          code: 'PLUGIN_MISSING',
+          message: 'Invalid plugin specified, could not find plugin: ' + opts.auth.type.toLowerCase() + path.flow + path.version + path.leg
+        });
+      }
     });
 
     app.get('/hash-check', function (req, res) {
-      var opts = RedisClient.get(req.param('hash'), function (err, reply) {
+      RedisClient.get(req.param('hash'), function (err, reply) {
         if (err) return res.send(500, err.message);
         res.json(JSON.parse(reply));
       });
@@ -132,25 +177,47 @@ ascii.write("guardian", "Thick", function (art) {
 
     app.all('/start', function (req, res) {
       var original = req.param('hash');
-
-      // Clean and Check, Doctor Visit Y'all
       var hash = (typeof original === 'string' ? original : '').replace(/[^a-z0-9\-]/gi, '');
-      if (hash != original)
-        return res.json(500, { message: 'Invalid hash sequence given. Please check hash and try again.' });
 
-      var opts = RedisClient.get(hash, function (err, reply) {
-        if (err)
-          return res.json(500, { message: err.message });
-        else if (!reply)
-          return res.json(500, { message: 'Hash (' + hash + ') has been expired.' });
+      if (hash != original) {
+        return res.json(500, {
+          code: 'INVALID_HASH',
+          message: 'Invalid hash sequence given. Please check hash and try again.'
+        });
+      }
 
+      RedisClient.get(hash, function (err, reply) {
+        if (err) {
+          return res.json(500, {
+            code: 'ERROR',
+            message: err.message
+          });
+        }
+
+        if (!reply) {
+          return res.json(500, {
+            code: 'EXPIRED_HASH',
+            message: 'Hash (' + hash + ') has been expired.'
+          });
+        }
+
+        // Retrieve session data
         req.session.data = JSON.parse(reply);
 
-        if (req.param('url')) req.session.data.call_url = req.param('url');
-        if (req.param('method')) req.session.data.call_method = req.param('method');
-        if (req.param('body')) req.session.data.call_body = req.param('body');
-        if (req.param('parameters')) req.session.data.parameters = req.param('parameters');
+        // Setup data from response on session data object
+        if (req.param('url'))
+          req.session.data.call_url = req.param('url');
 
+        if (req.param('method'))
+          req.session.data.call_method = req.param('method');
+
+        if (req.param('body'))
+          req.session.data.call_body = req.param('body');
+
+        if (req.param('parameters'))
+          req.session.data.parameters = req.param('parameters');
+
+        // Invoke guardian gatekeeper
         keeper = gate({ req: req, res: res });
         keeper.invokeStep(1);
       });
@@ -162,53 +229,63 @@ ascii.write("guardian", "Thick", function (art) {
     });
 
     app.get('/callback', function (req, res) {
-      if (!req.session.data)
+      var plugin;
+      var step;
+      var data;
+      var args;
+
+      if (!req.session.data) {
         return res.json(500, {
           code: 'MISSING_SESSION_DETAILS',
           message: 'Session details are missing, perhaps the redirect url is on another server or the request timed out.'
         });
+      }
 
-      var data = JSON.parse(JSON.stringify(req.session.data));
-      var path = {
-        flow: data.auth.flow ? '_' + data.auth.flow : '',
-        version: data.auth.version && typeof data.auth.version === 'number' ? '_' + data.auth.version : '',
-        leg: data.auth.leg && typeof data.auth.leg === 'number' ? '_' + data.auth.leg + '-legged' : ''
-      };
+      // Parse session data
+      data = JSON.parse(JSON.stringify(req.session.data));
+      log.info(data);
 
-      var plugin = require('./plugins/' + data.auth.type.toLowerCase() + path.flow + path.version + path.leg + '.js');
+      // Include plugin
+      plugin = gate.requirePlugin(data.auth);
 
-      if (!plugin.step.callback)
+      if (!plugin.step.callback) {
         return res.json(500, {
           code: 'MISSING_CALLBACK_STEP',
           message: 'Callback step is missing, unable to continue authentication process.'
         });
+      }
 
-      // here we grab the data previously set
-      var step = req.session.data.step;
+      // Fetch information from previously set data.
+      step = req.session.data.step;
+      args = {};
 
-      log.info(data);
+      // Retrieve information returned from authentication step
+      if (req.param('oauth_token'))
+        args.token = req.param('oauth_token');
 
-      // Verifier & Token
-      var args = {};
-      if (req.param('oauth_token')) args.token = req.param('oauth_token');
-      if (req.param('oauth_verifier')) args.verifier = req.param('oauth_verifier');
-      if (req.param('code')) args.code = req.param('code');
-      if (req.param('state')) args.state = req.param('state');
+      if (req.param('oauth_verifier'))
+        args.verifier = req.param('oauth_verifier');
+
+      if (req.param('code'))
+        args.code = req.param('code');
+
+      if (req.param('state'))
+        args.state = req.param('state');
 
       // Next?
       plugin.step.callback.next({ req: req, res: res }, args, function (response) {
         if (response) {
-          if (!data.done.callback || data.done.callback == "oob")
-            return res.json(response);
-
-          return res.redirect(data.done.callback + '?' + query.stringify(response));
+          return (!data.done.callback || data.done.callback == "oob")
+            ? res.json(response)
+            : res.redirect(data.done.callback + '?' + query.stringify(response));
         }
 
-        if ((step + 1) > plugin.steps)
+        if ((step + 1) > plugin.steps) {
           return res.json(500, {
             code: 'ALL_STEPS_COMPLETE',
-            message: 'All steps have been completed, authentication should have happened.'
+            message: 'All steps have been completed, authentication should have happened, please try again.'
           });
+        }
 
         res.redirect('/step/' + (step + 1));
       });
@@ -219,16 +296,16 @@ ascii.write("guardian", "Thick", function (art) {
 
       // respond with html page
       if (req.accepts('html')) {
-        res.send('<html><head><title>Guardian.js</title></head><body>This route doesn\'t exist. \
-                  Please read the <a href=\'https://github.com/Mashape/guardian\'>documentation</a> \
-                  to see the available routes.</body></html>');
-        return;
+        return res.send(
+          '<html><head><title>Guardian.js</title></head><body>This route doesn\'t exist. ' +
+          'Please read the <a href=\'https://github.com/Mashape/guardian\'>documentation</a> ' +
+          'to see the available routes.</body></html>'
+        );
       }
 
       // respond with json
       if (req.accepts('json')) {
-        res.send({ error: 'Not found' });
-        return;
+        return res.send({ error: 'Not found' });
       }
 
       // default to plain-text. send()
@@ -236,7 +313,6 @@ ascii.write("guardian", "Thick", function (art) {
     });
 
     app.listen(config.port);
-
     log.info(('Worker #' + cluster.worker.id + ' on duty!').grey);
   }
 

@@ -12,11 +12,11 @@ module.exports = {
       },
 
       next: function (server, response, next) {
-        if (response.error) 
+        if (response.error)
           return helper.handleCallback(server.req.session.data, server, {
             status: 500,
 
-            data: { 
+            data: {
               message: 'Could not authenticate with given credentials for request token.',
               data: response.error.data
             }
@@ -37,11 +37,11 @@ module.exports = {
 
     callback: {
       next: function (server, response, next) {
-        if (response.error) 
+        if (response.error)
           return helper.handleCallback(server.req.session.data, server, {
             status: 500,
 
-            data: { 
+            data: {
               message: 'Could not determine token and verifier.',
               data: response.error.data
             }
@@ -67,11 +67,11 @@ module.exports = {
       },
 
       next: function (server, response, next) {
-        if (response.error) 
+        if (response.error)
           return helper.handleCallback(server.req.session.data, server, {
             status: 500,
 
-            data: { 
+            data: {
               message: 'Could not determine access_token and access_secret.',
               data: response.error.data
             }
@@ -83,5 +83,15 @@ module.exports = {
         });
       }
     }
+  },
+
+  "validate": function (opts) {
+    if (!opts.requestUrl)
+      return "Request URL is required.";
+
+    if (!opts.accessUrl)
+      return "Access URL is required.";
+
+    return undefined;
   }
 };

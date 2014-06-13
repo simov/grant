@@ -62,5 +62,18 @@ module.exports = {
         next();
       }
     }
+  },
+
+  "validate": function (opts) {
+    if (!opts.clientId)
+      return "Client ID is required.";
+
+    if (!opts.clientSecret)
+      return "Client Secret is required.";
+
+    if (!opts.authorizeUrl)
+      return "Authorization url is required.";
+
+    return undefined;
   }
 };
