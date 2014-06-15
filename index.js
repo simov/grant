@@ -85,6 +85,11 @@ ascii.write("guardian", "Thick", function (art) {
       });
     });
 
+    app.get('/ping', function(req, res) {
+      res.status(200);
+      res.type('json').send({ping: "pong"});
+    });
+
     app.post('/store', function (req, res) {
       var plugin;
       var error;
