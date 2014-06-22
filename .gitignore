@@ -15,3 +15,7 @@ results
 node_modules
 
 npm-debug.log
+
+config/default.js
+tests/
+index.js
