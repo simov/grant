@@ -14,14 +14,15 @@
   "license": "MIT",
   
   "dependencies": {
-    "express": "3.2.6",
-    "consolidate": "*",
-    "hogan.js": "*",
-    "mashape-oauth": "*",
-    "winston": "*"
+    "express"       : "3.2.6",
+    "consolidate"   : "0.9.1",
+    "hogan.js"      : "2.0.0",
+    "mashape-oauth" : "*",
+    "winston"       : "0.7.3",
+    "deep-copy"     : "*"
   },
 
-  "main": "index.js",
+  "main": "app.js",
   
   "keywords": [
     "gatekeeper",

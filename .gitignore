@@ -19,3 +19,5 @@ npm-debug.log
 config/default.js
 tests/
 index.js
+
+config/credentials.json

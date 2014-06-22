@@ -1,0 +1,30 @@
+
+<h1>Get access tokens</h1>
+<ul>
+	{{#providers}}
+	<li>
+		<a href="{{url}}">{{text}}</a>
+		{{#credentials}}
+		<ul>
+			{{#access_token}}
+			<li>token:<br />
+				<textarea>{{access_token}}</textarea>
+			</li>
+			{{/access_token}}
+			
+			{{#access_secret}}
+			<li>secret:<br />
+				<textarea>{{access_secret}}</textarea>
+			</li>
+			{{/access_secret}}
+			
+			<!-- {{#profile}}
+			<li>profile:
+				<pre>{{profile}}</pre>
+			</li>
+			{{/profile}} -->
+		</ul>
+		{{/credentials}}
+	</li>
+	{{/providers}}
+</ul>
