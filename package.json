@@ -1,0 +1,43 @@
+{
+  "name": "guardian",
+  "version": "0.0.4",
+  "description": "Authentication Gateway Proxy",
+  "main": "index.js",
+  "author": "Nijiko Yonskai",
+  "license": "MIT",
+  "readmeFilename": "README.md",
+  "dependencies": {
+    "asciimo": "*",
+    "colors": "*",
+    "connect-redis": "1.4.7",
+    "express": "3.2.6",
+    "mashape-oauth": "*",
+    "nuuid": "*",
+    "optimist": "*",
+    "redis": "*",
+    "request": "*",
+    "winston": "*"
+  },
+  "scripts": {
+    "test": "echo \"Check the README on how to run tests!\" && exit 1"
+  },
+  "bin": {
+    "guardian": "index.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git@github.com:Mashape/guardian"
+  },
+  "keywords": [
+    "gatekeeper",
+    "sentinel",
+    "guardian",
+    "cato",
+    "authentication",
+    "gateway",
+    "proxy",
+    "oauth",
+    "plugin",
+    "plugins"
+  ]
+}
