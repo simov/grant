@@ -3,10 +3,8 @@ var express = require('express'),
     hogan = require('hogan.js'),
     consolidate = require('consolidate');
 
-var guardian = new require('./guardian')(
-  require('./config/server'), // server settings
-  require('./config/app')     // application settings
-);
+
+var grant = new require('grant')(require('../config/app'));
 
 
 var app = express();
@@ -25,8 +23,9 @@ app.configure(function () {
   app.use(express.bodyParser());
   app.use(express.methodOverride());
   app.use(app.router);
-  app.use(guardian);
+  app.use(grant);
 });
+
 
 app.get('/', function (req, res) {
   console.log(req.query);

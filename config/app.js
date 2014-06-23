@@ -7,7 +7,7 @@ var credentials = require('./credentials');
 var oauth = require('./oauth');
 
 
-// consumer application specific options
+// consumer application options
 var options = {
   facebook: {
     scope: 'publish_actions,publish_stream,read_stream,manage_pages,user_groups,friends_groups',
@@ -43,6 +43,11 @@ var options = {
   }
 };
 
-exports = module.exports = function (provider) {
-  return oauth[provider].get(credentials.app[provider], options[provider]);
+exports = module.exports = {
+  server: server,
+  credentials: credentials,
+  oauth: oauth,
+  app: function (provider) {
+    return oauth[provider].get(credentials[provider], options[provider]);
+  }
 };

@@ -4,11 +4,12 @@ var express = require('express'),
 var gate    = require('./lib/core'), keeper;
 
 
-function Guardian (server, options) {
+// function Guardian (server, options) {
+function Guardian (config) {
   var app = express();
 
   app.get('/connect/:provider', function (req, res) {
-    var provider = options(req.params.provider);
+    var provider = config.app(req.params.provider);
     req.session.provider = req.params.provider;
     
     // Generate options object
@@ -28,7 +29,7 @@ function Guardian (server, options) {
       authorizeMethod: provider['authorize_method'],
       signatureMethod: provider['signature_method'],
       oauth_token: provider['oauth_token'],
-      callbackUrl: provider['redirect'] ? provider['redirect'] : server.protocol + '://' + server.host + '/callback',
+      callbackUrl: provider['redirect'] ? provider['redirect'] : config.server.protocol + '://' + config.server.host + '/callback',
       version: provider['version'],
       headers: provider['headers'],
 
