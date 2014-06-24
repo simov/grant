@@ -32,7 +32,7 @@ app.get('/', function (req, res) {
   var providers = [
     'twitter', 'facebook', 'linkedin', 'soundcloud', 'stocktwits',
     'bitly', 'github', 'stackexchange', 'google', 'yahoo',
-    'foursquare'
+    'foursquare', 'slack'
   ];
 
   var p = req.session.provider;

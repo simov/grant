@@ -140,6 +140,18 @@ var settings = {
     auth_type: 'oauth',
     auth_version: 2,
     auth_leg: 3
+  },
+  slack: {
+    // auth
+    base_url: 'https://slack.com/',
+    access_url: 'https://slack.com/api/oauth.access',
+    authorize_url: 'https://slack.com/oauth/authorize',
+    access_name: 'access_token',
+    
+    // guardian
+    auth_type: 'oauth',
+    auth_version: 2,
+    auth_leg: 3
   }
 };
 for (var provider in settings) {

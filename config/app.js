@@ -57,6 +57,9 @@ var options = {
   },
   foursquare: {
     callback: server.callback
+  },
+  slack: {
+    callback: server.callback
   }
 };
 
