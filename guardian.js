@@ -4,7 +4,6 @@ var express = require('express'),
 var gate    = require('./lib/core'), keeper;
 
 
-// function Guardian (server, options) {
 function Guardian (config) {
   var app = express();
 
