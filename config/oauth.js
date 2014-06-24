@@ -115,6 +115,19 @@ var settings = {
     auth_type: 'oauth',
     auth_version: 2,
     auth_leg: 3
+  },
+  yahoo: {
+    // auth
+    base_url: 'https://accounts.yahoo.com/',
+    access_url: 'https://api.login.yahoo.com/oauth/v2/get_token',
+    request_url: 'https://api.login.yahoo.com/oauth/v2/get_request_token',
+    authorize_url: 'https://api.login.yahoo.com/oauth/v2/request_auth',
+    access_name: 'access_token',
+    
+    // guardian
+    auth_type: 'oauth',
+    auth_version: 1,
+    auth_leg: 3
   }
 };
 for (var provider in settings) {
