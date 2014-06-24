@@ -31,7 +31,8 @@ app.get('/', function (req, res) {
   console.log(req.query);
   var providers = [
     'twitter', 'facebook', 'linkedin', 'soundcloud', 'stocktwits',
-    'bitly', 'github', 'stackexchange', 'google', 'yahoo'//, 'foursquare'
+    'bitly', 'github', 'stackexchange', 'google', 'yahoo',
+    'foursquare'
   ];
 
   var p = req.session.provider;

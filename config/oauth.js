@@ -128,6 +128,18 @@ var settings = {
     auth_type: 'oauth',
     auth_version: 1,
     auth_leg: 3
+  },
+  foursquare: {
+    // auth
+    base_url: 'https://foursquare.com/',
+    access_url: 'https://foursquare.com/oauth2/access_token',
+    authorize_url: 'https://foursquare.com/oauth2/authenticate',
+    access_name: 'access_token',
+    
+    // guardian
+    auth_type: 'oauth',
+    auth_version: 2,
+    auth_leg: 3
   }
 };
 for (var provider in settings) {
