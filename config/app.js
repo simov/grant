@@ -51,6 +51,9 @@ var options = {
       'https://www.googleapis.com/auth/tasks '+
       'https://www.googleapis.com/auth/yt-analytics.readonly',
     callback: server.callback
+  },
+  yahoo: {
+    callback: server.callback
   }
 };
 
