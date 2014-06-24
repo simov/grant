@@ -103,6 +103,18 @@ var settings = {
     auth_type: 'oauth',
     auth_version: 2,
     auth_leg: 3
+  },
+  google: {
+    // auth
+    base_url: 'https://accounts.google.com/',
+    access_url: 'https://accounts.google.com/o/oauth2/token',
+    authorize_url: 'https://accounts.google.com/o/oauth2/auth',
+    access_name: 'access_token',
+    
+    // guardian
+    auth_type: 'oauth',
+    auth_version: 2,
+    auth_leg: 3
   }
 };
 for (var provider in settings) {
