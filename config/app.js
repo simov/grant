@@ -54,6 +54,9 @@ var options = {
   },
   yahoo: {
     callback: server.callback
+  },
+  foursquare: {
+    callback: server.callback
   }
 };
 
