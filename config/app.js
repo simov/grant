@@ -60,6 +60,10 @@ var options = {
   },
   slack: {
     callback: server.callback
+  },
+  instagram: {
+    redirect: server.callback+'/connect/instagram/callback',
+    callback: server.callback
   }
 };
 

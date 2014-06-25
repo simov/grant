@@ -152,6 +152,18 @@ var settings = {
     auth_type: 'oauth',
     auth_version: 2,
     auth_leg: 3
+  },
+  instagram: {
+    // auth
+    base_url: 'https://api.instagram.com/',
+    access_url: 'https://api.instagram.com/oauth/access_token',
+    authorize_url: 'https://api.instagram.com/oauth/authorize',
+    access_name: 'access_token',
+    
+    // guardian
+    auth_type: 'oauth',
+    auth_version: 2,
+    auth_leg: 3
   }
 };
 for (var provider in settings) {
