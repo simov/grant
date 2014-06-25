@@ -64,6 +64,9 @@ var options = {
   instagram: {
     redirect: server.callback+'/connect/instagram/callback',
     callback: server.callback
+  },
+  flickr: {
+    callback: server.callback
   }
 };
 
