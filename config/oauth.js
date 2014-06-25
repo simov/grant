@@ -164,6 +164,19 @@ var settings = {
     auth_type: 'oauth',
     auth_version: 2,
     auth_leg: 3
+  },
+  flickr: {
+    // auth
+    base_url: 'https://www.flickr.com/',
+    access_url: 'https://www.flickr.com/services/oauth/access_token',
+    request_url: 'https://www.flickr.com/services/oauth/request_token',
+    authorize_url: 'https://www.flickr.com/services/oauth/authorize',
+    access_name: 'access_token',
+    
+    // guardian
+    auth_type: 'oauth',
+    auth_version: 1,
+    auth_leg: 3
   }
 };
 for (var provider in settings) {
