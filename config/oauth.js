@@ -177,6 +177,18 @@ var settings = {
     auth_type: 'oauth',
     auth_version: 1,
     auth_leg: 3
+  },
+  disqus: {
+    // auth
+    base_url: 'https://disqus.com/',
+    access_url: 'https://disqus.com/api/oauth/2.0/access_token',
+    authorize_url: 'https://disqus.com/api/oauth/2.0/authorize',
+    access_name: 'access_token',
+    
+    // guardian
+    auth_type: 'oauth',
+    auth_version: 2,
+    auth_leg: 3
   }
 };
 for (var provider in settings) {

@@ -29,10 +29,13 @@ app.configure(function () {
 
 app.get('/', function (req, res) {
   console.log(req.query);
+
   var providers = [
     'twitter', 'facebook', 'linkedin', 'soundcloud', 'stocktwits',
     'bitly', 'github', 'stackexchange', 'google', 'yahoo',
     'foursquare', 'slack', 'instagram', 'flickr'
+
+    // 'disqus'
   ];
 
   var p = req.session.provider;
