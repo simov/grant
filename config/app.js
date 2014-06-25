@@ -67,6 +67,11 @@ var options = {
   },
   flickr: {
     callback: server.callback
+  },
+  disqus: {
+    redirect: server.callback+'/connect/disqus/callback',
+    scope: 'read,write',
+    callback: server.callback
   }
 };
 
