@@ -79,6 +79,10 @@ var options = {
   asana: {
     redirect: server.callback+'/connect/asana/callback',
     callback: server.callback
+  },
+  mailchimp: {
+    redirect: server.callback+'/connect/mailchimp/callback',
+    callback: server.callback
   }
 };
 
