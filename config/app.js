@@ -75,6 +75,10 @@ var options = {
   },
   trello: {
     callback: server.callback
+  },
+  asana: {
+    redirect: server.callback+'/connect/asana/callback',
+    callback: server.callback
   }
 };
 
