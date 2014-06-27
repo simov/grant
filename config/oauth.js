@@ -214,6 +214,18 @@ var settings = {
     auth_type: 'oauth',
     auth_version: 2,
     auth_leg: 3
+  },
+  mailchimp: {
+    // auth
+    base_url: 'https://mailchimp.com/',
+    access_url: 'https://login.mailchimp.com/oauth2/token',
+    authorize_url: 'https://login.mailchimp.com/oauth2/authorize',
+    access_name: 'access_token',
+    
+    // guardian
+    auth_type: 'oauth',
+    auth_version: 2,
+    auth_leg: 3
   }
 };
 for (var provider in settings) {
