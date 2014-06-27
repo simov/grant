@@ -33,7 +33,8 @@ app.get('/', function (req, res) {
   var providers = [
     'twitter', 'facebook', 'linkedin', 'soundcloud', 'stocktwits',
     'bitly', 'github', 'stackexchange', 'google', 'yahoo',
-    'foursquare', 'slack', 'instagram', 'flickr', 'trello'
+    'foursquare', 'slack', 'instagram', 'flickr', 'trello',
+    'asana'
 
     // 'disqus'
   ];
