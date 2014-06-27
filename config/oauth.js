@@ -189,6 +189,19 @@ var settings = {
     auth_type: 'oauth',
     auth_version: 2,
     auth_leg: 3
+  },
+  trello: {
+    // auth
+    base_url: 'https://trello.com/',
+    access_url: 'https://trello.com/1/OAuthGetAccessToken',
+    request_url: 'https://trello.com/1/OAuthGetRequestToken',
+    authorize_url: 'https://trello.com/1/OAuthAuthorizeToken',
+    access_name: 'access_token',
+    
+    // guardian
+    auth_type: 'oauth',
+    auth_version: 1,
+    auth_leg: 3
   }
 };
 for (var provider in settings) {

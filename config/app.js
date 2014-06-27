@@ -72,6 +72,9 @@ var options = {
     redirect: server.callback+'/connect/disqus/callback',
     scope: 'read,write',
     callback: server.callback
+  },
+  trello: {
+    callback: server.callback
   }
 };
 
