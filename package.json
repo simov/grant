@@ -16,7 +16,7 @@
   "license": "MIT",
   
   "dependencies": {
-    "express"       : "3.2.6",
+    "express"       : "3.4.4",
     "mashape-oauth" : "*",
     "winston"       : "0.7.3",
     "deep-copy"     : "*"
