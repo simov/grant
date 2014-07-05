@@ -83,6 +83,11 @@ var options = {
   mailchimp: {
     redirect: server.callback+'/connect/mailchimp/callback',
     callback: server.callback
+  },
+  heroku: {
+    // 1 set config/server.js protocol to https
+    // 2 enable nginx https vhost
+    callback: server.callback
   }
 };
 

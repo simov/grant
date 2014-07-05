@@ -21,3 +21,4 @@ tests/
 index.js
 
 config/credentials.json
+*.pem
