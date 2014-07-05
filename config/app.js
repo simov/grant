@@ -88,6 +88,13 @@ var options = {
     // 1 set config/server.js protocol to https
     // 2 enable nginx https vhost
     callback: server.callback
+  },
+  dropbox: {
+    // 1 set config/server.js protocol to https
+    // 2 enable nginx https vhost
+    // 3 mashape/oauth2 - comment out args.type = 'web_server';
+    redirect: server.callback+'/connect/dropbox/callback',
+    callback: server.callback
   }
 };
 

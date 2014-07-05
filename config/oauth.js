@@ -238,6 +238,18 @@ var settings = {
     auth_type: 'oauth',
     auth_version: 2,
     auth_leg: 3
+  },
+  dropbox: {
+    // auth
+    base_url: 'https://api.dropbox.com/',
+    access_url: 'https://api.dropbox.com/1/oauth2/token',
+    authorize_url: 'https://www.dropbox.com/1/oauth2/authorize',
+    access_name: 'access_token',
+    
+    // guardian
+    auth_type: 'oauth',
+    auth_version: 2,
+    auth_leg: 3
   }
 };
 for (var provider in settings) {
