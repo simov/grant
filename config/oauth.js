@@ -226,6 +226,18 @@ var settings = {
     auth_type: 'oauth',
     auth_version: 2,
     auth_leg: 3
+  },
+  heroku: {
+    // auth
+    base_url: 'https://id.heroku.com/',
+    access_url: 'https://id.heroku.com/oauth/token',
+    authorize_url: 'https://id.heroku.com/oauth/authorize',
+    access_name: 'access_token',
+    
+    // guardian
+    auth_type: 'oauth',
+    auth_version: 2,
+    auth_leg: 3
   }
 };
 for (var provider in settings) {
