@@ -34,7 +34,7 @@ app.get('/', function (req, res) {
     'twitter', 'facebook', 'linkedin', 'soundcloud', 'stocktwits',
     'bitly', 'github', 'stackexchange', 'google', 'yahoo',
     'foursquare', 'slack', 'instagram', 'flickr', 'trello',
-    'asana', 'mailchimp', 'heroku'
+    'asana', 'mailchimp', 'heroku', 'dropbox'
 
     // 'disqus'
   ];
