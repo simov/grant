@@ -1,6 +1,6 @@
 {
   "name": "grant",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "Authentication Middleware for Express",
   
   "authors": [
@@ -10,7 +10,7 @@
 
   "repository": {
     "type": "git",
-    "url": "git://github.com/simov/grant.git "
+    "url": "git://github.com/simov/grant.git"
   },
   
   "license": "MIT",
