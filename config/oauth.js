@@ -245,6 +245,7 @@ var settings = {
     access_url: 'https://api.dropbox.com/1/oauth2/token',
     authorize_url: 'https://www.dropbox.com/1/oauth2/authorize',
     access_name: 'access_token',
+    type: null,
     
     // guardian
     auth_type: 'oauth',

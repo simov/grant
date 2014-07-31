@@ -85,14 +85,12 @@ var options = {
     callback: server.callback
   },
   heroku: {
-    // 1 set config/server.js protocol to https
-    // 2 enable nginx https vhost
+    // set config/server.js protocol to https
     callback: server.callback
   },
   dropbox: {
-    // 1 set config/server.js protocol to https
-    // 2 enable nginx https vhost
-    // 3 mashape/oauth2 - comment out args.type = 'web_server';
+    // set config/server.js protocol to https
+    // npm install git://github.com/simov/mashape-oauth.js.git#oauth2-type
     redirect: server.callback+'/connect/dropbox/callback',
     callback: server.callback
   }
