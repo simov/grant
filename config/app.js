@@ -1,13 +1,13 @@
 
 // application server options
-var server = require('./server');
-// application credentials
-var credentials = require('./credentials');
+var server = require('./server.json');
+// oauth application credentials
+var credentials = require('./credentials.json');
 // provider oauth settings
-var oauth = require('./oauth');
+var oauth = require('./oauth.js');
 
 
-// consumer application options
+// consumer oauth application options
 var options = {
   facebook: {
     scope: 'publish_actions,publish_stream,read_stream,manage_pages,user_groups,friends_groups',
