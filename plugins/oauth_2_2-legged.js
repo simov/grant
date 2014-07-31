@@ -11,7 +11,9 @@ module.exports = {
     1: {
       invoke: function (options, server) {
         var oauth = helper.getOAuth2(options);
-        oauth.getOAuthAccessToken(options.grantType || 'client_credentials', {}, options.next);
+        oauth.getOAuthAccessToken(options.grantType || 'client_credentials', {
+          type: options.type
+        }, options.next);
       },
 
       next: function (server, response, next) {
