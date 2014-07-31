@@ -31,6 +31,7 @@ function Guardian (config) {
       callbackUrl: provider['redirect'] ? provider['redirect'] : config.server.protocol + '://' + config.server.host + '/callback',
       version: provider['version'],
       headers: provider['headers'],
+      type: provider['type'],
 
       auth: {
         type: (provider['auth_type'] || 'oauth').replace(/[^a-z]/g, ''),
