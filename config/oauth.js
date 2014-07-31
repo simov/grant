@@ -27,6 +27,7 @@ for (var provider in oauth) {
     s.scope = config.scope||null;
     s.callback = config.callback||'';
 
+    // quirks
     if (s.linkedin) {
       // LinkedIn accepts an extended "scope" parameter when obtaining a request.
       // Unfortunately, it wants this as a URL query parameter, rather than encoded
