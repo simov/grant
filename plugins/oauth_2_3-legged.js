@@ -19,6 +19,8 @@ module.exports = {
         if (options.state)
           settings.state = options.state;
 
+        settings.type = options.type;
+
         server.res.redirect(oauth.getAuthorizeUrl(settings));
       }
     },
@@ -29,7 +31,8 @@ module.exports = {
 
         oauth.getOAuthAccessToken(options.code, {
           redirect_uri: options.callbackUrl,
-          grant_type: "authorization_code"
+          grant_type: "authorization_code",
+          type: options.type
         }, options.next);
       },
 
