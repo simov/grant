@@ -55,13 +55,11 @@ for (var key in json.oauth) {
   // oauth callback
   provider.callback = server.callback||'';
 
-  // prepend hostname for google scopes
-  if (provider.google && options.scope) {
-    var scopes = options.scope.split(' ');
-    for (var i=0; i < scopes.length; i++) {
-      scopes[i] = 'https://www.googleapis.com/auth/' + scopes[i];
-    }
-    provider.scopes = scopes.join(' ');
+  // oauth scope
+  if (options.scope instanceof Array) {
+    provider.scope = (provider.google)
+      ? options.scope.join(' ')
+      : options.scope.join();
   }
   else {
     provider.scope = options.scope||null;
