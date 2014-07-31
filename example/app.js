@@ -4,7 +4,7 @@ var express = require('express'),
     consolidate = require('consolidate');
 
 
-var grant = new require('grant')(require('../config/app'));
+var grant = new require('grant')(require('../config'));
 
 
 var app = express();

@@ -8,7 +8,7 @@ function Guardian (config) {
   var app = express();
 
   app.get('/connect/:provider', function (req, res) {
-    var provider = config.app(req.params.provider);
+    var provider = config.app[req.params.provider];
     req.session.provider = req.params.provider;
     
     // Generate options object
