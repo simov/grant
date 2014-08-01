@@ -4,7 +4,11 @@ var express = require('express'),
     consolidate = require('consolidate');
 
 
-var grant = new require('grant')(require('../config'));
+var grant = new require('grant')({
+  server: require('./config/server.json'),
+  credentials: require('./config/credentials.json'),
+  options: require('./config/options.json')
+});
 
 
 var app = express();
