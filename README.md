@@ -9,7 +9,11 @@ _**grant**_ is build on top of **[mashape][1] / [guardian][2]**
 ```js
 var express = require('express');
 
-var grant = new require('grant')(require('./config'));
+var grant = new require('grant')({
+  server: require('./config/server.json'),
+  credentials: require('./config/credentials.json'),
+  options: require('./config/options.json')
+});
 
 var app = express();
 
@@ -35,8 +39,6 @@ app.configure(function () {
 ## configuration
 
 - **config/server.json** - application server configuration
-
-- **config/oauth.json** - oauth provider configuration
 
 - **config/credentials.json** - oauth application credentials
 
