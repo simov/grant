@@ -17,7 +17,7 @@
   
   "dependencies": {
     "express"       : "3.4.4",
-    "mashape-oauth" : "*",
+    "mashape-oauth" : "0.1.71",
     "winston"       : "0.7.3",
     "deep-copy"     : "*"
   },
@@ -32,5 +32,9 @@
     "oauth",
     "plugin",
     "plugins"
-  ]
+  ],
+
+  "scripts": {
+    "postinstall": "node example/postinstall.js"
+  }
 }
