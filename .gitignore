@@ -19,5 +19,5 @@ npm-debug.log
 config/default.js
 tests/
 
-config/credentials.json
+credentials.json
 *.pem

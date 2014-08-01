@@ -5,6 +5,7 @@ var gate    = require('./lib/core'), keeper;
 
 
 function Guardian (config) {
+  config = require('./config')(config);
   var app = express();
 
   app.get('/connect/:provider', function (req, res) {
