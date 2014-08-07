@@ -187,5 +187,15 @@
     "auth_type": "oauth",
     "auth_version": 2,
     "auth_leg": 3
+  },
+  "openstreetmap": {
+    "base_url": "http://www.openstreetmap.org/",
+    "access_url": "http://www.openstreetmap.org/oauth/access_token",
+    "request_url": "http://www.openstreetmap.org/oauth/request_token",
+    "authorize_url": "http://www.openstreetmap.org/oauth/authorize",
+    "access_name": "access_token",
+    "auth_type": "oauth",
+    "auth_version": 1,
+    "auth_leg": 3
   }
 }
