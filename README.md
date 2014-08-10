@@ -46,7 +46,7 @@ app.configure(function () {
 
 
 ## providers
-| | | | | |
+| | | | | | |
 :---: | :---: | :---: | :---: | :---: | :---:
 [asana](http://developer.asana.com/documentation/) | [bitly](http://dev.bitly.com) | [dropbox](https://www.dropbox.com/developers) | [facebook](https://developers.facebook.com) | [flickr](https://www.flickr.com/services/api/) | [foursquare](https://developer.foursquare.com/)
 [github](http://developer.github.com) | [google](https://developers.google.com/) | [heroku](https://devcenter.heroku.com/categories/platform-api) | [instagram](http://instagram.com/developer) | [linkedin](http://developer.linkedin.com) | [mailchimp](http://apidocs.mailchimp.com/)
