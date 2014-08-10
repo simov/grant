@@ -46,11 +46,12 @@ app.configure(function () {
 
 
 ## providers
-| | | | | | |
-:---: | :---: | :---: | :---: | :---: | :---: | :---:
-[asana](http://developer.asana.com/documentation/) | [bitly](http://dev.bitly.com) | [dropbox](https://www.dropbox.com/developers) | [facebook](https://developers.facebook.com) | [flickr](https://www.flickr.com/services/api/) | [foursquare](https://developer.foursquare.com/) | [github](http://developer.github.com)
-[google](https://developers.google.com/) | [heroku](https://devcenter.heroku.com/categories/platform-api) | [instagram](http://instagram.com/developer) | [linkedin](http://developer.linkedin.com) | [mailchimp](http://apidocs.mailchimp.com/) | [openstreetmap](http://wiki.openstreetmap.org/wiki/API_v0.6) | [slack](https://api.slack.com/)
-[soundcloud](http://developers.soundcloud.com) | [stackexchange](https://api.stackexchange.com) | [stocktwits](http://stocktwits.com/developers) | [trello](https://trello.com/docs/) | [twitter](https://dev.twitter.com) | [wikimapia](http://wikimapia.org/api) | [yahoo](https://developer.yahoo.com/)
+| | | | | |
+:---: | :---: | :---: | :---: | :---: | :---:
+[asana](http://developer.asana.com/documentation/) | [bitly](http://dev.bitly.com) | [dropbox](https://www.dropbox.com/developers) | [facebook](https://developers.facebook.com) | [flickr](https://www.flickr.com/services/api/) | [foursquare](https://developer.foursquare.com/)
+[github](http://developer.github.com) | [google](https://developers.google.com/) | [heroku](https://devcenter.heroku.com/categories/platform-api) | [instagram](http://instagram.com/developer) | [linkedin](http://developer.linkedin.com) | [mailchimp](http://apidocs.mailchimp.com/)
+[openstreetmap](http://wiki.openstreetmap.org/wiki/API_v0.6) | [slack](https://api.slack.com/) | [soundcloud](http://developers.soundcloud.com) | [stackexchange](https://api.stackexchange.com) | [stocktwits](http://stocktwits.com/developers) | [trello](https://trello.com/docs/)
+[twitter](https://dev.twitter.com) | [wikimapia](http://wikimapia.org/api) | [yahoo](https://developer.yahoo.com/)
 
 
 ## license
