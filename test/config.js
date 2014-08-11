@@ -20,21 +20,29 @@ describe('options', function () {
     config.app.facebook.client_id.should.equal('key');
     config.app.facebook.client_secret.should.equal('secret');
   });
-  it('set redirect option', function () {
+  it('set oauth redirect', function () {
     var config = {
-      server: {hostname:'http://domain.com'},
+      server: {host:'domain.com', protocol:'http'},
       options: {facebook:{redirect:'/connect/provider/callback'}}
     };
     (new Grant(config));
     config.app.facebook.redirect.should.equal('http://domain.com/connect/provider/callback');
   });
-  it('set callback option', function () {
+  it('use server final callback', function () {
     var config = {
       server: {callback:'/callback'},
       options: {facebook:{}}
     };
     (new Grant(config));
     config.app.facebook.callback.should.equal('/callback');
+  });
+  it('set specific final callback', function () {
+    var config = {
+      server: {callback:'/callback'},
+      options: {facebook:{callback:'/facebook/callback'}}
+    };
+    (new Grant(config));
+    config.app.facebook.callback.should.equal('/facebook/callback');
   });
   it('set scope as string', function () {
     var config = {
