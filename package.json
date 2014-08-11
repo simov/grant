@@ -1,6 +1,6 @@
 {
   "name": "grant",
-  "version": "1.0.3",
+  "version": "1.0.4",
   "description": "Authentication Middleware for Express",
   
   "authors": [
@@ -23,8 +23,8 @@
   },
 
   "devDependencies": {
-    "mocha"     : "*",
-    "should"    : "*",
+    "mocha"     : "1.21.4",
+    "should"    : "4.0.4",
     "supertest" : "0.10.0"
   },
 
