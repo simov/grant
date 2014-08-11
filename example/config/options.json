@@ -1,9 +1,26 @@
 {
   "facebook": {
-    "scope": "publish_actions,publish_stream,read_stream,manage_pages,user_groups,friends_groups"
+    "scope": [
+      "publish_actions",
+      "publish_stream",
+      "read_stream",
+      "manage_pages",
+      "user_groups",
+      "friends_groups"
+    ]
   },
   "linkedin": {
-    "scope": "r_basicprofile,r_fullprofile,r_emailaddress,r_network,r_contactinfo,rw_nus,rw_company_admin,rw_groups,w_messages"
+    "scope": [
+      "r_basicprofile",
+      "r_fullprofile",
+      "r_emailaddress",
+      "r_network",
+      "r_contactinfo",
+      "rw_nus",
+      "rw_company_admin",
+      "rw_groups",
+      "w_messages"
+    ]
   },
   "twitter": {
   },
