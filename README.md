@@ -51,6 +51,7 @@ app.configure(function () {
 - **example/config/options.json** - oauth application options **`optional`**
   - **scope** - `"scope1,scope2"` or `["scope1","scope2"]`
   - **headers** - `{"User-Agent": "Grant"}`
+  - **callback** - final callback for this provider _it must be different than the reserved routes for grant_
 
 
 ## providers
