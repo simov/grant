@@ -32,7 +32,7 @@ app.configure(function () {
 ```js
 /connect/:provider
 /step/:number
-/(?:\/connect\/.*)?\/callback/
+/connect/:provider/callback/
 ```
 
 

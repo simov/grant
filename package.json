@@ -22,6 +22,12 @@
     "deep-copy"     : "*"
   },
 
+  "devDependencies": {
+    "mocha"     : "*",
+    "should"    : "*",
+    "supertest" : "0.10.0"
+  },
+
   "main": "guardian.js",
   
   "keywords": [

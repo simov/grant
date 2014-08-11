@@ -6,10 +6,14 @@ var dcopy = require('deep-copy');
 // dropbox: npm install git://github.com/simov/mashape-oauth.js.git#oauth2-type
 
 
-// config.server: application server configuration
-// config.credentials: oauth application credentials
-// config.options: oauth application options
 exports = module.exports = function (config) {
+  config = config||{};
+  // application server configuration
+  config.server = config.server||{};
+  // oauth application credentials
+  config.credentials = config.credentials||{};
+  // oauth application options
+  config.options = config.options||{};
   // oauth application options
   config.oauth = require('./oauth.json');
   // generated below
@@ -44,12 +48,8 @@ exports = module.exports = function (config) {
     // oauth application options
     var options = config.options[key]||{};
 
-    // full path callback match
-    provider.redirect = (options.redirect)
-      ? server.hostname + options.redirect
-      : null;
-    // oauth callback
-    provider.callback = server.callback||'';
+    // final callback
+    provider.callback = options.callback||server.callback;
 
     // oauth scope
     if (options.scope instanceof Array) {

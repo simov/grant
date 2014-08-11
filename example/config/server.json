@@ -2,6 +2,5 @@
   "host": "passport-oauth.herokuapp.com",
   "port": 3000,
   "protocol": "http",
-  "hostname": "http://passport-oauth.herokuapp.com",
-  "callback": "http://passport-oauth.herokuapp.com"
+  "callback": "/"
 }
