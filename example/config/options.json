@@ -63,6 +63,6 @@
   "dropbox": {
     "redirect": "/connect/dropbox/callback"
   },
-  "opentstreetmap": {
+  "openstreetmap": {
   }
 }
