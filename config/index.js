@@ -7,6 +7,7 @@ var dcopy = require('deep-copy');
 
 
 exports = module.exports = function (config) {
+  config = config||{};
   // application server configuration
   config.server = config.server||{};
   // oauth application credentials
