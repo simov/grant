@@ -10,6 +10,7 @@ function Guardian (config) {
 
   app.get('/connect/:provider', function (req, res) {
     var provider = config.app[req.params.provider];
+    var server = config.server;
     req.session.provider = req.params.provider;
     
     // Generate options object
@@ -29,7 +30,8 @@ function Guardian (config) {
       authorizeMethod: provider['authorize_method'],
       signatureMethod: provider['signature_method'],
       oauth_token: provider['oauth_token'],
-      callbackUrl: provider['redirect'] ? provider['redirect'] : config.server.protocol + '://' + config.server.host + '/callback',
+      // callbackUrl: provider['redirect'] ? provider['redirect'] : server.protocol + '://' + server.host + '/callback',
+      callbackUrl: server.protocol+'://'+server.host+'/connect/'+provider.name+'/callback',
       version: provider['version'],
       headers: provider['headers'],
       type: provider['type'],
@@ -103,10 +105,7 @@ function Guardian (config) {
     keeper.invokeStep(parseInt(req.params.number, 10));
   });
 
-  // some providers expect full callback url match
-  // /connect/[provider]/callback - via redirect
-  // /callback - without specifying redirect
-  app.get(/(?:\/connect\/.*)?\/callback/, function (req, res) {
+  app.get('/connect/:provider/callback', function (req, res) {
     var plugin;
     var step;
     var data;

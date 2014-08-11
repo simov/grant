@@ -20,14 +20,6 @@ describe('options', function () {
     config.app.facebook.client_id.should.equal('key');
     config.app.facebook.client_secret.should.equal('secret');
   });
-  it('set oauth redirect', function () {
-    var config = {
-      server: {host:'domain.com', protocol:'http'},
-      options: {facebook:{redirect:'/connect/provider/callback'}}
-    };
-    (new Grant(config));
-    config.app.facebook.redirect.should.equal('http://domain.com/connect/provider/callback');
-  });
   it('use server final callback', function () {
     var config = {
       server: {callback:'/callback'},

@@ -47,10 +47,6 @@ exports = module.exports = function (config) {
     // oauth application options
     var options = config.options[key]||{};
 
-    // absolute oauth callback path (defaults to relative /callback path)
-    provider.redirect = (options.redirect)
-      ? [server.protocol, '://', server.host, options.redirect].join('')
-      : null;
     // final callback
     provider.callback = options.callback||server.callback;
 
