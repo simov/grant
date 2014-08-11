@@ -59,10 +59,10 @@ describe('options', function () {
   });
   it('set custom headers', function () {
     var config = {
-      options: {github:{headers:{'User-Agent':'Purest'}}}
+      options: {github:{headers:{'User-Agent':'Grant'}}}
     };
     (new Grant(config));
-    should.deepEqual(config.app.github.headers, {'User-Agent':'Purest'});
+    should.deepEqual(config.app.github.headers, {'User-Agent':'Grant'});
   });
   it('set linkedin scope inside the querystring', function () {
     var config = {
