@@ -47,6 +47,10 @@ exports = module.exports = function (config) {
     var server = config.server;
     // oauth application options
     var options = config.options[key]||{};
+    // copy all options
+    for (var key in options) {
+      provider[key] = options[key];
+    }
 
     // final callback
     provider.callback = options.callback||server.callback;
@@ -57,12 +61,6 @@ exports = module.exports = function (config) {
         ? options.scope.join(' ')
         : options.scope.join();
     }
-    else {
-      provider.scope = options.scope||null;
-    }
-
-    // custom headers
-    provider.headers = options.headers||null;
 
     // quirks
     if (provider.linkedin) {
