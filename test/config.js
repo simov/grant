@@ -20,6 +20,14 @@ describe('options', function () {
     config.app.facebook.client_id.should.equal('key');
     config.app.facebook.client_secret.should.equal('secret');
   });
+  it('copy all options', function () {
+    var config = {
+      options: {github:{headers:{'User-Agent':'Grant'}, access_token:'token'}}
+    };
+    (new Grant(config));
+    should.deepEqual(config.app.github.headers, {'User-Agent':'Grant'});
+    config.app.github.access_token.should.equal('token');
+  });
   it('use server final callback', function () {
     var config = {
       server: {callback:'/callback'},
@@ -57,14 +65,7 @@ describe('options', function () {
     (new Grant(config));
     config.app.google.scope.should.equal('scope1 scope2');
   });
-  it('set custom headers', function () {
-    var config = {
-      options: {github:{headers:{'User-Agent':'Grant'}}}
-    };
-    (new Grant(config));
-    should.deepEqual(config.app.github.headers, {'User-Agent':'Grant'});
-  });
-  it('set linkedin scope inside the querystring', function () {
+  it('set linkedin scope as a querystring', function () {
     var config = {
       options: {linkedin:{scope:['scope1','scope2']}}
     };
