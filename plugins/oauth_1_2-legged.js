@@ -52,10 +52,11 @@ module.exports = {
             }
           });
 
-        next({
-          access_token: response.token,
-          access_secret: response.secret
-        });
+        var result = response.results||{};
+        result.access_token = response.token;
+        result.access_secret = response.secret;
+
+        next(result);
       }
     }
   },
