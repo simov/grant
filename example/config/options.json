@@ -36,6 +36,7 @@
     "headers": {"User-Agent": "AppName"}
   },
   "stackexchange": {
+    "scope": "no_expiry"
   },
   "google": {
     "scope": [
