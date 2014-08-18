@@ -34,7 +34,9 @@ function Guardian (config) {
       callbackUrl: server.protocol+'://'+server.host+'/connect/'+provider.name+'/callback',
       version: provider['version'],
       headers: provider['headers'],
+
       type: provider['type'],
+      access_type: provider['access_type'],
 
       auth: {
         type: (provider['auth_type'] || 'oauth').replace(/[^a-z]/g, ''),
