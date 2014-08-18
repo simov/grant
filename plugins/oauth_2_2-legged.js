@@ -29,7 +29,7 @@ module.exports = {
 
         next({
           access_token: response.token,
-          refresh_token: response.refresh,
+          refresh_token: response.secret,
           expires_in: response.results.expires_in,
           token_type: response.results.token_type
         });
