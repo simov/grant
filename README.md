@@ -8,22 +8,20 @@ _**grant**_ is build on top of **[mashape][1] / [guardian][2]**
 
 ```js
 var express = require('express');
+var Grant = require('grant');
 
-var grant = new require('grant')({
+var grant = new Grant({
   server: require('./config/server.json'),
   credentials: require('./config/credentials.json'),
   options: require('./config/options.json')
 });
 
 var app = express();
-
-app.configure(function () {
-  // ...
-  app.use(express.cookieParser('very secret'));
-  app.use(express.session());
-  // ...
-  app.use(grant);
-});
+// mount grant
+app.use(grant);
+// app server middlewares
+app.use(express.cookieParser('very secret'));
+app.use(express.session());
 ```
 
 

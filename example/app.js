@@ -1,34 +1,38 @@
 
 var express = require('express'),
-    hogan = require('hogan.js'),
-    consolidate = require('consolidate');
+  logger = require('morgan'),
+  bodyParser = require('body-parser'),
+  cookieParser = require('cookie-parser'),
+  session = require('express-session');
+var consolidate = require('consolidate'),
+  hogan = require('hogan.js');
 
 
-var grant = new require('grant')({
+var grant = new require('../guardian')({
   server: require('./config/server.json'),
   credentials: require('./config/credentials.json'),
   options: require('./config/options.json')
 });
 
 
-var app = express();
+var app = express()
+  .use(grant)
+  .set('port', process.env.PORT||3000)
 
-app.configure(function () {
-  app.set('port', process.env.PORT || 3000);
-  app.set('views', __dirname);
-  app.set('view engine', 'html');
-  // app.set('view cache', true);
-  app.engine('html', consolidate.hogan);
+  .set('views', __dirname)
+  .set('view engine', 'html')
+  .set('view cache', true)
+  .engine('html', consolidate.hogan)
 
-  app.use(express.cookieParser('very secret - required'));
-  app.use(express.session());
-  app.use(express.favicon());
-  app.use(express.logger('dev'));
-  app.use(express.bodyParser());
-  app.use(express.methodOverride());
-  app.use(app.router);
-  app.use(grant);
-});
+  .use(logger('dev'))
+  .use(bodyParser.json())
+  .use(bodyParser.urlencoded({extended: true}))
+
+  .use(cookieParser())
+  .use(session({
+    name: 'grant', secret: 'very secret',
+    saveUninitialized: true, resave: true
+  }));
 
 
 app.get('/', function (req, res) {

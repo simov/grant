@@ -1,12 +1,30 @@
 
+var query   = require('querystring');
+
 var express = require('express'),
-    query   = require('querystring');
+  bodyParser = require('body-parser'),
+  multipart = require('connect-multiparty'),
+  cookieParser = require('cookie-parser'),
+  session = require('express-session'),
+  favicon = require('serve-favicon');
+
 var gate    = require('./lib/core'), keeper;
 
 
 function Guardian (config) {
   config = require('./config')(config);
-  var app = express();
+  var app = express()
+    .use(favicon('favicon.ico'))
+    // body parser
+    .use(bodyParser.json())
+    .use(bodyParser.urlencoded({extended: true}))
+    .use(multipart())
+    // session
+    .use(cookieParser())
+    .use(session({
+      name: 'grant', secret: 'very secret',
+      saveUninitialized: true, resave: true
+    }));
 
   app.get('/connect/:provider', function (req, res) {
     var provider = config.app[req.params.provider];
@@ -34,7 +52,7 @@ function Guardian (config) {
       callbackUrl: server.protocol+'://'+server.host+'/connect/'+provider.name+'/callback',
       version: provider['version'],
       headers: provider['headers'],
-
+      // 
       type: provider['type'],
       access_type: provider['access_type'],
 
