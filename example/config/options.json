@@ -47,7 +47,8 @@
       "https://www.googleapis.com/auth/tasks",
       "https://www.googleapis.com/auth/yt-analytics.readonly",
       "https://www.googleapis.com/auth/contacts.readonly"
-    ]
+    ],
+    "access_type": "offline"
   },
   "yahoo": {
   },
