@@ -72,6 +72,7 @@
   "heroku": {
   },
   "dropbox": {
+    "type": null
   },
   "openstreetmap": {
   }
