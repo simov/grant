@@ -20,7 +20,9 @@ module.exports = {
           settings.state = options.state;
 
         settings.type = options.type;
-        settings.access_type = options.access_type;
+
+        if (options.access_type)
+          settings.access_type = options.access_type;
 
         server.res.redirect(oauth.getAuthorizeUrl(settings));
       }

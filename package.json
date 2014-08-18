@@ -23,7 +23,7 @@
     "express-session"    : "1.5.1",
     "serve-favicon"      : "2.0.1",
 
-    "mashape-oauth"      : "0.1.71",
+    "mashape-oauth"      : "git://github.com/simov/mashape-oauth.git#oauth2-type",
     "deep-copy"          : "*"
   },
 
