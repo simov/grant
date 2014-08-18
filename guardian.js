@@ -14,7 +14,7 @@ var gate    = require('./lib/core'), keeper;
 function Guardian (config) {
   config = require('./config')(config);
   var app = express()
-    .use(favicon('favicon.ico'))
+    .use(favicon(__dirname+'/favicon.ico'))
     // body parser
     .use(bodyParser.json())
     .use(bodyParser.urlencoded({extended: true}))
