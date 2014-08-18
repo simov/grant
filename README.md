@@ -20,8 +20,8 @@ var app = express();
 // mount grant
 app.use(grant);
 // app server middlewares
-app.use(express.cookieParser('very secret'));
-app.use(express.session());
+app.use(cookieParser());
+app.use(session());
 ```
 
 
