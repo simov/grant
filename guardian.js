@@ -52,9 +52,13 @@ function Guardian (config) {
       callbackUrl: server.protocol+'://'+server.host+'/connect/'+provider.name+'/callback',
       version: provider['version'],
       headers: provider['headers'],
-      // 
+      // custom
+      // made type parameter optional for dropbox
       type: provider['type'],
+      // used to set access_type=offline for google
       access_type: provider['access_type'],
+      // used to set permissions for flickr
+      perms: provider['perms'],
 
       auth: {
         type: (provider['auth_type'] || 'oauth').replace(/[^a-z]/g, ''),
