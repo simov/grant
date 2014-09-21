@@ -3,7 +3,7 @@
 <ul>
 	{{#providers}}
 	<li>
-		<a href="{{url}}">{{text}}</a>
+		<a href="{{url}}">{{name}}</a>
 		{{#credentials}}
 		<ul>
 			{{#access_token}}
@@ -17,12 +17,16 @@
 				<textarea>{{access_secret}}</textarea>
 			</li>
 			{{/access_secret}}
-			
-			<!-- {{#profile}}
-			<li>profile:
-				<pre>{{profile}}</pre>
+
+			{{#refresh_token}}
+			<li>refresh:<br />
+				<textarea>{{refresh_token}}</textarea>
 			</li>
-			{{/profile}} -->
+			{{/refresh_token}}
+			
+			<li>json:
+				<pre>{{json}}</pre>
+			</li>
 		</ul>
 		{{/credentials}}
 	</li>

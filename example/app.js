@@ -47,15 +47,18 @@ app.get('/', function (req, res) {
     // 'disqus'
   ];
 
-  var p = req.session.provider;
+  var current = req.session.provider;
   delete req.session.provider;
 
   var params = [];
 
   providers.forEach(function (provider) {
-    params.push({url:'/connect/'+provider, text:provider,
-      credentials: (p == provider ? req.query : null)
-    });
+    var obj = {url:'/connect/'+provider, name:provider};
+    if (current == provider) {
+      obj.credentials = req.query;
+      obj.json = JSON.stringify(req.query, null, 4);
+    }
+    params.push(obj);
   });
   res.render('template', {providers:params});
 });
