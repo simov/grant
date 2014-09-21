@@ -1,5 +1,5 @@
 {
-  "host": "passport-oauth.herokuapp.com",
+  "host": "grant-oauth.herokuapp.com",
   "port": 3000,
   "protocol": "http",
   "callback": "/"
