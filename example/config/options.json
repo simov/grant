@@ -59,6 +59,7 @@
   "instagram": {
   },
   "flickr": {
+    "perms": "delete"
   },
   "disqus": {
     "scope": "read,write"

@@ -31,7 +31,9 @@ module.exports = {
 
     2: {
       invoke: function (options, server) {
-        server.res.redirect(options.authorizeUrl + '?oauth_token=' + (options.oauth_token || ''));
+        var url = options.authorizeUrl + '?oauth_token=' + (options.oauth_token || '');
+        if (options.perms) url += '&perms='+options.perms;
+        server.res.redirect(url);
       }
     },
 
