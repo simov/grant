@@ -1,7 +1,10 @@
 
 # grant
 
-_**grant**_ is build on top of **[mashape][1] / [guardian][2]**
+_**grant**_ is build on top of **[mashape][mashape] / [guardian][guardian]**
+
+
+## [demo][demo]
 
 
 ## usage
@@ -53,6 +56,7 @@ app.use(session());
 
 
 ## providers
+
 | | | | | | |
 :---: | :---: | :---: | :---: | :---: | :---:
 [asana](http://developer.asana.com/documentation/) | [bitly](http://dev.bitly.com) | [dropbox](https://www.dropbox.com/developers) | [facebook](https://developers.facebook.com) | [flickr](https://www.flickr.com/services/api/) | [foursquare](https://developer.foursquare.com/)
@@ -62,16 +66,20 @@ app.use(session());
 
 
 ## flow
+
 1. register application on your provider's web site
   - if your provider requires absolute `redirect` url, then it should look like this (example for github) `http://mydomain.com/connect/github/callback`
   - otherwise `http://mydomain.com` should be enough
 2. set up your application `callback` in _server.json_ this is the final callback when the OAuth flow is done and this must be something different than the reserved routes for _grant_
 3. optionally set specific `callback` for your provider in _options.json_ instead of using the global one specified in _server.json_
 
+
 ## license
 
 MIT
 
-  [1]: https://www.mashape.com/
-  [2]: http://guardianjs.com/
-  [3]: http://oauthbible.com/
+
+  [mashape]: https://www.mashape.com/
+  [guardian]: http://guardianjs.com/
+  [bible]: http://oauthbible.com/
+  [demo]: http://grant-oauth.herokuapp.com/
