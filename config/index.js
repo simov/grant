@@ -2,10 +2,6 @@
 var dcopy = require('deep-copy');
 
 
-// heroku|dropbox: set config/server.js protocol to https
-// dropbox: npm install git://github.com/simov/mashape-oauth.js.git#oauth2-type
-
-
 exports = module.exports = function (config) {
   config = config||{};
   // application server configuration
