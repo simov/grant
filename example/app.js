@@ -3,7 +3,8 @@ var express = require('express'),
   logger = require('morgan'),
   bodyParser = require('body-parser'),
   cookieParser = require('cookie-parser'),
-  session = require('express-session');
+  session = require('express-session'),
+  favicon = require('serve-favicon');
 var consolidate = require('consolidate'),
   hogan = require('hogan.js');
 
@@ -16,6 +17,38 @@ var grant = new require('../guardian')({
 
 
 var app = express()
+  .use(favicon(__dirname+'/favicon.ico'))
+  .use(cookieParser())
+  .use(session({
+    name: 'grant', secret: 'very secret',
+    saveUninitialized: true, resave: true
+  }))
+
+  .use(function (req, res, next) {
+    var server = grant.config.server;
+
+    if (/^\/connect\/(\w+)$/.test(req.url)) {
+      var provider = req.url.replace(/^\/connect\/(\w+)$/,'$1');
+
+      if (/heroku|dropbox/.test(provider)) {
+        if (server.protocol != 'https') {
+          server.protocol = 'https';
+          var url = server.protocol+'://'+server.host+'/connect/'+provider;
+          return res.redirect(url);
+        }
+      }
+      else {
+        if (server.protocol != 'http') {
+          server.protocol = 'http';
+          var url = server.protocol+'://'+server.host+'/connect/'+provider;
+          return res.redirect(url);
+        }
+      }
+    }
+
+    next();
+  })
+
   .use(grant)
   .set('port', process.env.PORT||3000)
 
@@ -26,13 +59,7 @@ var app = express()
 
   .use(logger('dev'))
   .use(bodyParser.json())
-  .use(bodyParser.urlencoded({extended: true}))
-
-  .use(cookieParser())
-  .use(session({
-    name: 'grant', secret: 'very secret',
-    saveUninitialized: true, resave: true
-  }));
+  .use(bodyParser.urlencoded({extended: true}));
 
 
 app.get('/', function (req, res) {
