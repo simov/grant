@@ -1,5 +1,15 @@
 
-<h1>Get access tokens</h1>
+<h1>Grant</h1>
+<ul>
+	<li><em>Grant</em> is authentication middleware for Express <a href="https://github.com/simov/grant" target="_blank">https://github.com/simov/grant</a></li>
+	<li>All providers use a test application called <em>Purest</em></li>
+	<li><em>Purest</em> is a REST API client library <a href="https://github.com/simov/purest" target="_blank">https://github.com/simov/purest</a> which you can use for subsequent calls to these providers</li>
+	<li>Currently this example server uses statically defined example scope options defined <a href="https://github.com/simov/grant/blob/master/example/config/options.json" target="_blank">here</a></li>
+	<li>The generated access tokens are <strong>not</strong> stored anywhere</li>
+	<li>At any point go to your provider's account settings and revoke the access for the <em>Purest</em> app</li>
+</ul>
+
+<h2>Get access tokens</h2>
 <ul>
 	{{#providers}}
 	<li>
