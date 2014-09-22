@@ -1,6 +1,6 @@
 {
   "name": "grant",
-  "version": "1.0.7",
+  "version": "1.0.8",
   "description": "Authentication Middleware for Express",
   
   "authors": [
