@@ -8,11 +8,10 @@ var express = require('express'),
   session = require('express-session'),
   favicon = require('serve-favicon');
 
-var gate    = require('./lib/core'), keeper;
+var gate = require('./lib/core'), keeper;
 
 
 function Guardian (config) {
-  config = require('./config')(config);
   var app = express()
     .use(favicon(__dirname+'/favicon.ico'))
     // body parser
@@ -25,10 +24,11 @@ function Guardian (config) {
       name: 'grant', secret: 'very secret',
       saveUninitialized: true, resave: true
     }));
+  app.config = require('./config')(config);
 
   app.get('/connect/:provider', function (req, res) {
-    var provider = config.app[req.params.provider];
-    var server = config.server;
+    var provider = app.config.app[req.params.provider];
+    var server = app.config.server;
     req.session.provider = req.params.provider;
     
     // Generate options object
