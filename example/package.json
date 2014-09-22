@@ -2,6 +2,7 @@
   "name": "grant-example",
   "version": "0.0.0",
   "description": "App example for grant",
+  "private": true,
   
   "author": {
     "name"  : "simo",
