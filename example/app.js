@@ -9,7 +9,7 @@ var consolidate = require('consolidate'),
   hogan = require('hogan.js');
 
 
-var grant = new require('../guardian')({
+var grant = new require('grant')({
   server: require('./config/server.json'),
   credentials: require('./config/credentials.json'),
   options: require('./config/options.json')
