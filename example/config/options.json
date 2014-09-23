@@ -76,5 +76,7 @@
     "type": null
   },
   "openstreetmap": {
+  },
+  "box": {
   }
 }

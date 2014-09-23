@@ -30,7 +30,7 @@ var app = express()
     if (/^\/connect\/(\w+)$/.test(req.url)) {
       var provider = req.url.replace(/^\/connect\/(\w+)$/,'$1');
 
-      if (/heroku|dropbox/.test(provider)) {
+      if (/heroku|dropbox|box/.test(provider)) {
         if (server.protocol != 'https') {
           server.protocol = 'https';
           var url = server.protocol+'://'+server.host+'/connect/'+provider;
@@ -69,7 +69,8 @@ app.get('/', function (req, res) {
     'twitter', 'facebook', 'linkedin', 'soundcloud', 'stocktwits',
     'bitly', 'github', 'stackexchange', 'google', 'yahoo',
     'foursquare', 'slack', 'instagram', 'flickr', 'trello',
-    'asana', 'mailchimp', 'heroku', 'dropbox', 'openstreetmap'
+    'asana', 'mailchimp', 'heroku', 'dropbox', 'openstreetmap',
+    'box'
 
     // 'disqus'
   ];
