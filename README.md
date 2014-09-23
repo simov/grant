@@ -1,5 +1,5 @@
 
-# grant
+# grant [![img-npm-version]][url-npm]
 
 _**grant**_ is build on top of **[mashape][mashape] / [guardian][guardian]**
 
@@ -83,3 +83,7 @@ MIT
   [guardian]: http://guardianjs.com/
   [bible]: http://oauthbible.com/
   [demo]: http://grant-oauth.herokuapp.com/
+  [url-npm]: https://www.npmjs.org/package/grant
+
+  [img-npm-version]: http://img.shields.io/npm/v/grant.svg?style=flat (NPM Version)
+  [img-npm-downloads]: http://img.shields.io/npm/dm/grant.svg?style=flat (NPM Downloads)
