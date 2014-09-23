@@ -197,5 +197,15 @@
     "auth_type": "oauth",
     "auth_version": 1,
     "auth_leg": 3
+  },
+  "box": {
+    "base_url": "https://api.box.com/",
+    "access_url": "https://api.box.com/oauth2/token",
+    "authorize_url": "https://api.box.com/oauth2/authorize",
+    "access_name": "access_token",
+    "grant_type": "authorization_code",
+    "auth_type": "oauth",
+    "auth_version": 2,
+    "auth_leg": 3
   }
 }
