@@ -207,5 +207,14 @@
     "auth_type": "oauth",
     "auth_version": 2,
     "auth_leg": 3
+  },
+  "stripe": {
+    "base_url": "https://api.stripe.com/",
+    "access_url": "https://connect.stripe.com/oauth/token",
+    "authorize_url": "https://connect.stripe.com/oauth/authorize",
+    "access_name": "access_token",
+    "auth_type": "oauth",
+    "auth_version": 2,
+    "auth_leg": 3
   }
 }
