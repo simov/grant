@@ -216,5 +216,15 @@
     "auth_type": "oauth",
     "auth_version": 2,
     "auth_leg": 3
+  },
+  "tumblr": {
+    "base_url": "https://api.tumblr.com/",
+    "access_url": "http://www.tumblr.com/oauth/access_token",
+    "request_url": "http://www.tumblr.com/oauth/request_token",
+    "authorize_url": "http://www.tumblr.com/oauth/authorize",
+    "access_name": "access_token",
+    "auth_type": "oauth",
+    "auth_version": 1,
+    "auth_leg": 3
   }
 }
