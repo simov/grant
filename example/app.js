@@ -70,7 +70,7 @@ app.get('/', function (req, res) {
     'bitly', 'github', 'stackexchange', 'google', 'yahoo',
     'foursquare', 'slack', 'instagram', 'flickr', 'trello',
     'asana', 'mailchimp', 'heroku', 'dropbox', 'openstreetmap',
-    'box', 'stripe', 'tumblr', 'imgur'
+    'box', 'stripe', 'tumblr', 'imgur', 'twitch'
 
     // 'disqus'
   ];
