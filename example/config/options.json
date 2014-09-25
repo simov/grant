@@ -1,4 +1,13 @@
 {
+  "asana": {
+  },
+  "bitly": {
+  },
+  "box": {
+  },
+  "dropbox": {
+    "type": null
+  },
   "facebook": {
     "scope": [
       "publish_actions",
@@ -8,6 +17,32 @@
       "user_groups",
       "friends_groups"
     ]
+  },
+  "flickr": {
+    "perms": "delete"
+  },
+  "foursquare": {
+  },
+  "github": {
+    "headers": {"User-Agent": "Grant"}
+  },
+  "google": {
+    "scope": [
+      "https://www.googleapis.com/auth/userinfo.profile",
+      "https://www.googleapis.com/auth/youtube.readonly",
+      "https://www.googleapis.com/auth/drive.readonly",
+      "https://www.googleapis.com/auth/freebase",
+      "https://www.googleapis.com/auth/tasks",
+      "https://www.googleapis.com/auth/yt-analytics.readonly",
+      "https://www.googleapis.com/auth/contacts.readonly"
+    ],
+    "access_type": "offline"
+  },
+  "heroku": {
+  },
+  "imgur": {
+  },
+  "instagram": {
   },
   "linkedin": {
     "scope": [
@@ -22,67 +57,34 @@
       "w_messages"
     ]
   },
-  "twitter": {
+  "mailchimp": {
   },
-  "stocktwits": {
-    "scope": "read,watch_lists,publish_messages,publish_watch_lists,follow_users,follow_stocks"
+  "openstreetmap": {
+  },
+  "slack": {
   },
   "soundcloud": {
     "scope": "non-expiring"
   },
-  "bitly": {
-  },
-  "github": {
-    "headers": {"User-Agent": "AppName"}
-  },
   "stackexchange": {
     "scope": "no_expiry"
   },
-  "google": {
-    "scope": [
-      "https://www.googleapis.com/auth/userinfo.profile",
-      "https://www.googleapis.com/auth/youtube.readonly",
-      "https://www.googleapis.com/auth/drive.readonly",
-      "https://www.googleapis.com/auth/freebase",
-      "https://www.googleapis.com/auth/tasks",
-      "https://www.googleapis.com/auth/yt-analytics.readonly",
-      "https://www.googleapis.com/auth/contacts.readonly"
-    ],
-    "access_type": "offline"
-  },
-  "yahoo": {
-  },
-  "foursquare": {
-  },
-  "slack": {
-  },
-  "instagram": {
-  },
-  "flickr": {
-    "perms": "delete"
-  },
-  "disqus": {
-    "scope": "read,write"
-  },
-  "trello": {
-  },
-  "asana": {
-  },
-  "mailchimp": {
-  },
-  "heroku": {
-  },
-  "dropbox": {
-    "type": null
-  },
-  "openstreetmap": {
-  },
-  "box": {
+  "stocktwits": {
+    "scope": "read,watch_lists,publish_messages,publish_watch_lists,follow_users,follow_stocks"
   },
   "stripe": {
   },
+  "trello": {
+  },
+  "twitter": {
+  },
   "tumblr": {
   },
-  "imgur": {
+  "yahoo": {
+  },
+
+
+  "disqus": {
+    "scope": "read,write"
   }
 }
