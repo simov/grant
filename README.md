@@ -4,7 +4,15 @@
 _**grant**_ is build on top of **[mashape][mashape] / [guardian][guardian]**
 
 
-## [demo][demo]
+## providers [live demo][demo]
+
+| | | | | | |
+:---: | :---: | :---: | :---: | :---: | :---:
+[asana](http://developer.asana.com/documentation/) | [bitly](http://dev.bitly.com) | [box](https://developers.box.com/) | [dropbox](https://www.dropbox.com/developers) | [facebook](https://developers.facebook.com) | [flickr](https://www.flickr.com/services/api/)
+[foursquare](https://developer.foursquare.com/) | [github](http://developer.github.com) | [google](https://developers.google.com/) | [heroku](https://devcenter.heroku.com/categories/platform-api) | [imgur]() | [instagram](http://instagram.com/developer)
+[linkedin](http://developer.linkedin.com) | [mailchimp](http://apidocs.mailchimp.com/) | [openstreetmap](http://wiki.openstreetmap.org/wiki/API_v0.6) | [slack](https://api.slack.com/) | [soundcloud](http://developers.soundcloud.com) | [stackexchange](https://api.stackexchange.com)
+[stocktwits](http://stocktwits.com/developers) | [stripe]() | [trello](https://trello.com/docs/) | [tumblr]() | [twitch]() | [twitter](https://dev.twitter.com)
+[yahoo](https://developer.yahoo.com/) |
 
 
 ## usage
@@ -53,16 +61,6 @@ app.use(session());
   - **scope** - `"scope1,scope2"` or `["scope1","scope2"]`
   - **headers** - `{"User-Agent": "Grant"}`
   - **callback** - final callback for this provider _it must be different than the reserved routes for grant_
-
-
-## providers
-
-| | | | | | |
-:---: | :---: | :---: | :---: | :---: | :---:
-[asana](http://developer.asana.com/documentation/) | [bitly](http://dev.bitly.com) | [dropbox](https://www.dropbox.com/developers) | [facebook](https://developers.facebook.com) | [flickr](https://www.flickr.com/services/api/) | [foursquare](https://developer.foursquare.com/)
-[github](http://developer.github.com) | [google](https://developers.google.com/) | [heroku](https://devcenter.heroku.com/categories/platform-api) | [instagram](http://instagram.com/developer) | [linkedin](http://developer.linkedin.com) | [mailchimp](http://apidocs.mailchimp.com/)
-[openstreetmap](http://wiki.openstreetmap.org/wiki/API_v0.6) | [slack](https://api.slack.com/) | [soundcloud](http://developers.soundcloud.com) | [stackexchange](https://api.stackexchange.com) | [stocktwits](http://stocktwits.com/developers) | [trello](https://trello.com/docs/)
-[twitter](https://dev.twitter.com) | [wikimapia](http://wikimapia.org/api) | [yahoo](https://developer.yahoo.com/)
 
 
 ## flow
