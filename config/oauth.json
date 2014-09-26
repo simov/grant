@@ -197,6 +197,16 @@
     "auth_version": 1,
     "auth_leg": 3
   },
+  "tumblr": {
+    "base_url": "https://api.tumblr.com/",
+    "access_url": "http://www.tumblr.com/oauth/access_token",
+    "request_url": "http://www.tumblr.com/oauth/request_token",
+    "authorize_url": "http://www.tumblr.com/oauth/authorize",
+    "access_name": "access_token",
+    "auth_type": "oauth",
+    "auth_version": 1,
+    "auth_leg": 3
+  },
   "twitch": {
     "base_url": "https://api.twitch.tv/",
     "access_url": "https://api.twitch.tv/kraken/oauth2/token",
@@ -211,16 +221,6 @@
     "access_url": "https://api.twitter.com/oauth/access_token",
     "request_url": "https://api.twitter.com/oauth/request_token",
     "authorize_url": "https://api.twitter.com/oauth/authenticate",
-    "access_name": "access_token",
-    "auth_type": "oauth",
-    "auth_version": 1,
-    "auth_leg": 3
-  },
-  "tumblr": {
-    "base_url": "https://api.tumblr.com/",
-    "access_url": "http://www.tumblr.com/oauth/access_token",
-    "request_url": "http://www.tumblr.com/oauth/request_token",
-    "authorize_url": "http://www.tumblr.com/oauth/authorize",
     "access_name": "access_token",
     "auth_type": "oauth",
     "auth_version": 1,
