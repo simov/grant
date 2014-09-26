@@ -68,7 +68,7 @@ app.get('/', function (req, res) {
   var current = req.session.provider;
   delete req.session.provider;
 
-  var providers = Object.keys(require('../config/oauth'));
+  var providers = Object.keys(grant.config.oauth);
   var params = [];
 
   providers.forEach(function (provider) {
