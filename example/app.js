@@ -65,19 +65,10 @@ var app = express()
 app.get('/', function (req, res) {
   console.log(req.query);
 
-  var providers = [
-    'twitter', 'facebook', 'linkedin', 'soundcloud', 'stocktwits',
-    'bitly', 'github', 'stackexchange', 'google', 'yahoo',
-    'foursquare', 'slack', 'instagram', 'flickr', 'trello',
-    'asana', 'mailchimp', 'heroku', 'dropbox', 'openstreetmap',
-    'box', 'stripe', 'tumblr', 'imgur', 'twitch'
-
-    // 'disqus'
-  ];
-
   var current = req.session.provider;
   delete req.session.provider;
 
+  var providers = Object.keys(require('../config/oauth'));
   var params = [];
 
   providers.forEach(function (provider) {
