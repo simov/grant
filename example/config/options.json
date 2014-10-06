@@ -57,6 +57,9 @@
       "w_messages"
     ]
   },
+  "live": {
+    "scope": "wl.offline_access"
+  },
   "mailchimp": {
   },
   "openstreetmap": {

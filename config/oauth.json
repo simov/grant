@@ -122,6 +122,16 @@
     "auth_version": 1,
     "auth_leg": 3
   },
+  "live": {
+    "base_url": "https://login.live.com/",
+    "access_url": "https://login.live.com/oauth20_token.srf",
+    "authorize_url": "https://login.live.com/oauth20_authorize.srf",
+    "access_name": "access_token",
+    "grant_type": "authorization_code",
+    "auth_type": "oauth",
+    "auth_version": 2,
+    "auth_leg": 3
+  },
   "mailchimp": {
     "base_url": "https://mailchimp.com/",
     "access_url": "https://login.mailchimp.com/oauth2/token",
