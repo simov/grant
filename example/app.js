@@ -30,7 +30,7 @@ var app = express()
     if (/^\/connect\/(\w+)$/.test(req.url)) {
       var provider = req.url.replace(/^\/connect\/(\w+)$/,'$1');
 
-      if (/heroku|dropbox|box|imgur/.test(provider)) {
+      if (/heroku|dropbox|box|imgur|paypal/.test(provider)) {
         if (server.protocol != 'https') {
           server.protocol = 'https';
           var url = server.protocol+'://'+server.host+'/connect/'+provider;

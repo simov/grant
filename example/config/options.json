@@ -64,6 +64,10 @@
   },
   "openstreetmap": {
   },
+  "paypal": {
+    "state": "Purest",
+    "scope": "profile"
+  },
   "slack": {
   },
   "soundcloud": {
