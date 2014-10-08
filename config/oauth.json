@@ -37,6 +37,15 @@
     "auth_version": 2,
     "auth_leg": 3
   },
+  "digitalocean": {
+    "base_url": "https://cloud.digitalocean.com/",
+    "access_url": "https://cloud.digitalocean.com/v1/oauth/token",
+    "authorize_url": "https://cloud.digitalocean.com/v1/oauth/authorize",
+    "access_name": "access_token",
+    "auth_type": "oauth",
+    "auth_version": 2,
+    "auth_leg": 3
+  },
   "dropbox": {
     "base_url": "https://api.dropbox.com/",
     "access_url": "https://api.dropbox.com/1/oauth2/token",
