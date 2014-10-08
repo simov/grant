@@ -8,6 +8,8 @@
   },
   "box": {
   },
+  "digitalocean": {
+  },
   "dropbox": {
     "type": null
   },
