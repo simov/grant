@@ -1,4 +1,13 @@
 {
+  "amazon": {
+    "base_url": "https://api.amazon.com/",
+    "access_url": "https://api.amazon.com/auth/o2/token",
+    "authorize_url": "https://www.amazon.com/ap/oa",
+    "access_name": "access_token",
+    "auth_type": "oauth",
+    "auth_version": 2,
+    "auth_leg": 3
+  },
   "asana": {
     "base_url": "https://app.asana.com/",
     "access_url": "https://app.asana.com/-/oauth_token",

@@ -1,4 +1,7 @@
 {
+  "amazon": {
+    "scope": "profile"
+  },
   "asana": {
   },
   "bitly": {
