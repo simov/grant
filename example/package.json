@@ -24,7 +24,7 @@
 
     "consolidate" : "0.9.1",
     "hogan.js"    : "3.0.2",
-    "grant"       : "1.0.9"
+    "grant"       : "1.1.0"
   },
 
   "main": "app.js"
