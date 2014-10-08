@@ -264,6 +264,15 @@
     "auth_version": 1,
     "auth_leg": 3
   },
+  "vimeo": {
+    "base_url": "https://api.vimeo.com/",
+    "access_url": "https://api.vimeo.com/oauth/access_token",
+    "authorize_url": "https://api.vimeo.com/oauth/authorize",
+    "access_name": "access_token",
+    "auth_type": "oauth",
+    "auth_version": 2,
+    "auth_leg": 3
+  },
   "yahoo": {
     "base_url": "https://accounts.yahoo.com/",
     "access_url": "https://api.login.yahoo.com/oauth/v2/get_token",
