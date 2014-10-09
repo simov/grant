@@ -63,7 +63,13 @@
     ]
   },
   "live": {
-    "scope": "wl.offline_access"
+    "scope": [
+      "wl.offline_access",
+      "wl.basic",
+      "wl.skydrive",
+      "wl.skydrive_update",
+      "wl.photos"
+    ]
   },
   "mailchimp": {
   },
