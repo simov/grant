@@ -130,5 +130,5 @@ MIT
   [img-npm-version]: http://img.shields.io/npm/v/grant.svg?style=flat (NPM Version)
   [img-npm-downloads]: http://img.shields.io/npm/dm/grant.svg?style=flat (NPM Downloads)
 
-  [routes]: #reserver-routes-for-grant
+  [routes]: #reserved-routes-for-grant
   [configuration]: #configuration
