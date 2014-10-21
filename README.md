@@ -74,7 +74,7 @@ app.use(session());
   - **callback** - specific callback to use for this provider _(overrides the global one specified in the `server` key)_<br>
     - These callbacks are used only on your server!<br>
     - These callbacks are not the one you specify for your app!
-    - You should always specify the _callback/redirect url_ of your app like this:<br>
+    - You should always specify the `callback` or `redirect` url of your app like this:<br>
     `http(s)://mydomain.com/connect/[provider]/callback` where<br>
       - _provider_ is one of the above provider names
       - _mydomain.com_ is your site's domain name
@@ -109,7 +109,7 @@ app.use(session());
 ## Typical Flow
 
 1. Register OAuth application on your provider's web site
-2. For `callback/redirect uri` you should always use this format<br>
+2. For `callback` or `redirect` url you should always use this format<br>
   `http(s)://mydomain.com/connect/[provider]/callback` where<br>
   - _provider_ is one of the above provider names
   - _mydomain.com_ is your site's domain name
