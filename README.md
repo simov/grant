@@ -72,7 +72,7 @@ app.use(session());
   - **scope** - OAuth scopes array
   - **state** - OAuth state string
   - **callback** - specific callback to use for this provider _(overrides the global one specified in the `server` key)_<br>
-  > - These callbacks are used only on your server!<br>
+    - These callbacks are used only on your server!<br>
     - These callbacks are not the one you specify for your app!
     - You should always specify the _callback/redirect url_ of your app like this:<br>
     http(s)://mydomain.com**/connect/[provider]/callback** where<br>
@@ -82,6 +82,7 @@ app.use(session());
   - **custom1** - create sub configuration for that provider<br>
     _You can override any of the above keys here_<br>
     _**Example**_<br>
+    
     ```js
     "facebook": {
       "key": "...",
