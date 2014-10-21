@@ -2,15 +2,13 @@
   "amazon": {
     "authorize_url": "https://www.amazon.com/ap/oa",
     "access_url": "https://api.amazon.com/auth/o2/token",
-    "access_name": "access_token",
     "auth_type": "oauth",
     "auth_version": 2,
     "auth_leg": 3
   },
   "asana": {
-    "access_url": "https://app.asana.com/-/oauth_token",
     "authorize_url": "https://app.asana.com/-/oauth_authorize",
-    "access_name": "access_token",
+    "access_url": "https://app.asana.com/-/oauth_token",
     "auth_type": "oauth",
     "auth_version": 2,
     "auth_leg": 3
@@ -18,7 +16,6 @@
   "bitly": {
     "authorize_url": "https://bitly.com/oauth/authorize",
     "access_url": "https://api-ssl.bitly.com/oauth/access_token",
-    "access_name": "access_token",
     "grant_type": "authorization_code",
     "auth_type": "oauth",
     "auth_version": 2,
@@ -27,7 +24,6 @@
   "box": {
     "authorize_url": "https://api.box.com/oauth2/authorize",
     "access_url": "https://api.box.com/oauth2/token",
-    "access_name": "access_token",
     "grant_type": "authorization_code",
     "auth_type": "oauth",
     "auth_version": 2,
@@ -36,7 +32,6 @@
   "digitalocean": {
     "authorize_url": "https://cloud.digitalocean.com/v1/oauth/authorize",
     "access_url": "https://cloud.digitalocean.com/v1/oauth/token",
-    "access_name": "access_token",
     "auth_type": "oauth",
     "auth_version": 2,
     "auth_leg": 3
@@ -44,7 +39,6 @@
   "dropbox": {
     "authorize_url": "https://www.dropbox.com/1/oauth2/authorize",
     "access_url": "https://api.dropbox.com/1/oauth2/token",
-    "access_name": "access_token",
     "type": null,
     "auth_type": "oauth",
     "auth_version": 2,
@@ -53,7 +47,6 @@
   "facebook": {
     "authorize_url": "https://www.facebook.com/dialog/oauth",
     "access_url": "https://graph.facebook.com/oauth/access_token",
-    "access_name": "access_token",
     "auth_type": "oauth",
     "auth_version": 2,
     "auth_leg": 3
@@ -62,7 +55,6 @@
     "authorize_url": "https://www.flickr.com/services/oauth/authorize",
     "access_url": "https://www.flickr.com/services/oauth/access_token",
     "request_url": "https://www.flickr.com/services/oauth/request_token",
-    "access_name": "access_token",
     "auth_type": "oauth",
     "auth_version": 1,
     "auth_leg": 3
@@ -70,7 +62,6 @@
   "foursquare": {
     "authorize_url": "https://foursquare.com/oauth2/authenticate",
     "access_url": "https://foursquare.com/oauth2/access_token",
-    "access_name": "access_token",
     "auth_type": "oauth",
     "auth_version": 2,
     "auth_leg": 3
@@ -78,7 +69,6 @@
   "github": {
     "authorize_url": "https://github.com/login/oauth/authorize",
     "access_url": "https://github.com/login/oauth/access_token",
-    "access_name": "access_token",
     "auth_type": "oauth",
     "auth_version": 2,
     "auth_leg": 3
@@ -86,7 +76,6 @@
   "google": {
     "authorize_url": "https://accounts.google.com/o/oauth2/auth",
     "access_url": "https://accounts.google.com/o/oauth2/token",
-    "access_name": "access_token",
     "auth_type": "oauth",
     "auth_version": 2,
     "auth_leg": 3
@@ -94,7 +83,6 @@
   "heroku": {
     "authorize_url": "https://id.heroku.com/oauth/authorize",
     "access_url": "https://id.heroku.com/oauth/token",
-    "access_name": "access_token",
     "auth_type": "oauth",
     "auth_version": 2,
     "auth_leg": 3
@@ -102,7 +90,6 @@
   "imgur": {
     "authorize_url": "https://api.imgur.com/oauth2/authorize",
     "access_url": "https://api.imgur.com/oauth2/token",
-    "access_name": "access_token",
     "auth_type": "oauth",
     "auth_version": 2,
     "auth_leg": 3
@@ -110,7 +97,6 @@
   "instagram": {
     "authorize_url": "https://api.instagram.com/oauth/authorize",
     "access_url": "https://api.instagram.com/oauth/access_token",
-    "access_name": "access_token",
     "auth_type": "oauth",
     "auth_version": 2,
     "auth_leg": 3
@@ -119,7 +105,6 @@
     "authorize_url": "https://www.linkedin.com/uas/oauth/authenticate",
     "access_url": "https://api.linkedin.com/uas/oauth/accessToken",
     "request_url": "https://api.linkedin.com/uas/oauth/requestToken",
-    "access_name": "access_token",
     "auth_type": "oauth",
     "auth_version": 1,
     "auth_leg": 3
@@ -127,7 +112,6 @@
   "live": {
     "authorize_url": "https://login.live.com/oauth20_authorize.srf",
     "access_url": "https://login.live.com/oauth20_token.srf",
-    "access_name": "access_token",
     "grant_type": "authorization_code",
     "auth_type": "oauth",
     "auth_version": 2,
@@ -136,7 +120,6 @@
   "mailchimp": {
     "authorize_url": "https://login.mailchimp.com/oauth2/authorize",
     "access_url": "https://login.mailchimp.com/oauth2/token",
-    "access_name": "access_token",
     "auth_type": "oauth",
     "auth_version": 2,
     "auth_leg": 3
@@ -145,7 +128,6 @@
     "authorize_url": "http://www.openstreetmap.org/oauth/authorize",
     "access_url": "http://www.openstreetmap.org/oauth/access_token",
     "request_url": "http://www.openstreetmap.org/oauth/request_token",
-    "access_name": "access_token",
     "auth_type": "oauth",
     "auth_version": 1,
     "auth_leg": 3
@@ -153,7 +135,6 @@
   "paypal": {
     "authorize_url": "https://www.paypal.com/webapps/auth/protocol/openidconnect/v1/authorize",
     "access_url": "https://api.paypal.com/v1/identity/openidconnect/tokenservice",
-    "access_name": "access_token",
     "grant_type": "authorization_code",
     "auth_type": "oauth",
     "auth_version": 2,
@@ -162,7 +143,6 @@
   "slack": {
     "authorize_url": "https://slack.com/oauth/authorize",
     "access_url": "https://slack.com/api/oauth.access",
-    "access_name": "access_token",
     "auth_type": "oauth",
     "auth_version": 2,
     "auth_leg": 3
@@ -170,7 +150,6 @@
   "soundcloud": {
     "authorize_url": "https://soundcloud.com/connect",
     "access_url": "https://api.soundcloud.com/oauth2/token",
-    "access_name": "access_token",
     "auth_type": "oauth",
     "auth_version": 2,
     "auth_leg": 3
@@ -178,7 +157,6 @@
   "stackexchange": {
     "authorize_url": "https://stackexchange.com/oauth",
     "access_url": "https://stackexchange.com/oauth/access_token",
-    "access_name": "access_token",
     "auth_type": "oauth",
     "auth_version": 2,
     "auth_leg": 3
@@ -186,7 +164,6 @@
   "stocktwits": {
     "authorize_url": "https://api.stocktwits.com/api/2/oauth/authorize",
     "access_url": "https://api.stocktwits.com/api/2/oauth/token",
-    "access_name": "access_token",
     "grant_type": "authorization_code",
     "auth_type": "oauth",
     "auth_version": 2,
@@ -195,7 +172,6 @@
   "stripe": {
     "authorize_url": "https://connect.stripe.com/oauth/authorize",
     "access_url": "https://connect.stripe.com/oauth/token",
-    "access_name": "access_token",
     "auth_type": "oauth",
     "auth_version": 2,
     "auth_leg": 3
@@ -204,7 +180,6 @@
     "authorize_url": "https://trello.com/1/OAuthAuthorizeToken",
     "access_url": "https://trello.com/1/OAuthGetAccessToken",
     "request_url": "https://trello.com/1/OAuthGetRequestToken",
-    "access_name": "access_token",
     "auth_type": "oauth",
     "auth_version": 1,
     "auth_leg": 3
@@ -213,7 +188,6 @@
     "authorize_url": "http://www.tumblr.com/oauth/authorize",
     "access_url": "http://www.tumblr.com/oauth/access_token",
     "request_url": "http://www.tumblr.com/oauth/request_token",
-    "access_name": "access_token",
     "auth_type": "oauth",
     "auth_version": 1,
     "auth_leg": 3
@@ -221,7 +195,6 @@
   "twitch": {
     "authorize_url": "https://api.twitch.tv/kraken/oauth2/authorize",
     "access_url": "https://api.twitch.tv/kraken/oauth2/token",
-    "access_name": "access_token",
     "auth_type": "oauth",
     "auth_version": 2,
     "auth_leg": 3
@@ -230,7 +203,6 @@
     "authorize_url": "https://api.twitter.com/oauth/authenticate",
     "access_url": "https://api.twitter.com/oauth/access_token",
     "request_url": "https://api.twitter.com/oauth/request_token",
-    "access_name": "access_token",
     "auth_type": "oauth",
     "auth_version": 1,
     "auth_leg": 3
@@ -238,7 +210,6 @@
   "vimeo": {
     "authorize_url": "https://api.vimeo.com/oauth/authorize",
     "access_url": "https://api.vimeo.com/oauth/access_token",
-    "access_name": "access_token",
     "auth_type": "oauth",
     "auth_version": 2,
     "auth_leg": 3
@@ -247,7 +218,6 @@
     "authorize_url": "https://api.login.yahoo.com/oauth/v2/request_auth",
     "access_url": "https://api.login.yahoo.com/oauth/v2/get_token",
     "request_url": "https://api.login.yahoo.com/oauth/v2/get_request_token",
-    "access_name": "access_token",
     "auth_type": "oauth",
     "auth_version": 1,
     "auth_leg": 3
