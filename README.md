@@ -75,7 +75,7 @@ app.use(session());
     - These callbacks are used only on your server!<br>
     - These callbacks are not the one you specify for your app!
     - You should always specify the _callback/redirect url_ of your app like this:<br>
-    http(s)://mydomain.com/connect/[provider]/callback where<br>
+    `http(s)://mydomain.com/connect/[provider]/callback` where<br>
       - _provider_ is one of the above provider names
       - _mydomain.com_ is your site's domain name
   - **protocol** | **host** - additionally you can override these common values inherited from the `server` key
@@ -110,7 +110,7 @@ app.use(session());
 
 1. Register OAuth application on your provider's web site
 2. For `callback/redirect uri` you should always use this format<br>
-  http(s)://mydomain.com/connect/[provider]/callback where<br>
+  `http(s)://mydomain.com/connect/[provider]/callback` where<br>
   - _provider_ is one of the above provider names
   - _mydomain.com_ is your site's domain name
 3. Set up your common server `callback` in _server.json_ This is the final callback when the OAuth flow is complete. Grant will redirect you to it after hitting the `/connect/[provider]/callback` specified for your app, therefore this _callback_ should be something different _(take a look at the [reserved routes][routes] for Grant)_
