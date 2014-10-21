@@ -1,17 +1,21 @@
 {
   "amazon": {
-    "scope": "profile"
+    "protocol": "https",
+    "scope": [
+      "profile"
+    ]
   },
   "asana": {
   },
   "bitly": {
   },
   "box": {
+    "protocol": "https"
   },
   "digitalocean": {
   },
   "dropbox": {
-    "type": null
+    "protocol": "https"
   },
   "facebook": {
     "scope": [
@@ -24,12 +28,13 @@
     ]
   },
   "flickr": {
-    "perms": "delete"
+    "scope": [
+      "delete"
+    ]
   },
   "foursquare": {
   },
   "github": {
-    "headers": {"User-Agent": "Grant"}
   },
   "google": {
     "scope": [
@@ -39,13 +44,20 @@
       "https://www.googleapis.com/auth/freebase",
       "https://www.googleapis.com/auth/tasks",
       "https://www.googleapis.com/auth/yt-analytics.readonly",
-      "https://www.googleapis.com/auth/contacts.readonly"
+      "https://www.googleapis.com/auth/contacts.readonly",
+      "offline"
     ],
-    "access_type": "offline"
+    "contacts": {
+      "scope": [
+        "https://www.googleapis.com/auth/contacts.readonly"
+      ]
+    }
   },
   "heroku": {
+    "protocol": "https"
   },
   "imgur": {
+    "protocol": "https"
   },
   "instagram": {
   },
@@ -76,26 +88,38 @@
   "openstreetmap": {
   },
   "paypal": {
+    "protocol": "https",
     "state": "Purest",
-    "scope": "profile"
+    "scope": [
+      "profile"
+    ]
   },
   "slack": {
   },
   "soundcloud": {
-    "scope": "non-expiring"
+    "scope": [
+      "non-expiring"
+    ]
   },
   "stackexchange": {
-    "scope": "no_expiry"
+    "scope": [
+      "no_expiry"
+    ]
   },
   "stocktwits": {
-    "scope": "read,watch_lists,publish_messages,publish_watch_lists,follow_users,follow_stocks"
+    "scope": [
+      "read", "watch_lists", "publish_messages",
+      "publish_watch_lists", "follow_users", "follow_stocks"
+    ]
   },
   "stripe": {
   },
   "trello": {
   },
   "twitch": {
-    "scope": "user_read"
+    "scope": [
+      "user_read"
+    ]
   },
   "twitter": {
   },
@@ -108,6 +132,6 @@
 
 
   "disqus": {
-    "scope": "read,write"
+    "scope": ["read", "write"]
   }
 }

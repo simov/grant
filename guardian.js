@@ -26,39 +26,45 @@ function Guardian (config) {
     }));
   app.config = require('./config')(config);
 
-  app.get('/connect/:provider', function (req, res) {
+  app.get('/connect/:provider/:override?', function (req, res, next) {
+    if (req.params.override == 'callback') return next();
     var provider = app.config.app[req.params.provider];
-    var server = app.config.server;
+    if (req.params.override) {
+      provider = provider.overrides[req.params.override];
+    }
     req.session.provider = req.params.provider;
-    
+
     // Generate options object
     var opts = {
+      // oauth urls
+      authorizeUrl: provider['authorize_url'],
+      accessUrl: provider['access_url'],
+      // OAuth1
+      requestUrl: provider['request_url'],
+
+      // oauth options
+      accessName: provider['access_name'],
+      grantType: provider['grant_type'],
+
+      // not used
+      authorizeMethod: provider['authorize_method'],
+      signatureMethod: provider['signature_method'],
+      oauth_token: provider['oauth_token'],
+      version: provider['version'],
+      baseUrl: provider['base_url'],
+
+      // app credentials
       clientId: provider['client_id'],
       clientSecret: provider['client_secret'],
       consumerKey: provider['consumer_key'],
       consumerSecret: provider['consumer_secret'],
-      grantType: provider['grant_type'],
+
+      // app options
       state: provider['state'],
       scope: provider['scope'],
-      baseUrl: provider['base_url'],
-      requestUrl: provider['request_url'],
-      accessUrl: provider['access_url'],
-      accessName: provider['access_name'],
-      authorizeUrl: provider['authorize_url'],
-      authorizeMethod: provider['authorize_method'],
-      signatureMethod: provider['signature_method'],
-      oauth_token: provider['oauth_token'],
-      // callbackUrl: provider['redirect'] ? provider['redirect'] : server.protocol + '://' + server.host + '/callback',
-      callbackUrl: server.protocol+'://'+server.host+'/connect/'+provider.name+'/callback',
-      version: provider['version'],
       headers: provider['headers'],
-      // custom
-      // made type parameter optional for dropbox
-      type: provider['type'],
-      // used to set access_type=offline for google
-      access_type: provider['access_type'],
-      // used to set permissions for flickr
-      perms: provider['perms'],
+      callbackUrl: provider.protocol+'://'+provider.host+'/connect/'+provider.name+'/callback',
+      // custom app options - see below
 
       auth: {
         type: (provider['auth_type'] || 'oauth').replace(/[^a-z]/g, ''),
@@ -71,6 +77,20 @@ function Guardian (config) {
         callback: provider['callback']
       }
     };
+    // custom app options
+    if (provider.dropbox) {
+      // used to set type=null for dropbox
+      opts.type = provider['type'];
+    }
+    else if (provider.flickr) {
+      // used to set scope permissions for flickr
+      opts.perms = opts.scope;
+      delete opts.scope;
+    }
+    else if (provider.google) {
+      // used to set access_type=offline for google
+      opts.access_type = provider['access_type'];
+    }
 
     // 1. Load plugin
     // 2. Run validation

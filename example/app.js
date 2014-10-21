@@ -7,13 +7,26 @@ var express = require('express'),
   favicon = require('serve-favicon');
 var consolidate = require('consolidate'),
   hogan = require('hogan.js');
+var extend = require('extend');
 
-
-var grant = new require('grant')({
+var config = {
   server: require('./config/server.json'),
   credentials: require('./config/credentials.json'),
   options: require('./config/options.json')
-});
+};
+
+function transform (config) {
+  var result = {server: config.server};
+  for (var key in config.credentials) {
+    var provider = {};
+    extend(true, provider, config.credentials[key], config.options[key]);
+    result[key] = provider;
+  }
+  return result;
+}
+
+
+var grant = new require('grant')(transform(config));
 
 
 var app = express()
@@ -25,22 +38,19 @@ var app = express()
   }))
 
   .use(function (req, res, next) {
-    var server = grant.config.server;
-
     if (/^\/connect\/(\w+)$/.test(req.url)) {
-      var provider = req.url.replace(/^\/connect\/(\w+)$/,'$1');
+      var name = req.url.replace(/^\/connect\/(\w+)$/,'$1');
+      var provider = grant.config.app[name];
 
-      if (/heroku|dropbox|box|imgur|paypal|amazon/.test(provider)) {
-        if (server.protocol != 'https') {
-          server.protocol = 'https';
-          var url = server.protocol+'://'+server.host+'/connect/'+provider;
+      if (provider.protocol == 'https') {
+        if (/^http:/.test(req.headers.referer)) {
+          var url = provider.protocol+'://'+provider.host+'/connect/'+provider.name;
           return res.redirect(url);
         }
       }
       else {
-        if (server.protocol != 'http') {
-          server.protocol = 'http';
-          var url = server.protocol+'://'+server.host+'/connect/'+provider;
+        if (/^https:/.test(req.headers.referer)) {
+          var url = provider.protocol+'://'+provider.host+'/connect/'+provider.name;
           return res.redirect(url);
         }
       }

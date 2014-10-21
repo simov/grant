@@ -1,6 +1,5 @@
 {
-  "host": "grant-oauth.herokuapp.com",
-  "port": 3000,
   "protocol": "http",
+  "host": "grant-oauth.herokuapp.com",
   "callback": "/"
 }
