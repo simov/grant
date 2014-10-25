@@ -113,7 +113,7 @@ app.use(session());
   `http(s)://mydomain.com/connect/[provider]/callback` where<br>
   - _provider_ is one of the above provider names
   - _mydomain.com_ is your site's domain name
-3. Set up your common server `callback` in _server.json_ This is the final callback when the OAuth flow is complete. Grant will redirect you to it after hitting the `/connect/[provider]/callback` specified for your app, therefore this _callback_ should be something different _(take a look at the [reserved routes][routes] for Grant)_
+3. Set up your common server `callback` under the `server` key of your configuration. This is the final callback when the OAuth flow is complete. Grant will redirect you to it after hitting the `/connect/[provider]/callback` specified for your app, therefore this _callback_ should be something different _(take a look at the [reserved routes][routes] for Grant)_
 3. Optionally you can override the end _callback_ for each provider individually _(take a look at the [configuration][configuration] structure)_
 
 
