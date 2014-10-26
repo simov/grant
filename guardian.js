@@ -9,9 +9,10 @@ var express = require('express'),
   favicon = require('serve-favicon');
 
 var gate = require('./lib/core'), keeper;
+var config = require('./config');
 
 
-function Guardian (config) {
+function Guardian (_config) {
   var app = express()
     .use(favicon(__dirname+'/favicon.ico'))
     // body parser
@@ -24,16 +25,47 @@ function Guardian (config) {
       name: 'grant', secret: 'very secret',
       saveUninitialized: true, resave: true
     }));
-  app.config = require('./config').init(config);
+  app.config = config.init(_config);
 
   app.get('/connect/:provider/:override?', function (req, res, next) {
     if (req.params.override == 'callback') return next();
+
     var provider = app.config.app[req.params.provider];
-    if (req.params.override) {
-      provider = provider.overrides[req.params.override];
+    if ((req.params.override && provider.overrides)) {
+      var override = provider.overrides[req.params.override];
+      if (override) provider = override;
     }
+
     req.session.provider = req.params.provider;
 
+    if (req.query.test) return res.end(JSON.stringify(provider));
+    connect(req, res, provider);
+  });
+
+  app.post('/connect/:provider/:override?', function (req, res) {
+    var provider = app.config.app[req.params.provider];
+    if ((req.params.override && provider.overrides)) {
+      var override = provider.overrides[req.params.override];
+      if (override) provider = override;
+    }
+
+    var options = {};
+    for (var key in req.body) {
+      if (!req.body[key]) continue;
+      options[key] = req.body[key];
+    }
+    if (Object.keys(options).length) {
+      provider = config.override(provider, options);
+      config.transform(provider, options);
+    }
+
+    req.session.provider = req.params.provider;
+    
+    if (req.body.test) return res.end(JSON.stringify(provider));
+    connect(req, res, provider);
+  });
+
+  function connect (req, res, provider) {
     // Generate options object
     var opts = {
       // oauth urls
@@ -142,7 +174,7 @@ function Guardian (config) {
         message: 'Invalid plugin specified, could not find plugin: ' + opts.auth.type.toLowerCase() + path.flow + path.version + path.leg
       });
     }
-  });
+  };
 
   app.get('/step/:number', function (req, res) {
     keeper = gate({ req: req, res: res });
