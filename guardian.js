@@ -24,7 +24,7 @@ function Guardian (config) {
       name: 'grant', secret: 'very secret',
       saveUninitialized: true, resave: true
     }));
-  app.config = require('./config')(config);
+  app.config = require('./config').init(config);
 
   app.get('/connect/:provider/:override?', function (req, res, next) {
     if (req.params.override == 'callback') return next();
