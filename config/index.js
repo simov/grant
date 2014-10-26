@@ -2,7 +2,7 @@
 var dcopy = require('deep-copy');
 
 
-function setOAuthOptions (provider, options) {
+exports.credentials = function (provider, options) {
   // oauth application credentials
   if (provider.auth_version == 1) {
     provider.consumer_key = options.key||provider.key;
@@ -12,10 +12,9 @@ function setOAuthOptions (provider, options) {
     provider.client_id = options.key||provider.key;
     provider.client_secret = options.secret||provider.secret;
   }
+}
 
-  // oauth state
-  provider.state = options.state;
-
+exports.scope = function (provider, options) {
   // oauth scope
   if (options.scope instanceof Array) {
     if (provider.google) {
@@ -37,11 +36,17 @@ function setOAuthOptions (provider, options) {
     // Unfortunately, it wants this as a URL query parameter, rather than encoded
     // in the POST body (which is the more established and supported mechanism of
     // extending OAuth).
+    provider.request_url = provider.request_url.replace(/(.*)\?scope=.*/,'$1');
     provider.request_url += '?scope='+provider.scope;
   }
 }
 
-function setOverride (provider, options) {
+exports.transform = function (provider, options) {
+  this.credentials(provider, options);
+  this.scope(provider, options);
+}
+
+exports.override = function (provider, options) {
   var override = dcopy(provider);
   for (var key in options) {
     override[key] = options[key];
@@ -49,7 +54,7 @@ function setOverride (provider, options) {
   return override;
 }
 
-exports = module.exports = function (config) {
+exports.init = function (config) {
   config = config||{};
   // oauth application options
   config.oauth = require('./oauth.json');
@@ -80,15 +85,18 @@ exports = module.exports = function (config) {
       'User-Agent': 'Grant'
     }
 
+    // oauth state
+    provider.state = options.state;
+
     // overrides
     var overrides = {};
     for (var key in options) {
       if (key != 'scope' && 'object'===typeof options[key]) {
-        overrides[key] = setOverride(provider, options[key]);
-        setOAuthOptions(overrides[key], options[key]);
+        overrides[key] = this.override(provider, options[key]);
+        this.transform(overrides[key], options[key]);
       }
     }
-    setOAuthOptions(provider, options);
+    this.transform(provider, options);
     provider.overrides = overrides;
 
     config.app[provider.name] = provider;
