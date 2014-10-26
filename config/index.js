@@ -23,6 +23,8 @@ exports.scope = function (provider, options) {
         // Google sets the offline access outside of the other scopes
         options.scope.splice(idx,1);
         provider.access_type = 'offline';
+      } else {
+        delete provider.access_type;
       }
     }
     provider.scope = (provider.google)
