@@ -27,7 +27,7 @@ exports.scope = function (provider, options) {
         delete provider.access_type;
       }
     }
-    provider.scope = (provider.google)
+    provider.scope = (/amazon|digitalocean|google|paypal|twitch/.test(provider.name))
       ? options.scope.join(' ')
       : options.scope.join();
   }
