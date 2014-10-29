@@ -1,4 +1,6 @@
 {
+  "500px": {
+  },
   "amazon": {
     "protocol": "https",
     "scope": [
