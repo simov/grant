@@ -1,4 +1,12 @@
 {
+  "500px": {
+    "authorize_url": "https://api.500px.com/v1/oauth/authorize",
+    "access_url": "https://api.500px.com/v1/oauth/access_token",
+    "request_url": "https://api.500px.com/v1/oauth/request_token",
+    "auth_type": "oauth",
+    "auth_version": 1,
+    "auth_leg": 3
+  },
   "amazon": {
     "authorize_url": "https://www.amazon.com/ap/oa",
     "access_url": "https://api.amazon.com/auth/o2/token",
