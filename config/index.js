@@ -4,33 +4,38 @@ var dcopy = require('deep-copy');
 
 // auuth application credentials transform
 exports.credentials = function (provider, options) {
+  var key = options.key||provider.key;
+  var secret = options.secret||provider.secret;
+
   if (provider.auth_version == 1) {
-    provider.consumer_key = options.key||provider.key;
-    provider.consumer_secret = options.secret||provider.secret;
+    provider.consumer_key = key;
+    provider.consumer_secret = secret;
   }
   else if (provider.auth_version == 2) {
-    provider.client_id = options.key||provider.key;
-    provider.client_secret = options.secret||provider.secret;
+    provider.client_id = key;
+    provider.client_secret = secret;
   }
 }
 
 // oauth scope transform
 exports.scope = function (provider, options) {
-  if (options.scope instanceof Array) {
+  var scope = options.scope||provider.scope;
+
+  if (scope instanceof Array) {
     if (provider.google) {
       // Google sets the offline access outside of the regular scopes
-      var idx = options.scope.indexOf('offline');
+      var idx = scope.indexOf('offline');
       if (idx != -1) {
-        options.scope.splice(idx,1);
+        scope.splice(idx,1);
         provider.access_type = 'offline';
       } else {
         delete provider.access_type;
       }
     }
-    provider.scope = options.scope.join(provider.scope_delimiter||',');
+    provider.scope = scope.join(provider.scope_delimiter||',');
   }
   else {
-    provider.scope = options.scope;
+    provider.scope = scope;
   }
 
   if (provider.linkedin) {
