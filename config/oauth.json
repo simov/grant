@@ -112,6 +112,14 @@
     "auth_version": 1,
     "auth_leg": 3
   },
+  "linkedin2": {
+    "authorize_url": "https://www.linkedin.com/uas/oauth2/authorization",
+    "access_url": "https://www.linkedin.com/uas/oauth2/accessToken",
+    "auth_type": "oauth",
+    "auth_version": 2,
+    "auth_leg": 3,
+    "scope_delimiter": " "
+  },
   "live": {
     "authorize_url": "https://login.live.com/oauth20_authorize.srf",
     "access_url": "https://login.live.com/oauth20_token.srf",

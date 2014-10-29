@@ -74,6 +74,20 @@
       "w_messages"
     ]
   },
+  "linkedin2": {
+    "scope": [
+      "r_basicprofile",
+      "r_fullprofile",
+      "r_emailaddress",
+      "r_network",
+      "r_contactinfo",
+      "rw_nus",
+      "rw_company_admin",
+      "rw_groups",
+      "w_messages"
+    ],
+    "state": "Grant"
+  },
   "live": {
     "scope": [
       "wl.offline_access",
