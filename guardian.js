@@ -123,6 +123,10 @@ function Guardian (_config) {
       // used to set access_type=offline for google
       opts.access_type = provider['access_type'];
     }
+    else if (provider.trello) {
+      // used to set expiration=never for trello
+      opts.expiration = provider['expiration'];
+    }
 
     // 1. Load plugin
     // 2. Run validation

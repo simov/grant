@@ -32,6 +32,16 @@ exports.scope = function (provider, options) {
         delete provider.access_type;
       }
     }
+    else if (provider.trello) {
+      // Trello sets the never expiring access outside of the regular scopes
+      var idx = scope.indexOf('non-expiring');
+      if (idx != -1) {
+        scope.splice(idx,1);
+        provider.expiration = 'never';
+      } else {
+        delete provider.expiration;
+      }
+    }
     provider.scope = scope.join(provider.scope_delimiter||',');
   }
   else {
