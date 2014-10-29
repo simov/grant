@@ -69,6 +69,20 @@ describe('options', function () {
       provider.scope.should.equal('scope1');
       should.equal(provider.access_type, undefined);
     });
+    it('set trello expiration never outside of the regular scopes', function () {
+      var provider = {trello:true};
+      var options = {scope:['scope1','non-expiring']};
+      config.scope(provider, options);
+      provider.scope.should.equal('scope1');
+      provider.expiration.should.equal('never');
+    });
+    it('remove trello expiration never on override', function () {
+      var provider = {trello:true, expiration:'never'};
+      var options = {scope:['scope1']};
+      config.scope(provider, options);
+      provider.scope.should.equal('scope1');
+      should.equal(provider.expiration, undefined);
+    });
     it('set linkedin scopes as querystring', function () {
       var provider = {linkedin:true, request_url:'https://requestToken'};
       var options = {scope:['scope1','scope2']};
