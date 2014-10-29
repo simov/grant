@@ -31,15 +31,6 @@ describe('dynamic', function () {
       });
   });
 
-  describe('get', function () {
-    it('provider', function (done) {
-      done();
-    });
-    it('override', function (done) {
-      done();
-    });
-  });
-
   describe('post', function () {
     it('provider', function (done) {
       request.post(host+'/connect/google', {
