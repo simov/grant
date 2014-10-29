@@ -27,9 +27,10 @@ exports.scope = function (provider, options) {
         delete provider.access_type;
       }
     }
-    provider.scope = (/amazon|digitalocean|google|paypal|twitch/.test(provider.name))
-      ? options.scope.join(' ')
-      : options.scope.join();
+    provider.scope = options.scope.join(provider.scope_delimiter||',');
+  }
+  else {
+    provider.scope = options.scope;
   }
 
   // quirks
