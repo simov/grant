@@ -73,6 +73,14 @@ describe('options', function () {
       config.app.linkedin.request_url.should.equal(
         'https://api.linkedin.com/uas/oauth/requestToken?scope=scope1,scope2');
     });
+    it('set scopes as string', function () {
+      var config = {
+        server:{},
+        facebook:{scope:'scope1,scope2'}
+      };
+      (new Grant(config));
+      config.app.facebook.scope.should.equal('scope1,scope2');
+    });
   });
 
   describe('server', function () {

@@ -4,7 +4,8 @@
     "access_url": "https://api.amazon.com/auth/o2/token",
     "auth_type": "oauth",
     "auth_version": 2,
-    "auth_leg": 3
+    "auth_leg": 3,
+    "scope_delimiter": " "
   },
   "asana": {
     "authorize_url": "https://app.asana.com/-/oauth_authorize",
@@ -34,7 +35,8 @@
     "access_url": "https://cloud.digitalocean.com/v1/oauth/token",
     "auth_type": "oauth",
     "auth_version": 2,
-    "auth_leg": 3
+    "auth_leg": 3,
+    "scope_delimiter": " "
   },
   "dropbox": {
     "authorize_url": "https://www.dropbox.com/1/oauth2/authorize",
@@ -78,7 +80,8 @@
     "access_url": "https://accounts.google.com/o/oauth2/token",
     "auth_type": "oauth",
     "auth_version": 2,
-    "auth_leg": 3
+    "auth_leg": 3,
+    "scope_delimiter": " "
   },
   "heroku": {
     "authorize_url": "https://id.heroku.com/oauth/authorize",
@@ -138,7 +141,8 @@
     "grant_type": "authorization_code",
     "auth_type": "oauth",
     "auth_version": 2,
-    "auth_leg": 3
+    "auth_leg": 3,
+    "scope_delimiter": " "
   },
   "slack": {
     "authorize_url": "https://slack.com/oauth/authorize",
@@ -197,7 +201,8 @@
     "access_url": "https://api.twitch.tv/kraken/oauth2/token",
     "auth_type": "oauth",
     "auth_version": 2,
-    "auth_leg": 3
+    "auth_leg": 3,
+    "scope_delimiter": " "
   },
   "twitter": {
     "authorize_url": "https://api.twitter.com/oauth/authenticate",
