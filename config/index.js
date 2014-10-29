@@ -2,8 +2,8 @@
 var dcopy = require('deep-copy');
 
 
+// auuth application credentials transform
 exports.credentials = function (provider, options) {
-  // oauth application credentials
   if (provider.auth_version == 1) {
     provider.consumer_key = options.key||provider.key;
     provider.consumer_secret = options.secret||provider.secret;
@@ -14,13 +14,13 @@ exports.credentials = function (provider, options) {
   }
 }
 
+// oauth scope transform
 exports.scope = function (provider, options) {
-  // oauth scope
   if (options.scope instanceof Array) {
     if (provider.google) {
+      // Google sets the offline access outside of the regular scopes
       var idx = options.scope.indexOf('offline');
       if (idx != -1) {
-        // Google sets the offline access outside of the other scopes
         options.scope.splice(idx,1);
         provider.access_type = 'offline';
       } else {
@@ -33,7 +33,6 @@ exports.scope = function (provider, options) {
     provider.scope = options.scope;
   }
 
-  // quirks
   if (provider.linkedin) {
     // LinkedIn accepts an extended "scope" parameter when obtaining a request.
     // Unfortunately, it wants this as a URL query parameter, rather than encoded
@@ -59,7 +58,7 @@ exports.override = function (provider, options) {
 
 exports.init = function (config) {
   config = config||{};
-  // oauth application options
+  // oauth configuration
   config.oauth = require('./oauth.json');
   // generated below
   config.app = {};
@@ -83,11 +82,8 @@ exports.init = function (config) {
     provider.host = options.host||config.server.host;
     provider.callback = options.callback||config.server.callback;
 
-    // set headers
-    provider.headers = {
-      'User-Agent': 'Grant'
-    }
-
+    // headers
+    provider.headers = {'User-Agent': 'Grant'};
     // oauth state
     provider.state = options.state;
 

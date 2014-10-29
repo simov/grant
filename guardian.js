@@ -31,7 +31,7 @@ function Guardian (_config) {
     if (req.params.override == 'callback') return next();
 
     var provider = app.config.app[req.params.provider];
-    if ((req.params.override && provider.overrides)) {
+    if (req.params.override && provider.overrides) {
       var override = provider.overrides[req.params.override];
       if (override) provider = override;
     }
@@ -44,7 +44,7 @@ function Guardian (_config) {
 
   app.post('/connect/:provider/:override?', function (req, res) {
     var provider = app.config.app[req.params.provider];
-    if ((req.params.override && provider.overrides)) {
+    if (req.params.override && provider.overrides) {
       var override = provider.overrides[req.params.override];
       if (override) provider = override;
     }
