@@ -114,6 +114,9 @@
   },
   "redbooth": {
   },
+  "salesforce": {
+    "protocol": "https"
+  },
   "slack": {
   },
   "soundcloud": {
