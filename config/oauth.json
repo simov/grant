@@ -264,5 +264,12 @@
     "auth_type": "oauth",
     "auth_version": 1,
     "auth_leg": 3
+  },
+  "yammer": {
+    "authorize_url": "https://www.yammer.com/dialog/oauth",
+    "access_url": "https://www.yammer.com/oauth2/access_token.json",
+    "auth_type": "oauth",
+    "auth_version": 2,
+    "auth_leg": 3
   }
 }
