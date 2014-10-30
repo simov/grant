@@ -74,7 +74,8 @@
     "access_url": "https://api.flowdock.com/oauth/token",
     "auth_type": "oauth",
     "auth_version": 2,
-    "auth_leg": 3
+    "auth_leg": 3,
+    "scope_delimiter": " "
   },
   "foursquare": {
     "authorize_url": "https://foursquare.com/oauth2/authenticate",
