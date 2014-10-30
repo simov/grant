@@ -4,15 +4,16 @@
 _**grant**_ is build on top of **[mashape][mashape] / [guardian][guardian]**
 
 
-## Providers [live demo][demo]
+## Providers [demo][demo]
 
 | | | | | | |
 :---: | :---: | :---: | :---: | :---: | :---:
-[amazon]() | [asana](http://developer.asana.com/documentation/) | [bitly](http://dev.bitly.com) | [box](https://developers.box.com/) | [digitalocean](https://developers.digitalocean.com/) | [dropbox](https://www.dropbox.com/developers)
-[facebook](https://developers.facebook.com) | [flickr](https://www.flickr.com/services/api/) | [foursquare](https://developer.foursquare.com/) | [github](http://developer.github.com) | [google](https://developers.google.com/) | [heroku](https://devcenter.heroku.com/categories/platform-api)
-[imgur](https://api.imgur.com/) | [instagram](http://instagram.com/developer) | [linkedin](http://developer.linkedin.com) | [live](http://msdn.microsoft.com/en-us/library/dn783283.aspx) | [mailchimp](http://apidocs.mailchimp.com/) | [openstreetmap](http://wiki.openstreetmap.org/wiki/API_v0.6)
-[paypal](https://developer.paypal.com/docs/) | [slack](https://api.slack.com/) | [soundcloud](http://developers.soundcloud.com) | [stackexchange](https://api.stackexchange.com) | [stocktwits](http://stocktwits.com/developers) | [stripe](https://stripe.com/docs)
-[trello](https://trello.com/docs/) | [tumblr](http://www.tumblr.com/docs/en/api/v2) | [twitch](https://github.com/justintv/twitch-api) | [twitter](https://dev.twitter.com) | [vimeo](https://developer.vimeo.com/) | [yahoo](https://developer.yahoo.com/)
+[500px](https://developers.500px.com/) | [amazon](http://login.amazon.com/documentation) | [asana](http://developer.asana.com/documentation/) | [bitly](http://dev.bitly.com) | [box](https://developers.box.com/) | [digitalocean](https://developers.digitalocean.com/)
+[dropbox](https://www.dropbox.com/developers) | [facebook](https://developers.facebook.com) | [flickr](https://www.flickr.com/services/api/) | [flowdock](https://www.flowdock.com/api) | [foursquare](https://developer.foursquare.com/) | [github](http://developer.github.com)
+[google](https://developers.google.com/) | [heroku](https://devcenter.heroku.com/categories/platform-api) | [imgur](https://api.imgur.com/) | [instagram](http://instagram.com/developer) | [linkedin](http://developer.linkedin.com) [(2)][quirks] | [live](http://msdn.microsoft.com/en-us/library/dn783283.aspx)
+[mailchimp](http://apidocs.mailchimp.com/) | [openstreetmap](http://wiki.openstreetmap.org/wiki/API_v0.6) | [paypal](https://developer.paypal.com/docs/) | [redbooth](https://redbooth.com/api/) | [salesforce](https://www.salesforce.com/us/developer/docs/api_rest/) | [slack](https://api.slack.com/)
+[soundcloud](http://developers.soundcloud.com) | [stackexchange](https://api.stackexchange.com) | [stocktwits](http://stocktwits.com/developers) | [stripe](https://stripe.com/docs) | [trello](https://trello.com/docs/) | [tumblr](http://www.tumblr.com/docs/en/api/v2)
+[twitch](https://github.com/justintv/twitch-api) | [twitter](https://dev.twitter.com) | [vimeo](https://developer.vimeo.com/) | [yahoo](https://developer.yahoo.com/) | [yammer](https://developer.yammer.com/)
 
 
 ## Usage
@@ -106,6 +107,18 @@ app.use(session());
     ```
 
 
+#### Dynamic Override
+
+Additionally you can make a `POST` request to the `/connect/[provider]` route to override your provider's options dynamically for each request
+
+```js
+// example using request
+request.post('http://mydomain.com/connect/facebook', {
+  form: {scope:['some','other','scopes']}
+}, function (err, res, body) {});
+```
+
+
 ## Typical Flow
 
 1. Register OAuth application on your provider's web site
@@ -113,8 +126,13 @@ app.use(session());
   `http(s)://mydomain.com/connect/[provider]/callback` where<br>
   - _provider_ is one of the above provider names
   - _mydomain.com_ is your site's domain name
-3. Set up your common server `callback` under the `server` key of your configuration. This is the final callback when the OAuth flow is complete. Grant will redirect you to it after hitting the `/connect/[provider]/callback` specified for your app, therefore this _callback_ should be something different _(take a look at the [reserved routes][routes] for Grant)_
-3. Optionally you can override the end _callback_ for each provider individually _(take a look at the [configuration][configuration] structure)_
+3. Set up your common server `callback` under the `server` key of your configuration. This is the final callback when the OAuth flow is complete. Grant will redirect you to it after hitting the `/connect/[provider]/callback` specified for your app, therefore this _callback_ should be something different than the _[reserved routes][routes] for Grant_
+4. Optionally you can override the end _callback_ for each provider individually, take a look at the _[configuration][configuration] data structure_
+
+
+## Quirks
+
+- At some point LinkedIn added support for OAuth2, so if you want to use that flow, you should use `linkedin2` for provider name, instead of `linkedin` which is for OAuth1
 
 
 ## License
@@ -133,3 +151,4 @@ MIT
 
   [routes]: #reserved-routes-for-grant
   [configuration]: #configuration
+  [quirks]: #quirks
