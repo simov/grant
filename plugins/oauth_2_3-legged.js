@@ -54,12 +54,11 @@ module.exports = {
           ? response.token.token
           : response.token;
 
-        next({
-          access_token: access_token,
-          refresh_token: response.secret,
-          expires_in: response.results.expires_in,
-          token_type: response.results.token_type
-        });
+        var result = response.results||{};
+        result.access_token = response.token;
+        result.refresh_token = response.secret;
+
+        next(result);
       }
     },
 
