@@ -27,12 +27,11 @@ module.exports = {
             }
           });
 
-        next({
-          access_token: response.token,
-          refresh_token: response.secret,
-          expires_in: response.results.expires_in,
-          token_type: response.results.token_type
-        });
+        var result = response.results||{};
+        result.access_token = response.token;
+        result.refresh_token = response.secret;
+
+        next(result);
       }
     }
 
