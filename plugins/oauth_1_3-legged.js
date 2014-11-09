@@ -32,7 +32,12 @@ module.exports = {
     2: {
       invoke: function (options, server) {
         var url = options.authorizeUrl + '?oauth_token=' + (options.oauth_token || '');
+        // flickr
         if (options.perms) url += '&perms='+options.perms;
+        // trello
+        if (options.scope) url += '&scope='+options.scope;
+        if (options.expiration) url += '&expiration='+options.expiration;
+
         server.res.redirect(url);
       }
     },
