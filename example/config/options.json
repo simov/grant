@@ -138,6 +138,9 @@
   "stripe": {
   },
   "trello": {
+    "scope": [
+      "non-expiring"
+    ]
   },
   "twitch": {
     "scope": [
