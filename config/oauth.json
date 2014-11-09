@@ -118,7 +118,8 @@
     "access_url": "https://api.instagram.com/oauth/access_token",
     "auth_type": "oauth",
     "auth_version": 2,
-    "auth_leg": 3
+    "auth_leg": 3,
+    "scope_delimiter": " "
   },
   "linkedin": {
     "authorize_url": "https://www.linkedin.com/uas/oauth/authenticate",
@@ -181,7 +182,8 @@
     "grant_type": "authorization_code",
     "auth_type": "oauth",
     "auth_version": 2,
-    "auth_leg": 3
+    "auth_leg": 3,
+    "scope_delimiter": " "
   },
   "slack": {
     "authorize_url": "https://slack.com/oauth/authorize",
@@ -256,7 +258,8 @@
     "access_url": "https://api.vimeo.com/oauth/access_token",
     "auth_type": "oauth",
     "auth_version": 2,
-    "auth_leg": 3
+    "auth_leg": 3,
+    "scope_delimiter": " "
   },
   "yahoo": {
     "authorize_url": "https://api.login.yahoo.com/oauth/v2/request_auth",
