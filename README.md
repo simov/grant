@@ -4,7 +4,7 @@
 _**grant**_ is build on top of **[mashape][mashape] / [guardian][guardian]**
 
 
-## Providers [demo][demo]
+## Providers [Playground][example]
 
 | | | | | | |
 :---: | :---: | :---: | :---: | :---: | :---:
@@ -143,7 +143,7 @@ MIT
   [mashape]: https://www.mashape.com/
   [guardian]: http://guardianjs.com/
   [bible]: http://oauthbible.com/
-  [demo]: http://grant-oauth.herokuapp.com/
+  [example]: https://grant-oauth.herokuapp.com/
   [npm]: https://www.npmjs.org/package/grant
 
   [img-npm-version]: http://img.shields.io/npm/v/grant.svg?style=flat (NPM Version)
