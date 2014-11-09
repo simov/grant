@@ -50,9 +50,10 @@ module.exports = {
             }
           });
 
-        var access_token = (server.req.session.provider == 'yammer')
-          ? response.token.token
-          : response.token;
+        if (server.req.session.provider == 'yammer') {
+          response.results = response.results.access_token;
+          response.token = response.results.token;
+        }
 
         var result = response.results||{};
         result.access_token = response.token;
