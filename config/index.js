@@ -21,32 +21,32 @@ exports.credentials = function (provider, options) {
 exports.scope = function (provider, options) {
   var scope = options.scope||provider.scope;
 
-  if (scope instanceof Array) {
-    if (provider.google) {
-      // Google sets the offline access outside of the regular scopes
-      var idx = scope.indexOf('offline');
-      if (idx != -1) {
-        scope.splice(idx,1);
-        provider.access_type = 'offline';
-      } else {
-        delete provider.access_type;
-      }
+  if (provider.google) {
+    scope = (scope instanceof Array) ? scope : [scope];
+    // Google sets the offline access outside of the regular scopes
+    var idx = scope.indexOf('offline');
+    if (idx != -1) {
+      scope.splice(idx,1);
+      provider.access_type = 'offline';
+    } else {
+      delete provider.access_type;
     }
-    else if (provider.trello) {
-      // Trello sets the never expiring access outside of the regular scopes
-      var idx = scope.indexOf('non-expiring');
-      if (idx != -1) {
-        scope.splice(idx,1);
-        provider.expiration = 'never';
-      } else {
-        delete provider.expiration;
-      }
+  }
+  else if (provider.trello) {
+    scope = (scope instanceof Array) ? scope : [scope];
+    // Trello sets the never expiring access outside of the regular scopes
+    var idx = scope.indexOf('non-expiring');
+    if (idx != -1) {
+      scope.splice(idx,1);
+      provider.expiration = 'never';
+    } else {
+      delete provider.expiration;
     }
-    provider.scope = scope.join(provider.scope_delimiter||',');
   }
-  else {
-    provider.scope = scope;
-  }
+
+  provider.scope = (scope instanceof Array)
+    ? scope.join(provider.scope_delimiter||',')
+    : scope;
 
   if (provider.linkedin) {
     // LinkedIn accepts an extended "scope" parameter when obtaining a request.
