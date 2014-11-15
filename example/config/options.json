@@ -139,7 +139,9 @@
   },
   "trello": {
     "scope": [
-      "non-expiring"
+      "non-expiring",
+      "read",
+      "write"
     ]
   },
   "twitch": {
