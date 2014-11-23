@@ -40,6 +40,8 @@
   },
   "github": {
   },
+  "gitter": {
+  },
   "google": {
     "scope": [
       "https://www.googleapis.com/auth/userinfo.profile",
