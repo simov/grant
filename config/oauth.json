@@ -91,6 +91,13 @@
     "auth_version": 2,
     "auth_leg": 3
   },
+  "gitter": {
+    "authorize_url": "https://gitter.im/login/oauth/authorize",
+    "access_url": "https://gitter.im/login/oauth/token",
+    "auth_type": "oauth",
+    "auth_version": 2,
+    "auth_leg": 3
+  },
   "google": {
     "authorize_url": "https://accounts.google.com/o/oauth2/auth",
     "access_url": "https://accounts.google.com/o/oauth2/token",
