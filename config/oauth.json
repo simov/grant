@@ -166,6 +166,14 @@
     "auth_version": 2,
     "auth_leg": 3
   },
+  "odesk": {
+    "authorize_url": "https://www.odesk.com/services/api/auth",
+    "access_url": "https://www.odesk.com/api/auth/v1/oauth/token/access",
+    "request_url": "https://www.odesk.com/api/auth/v1/oauth/token/request",
+    "auth_type": "oauth",
+    "auth_version": 1,
+    "auth_leg": 3
+  },
   "openstreetmap": {
     "authorize_url": "http://www.openstreetmap.org/oauth/authorize",
     "access_url": "http://www.openstreetmap.org/oauth/access_token",
