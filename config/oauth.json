@@ -22,6 +22,14 @@
     "auth_version": 2,
     "auth_leg": 3
   },
+  "bitbucket": {
+    "authorize_url": "https://bitbucket.org/api/1.0/oauth/authenticate",
+    "access_url": "https://bitbucket.org/api/1.0/oauth/access_token",
+    "request_url": "https://bitbucket.org/api/1.0/oauth/request_token",
+    "auth_type": "oauth",
+    "auth_version": 1,
+    "auth_leg": 3
+  },
   "bitly": {
     "authorize_url": "https://bitly.com/oauth/authorize",
     "access_url": "https://api-ssl.bitly.com/oauth/access_token",
