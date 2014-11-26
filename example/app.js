@@ -73,6 +73,13 @@ var app = express()
 
 
 app.get('/', function (req, res) {
+  // feedly sandbox redirect_uri
+  if (req.session.provider == 'feedly' && req.query.code) {
+    var q = require('querystring');
+    res.redirect('/connect/feedly/callback?'+q.stringify(req.query));
+    return;
+  }
+
   console.log(req.query);
 
   var current = req.session.provider;
