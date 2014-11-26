@@ -33,6 +33,12 @@
       "friends_groups"
     ]
   },
+  "feedly": {
+    "host": "localhost:8080",
+    "scope": [
+      "https://cloud.feedly.com/subscriptions"
+    ]
+  },
   "flickr": {
     "scope": [
       "delete"

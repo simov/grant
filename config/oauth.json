@@ -76,6 +76,13 @@
     "auth_version": 2,
     "auth_leg": 3
   },
+  "feedly": {
+    "authorize_url": "https://cloud.feedly.com/v3/auth/auth",
+    "access_url": "http://cloud.feedly.com/v3/auth/token",
+    "auth_type": "oauth",
+    "auth_version": 2,
+    "auth_leg": 3
+  },
   "flickr": {
     "authorize_url": "https://www.flickr.com/services/oauth/authorize",
     "access_url": "https://www.flickr.com/services/oauth/access_token",
