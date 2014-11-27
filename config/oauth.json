@@ -51,7 +51,8 @@
     "access_url": "https://www.deviantart.com/oauth2/token",
     "auth_type": "oauth",
     "auth_version": 2,
-    "auth_leg": 3
+    "auth_leg": 3,
+    "scope_delimiter": " "
   },
   "digitalocean": {
     "authorize_url": "https://cloud.digitalocean.com/v1/oauth/authorize",
