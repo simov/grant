@@ -8,12 +8,13 @@ _**grant**_ is build on top of **[mashape][mashape] / [guardian][guardian]**
 
 | | | | | | |
 :---: | :---: | :---: | :---: | :---: | :---:
-[500px](https://developers.500px.com/) | [amazon](http://login.amazon.com/documentation) | [asana](http://developer.asana.com/documentation/) | [bitly](http://dev.bitly.com) | [box](https://developers.box.com/) | [digitalocean](https://developers.digitalocean.com/)
-[dropbox](https://www.dropbox.com/developers) | [facebook](https://developers.facebook.com) | [flickr](https://www.flickr.com/services/api/) | [flowdock](https://www.flowdock.com/api) | [foursquare](https://developer.foursquare.com/) | [github](http://developer.github.com)
-[google](https://developers.google.com/) | [heroku](https://devcenter.heroku.com/categories/platform-api) | [imgur](https://api.imgur.com/) | [instagram](http://instagram.com/developer) | [linkedin](http://developer.linkedin.com) [(2)][quirks] | [live](http://msdn.microsoft.com/en-us/library/dn783283.aspx)
-[mailchimp](http://apidocs.mailchimp.com/) | [openstreetmap](http://wiki.openstreetmap.org/wiki/API_v0.6) | [paypal](https://developer.paypal.com/docs/) | [redbooth](https://redbooth.com/api/) | [salesforce](https://www.salesforce.com/us/developer/docs/api_rest/) | [slack](https://api.slack.com/)
-[soundcloud](http://developers.soundcloud.com) | [stackexchange](https://api.stackexchange.com) | [stocktwits](http://stocktwits.com/developers) | [stripe](https://stripe.com/docs) | [trello](https://trello.com/docs/) | [tumblr](http://www.tumblr.com/docs/en/api/v2)
-[twitch](https://github.com/justintv/twitch-api) | [twitter](https://dev.twitter.com) | [vimeo](https://developer.vimeo.com/) | [yahoo](https://developer.yahoo.com/) | [yammer](https://developer.yammer.com/)
+[500px](https://developers.500px.com/) | [amazon](http://login.amazon.com/documentation) | [asana](http://developer.asana.com/documentation/) | [bitbucket](https://confluence.atlassian.com/display/BITBUCKET/Use+the+Bitbucket+REST+APIs) | [bitly](http://dev.bitly.com) | [box](https://developers.box.com/)
+[deviantart](https://www.deviantart.com/developers/) | [digitalocean](https://developers.digitalocean.com/) | [dropbox](https://www.dropbox.com/developers) | [facebook](https://developers.facebook.com) | [feedly](https://developer.feedly.com/) | [flickr](https://www.flickr.com/services/api/)
+[flowdock](https://www.flowdock.com/api) | [foursquare](https://developer.foursquare.com/) | [github](http://developer.github.com) | [gitter](https://developer.gitter.im/docs/welcome) | [google](https://developers.google.com/) | [heroku](https://devcenter.heroku.com/categories/platform-api)
+[imgur](https://api.imgur.com/) | [instagram](http://instagram.com/developer) | [linkedin](http://developer.linkedin.com) [(2)][quirks] | [live](http://msdn.microsoft.com/en-us/library/dn783283.aspx) | [mailchimp](http://apidocs.mailchimp.com/) | [odesk](https://developers.odesk.com/)
+[openstreetmap](http://wiki.openstreetmap.org/wiki/API_v0.6) | [paypal](https://developer.paypal.com/docs/) | [redbooth](https://redbooth.com/api/) | [salesforce](https://www.salesforce.com/us/developer/docs/api_rest) | [slack](https://api.slack.com/) | [soundcloud](http://developers.soundcloud.com)
+[stackexchange](https://api.stackexchange.com) | [stocktwits](http://stocktwits.com/developers) | [stripe](https://stripe.com/docs) | [trello](https://trello.com/docs/) | [tumblr](http://www.tumblr.com/docs/en/api/v2) | [twitch](https://github.com/justintv/twitch-api)
+[twitter](https://dev.twitter.com) | [vimeo](https://developer.vimeo.com/) | [yahoo](https://developer.yahoo.com/) | [yammer](https://developer.yammer.com/)
 
 
 ## Usage
