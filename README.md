@@ -110,7 +110,7 @@ app.use(session());
 
 #### Dynamic Override
 
-Additionally you can make a `POST` request to the `/connect/[provider]` route to override your provider's options dynamically for each request
+Additionally you can make a `POST` request to the `/connect/:provider/:override?` route to override your provider's options dynamically for each request
 
 ```js
 // example using request
@@ -127,13 +127,17 @@ request.post('http://mydomain.com/connect/facebook', {
   `http(s)://mydomain.com/connect/[provider]/callback` where<br>
   - _provider_ is one of the above provider names
   - _mydomain.com_ is your site's domain name
-3. Set up your common server `callback` under the `server` key of your configuration. This is the final callback when the OAuth flow is complete. Grant will redirect you to it after hitting the `/connect/[provider]/callback` specified for your app, therefore this _callback_ should be something different than the _[reserved routes][routes] for Grant_
-4. Optionally you can override the end _callback_ for each provider individually, take a look at the _[configuration][configuration] data structure_
+3. Under the `server` key of your configuration
+  - `host` - set up host to match the one used in your app's redirect url
+  - `protocol` - set up protocol to match the one used in your app's redirect url
+  - `callback` - set a common callback route to use on your server. This is the final callback when the OAuth flow is complete. Grant will redirect you to it after hitting the `http(s)://mydomain.com/connect/[provider]/callback` specified for your OAuth app. Therefore the `callback` value should be something different than the [reserved routes][routes] for Grant
+4. Set any other provider specific configuration options under that provider key name. For example choose some `scope` to request from the user, and set specific `callback` route on your server to handle the response from that provider
+5. Navigate to the `/connect/:provider/:override?` route to start the OAuth flow. Once the flow is complete, you will be redirected back to the route specified in your `callback` key. You can access the response OAuth data through the ExpressJS's `req.query` key
 
 
 ## Quirks
 
-- At some point LinkedIn added support for OAuth2, so if you want to use that flow, you should use `linkedin2` for provider name, instead of `linkedin` which is for OAuth1
+- To use LinkedIn's OAuth2 flow you should use `linkedin2` for provider name, instead of `linkedin` which is for OAuth1
 
 
 ## License
