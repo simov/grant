@@ -46,6 +46,13 @@
     "auth_version": 2,
     "auth_leg": 3
   },
+  "buffer": {
+    "authorize_url": "https://bufferapp.com/oauth2/authorize",
+    "access_url": "https://api.bufferapp.com/1/oauth2/token.json",
+    "auth_type": "oauth",
+    "auth_version": 2,
+    "auth_leg": 3
+  },
   "deviantart": {
     "authorize_url": "https://www.deviantart.com/oauth2/authorize",
     "access_url": "https://www.deviantart.com/oauth2/token",
