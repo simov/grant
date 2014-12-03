@@ -140,6 +140,8 @@
       "non-expiring"
     ]
   },
+  "spotify": {
+  },
   "stackexchange": {
     "scope": [
       "no_expiry"

@@ -244,6 +244,13 @@
     "auth_version": 2,
     "auth_leg": 3
   },
+  "spotify": {
+    "authorize_url": "https://accounts.spotify.com/authorize",
+    "access_url": "https://accounts.spotify.com/api/token",
+    "auth_type": "oauth",
+    "auth_version": 2,
+    "auth_leg": 3
+  },
   "stackexchange": {
     "authorize_url": "https://stackexchange.com/oauth",
     "access_url": "https://stackexchange.com/oauth/access_token",
