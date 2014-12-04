@@ -136,6 +136,13 @@
     "auth_leg": 3,
     "scope_delimiter": " "
   },
+  "harvest": {
+    "authorize_url": "https://api.harvestapp.com/oauth2/authorize",
+    "access_url": "https://api.harvestapp.com/oauth2/token",
+    "auth_type": "oauth",
+    "auth_version": 2,
+    "auth_leg": 3
+  },
   "heroku": {
     "authorize_url": "https://id.heroku.com/oauth/authorize",
     "access_url": "https://id.heroku.com/oauth/token",
