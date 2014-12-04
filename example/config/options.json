@@ -72,6 +72,8 @@
       ]
     }
   },
+  "harvest": {
+  },
   "heroku": {
     "protocol": "https"
   },
