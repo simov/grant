@@ -25,6 +25,8 @@
   "dropbox": {
     "protocol": "https"
   },
+  "evernote": {
+  },
   "facebook": {
     "scope": [
       "publish_actions",
