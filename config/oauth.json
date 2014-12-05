@@ -77,6 +77,14 @@
     "auth_version": 2,
     "auth_leg": 3
   },
+  "evernote": {
+    "authorize_url": "https://www.evernote.com/OAuth.action",
+    "access_url": "https://www.evernote.com/oauth",
+    "request_url": "https://www.evernote.com/oauth",
+    "auth_type": "oauth",
+    "auth_version": 1,
+    "auth_leg": 3
+  },
   "facebook": {
     "authorize_url": "https://www.facebook.com/dialog/oauth",
     "access_url": "https://graph.facebook.com/oauth/access_token",
