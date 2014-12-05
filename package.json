@@ -2,18 +2,27 @@
   "name": "grant",
   "version": "1.1.4",
   "description": "Authentication Middleware for Express",
+
+  "keywords": [
+    "oauth",
+    "authentication",
+    "middleware",
+    "express",
+    "guardian"
+  ],
+
+  "license": "MIT",
+  "homepage": "https://github.com/simov/grant",
   
   "authors": [
     "Nijiko Yonskai",
-    "Simeon Velichkov"
+    "Simeon Velichkov <simeonvelichkov@gmail.com> (http://simov.github.io)"
   ],
 
   "repository": {
     "type": "git",
     "url": "git://github.com/simov/grant.git"
   },
-  
-  "license": "MIT",
   
   "dependencies": {
     "express"            : "4.4.4",
@@ -36,16 +45,6 @@
   },
 
   "main": "guardian.js",
-  
-  "keywords": [
-    "guardian",
-    "authentication",
-    "middleware",
-    "express",
-    "oauth",
-    "plugin",
-    "plugins"
-  ],
 
   "scripts": {
     "postinstall": "node example/postinstall.js"
