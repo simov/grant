@@ -53,6 +53,13 @@
     "auth_version": 2,
     "auth_leg": 3
   },
+  "coinbase": {
+    "authorize_url": "https://www.coinbase.com/oauth/authorize",
+    "access_url": "https://www.coinbase.com/oauth/token",
+    "auth_type": "oauth",
+    "auth_version": 2,
+    "auth_leg": 3
+  },
   "deviantart": {
     "authorize_url": "https://www.deviantart.com/oauth2/authorize",
     "access_url": "https://www.deviantart.com/oauth2/token",
