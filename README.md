@@ -1,7 +1,7 @@
 
 # Grant [![img-npm-version]][npm]
 
-_**grant**_ is build on top of **[mashape][mashape] / [guardian][guardian]**
+_**grant**_ is built on top of **[mashape][mashape] / [guardian][guardian]**
 
 
 ## Providers [Playground][example]
