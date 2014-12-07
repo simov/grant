@@ -211,6 +211,13 @@
     "auth_version": 2,
     "auth_leg": 3
   },
+  "mixcloud": {
+    "authorize_url": "https://www.mixcloud.com/oauth/authorize",
+    "access_url": "https://www.mixcloud.com/oauth/access_token",
+    "auth_type": "oauth",
+    "auth_version": 2,
+    "auth_leg": 3
+  },
   "odesk": {
     "authorize_url": "https://www.odesk.com/services/api/auth",
     "access_url": "https://www.odesk.com/api/auth/v1/oauth/token/access",
