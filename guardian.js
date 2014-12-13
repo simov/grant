@@ -156,6 +156,15 @@ function Guardian (_config) {
           console.log(url);
           res.redirect(url);
         });
+      } else {
+        var redirect_uri = provider.protocol+'://'+provider.host+'/connect/'+provider.name+'/callback';
+        res.redirect(provider.authorize_url + '?' + querystring.stringify({
+          client_id:provider.key,
+          response_type:'code',
+          redirect_uri:redirect_uri,
+          scope:provider.scope,
+          state:provider.state
+        }));
       }
       return;
     }
@@ -236,6 +245,21 @@ function Guardian (_config) {
           console.log(body);
           res.redirect(provider.callback+'?'+body);
         });
+      } else {
+        var redirect_uri = provider.protocol+'://'+provider.host+'/connect/'+provider.name+'/callback';
+        request.post(provider.access_url, {
+          form:{
+            client_id:provider.key,
+            client_secret:provider.secret,
+            code:req.query.code,
+            redirect_uri:redirect_uri,
+            grant_type:'authorization_code'
+          }
+        }, function (err, _res, body) {
+          if (err) console.log(err);
+          console.log(body);
+          res.redirect(provider.callback+'?'+body);
+        })
       }
       return;
     }
