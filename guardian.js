@@ -1,5 +1,5 @@
 
-var query   = require('querystring');
+var querystring   = require('querystring');
 
 var express = require('express'),
   bodyParser = require('body-parser'),
@@ -7,6 +7,7 @@ var express = require('express'),
   cookieParser = require('cookie-parser'),
   session = require('express-session'),
   favicon = require('serve-favicon');
+var request = require('request');
 
 var gate = require('./lib/core'), keeper;
 var config = require('./config');
@@ -128,6 +129,37 @@ function Guardian (_config) {
       opts.expiration = provider['expiration'];
     }
 
+    if (provider.grant) {
+      if (req.session.provider == 'getpocket') {
+        var redirect_uri = provider.protocol+'://'+provider.host+'/connect/'+provider.name+'/callback';
+        request.post(provider.request_url, {
+          headers: {
+            'content-type':'application/x-www-form-urlencoded; charset=UTF8',
+            'x-accept':'application/json'
+          },
+          form: {
+            consumer_key:provider.key,
+            redirect_uri:redirect_uri
+            // state:'Grant'
+          }
+        }, function (err, _res, body) {
+          if (err) console.log(err)
+          var json = JSON.parse(body)
+          console.log(json);
+          req.session.payload = json;
+
+
+          var url = provider.authorize_url + '?' + querystring.stringify({
+            request_token:json.code,
+            redirect_uri:redirect_uri
+          })
+          console.log(url);
+          res.redirect(url);
+        });
+      }
+      return;
+    }
+
     // 1. Load plugin
     // 2. Run validation
     // 3. Store options object
@@ -186,6 +218,28 @@ function Guardian (_config) {
   });
 
   app.get('/connect/:provider/callback', function (req, res) {
+    var provider = app.config.app[req.session.provider];
+    if (provider.grant) {
+      if (req.session.provider == 'getpocket') {
+        request.post(provider.access_url, {
+          headers: {
+            'content-type':'application/x-www-form-urlencoded; charset=UTF8',
+            // 'x-accept':'application/json'
+            'x-accept':'application/x-www-form-urlencoded'
+          },
+          form: {
+            consumer_key:provider.key,
+            code:req.session.payload.code
+          }
+        }, function (err, _res, body) {
+          if (err) console.log(err)
+          console.log(body);
+          res.redirect(provider.callback+'?'+body);
+        });
+      }
+      return;
+    }
+
     var plugin;
     var step;
     var data;
@@ -233,7 +287,7 @@ function Guardian (_config) {
       if (response) {
         return (!data.done.callback || data.done.callback == "oob")
           ? res.json(response)
-          : res.redirect(data.done.callback + '?' + query.stringify(response));
+          : res.redirect(data.done.callback + '?' + querystring.stringify(response));
       }
 
       if ((step + 1) > plugin.steps) {

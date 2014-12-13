@@ -129,6 +129,15 @@
     "auth_version": 2,
     "auth_leg": 3
   },
+  "getpocket": {
+    "authorize_url": "https://getpocket.com/auth/authorize",
+    "request_url": "https://getpocket.com/v3/oauth/request",
+    "access_url": "https://getpocket.com/v3/oauth/authorize",
+    "auth_type": "oauth",
+    "auth_version": 2,
+    "auth_leg": 3,
+    "grant": true
+  },
   "github": {
     "authorize_url": "https://github.com/login/oauth/authorize",
     "access_url": "https://github.com/login/oauth/access_token",
