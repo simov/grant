@@ -36,7 +36,8 @@
     "grant_type": "authorization_code",
     "auth_type": "oauth",
     "auth_version": 2,
-    "auth_leg": 3
+    "auth_leg": 3,
+    "grant": true
   },
   "box": {
     "authorize_url": "https://api.box.com/oauth2/authorize",
