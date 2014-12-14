@@ -159,7 +159,7 @@ function Grant (_config) {
           req.session.payload = data;
 
           var url = provider.authorize_url + '?' + querystring.stringify({
-            request_token:json.code,
+            request_token:data.code,
             redirect_uri:redirect_uri
           })
           res.redirect(url);
