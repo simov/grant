@@ -1,23 +1,19 @@
 {
   "name": "grant",
   "version": "1.1.4",
-  "description": "Authentication Middleware for Express",
+  "description": "OAuth Middleware for Express",
 
   "keywords": [
     "oauth",
     "authentication",
     "middleware",
-    "express",
-    "guardian"
+    "express"
   ],
 
   "license": "MIT",
   "homepage": "https://github.com/simov/grant",
   
-  "authors": [
-    "Nijiko Yonskai",
-    "Simeon Velichkov <simeonvelichkov@gmail.com> (http://simov.github.io)"
-  ],
+  "author": "Simeon Velichkov <simeonvelichkov@gmail.com> (http://simov.github.io)",
 
   "repository": {
     "type": "git",
@@ -32,19 +28,16 @@
     "express-session"    : "1.5.1",
     "serve-favicon"      : "2.0.1",
 
-    "mashape-oauth"      : "git://github.com/simov/mashape-oauth.git#oauth2-type",
+    "request"            : "2.51.0",
     "deep-copy"          : "*"
   },
 
   "devDependencies": {
     "mocha"              : "1.21.4",
-    "should"             : "4.0.4",
-    "express"            : "4.4.4",
-    "request"            : "2.46.0",
-    "supertest"          : "0.10.0"
+    "should"             : "4.0.4"
   },
 
-  "main": "guardian.js",
+  "main": "grant.js",
 
   "scripts": {
     "postinstall": "node example/postinstall.js"
