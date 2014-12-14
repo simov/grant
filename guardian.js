@@ -156,7 +156,8 @@ function Guardian (_config) {
           console.log(url);
           res.redirect(url);
         });
-      } else {
+      }
+      else if (provider.auth_version == 2) {
         var redirect_uri = provider.protocol+'://'+provider.host+'/connect/'+provider.name+'/callback';
         res.redirect(provider.authorize_url + '?' + querystring.stringify({
           client_id:provider.key,
@@ -165,6 +166,26 @@ function Guardian (_config) {
           scope:provider.scope,
           state:provider.state
         }));
+      }
+      else if (provider.auth_version == 1) {
+        var redirect_uri = provider.protocol+'://'+provider.host+'/connect/'+provider.name+'/callback';
+        request.post(provider.request_url, {
+          oauth:{
+            callback:redirect_uri,
+            consumer_key:provider.key,
+            consumer_secret:provider.secret
+          }
+        }, function (err, _res, body) {
+          if (err) console.log(err);
+          console.log(body);
+          var data = querystring.parse(body);
+          req.session.payload = body;
+          var url = provider.authorize_url + '?' + querystring.stringify({
+            oauth_token:data.oauth_token
+          })
+          console.log(url);
+          res.redirect(url);
+        })
       }
       return;
     }
@@ -245,7 +266,8 @@ function Guardian (_config) {
           console.log(body);
           res.redirect(provider.callback+'?'+body);
         });
-      } else {
+      }
+      else if (provider.auth_version == 2) {
         var redirect_uri = provider.protocol+'://'+provider.host+'/connect/'+provider.name+'/callback';
         request.post(provider.access_url, {
           form:{
@@ -254,6 +276,23 @@ function Guardian (_config) {
             code:req.query.code,
             redirect_uri:redirect_uri,
             grant_type:'authorization_code'
+          }
+        }, function (err, _res, body) {
+          if (err) console.log(err);
+          console.log(body);
+          res.redirect(provider.callback+'?'+body);
+        })
+      }
+      else if (provider.auth_version == 1) {
+        console.log(req.query);
+        var data = querystring.parse(req.session.payload);
+        request.post(provider.access_url, {
+          oauth:{
+            consumer_key:provider.key,
+            consumer_secret:provider.secret,
+            token:req.query.oauth_token,
+            token_secret:data.oauth_token_secret,
+            verifier:req.query.oauth_verifier
           }
         }, function (err, _res, body) {
           if (err) console.log(err);
