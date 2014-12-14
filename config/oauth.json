@@ -1,370 +1,266 @@
 {
   "500px": {
+    "request_url": "https://api.500px.com/v1/oauth/request_token",
     "authorize_url": "https://api.500px.com/v1/oauth/authorize",
     "access_url": "https://api.500px.com/v1/oauth/access_token",
-    "request_url": "https://api.500px.com/v1/oauth/request_token",
-    "auth_type": "oauth",
-    "auth_version": 1,
-    "auth_leg": 3
+    "oauth": 1
   },
   "amazon": {
     "authorize_url": "https://www.amazon.com/ap/oa",
     "access_url": "https://api.amazon.com/auth/o2/token",
-    "auth_type": "oauth",
-    "auth_version": 2,
-    "auth_leg": 3,
+    "oauth": 2,
     "scope_delimiter": " "
   },
   "asana": {
     "authorize_url": "https://app.asana.com/-/oauth_authorize",
     "access_url": "https://app.asana.com/-/oauth_token",
-    "auth_type": "oauth",
-    "auth_version": 2,
-    "auth_leg": 3
+    "oauth": 2
   },
   "bitbucket": {
+    "request_url": "https://bitbucket.org/api/1.0/oauth/request_token",
     "authorize_url": "https://bitbucket.org/api/1.0/oauth/authenticate",
     "access_url": "https://bitbucket.org/api/1.0/oauth/access_token",
-    "request_url": "https://bitbucket.org/api/1.0/oauth/request_token",
-    "auth_type": "oauth",
-    "auth_version": 1,
-    "auth_leg": 3
+    "oauth": 1
   },
   "bitly": {
     "authorize_url": "https://bitly.com/oauth/authorize",
     "access_url": "https://api-ssl.bitly.com/oauth/access_token",
-    "grant_type": "authorization_code",
-    "auth_type": "oauth",
-    "auth_version": 2,
-    "auth_leg": 3,
-    "grant": true
+    "oauth": 2
   },
   "box": {
     "authorize_url": "https://api.box.com/oauth2/authorize",
     "access_url": "https://api.box.com/oauth2/token",
-    "grant_type": "authorization_code",
-    "auth_type": "oauth",
-    "auth_version": 2,
-    "auth_leg": 3
+    "oauth": 2
   },
   "buffer": {
     "authorize_url": "https://bufferapp.com/oauth2/authorize",
     "access_url": "https://api.bufferapp.com/1/oauth2/token.json",
-    "auth_type": "oauth",
-    "auth_version": 2,
-    "auth_leg": 3
+    "oauth": 2
   },
   "coinbase": {
     "authorize_url": "https://www.coinbase.com/oauth/authorize",
     "access_url": "https://www.coinbase.com/oauth/token",
-    "auth_type": "oauth",
-    "auth_version": 2,
-    "auth_leg": 3
+    "oauth": 2
   },
   "deviantart": {
     "authorize_url": "https://www.deviantart.com/oauth2/authorize",
     "access_url": "https://www.deviantart.com/oauth2/token",
-    "auth_type": "oauth",
-    "auth_version": 2,
-    "auth_leg": 3,
+    "oauth": 2,
     "scope_delimiter": " "
   },
   "digitalocean": {
     "authorize_url": "https://cloud.digitalocean.com/v1/oauth/authorize",
     "access_url": "https://cloud.digitalocean.com/v1/oauth/token",
-    "auth_type": "oauth",
-    "auth_version": 2,
-    "auth_leg": 3,
+    "oauth": 2,
     "scope_delimiter": " "
   },
   "dropbox": {
     "authorize_url": "https://www.dropbox.com/1/oauth2/authorize",
     "access_url": "https://api.dropbox.com/1/oauth2/token",
-    "type": null,
-    "auth_type": "oauth",
-    "auth_version": 2,
-    "auth_leg": 3
+    "oauth": 2
   },
   "evernote": {
+    "request_url": "https://www.evernote.com/oauth",
     "authorize_url": "https://www.evernote.com/OAuth.action",
     "access_url": "https://www.evernote.com/oauth",
-    "request_url": "https://www.evernote.com/oauth",
-    "auth_type": "oauth",
-    "auth_version": 1,
-    "auth_leg": 3
+    "oauth": 1
   },
   "facebook": {
     "authorize_url": "https://www.facebook.com/dialog/oauth",
     "access_url": "https://graph.facebook.com/oauth/access_token",
-    "auth_type": "oauth",
-    "auth_version": 2,
-    "auth_leg": 3
+    "oauth": 2
   },
   "feedly": {
     "authorize_url": "https://cloud.feedly.com/v3/auth/auth",
     "access_url": "http://cloud.feedly.com/v3/auth/token",
-    "auth_type": "oauth",
-    "auth_version": 2,
-    "auth_leg": 3
+    "oauth": 2
   },
   "flickr": {
+    "request_url": "https://www.flickr.com/services/oauth/request_token",
     "authorize_url": "https://www.flickr.com/services/oauth/authorize",
     "access_url": "https://www.flickr.com/services/oauth/access_token",
-    "request_url": "https://www.flickr.com/services/oauth/request_token",
-    "auth_type": "oauth",
-    "auth_version": 1,
-    "auth_leg": 3
+    "oauth": 1
   },
   "flowdock": {
     "authorize_url": "https://api.flowdock.com/oauth/authorize",
     "access_url": "https://api.flowdock.com/oauth/token",
-    "auth_type": "oauth",
-    "auth_version": 2,
-    "auth_leg": 3,
+    "oauth": 2,
     "scope_delimiter": " "
   },
   "foursquare": {
     "authorize_url": "https://foursquare.com/oauth2/authenticate",
     "access_url": "https://foursquare.com/oauth2/access_token",
-    "auth_type": "oauth",
-    "auth_version": 2,
-    "auth_leg": 3
+    "oauth": 2
   },
   "getpocket": {
-    "authorize_url": "https://getpocket.com/auth/authorize",
     "request_url": "https://getpocket.com/v3/oauth/request",
+    "authorize_url": "https://getpocket.com/auth/authorize",
     "access_url": "https://getpocket.com/v3/oauth/authorize",
-    "auth_type": "oauth",
-    "auth_version": 2,
-    "auth_leg": 3,
-    "grant": true
+    "oauth": 2,
+    "custom": true
   },
   "github": {
     "authorize_url": "https://github.com/login/oauth/authorize",
     "access_url": "https://github.com/login/oauth/access_token",
-    "auth_type": "oauth",
-    "auth_version": 2,
-    "auth_leg": 3
+    "oauth": 2
   },
   "gitter": {
     "authorize_url": "https://gitter.im/login/oauth/authorize",
     "access_url": "https://gitter.im/login/oauth/token",
-    "auth_type": "oauth",
-    "auth_version": 2,
-    "auth_leg": 3
+    "oauth": 2
   },
   "google": {
     "authorize_url": "https://accounts.google.com/o/oauth2/auth",
     "access_url": "https://accounts.google.com/o/oauth2/token",
-    "auth_type": "oauth",
-    "auth_version": 2,
-    "auth_leg": 3,
+    "oauth": 2,
     "scope_delimiter": " "
   },
   "harvest": {
     "authorize_url": "https://api.harvestapp.com/oauth2/authorize",
     "access_url": "https://api.harvestapp.com/oauth2/token",
-    "auth_type": "oauth",
-    "auth_version": 2,
-    "auth_leg": 3
+    "oauth": 2
   },
   "heroku": {
     "authorize_url": "https://id.heroku.com/oauth/authorize",
     "access_url": "https://id.heroku.com/oauth/token",
-    "auth_type": "oauth",
-    "auth_version": 2,
-    "auth_leg": 3
+    "oauth": 2
   },
   "imgur": {
     "authorize_url": "https://api.imgur.com/oauth2/authorize",
     "access_url": "https://api.imgur.com/oauth2/token",
-    "auth_type": "oauth",
-    "auth_version": 2,
-    "auth_leg": 3
+    "oauth": 2
   },
   "instagram": {
     "authorize_url": "https://api.instagram.com/oauth/authorize",
     "access_url": "https://api.instagram.com/oauth/access_token",
-    "auth_type": "oauth",
-    "auth_version": 2,
-    "auth_leg": 3,
+    "oauth": 2,
     "scope_delimiter": " "
   },
   "linkedin": {
+    "request_url": "https://api.linkedin.com/uas/oauth/requestToken",
     "authorize_url": "https://www.linkedin.com/uas/oauth/authenticate",
     "access_url": "https://api.linkedin.com/uas/oauth/accessToken",
-    "request_url": "https://api.linkedin.com/uas/oauth/requestToken",
-    "auth_type": "oauth",
-    "auth_version": 1,
-    "auth_leg": 3
+    "oauth": 1
   },
   "linkedin2": {
     "authorize_url": "https://www.linkedin.com/uas/oauth2/authorization",
     "access_url": "https://www.linkedin.com/uas/oauth2/accessToken",
-    "auth_type": "oauth",
-    "auth_version": 2,
-    "auth_leg": 3,
+    "oauth": 2,
     "scope_delimiter": " "
   },
   "live": {
     "authorize_url": "https://login.live.com/oauth20_authorize.srf",
     "access_url": "https://login.live.com/oauth20_token.srf",
-    "grant_type": "authorization_code",
-    "auth_type": "oauth",
-    "auth_version": 2,
-    "auth_leg": 3
+    "oauth": 2
   },
   "mailchimp": {
     "authorize_url": "https://login.mailchimp.com/oauth2/authorize",
     "access_url": "https://login.mailchimp.com/oauth2/token",
-    "auth_type": "oauth",
-    "auth_version": 2,
-    "auth_leg": 3
+    "oauth": 2
   },
   "mixcloud": {
     "authorize_url": "https://www.mixcloud.com/oauth/authorize",
     "access_url": "https://www.mixcloud.com/oauth/access_token",
-    "auth_type": "oauth",
-    "auth_version": 2,
-    "auth_leg": 3
+    "oauth": 2
   },
   "odesk": {
+    "request_url": "https://www.odesk.com/api/auth/v1/oauth/token/request",
     "authorize_url": "https://www.odesk.com/services/api/auth",
     "access_url": "https://www.odesk.com/api/auth/v1/oauth/token/access",
-    "request_url": "https://www.odesk.com/api/auth/v1/oauth/token/request",
-    "auth_type": "oauth",
-    "auth_version": 1,
-    "auth_leg": 3
+    "oauth": 1
   },
   "openstreetmap": {
+    "request_url": "http://www.openstreetmap.org/oauth/request_token",
     "authorize_url": "http://www.openstreetmap.org/oauth/authorize",
     "access_url": "http://www.openstreetmap.org/oauth/access_token",
-    "request_url": "http://www.openstreetmap.org/oauth/request_token",
-    "auth_type": "oauth",
-    "auth_version": 1,
-    "auth_leg": 3
+    "oauth": 1
   },
   "paypal": {
     "authorize_url": "https://www.paypal.com/webapps/auth/protocol/openidconnect/v1/authorize",
     "access_url": "https://api.paypal.com/v1/identity/openidconnect/tokenservice",
-    "grant_type": "authorization_code",
-    "auth_type": "oauth",
-    "auth_version": 2,
-    "auth_leg": 3,
+    "oauth": 2,
     "scope_delimiter": " "
   },
   "redbooth": {
     "authorize_url": "https://redbooth.com/oauth2/authorize",
     "access_url": "https://redbooth.com/oauth2/token",
-    "auth_type": "oauth",
-    "auth_version": 2,
-    "auth_leg": 3
+    "oauth": 2
   },
   "salesforce": {
     "authorize_url": "https://login.salesforce.com/services/oauth2/authorize",
     "access_url": "https://login.salesforce.com/services/oauth2/token",
-    "grant_type": "authorization_code",
-    "auth_type": "oauth",
-    "auth_version": 2,
-    "auth_leg": 3,
+    "oauth": 2,
     "scope_delimiter": " "
   },
   "slack": {
     "authorize_url": "https://slack.com/oauth/authorize",
     "access_url": "https://slack.com/api/oauth.access",
-    "auth_type": "oauth",
-    "auth_version": 2,
-    "auth_leg": 3
+    "oauth": 2
   },
   "soundcloud": {
     "authorize_url": "https://soundcloud.com/connect",
     "access_url": "https://api.soundcloud.com/oauth2/token",
-    "auth_type": "oauth",
-    "auth_version": 2,
-    "auth_leg": 3
+    "oauth": 2
   },
   "spotify": {
     "authorize_url": "https://accounts.spotify.com/authorize",
     "access_url": "https://accounts.spotify.com/api/token",
-    "auth_type": "oauth",
-    "auth_version": 2,
-    "auth_leg": 3
+    "oauth": 2
   },
   "stackexchange": {
     "authorize_url": "https://stackexchange.com/oauth",
     "access_url": "https://stackexchange.com/oauth/access_token",
-    "auth_type": "oauth",
-    "auth_version": 2,
-    "auth_leg": 3
+    "oauth": 2
   },
   "stocktwits": {
     "authorize_url": "https://api.stocktwits.com/api/2/oauth/authorize",
     "access_url": "https://api.stocktwits.com/api/2/oauth/token",
-    "grant_type": "authorization_code",
-    "auth_type": "oauth",
-    "auth_version": 2,
-    "auth_leg": 3
+    "oauth": 2
   },
   "stripe": {
     "authorize_url": "https://connect.stripe.com/oauth/authorize",
     "access_url": "https://connect.stripe.com/oauth/token",
-    "auth_type": "oauth",
-    "auth_version": 2,
-    "auth_leg": 3
+    "oauth": 2
   },
   "trello": {
+    "request_url": "https://trello.com/1/OAuthGetRequestToken",
     "authorize_url": "https://trello.com/1/OAuthAuthorizeToken",
     "access_url": "https://trello.com/1/OAuthGetAccessToken",
-    "request_url": "https://trello.com/1/OAuthGetRequestToken",
-    "auth_type": "oauth",
-    "auth_version": 1,
-    "auth_leg": 3
+    "oauth": 1
   },
   "tumblr": {
+    "request_url": "http://www.tumblr.com/oauth/request_token",
     "authorize_url": "http://www.tumblr.com/oauth/authorize",
     "access_url": "http://www.tumblr.com/oauth/access_token",
-    "request_url": "http://www.tumblr.com/oauth/request_token",
-    "auth_type": "oauth",
-    "auth_version": 1,
-    "auth_leg": 3
+    "oauth": 1
   },
   "twitch": {
     "authorize_url": "https://api.twitch.tv/kraken/oauth2/authorize",
     "access_url": "https://api.twitch.tv/kraken/oauth2/token",
-    "auth_type": "oauth",
-    "auth_version": 2,
-    "auth_leg": 3,
+    "oauth": 2,
     "scope_delimiter": " "
   },
   "twitter": {
+    "request_url": "https://api.twitter.com/oauth/request_token",
     "authorize_url": "https://api.twitter.com/oauth/authenticate",
     "access_url": "https://api.twitter.com/oauth/access_token",
-    "request_url": "https://api.twitter.com/oauth/request_token",
-    "auth_type": "oauth",
-    "auth_version": 1,
-    "auth_leg": 3
+    "oauth": 1
   },
   "vimeo": {
     "authorize_url": "https://api.vimeo.com/oauth/authorize",
     "access_url": "https://api.vimeo.com/oauth/access_token",
-    "auth_type": "oauth",
-    "auth_version": 2,
-    "auth_leg": 3,
+    "oauth": 2,
     "scope_delimiter": " "
   },
   "yahoo": {
+    "request_url": "https://api.login.yahoo.com/oauth/v2/get_request_token",
     "authorize_url": "https://api.login.yahoo.com/oauth/v2/request_auth",
     "access_url": "https://api.login.yahoo.com/oauth/v2/get_token",
-    "request_url": "https://api.login.yahoo.com/oauth/v2/get_request_token",
-    "auth_type": "oauth",
-    "auth_version": 1,
-    "auth_leg": 3
+    "oauth": 1
   },
   "yammer": {
     "authorize_url": "https://www.yammer.com/dialog/oauth",
     "access_url": "https://www.yammer.com/oauth2/access_token.json",
-    "auth_type": "oauth",
-    "auth_version": 2,
-    "auth_leg": 3
+    "oauth": 2
   }
 }
