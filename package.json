@@ -29,6 +29,7 @@
     "serve-favicon"      : "2.0.1",
 
     "request"            : "2.51.0",
+    "qs"                 : "2.3.3",
     "deep-copy"          : "*"
   },
 

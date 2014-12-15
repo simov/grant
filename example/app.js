@@ -92,7 +92,7 @@ app.get('/', function (req, res) {
     var obj = {url:'/connect/'+provider, name:provider};
     if (current == provider) {
       obj.credentials = req.query;
-      obj.json = JSON.stringify(req.query, null, 4);
+      obj.credentials.raw = JSON.stringify(req.query.raw, null, 4);
     }
     params.push(obj);
   });
