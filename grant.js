@@ -1,5 +1,5 @@
 
-var querystring   = require('querystring');
+var qs   = require('qs');
 
 var express = require('express'),
   bodyParser = require('body-parser'),
@@ -69,34 +69,18 @@ function Grant (_config) {
     /*
       // OAuth urls
       request_url, authorize_url, access_url
+
       // OAuth parameters
       access_name, grant_type, type
       authorize_method, signature_method, oauth_token, version, base_url
       state, scope, redirect_uri
+
       // app credentials
       client_id, client_secret, consumer_key, consumer_secret
     */
 
-    // custom app options
-    // if (provider.dropbox) {
-    //   // used to set type=null for dropbox
-    //   provider['type'];
-    // }
-    // else if (provider.flickr) {
-    //   // used to set scope permissions for flickr
-    //   // opts.perms = opts.scope;
-    //   // delete opts.scope;
-    // }
-    // else if (provider.google) {
-    //   // used to set access_type=offline for google
-    //   provider['access_type'];
-    // }
-    // else if (provider.trello) {
-    //   // used to set expiration=never for trello
-    //   opts.expiration = provider['expiration'];
-    // }
-
-    var redirect_uri = provider.protocol+'://'+provider.host+'/connect/'+provider.name+'/callback';
+    var redirect_uri = provider.protocol + '://' + provider.host
+                      + '/connect/' + provider.name + '/callback';
 
     if (provider.oauth == 1) {
       request.post(provider.request_url, {
@@ -107,7 +91,7 @@ function Grant (_config) {
         }
       }, function (err, _res, body) {
         if (err) console.log(err);
-        var data = querystring.parse(body);
+        var data = qs.parse(body);
         req.session.payload = data;
 
         var params = {
@@ -121,7 +105,7 @@ function Grant (_config) {
           params.expiration = provider.expiration;
         }
 
-        var url = provider.authorize_url + '?' + querystring.stringify(params)
+        var url = provider.authorize_url + '?' + qs.stringify(params)
         res.redirect(url);
       });
     }
@@ -137,14 +121,13 @@ function Grant (_config) {
       if (provider.google) {
         params.access_type = provider.access_type;
       }
-      res.redirect(provider.authorize_url + '?' + querystring.stringify(params));
+      res.redirect(provider.authorize_url + '?' + qs.stringify(params));
     }
 
     else if (provider.custom) {
       if (provider.name == 'getpocket') {
         request.post(provider.request_url, {
           headers: {
-            'content-type':'application/x-www-form-urlencoded; charset=UTF8',
             // 'x-accept':'application/json'
             'x-accept':'application/x-www-form-urlencoded'
           },
@@ -155,10 +138,10 @@ function Grant (_config) {
           }
         }, function (err, _res, body) {
           if (err) console.log(err)
-          var data = querystring.parse(body);
+          var data = qs.parse(body);
           req.session.payload = data;
 
-          var url = provider.authorize_url + '?' + querystring.stringify({
+          var url = provider.authorize_url + '?' + qs.stringify({
             request_token:data.code,
             redirect_uri:redirect_uri
           })
@@ -184,11 +167,12 @@ function Grant (_config) {
         }
       }, function (err, _res, body) {
         if (err) console.log(err);
-        res.redirect(provider.callback + '?' + body);
+        res.redirect(provider.callback + '?' + toQuerystring(provider, body));
       });
     }
     else if (provider.oauth == 2) {
-      var redirect_uri = provider.protocol+'://'+provider.host+'/connect/'+provider.name+'/callback';
+      var redirect_uri = provider.protocol + '://' + provider.host
+                      + '/connect/' + provider.name + '/callback';
       request.post(provider.access_url, {
         form:{
           client_id:provider.key,
@@ -199,7 +183,7 @@ function Grant (_config) {
         }
       }, function (err, _res, body) {
         if (err) console.log(err);
-        res.redirect(provider.callback + '?' + body);
+        res.redirect(provider.callback + '?' + toQuerystring(provider, body));
       });
     }
 
@@ -209,7 +193,6 @@ function Grant (_config) {
         delete req.session.payload;
         request.post(provider.access_url, {
           headers: {
-            'content-type':'application/x-www-form-urlencoded; charset=UTF8',
             // 'x-accept':'application/json'
             'x-accept':'application/x-www-form-urlencoded'
           },
@@ -219,11 +202,45 @@ function Grant (_config) {
           }
         }, function (err, _res, body) {
           if (err) console.log(err);
-          res.redirect(provider.callback + '?' + body);
+          res.redirect(provider.callback + '?' + toQuerystring(provider, body));
         });
       }
     }
   });
+
+  function toQuerystring (provider, body) {
+    var data;
+    try {data = JSON.parse(body)} catch (e) {}
+    data = data || qs.parse(body);
+
+    var result = {};
+    if (provider.yammer) {
+      result.access_token = data.access_token.token;
+    }
+    else if (provider.oauth == 1) {
+      for (var key in data) {
+        if (key == 'oauth_token') {
+          result.access_token = data.oauth_token;
+        }
+        else if (key == 'oauth_token_secret') {
+          result.access_secret = data.oauth_token_secret;
+        }
+      }
+    }
+    else if (provider.oauth == 2) {
+      for (var key in data) {
+        if (key == 'access_token') {
+          result.access_token = data.access_token;
+        }
+        else if (key == 'refresh_token') {
+          result.refresh_token = data.refresh_token;
+        }
+      }
+    }
+    result.raw = data;
+
+    return qs.stringify(result);
+  }
 
   return app;
 }
