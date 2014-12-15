@@ -120,6 +120,7 @@
     "state": "Grant"
   },
   "live": {
+    "protocol": "https",
     "scope": [
       "wl.offline_access",
       "wl.basic",
@@ -169,6 +170,7 @@
     ]
   },
   "stripe": {
+    "protocol": "https"
   },
   "trello": {
     "scope": [
