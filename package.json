@@ -1,7 +1,7 @@
 {
   "name": "grant",
   "version": "1.1.4",
-  "description": "OAuth Middleware for Express",
+  "description": "Authentication Middleware for Express",
 
   "keywords": [
     "oauth",
