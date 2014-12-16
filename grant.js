@@ -121,6 +121,9 @@ function Grant (_config) {
       if (provider.google) {
         params.access_type = provider.access_type;
       }
+      if (provider.reddit) {
+        params.duration = provider.duration;
+      }
       res.redirect(provider.authorize_url + '?' + qs.stringify(params));
     }
 
@@ -173,7 +176,7 @@ function Grant (_config) {
     else if (provider.oauth == 2) {
       var redirect_uri = provider.protocol + '://' + provider.host
                       + '/connect/' + provider.name + '/callback';
-      request.post(provider.access_url, {
+      var options = {
         form:{
           client_id:provider.key,
           client_secret:provider.secret,
@@ -181,7 +184,13 @@ function Grant (_config) {
           redirect_uri:redirect_uri,
           grant_type:'authorization_code'
         }
-      }, function (err, _res, body) {
+      }
+      if (provider.reddit) {
+        delete options.form.client_id;
+        delete options.form.client_secret;
+        options.auth = {user:provider.key, pass:provider.secret}
+      }
+      request.post(provider.access_url, options, function (err, _res, body) {
         if (err) console.log(err);
         res.redirect(provider.callback + '?' + toQuerystring(provider, body));
       });
