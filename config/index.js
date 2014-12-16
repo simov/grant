@@ -2,47 +2,9 @@
 var dcopy = require('deep-copy');
 
 
-// auuth application credentials transform
-exports.credentials = function (provider, options) {
-  var key = options.key||provider.key;
-  var secret = options.secret||provider.secret;
-
-  if (provider.auth_version == 1) {
-    provider.consumer_key = key;
-    provider.consumer_secret = secret;
-  }
-  else if (provider.auth_version == 2) {
-    provider.client_id = key;
-    provider.client_secret = secret;
-  }
-}
-
 // oauth scope transform
 exports.scope = function (provider, options) {
   var scope = options.scope||provider.scope;
-
-  if (provider.google) {
-    scope = (scope instanceof Array) ? scope : [scope];
-    // Google sets the offline access outside of the regular scopes
-    var idx = scope.indexOf('offline');
-    if (idx != -1) {
-      scope.splice(idx,1);
-      provider.access_type = 'offline';
-    } else {
-      delete provider.access_type;
-    }
-  }
-  else if (provider.trello) {
-    scope = (scope instanceof Array) ? scope : [scope];
-    // Trello sets the never expiring access outside of the regular scopes
-    var idx = scope.indexOf('non-expiring');
-    if (idx != -1) {
-      scope.splice(idx,1);
-      provider.expiration = 'never';
-    } else {
-      delete provider.expiration;
-    }
-  }
 
   provider.scope = (scope instanceof Array)
     ? scope.join(provider.scope_delimiter||',')
@@ -59,7 +21,6 @@ exports.scope = function (provider, options) {
 }
 
 exports.transform = function (provider, options) {
-  this.credentials(provider, options);
   this.scope(provider, options);
 }
 
@@ -97,10 +58,19 @@ exports.init = function (config) {
     provider.host = options.host||config.server.host;
     provider.callback = options.callback||config.server.callback;
 
-    // headers
-    provider.headers = {'User-Agent': 'Grant'};
     // oauth state
     provider.state = options.state;
+
+    // custom
+    if (provider.google) {
+      provider.access_type = options.access_type;
+    }
+    if (provider.reddit) {
+      provider.duration = options.duration;
+    }
+    if (provider.trello) {
+      provider.expiration = options.expiration;
+    }
 
     // overrides
     var overrides = {};

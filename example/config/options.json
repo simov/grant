@@ -75,9 +75,9 @@
       "https://www.googleapis.com/auth/yt-analytics.readonly",
       "https://www.googleapis.com/auth/contacts.readonly",
       "https://www.googleapis.com/auth/calendar.readonly",
-      "https://www.googleapis.com/auth/gmail.compose",
-      "offline"
+      "https://www.googleapis.com/auth/gmail.compose"
     ],
+    "access_type": "offline",
     "contacts": {
       "scope": [
         "https://www.googleapis.com/auth/contacts.readonly"
@@ -148,6 +148,13 @@
   },
   "redbooth": {
   },
+  "reddit": {
+    "scope": [
+      "identity"
+    ],
+    "state": "Grant",
+    "duration": "permanent"
+  },
   "salesforce": {
     "protocol": "https"
   },
@@ -176,10 +183,10 @@
   },
   "trello": {
     "scope": [
-      "non-expiring",
       "read",
       "write"
-    ]
+    ],
+    "expiration": "never"
   },
   "twitch": {
     "scope": [
