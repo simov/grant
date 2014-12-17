@@ -71,6 +71,8 @@
   },
   "gitter": {
   },
+  "goodreads": {
+  },
   "google": {
     "scope": [
       "https://www.googleapis.com/auth/userinfo.profile",

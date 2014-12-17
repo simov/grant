@@ -160,7 +160,7 @@ function Grant (_config) {
     if (provider.oauth == 1) {
       var data = req.session.payload;
       delete req.session.payload;
-      request.post(provider.access_url, {
+      var options = {
         oauth:{
           consumer_key:provider.key,
           consumer_secret:provider.secret,
@@ -168,7 +168,11 @@ function Grant (_config) {
           token_secret:data.oauth_token_secret,
           verifier:req.query.oauth_verifier
         }
-      }, function (err, _res, body) {
+      }
+      if (provider.goodreads) {
+        delete options.oauth.verifier;
+      }
+      request.post(provider.access_url, options, function (err, _res, body) {
         if (err) console.log(err);
         res.redirect(provider.callback + '?' + toQuerystring(provider, body));
       });
