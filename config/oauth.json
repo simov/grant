@@ -119,6 +119,12 @@
     "access_url": "https://gitter.im/login/oauth/token",
     "oauth": 2
   },
+  "goodreads": {
+    "request_url": "http://www.goodreads.com/oauth/request_token",
+    "authorize_url": "http://www.goodreads.com/oauth/authorize",
+    "access_url": "http://www.goodreads.com/oauth/access_token",
+    "oauth": 1
+  },
   "google": {
     "authorize_url": "https://accounts.google.com/o/oauth2/auth",
     "access_url": "https://accounts.google.com/o/oauth2/token",
