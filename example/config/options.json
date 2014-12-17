@@ -25,6 +25,12 @@
   },
   "deviantart": {
   },
+  "disqus": {
+    "scope": [
+      "read",
+      "write"
+    ]
+  },
   "digitalocean": {
   },
   "dropbox": {
