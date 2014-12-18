@@ -1,7 +1,7 @@
 
-# Grant [![img-npm-version]][npm]
+# Grant
 
-_**grant**_ is built on top of **[mashape][mashape] / [guardian][guardian]**
+[![img-npm-version]][npm]
 
 
 ## Providers [Playground][example]
@@ -38,7 +38,6 @@ app.use(session());
 
 ```bash
 /connect/:provider/:override?
-/step/:number
 /connect/:provider/callback
 ```
 
@@ -151,8 +150,8 @@ MIT
   [example]: https://grant-oauth.herokuapp.com/
   [npm]: https://www.npmjs.org/package/grant
 
-  [img-npm-version]: http://img.shields.io/npm/v/grant.svg?style=flat (NPM Version)
-  [img-npm-downloads]: http://img.shields.io/npm/dm/grant.svg?style=flat (NPM Downloads)
+  [img-npm-version]: http://img.shields.io/npm/v/grant.svg?style=flat-square (NPM Version)
+  [img-npm-downloads]: http://img.shields.io/npm/dm/grant.svg?style=flat-square (NPM Downloads)
 
   [routes]: #reserved-routes-for-grant
   [configuration]: #configuration
