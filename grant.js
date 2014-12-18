@@ -1,15 +1,15 @@
 
-var qs   = require('qs');
-
 var express = require('express'),
   bodyParser = require('body-parser'),
   multipart = require('connect-multiparty'),
   cookieParser = require('cookie-parser'),
   session = require('express-session'),
-  favicon = require('serve-favicon');
+  favicon = require('serve-favicon')
 
-var request = require('request');
-var config = require('./config');
+var request = require('request')
+var qs = require('qs')
+
+var config = require('./config')
 var flows = {
   1: require('./lib/oauth1'),
   2: require('./lib/oauth2'),
@@ -29,46 +29,46 @@ function Grant (_config) {
     .use(session({
       name: 'grant', secret: 'very secret',
       saveUninitialized: true, resave: true
-    }));
-  app.config = config.init(_config);
+    }))
+  app.config = config.init(_config)
 
   app.get('/connect/:provider/:override?', function (req, res, next) {
-    if (req.params.override == 'callback') return next();
+    if (req.params.override == 'callback') return next()
 
-    var provider = app.config.app[req.params.provider];
+    var provider = app.config.app[req.params.provider]
     if (req.params.override && provider.overrides) {
-      var override = provider.overrides[req.params.override];
-      if (override) provider = override;
+      var override = provider.overrides[req.params.override]
+      if (override) provider = override
     }
 
-    req.session.provider = req.params.provider;
+    req.session.provider = req.params.provider
 
-    if (req.query.test) return res.end(JSON.stringify(provider));
-    connect(req, res, provider);
-  });
+    if (req.query.test) return res.end(JSON.stringify(provider))
+    connect(req, res, provider)
+  })
 
   app.post('/connect/:provider/:override?', function (req, res) {
-    var provider = app.config.app[req.params.provider];
+    var provider = app.config.app[req.params.provider]
     if (req.params.override && provider.overrides) {
-      var override = provider.overrides[req.params.override];
-      if (override) provider = override;
+      var override = provider.overrides[req.params.override]
+      if (override) provider = override
     }
 
-    var options = {};
+    var options = {}
     for (var key in req.body) {
-      if (!req.body[key]) continue;
-      options[key] = req.body[key];
+      if (!req.body[key]) continue
+      options[key] = req.body[key]
     }
     if (Object.keys(options).length) {
-      provider = config.override(provider, options);
-      config.transform(provider, options);
+      provider = config.override(provider, options)
+      config.transform(provider, options)
     }
 
-    req.session.provider = req.params.provider;
+    req.session.provider = req.params.provider
     
-    if (req.body.test) return res.end(JSON.stringify(provider));
-    connect(req, res, provider);
-  });
+    if (req.body.test) return res.end(JSON.stringify(provider))
+    connect(req, res, provider)
+  })
 
   function connect (req, res, provider) {
     var flow = flows[provider.oauth]
@@ -100,16 +100,16 @@ function Grant (_config) {
         res.redirect(url)
       })
     }
-  };
+  }
 
   app.get('/connect/:provider/callback', function (req, res) {
-    var provider = app.config.app[req.session.provider];
+    var provider = app.config.app[req.session.provider]
 
     var flow = flows[provider.oauth]
 
     if (provider.oauth == 1) {
-      var data = req.session.payload;
-      delete req.session.payload;
+      var data = req.session.payload
+      delete req.session.payload
 
       flow.step3(provider, data, req.query, function (err, url) {
         if (err) return res.redirect(provider.callback + '?' + err)
@@ -135,9 +135,9 @@ function Grant (_config) {
         res.redirect(url)
       })
     }
-  });
+  })
 
-  return app;
+  return app
 }
 
-exports = module.exports = Grant;
+exports = module.exports = Grant
