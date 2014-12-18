@@ -92,7 +92,8 @@ app.get('/', function (req, res) {
     var obj = {url:'/connect/'+provider, name:provider};
     if (current == provider) {
       obj.credentials = req.query;
-      obj.credentials.raw = JSON.stringify(req.query.raw, null, 4);
+      var key = req.query.error ? 'error' : 'raw';
+      obj.credentials[key] = JSON.stringify(req.query[key], null, 4);
     }
     params.push(obj);
   });

@@ -13,7 +13,7 @@
 				<textarea>{{access_token}}</textarea>
 			</li>
 			{{/access_token}}
-			
+
 			{{#access_secret}}
 			<li>access_secret:<br />
 				<textarea>{{access_secret}}</textarea>
@@ -25,10 +25,18 @@
 				<textarea>{{refresh_token}}</textarea>
 			</li>
 			{{/refresh_token}}
-			
+
+			{{#raw}}
 			<li>raw:
 				<pre>{{raw}}</pre>
 			</li>
+			{{/raw}}
+
+			{{#error}}
+			<li>error:
+				<pre>{{error}}</pre>
+			</li>
+			{{/error}}
 		</ul>
 		{{/credentials}}
 	</li>
