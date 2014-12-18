@@ -88,8 +88,7 @@ function Grant (_config) {
 
     if (provider.oauth == 1) {
       flow.step1(provider, function (err, data) {
-        // TODO: handle errors
-        if (err) console.log(err)
+        if (err) return res.redirect(provider.callback + '?' + err)
 
         req.session.payload = data
 
@@ -106,8 +105,7 @@ function Grant (_config) {
     else if (provider.custom) {
       flow = flows[provider.name]
       flow.step1(provider, function (err, data) {
-        // TODO: handle errors
-        if (err) console.log(err)
+        if (err) return res.redirect(provider.callback + '?' + err)
 
         req.session.payload = data
 
@@ -127,16 +125,13 @@ function Grant (_config) {
       delete req.session.payload;
 
       flow.step3(provider, data, req.query, function (err, url) {
-        // TODO: handle error
-        if (err) console.log(err)
+        if (err) return res.redirect(provider.callback + '?' + err)
         res.redirect(url)
       })
     }
     else if (provider.oauth == 2) {
       flow.step2(provider, req.query, function (err, data) {
-        // TODO: handle error
-        if (err) console.log(err)
-
+        if (err) return res.redirect(provider.callback + '?' + err)
         var url = flow.step3(provider, data)
         res.redirect(url)
       })
@@ -149,8 +144,7 @@ function Grant (_config) {
       delete req.session.payload
 
       flow.step3(provider, data, function (err, url) {
-        // TODO: handle error
-        if (err) console.log(err)
+        if (err) return res.redirect(provider.callback + '?' + err)
         res.redirect(url)
       })
     }
