@@ -5,37 +5,6 @@ var config = require('../config');
 
 describe('options', function () {
 
-  describe('credentials', function () {
-    it('OAuth1 through config', function () {
-      var provider = {auth_version:1, key:'key', secret:'secret'};
-      var options = {};
-      config.credentials(provider, options);
-      provider.consumer_key.should.equal('key');
-      provider.consumer_secret.should.equal('secret');
-    });
-    it('OAuth1 through override', function () {
-      var provider = {auth_version:1, key:'key', secret:'secret'};
-      var options = {key:'key2', secret:'secret2'};
-      config.credentials(provider, options);
-      provider.consumer_key.should.equal('key2');
-      provider.consumer_secret.should.equal('secret2');
-    });
-    it('OAuth2 through config', function () {
-      var provider = {auth_version:2, key:'key', secret:'secret'};
-      var options = {};
-      config.credentials(provider, options);
-      provider.client_id.should.equal('key');
-      provider.client_secret.should.equal('secret');
-    });
-    it('OAuth2 through override', function () {
-      var provider = {auth_version:2, key:'key', secret:'secret'};
-      var options = {key:'key2', secret:'secret2'};
-      config.credentials(provider, options);
-      provider.client_id.should.equal('key2');
-      provider.client_secret.should.equal('secret2');
-    });
-  });
-
   describe('scope', function () {
     it('array with comma', function () {
       var provider = {};
@@ -54,34 +23,6 @@ describe('options', function () {
       var options = {scope:'scope1,scope2'};
       config.scope(provider, options);
       provider.scope.should.equal('scope1,scope2');
-    });
-    it('set google offline scope outside of the regular scopes', function () {
-      var provider = {google:true};
-      var options = {scope:['scope1','offline']};
-      config.scope(provider, options);
-      provider.scope.should.equal('scope1');
-      provider.access_type.should.equal('offline');
-    });
-    it('remove google offline scope on override', function () {
-      var provider = {google:true, access_type:'offline'};
-      var options = {scope:['scope1']};
-      config.scope(provider, options);
-      provider.scope.should.equal('scope1');
-      should.equal(provider.access_type, undefined);
-    });
-    it('set trello expiration never outside of the regular scopes', function () {
-      var provider = {trello:true};
-      var options = {scope:['scope1','non-expiring']};
-      config.scope(provider, options);
-      provider.scope.should.equal('scope1');
-      provider.expiration.should.equal('never');
-    });
-    it('remove trello expiration never on override', function () {
-      var provider = {trello:true, expiration:'never'};
-      var options = {scope:['scope1']};
-      config.scope(provider, options);
-      provider.scope.should.equal('scope1');
-      should.equal(provider.expiration, undefined);
     });
     it('set linkedin scopes as querystring', function () {
       var provider = {linkedin:true, request_url:'https://requestToken'};
@@ -126,12 +67,6 @@ describe('options', function () {
       cfg.app.facebook.protocol.should.equal('https');
       cfg.app.facebook.host.should.equal('dummy.com:3000');
       cfg.app.facebook.callback.should.equal('/callback');
-    });
-    it('misc', function () {
-      var options = {server:{}, facebook:{state:'Grant'}};
-      var cfg = config.init(options);
-      cfg.app.facebook.state.should.equal('Grant');
-      should.deepEqual(cfg.app.facebook.headers, {'User-Agent': 'Grant'});
     });
 
     describe('overrides', function () {
