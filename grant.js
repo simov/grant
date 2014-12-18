@@ -71,19 +71,6 @@ function Grant (_config) {
   });
 
   function connect (req, res, provider) {
-    /*
-      // OAuth urls
-      request_url, authorize_url, access_url
-
-      // OAuth parameters
-      access_name, grant_type, type
-      authorize_method, signature_method, oauth_token, version, base_url
-      state, scope, redirect_uri
-
-      // app credentials
-      client_id, client_secret, consumer_key, consumer_secret
-    */
-
     var flow = flows[provider.oauth]
 
     if (provider.oauth == 1) {
