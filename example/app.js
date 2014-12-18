@@ -74,7 +74,7 @@ var app = express()
 
 app.get('/', function (req, res) {
   // feedly sandbox redirect_uri
-  if (req.session.provider == 'feedly' && req.query.code) {
+  if (req.session.provider && req.session.provider.name == 'feedly' && req.query.code) {
     var q = require('querystring');
     res.redirect('/connect/feedly/callback?'+q.stringify(req.query));
     return;
@@ -82,7 +82,7 @@ app.get('/', function (req, res) {
 
   console.log(req.query);
 
-  var current = req.session.provider;
+  var current = req.session.provider||{};
   delete req.session.provider;
 
   var providers = Object.keys(grant.config.oauth);
@@ -90,7 +90,7 @@ app.get('/', function (req, res) {
 
   providers.forEach(function (provider) {
     var obj = {url:'/connect/'+provider, name:provider};
-    if (current == provider) {
+    if (current.name == provider) {
       obj.credentials = req.query;
       var key = req.query.error ? 'error' : 'raw';
       obj.credentials[key] = JSON.stringify(req.query[key], null, 4);

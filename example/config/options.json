@@ -89,7 +89,8 @@
     "contacts": {
       "scope": [
         "https://www.googleapis.com/auth/contacts.readonly"
-      ]
+      ],
+      "callback": "/google-contacts-callback"
     }
   },
   "harvest": {
