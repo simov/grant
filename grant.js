@@ -30,10 +30,10 @@ function Grant (_config) {
       name: 'grant', secret: 'very secret',
       saveUninitialized: true, resave: true
     }))
+
   app.config = config.init(_config)
 
   function p (provider, override) {
-    var provider = app.config.app[provider]
     if (override && provider.overrides) {
       var override = provider.overrides[override]
       if (override) return override
@@ -47,8 +47,9 @@ function Grant (_config) {
       options[key] = params[key]
     }
     if (Object.keys(options).length) {
-      provider = config.override(provider, options)
-      config.transform(provider, options)
+      var dynamic = config.override(provider, options)
+      config.transform(dynamic, options)
+      return dynamic
     }
     return provider
   }
@@ -56,7 +57,11 @@ function Grant (_config) {
   app.get('/connect/:provider/:override?', function (req, res, next) {
     if (req.params.override == 'callback') return next()
 
-    var provider = p(req.params.provider, req.params.override)
+    var provider = app.config.app[req.params.provider]
+    if (req.params.override) {
+      provider = p(provider, req.params.override)
+    }
+    
     req.session.provider = provider
 
     if (req.query.test) return res.end(JSON.stringify(provider))
@@ -64,8 +69,12 @@ function Grant (_config) {
   })
 
   app.post('/connect/:provider/:override?', function (req, res) {
-    var provider = p(req.params.provider, req.params.override)
+    var provider = app.config.app[req.params.provider]
+    if (req.params.override) {
+      provider = p(provider, req.params.override)
+    }
     provider = d(provider, req.body)
+
     req.session.provider = provider
     
     if (req.body.test) return res.end(JSON.stringify(provider))
