@@ -42,6 +42,23 @@ describe('options', function () {
     });
   });
 
+  describe('dynamic', function () {
+    it('no options to override', function () {
+      var provider = {scope:['scope1'], callback:'/'};
+      var options = {scope:'', callback:null};
+      var dynamic = config.dynamic(provider, options);
+      should.deepEqual(provider, {scope:['scope1'], callback:'/'});
+      should.deepEqual(dynamic, {scope:'scope1', callback:'/'});
+    });
+    it('override', function () {
+      var provider = {scope:['scope1'], callback:'/'};
+      var options = {scope:['scope1','scope2']};
+      var dynamic = config.dynamic(provider, options);
+      should.deepEqual(provider, {scope:['scope1'], callback:'/'});
+      should.deepEqual(dynamic, {scope:'scope1,scope2', callback:'/'});
+    });
+  });
+
   describe('init', function () {
     it('shortcuts', function () {
       var options = {server:{}, facebook:{key:'key',secret:'secret'}};
