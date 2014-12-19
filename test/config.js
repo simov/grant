@@ -1,6 +1,6 @@
 
 var should = require('should');
-var config = require('../config');
+var config = require('../lib/config');
 
 
 describe('options', function () {
@@ -46,17 +46,17 @@ describe('options', function () {
     it('shortcuts', function () {
       var options = {server:{}, facebook:{key:'key',secret:'secret'}};
       var cfg = config.init(options);
-      cfg.app.facebook.facebook.should.equal(true);
-      cfg.app.facebook.name.should.equal('facebook');
-      cfg.app.facebook.key.should.equal('key');
-      cfg.app.facebook.secret.should.equal('secret');
+      cfg.facebook.facebook.should.equal(true);
+      cfg.facebook.name.should.equal('facebook');
+      cfg.facebook.key.should.equal('key');
+      cfg.facebook.secret.should.equal('secret');
     });
     it('server config', function () {
       var options = {server:{protocol:'http', host:'localhost:3000', callback:'/'}};
       var cfg = config.init(options);
-      cfg.app.facebook.protocol.should.equal('http');
-      cfg.app.facebook.host.should.equal('localhost:3000');
-      cfg.app.facebook.callback.should.equal('/');
+      cfg.facebook.protocol.should.equal('http');
+      cfg.facebook.host.should.equal('localhost:3000');
+      cfg.facebook.callback.should.equal('/');
     });
     it('server config', function () {
       var options = {
@@ -64,9 +64,9 @@ describe('options', function () {
         facebook:{protocol:'https', host:'dummy.com:3000', callback:'/callback'}
       };
       var cfg = config.init(options);
-      cfg.app.facebook.protocol.should.equal('https');
-      cfg.app.facebook.host.should.equal('dummy.com:3000');
-      cfg.app.facebook.callback.should.equal('/callback');
+      cfg.facebook.protocol.should.equal('https');
+      cfg.facebook.host.should.equal('dummy.com:3000');
+      cfg.facebook.callback.should.equal('/callback');
     });
 
     describe('overrides', function () {
@@ -75,11 +75,11 @@ describe('options', function () {
           scope:['scope1'], callback:'/callback', custom:{scope:['scope2']}}
         };
         var cfg = config.init(options);
-        cfg.app.facebook.scope.should.equal('scope1');
-        cfg.app.facebook.callback.should.equal('/callback');
-        cfg.app.facebook.overrides.should.be.type('object');
-        cfg.app.facebook.overrides.custom.scope.should.equal('scope2');
-        cfg.app.facebook.overrides.custom.callback.should.equal('/callback');
+        cfg.facebook.scope.should.equal('scope1');
+        cfg.facebook.callback.should.equal('/callback');
+        cfg.facebook.overrides.should.be.type('object');
+        cfg.facebook.overrides.custom.scope.should.equal('scope2');
+        cfg.facebook.overrides.custom.callback.should.equal('/callback');
       });
     });
   });
