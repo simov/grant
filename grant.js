@@ -33,14 +33,6 @@ function Grant (_config) {
 
   app.config = config.init(_config)
 
-  function p (provider, override) {
-    if (override && provider.overrides) {
-      var override = provider.overrides[override]
-      if (override) return override
-    }
-    return provider
-  }
-
   app.get('/connect/:provider/:override?', function (req, res, next) {
     if (req.params.override == 'callback') return next()
 
@@ -62,24 +54,27 @@ function Grant (_config) {
     connect(req, res)
   })
 
+  function p (config, session) {
+    var provider = config[session.provider]
+    if (session.override && provider.overrides) {
+      var override = provider.overrides[session.override]
+      if (override) provider = override
+    }
+    if (session.dynamic) {
+      provider = config.dynamic(provider, session.dynamic)
+    }
+    return provider
+  }
+
   function connect (req, res) {
     var grant = req.session.grant
-    var provider = app.config[grant.provider]
-    if (grant.override) {
-      provider = p(provider, grant.override)
-    }
-    if (grant.dynamic) {
-      provider = config.dynamic(provider, dynamic)
-    }
-
+    var provider = p(app.config, grant)
     var flow = flows[provider.oauth]
 
     if (provider.oauth == 1) {
       flow.step1(provider, function (err, data) {
         if (err) return res.redirect(provider.callback + '?' + err)
-
         grant.step1 = data
-
         var url = flow.step2(provider, data)
         res.redirect(url)
       })
@@ -94,9 +89,7 @@ function Grant (_config) {
       flow = flows[provider.name]
       flow.step1(provider, function (err, data) {
         if (err) return res.redirect(provider.callback + '?' + err)
-
         grant.step1 = data
-
         var url = flow.step2(provider, data)
         res.redirect(url)
       })
@@ -105,14 +98,7 @@ function Grant (_config) {
 
   app.get('/connect/:provider/callback', function (req, res) {
     var grant = req.session.grant
-    var provider = app.config[grant.provider]
-    if (grant.override) {
-      provider = p(provider, grant.override)
-    }
-    if (grant.dynamic) {
-      provider = config.dynamic(provider, dynamic)
-    }
-
+    var provider = p(app.config, grant)
     var flow = flows[provider.oauth]
 
     if (provider.oauth == 1) {
@@ -132,7 +118,6 @@ function Grant (_config) {
 
     else if (provider.custom) {
       flow = flows[provider.name]
-
       flow.step3(provider, grant.step1, function (err, url) {
         if (err) return res.redirect(provider.callback + '?' + err)
         res.redirect(url)
