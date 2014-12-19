@@ -9,7 +9,7 @@ var express = require('express'),
 var request = require('request')
 var qs = require('qs')
 
-var config = require('./config')
+var config = require('./lib/config')
 var flows = {
   1: require('./lib/oauth1'),
   2: require('./lib/oauth2'),
@@ -37,19 +37,6 @@ function Grant (_config) {
     if (override && provider.overrides) {
       var override = provider.overrides[override]
       if (override) return override
-    }
-    return provider
-  }
-  function d (provider, params) {
-    var options = {}
-    for (var key in params) {
-      if (!params[key]) continue
-      options[key] = params[key]
-    }
-    if (Object.keys(options).length) {
-      var dynamic = config.override(provider, options)
-      config.transform(dynamic, options)
-      return dynamic
     }
     return provider
   }
@@ -82,7 +69,7 @@ function Grant (_config) {
       provider = p(provider, grant.override)
     }
     if (grant.dynamic) {
-      provider = d(provider, dynamic)
+      provider = config.dynamic(provider, dynamic)
     }
 
     var flow = flows[provider.oauth]
@@ -123,7 +110,7 @@ function Grant (_config) {
       provider = p(provider, grant.override)
     }
     if (grant.dynamic) {
-      provider = d(provider, dynamic)
+      provider = config.dynamic(provider, dynamic)
     }
 
     var flow = flows[provider.oauth]
