@@ -40,7 +40,7 @@ var app = express()
   .use(function (req, res, next) {
     if (/^\/connect\/(\w+)$/.test(req.url)) {
       var name = req.url.replace(/^\/connect\/(\w+)$/,'$1');
-      var provider = grant.config.app[name];
+      var provider = grant.config[name];
 
       if (provider.protocol == 'https') {
         if (/^http:/.test(req.headers.referer)) {
@@ -84,7 +84,7 @@ app.get('/', function (req, res) {
 
   console.log(req.query);
 
-  var providers = Object.keys(grant.config.oauth);
+  var providers = Object.keys(grant.config);
   var params = [];
 
   providers.forEach(function (provider) {

@@ -64,7 +64,7 @@ function Grant (_config) {
 
   function connect (req, res) {
     var grant = req.session.grant
-    var provider = app.config.app[grant.provider]
+    var provider = app.config[grant.provider]
     if (grant.override) {
       provider = p(provider, grant.override)
     }
@@ -105,7 +105,7 @@ function Grant (_config) {
 
   app.get('/connect/:provider/callback', function (req, res) {
     var grant = req.session.grant
-    var provider = app.config.app[grant.provider]
+    var provider = app.config[grant.provider]
     if (grant.override) {
       provider = p(provider, grant.override)
     }
