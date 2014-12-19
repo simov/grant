@@ -68,14 +68,14 @@ describe('options', function () {
       cfg.facebook.key.should.equal('key');
       cfg.facebook.secret.should.equal('secret');
     });
-    it('server config', function () {
+    it('set server config', function () {
       var options = {server:{protocol:'http', host:'localhost:3000', callback:'/'}};
       var cfg = config.init(options);
       cfg.facebook.protocol.should.equal('http');
       cfg.facebook.host.should.equal('localhost:3000');
       cfg.facebook.callback.should.equal('/');
     });
-    it('server config', function () {
+    it('override server config', function () {
       var options = {
         server:{protocol:'http', host:'localhost:3000', callback:'/'},
         facebook:{protocol:'https', host:'dummy.com:3000', callback:'/callback'}
@@ -84,6 +84,29 @@ describe('options', function () {
       cfg.facebook.protocol.should.equal('https');
       cfg.facebook.host.should.equal('dummy.com:3000');
       cfg.facebook.callback.should.equal('/callback');
+    });
+    it('set state', function () {
+      var options = {server:{}, facebook:{state:'Grant'}};
+      var cfg = config.init(options);
+      cfg.facebook.state.should.equal('Grant');
+    });
+
+    describe('custom', function () {
+      it('google', function () {
+        var options = {server:{}, google:{google:true, access_type:'offline'}};
+        var cfg = config.init(options);
+        cfg.google.access_type.should.equal('offline');
+      });
+      it('reddit', function () {
+        var options = {server:{}, reddit:{reddit:true, duration:'permanent'}};
+        var cfg = config.init(options);
+        cfg.reddit.duration.should.equal('permanent');
+      });
+      it('trello', function () {
+        var options = {server:{}, trello:{trello:true, expiration:'never'}};
+        var cfg = config.init(options);
+        cfg.trello.expiration.should.equal('never');
+      });
     });
 
     describe('overrides', function () {
