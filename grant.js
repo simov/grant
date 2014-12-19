@@ -57,39 +57,41 @@ function Grant (_config) {
   app.get('/connect/:provider/:override?', function (req, res, next) {
     if (req.params.override == 'callback') return next()
 
-    var provider = app.config.app[req.params.provider]
-    if (req.params.override) {
-      provider = p(provider, req.params.override)
+    req.session.grant = {
+      provider:req.params.provider,
+      override:req.params.override
     }
-    
-    req.session.provider = provider
 
-    if (req.query.test) return res.end(JSON.stringify(provider))
     connect(req, res)
   })
 
   app.post('/connect/:provider/:override?', function (req, res) {
-    var provider = app.config.app[req.params.provider]
-    if (req.params.override) {
-      provider = p(provider, req.params.override)
+    req.session.grant = {
+      provider:req.params.provider,
+      override:req.params.override,
+      dynamic:req.body
     }
-    provider = d(provider, req.body)
 
-    req.session.provider = provider
-    
-    if (req.body.test) return res.end(JSON.stringify(provider))
     connect(req, res)
   })
 
   function connect (req, res) {
-    var provider = req.session.provider
+    var grant = req.session.grant
+    var provider = app.config.app[grant.provider]
+    if (grant.override) {
+      provider = p(provider, grant.override)
+    }
+    if (grant.dynamic) {
+      provider = d(provider, dynamic)
+    }
+
     var flow = flows[provider.oauth]
 
     if (provider.oauth == 1) {
       flow.step1(provider, function (err, data) {
         if (err) return res.redirect(provider.callback + '?' + err)
 
-        req.session.payload = data
+        grant.step1 = data
 
         var url = flow.step2(provider, data)
         res.redirect(url)
@@ -106,7 +108,7 @@ function Grant (_config) {
       flow.step1(provider, function (err, data) {
         if (err) return res.redirect(provider.callback + '?' + err)
 
-        req.session.payload = data
+        grant.step1 = data
 
         var url = flow.step2(provider, data)
         res.redirect(url)
@@ -115,14 +117,19 @@ function Grant (_config) {
   }
 
   app.get('/connect/:provider/callback', function (req, res) {
-    var provider = req.session.provider
+    var grant = req.session.grant
+    var provider = app.config.app[grant.provider]
+    if (grant.override) {
+      provider = p(provider, grant.override)
+    }
+    if (grant.dynamic) {
+      provider = d(provider, dynamic)
+    }
+
     var flow = flows[provider.oauth]
 
     if (provider.oauth == 1) {
-      var data = req.session.payload
-      delete req.session.payload
-
-      flow.step3(provider, data, req.query, function (err, url) {
+      flow.step3(provider, grant.step1, req.query, function (err, url) {
         if (err) return res.redirect(provider.callback + '?' + err)
         res.redirect(url)
       })
@@ -139,10 +146,7 @@ function Grant (_config) {
     else if (provider.custom) {
       flow = flows[provider.name]
 
-      var data = req.session.payload
-      delete req.session.payload
-
-      flow.step3(provider, data, function (err, url) {
+      flow.step3(provider, grant.step1, function (err, url) {
         if (err) return res.redirect(provider.callback + '?' + err)
         res.redirect(url)
       })
