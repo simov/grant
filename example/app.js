@@ -96,7 +96,10 @@ app.get('/', function (req, res) {
     }
     params.push(obj);
   });
-  res.render('template', {providers:params});
+  res.render('template', {
+    providers:params,
+    count:providers.length-1//linkedin2
+  });
 });
 
 app.listen(app.get('port'), function() {
