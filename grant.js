@@ -1,7 +1,6 @@
 
 var express = require('express'),
   bodyParser = require('body-parser'),
-  multipart = require('connect-multiparty'),
   cookieParser = require('cookie-parser'),
   session = require('express-session'),
   favicon = require('serve-favicon')
@@ -23,7 +22,6 @@ function Grant (_config) {
     // body parser
     .use(bodyParser.json())
     .use(bodyParser.urlencoded({extended: true}))
-    .use(multipart())
     // session
     .use(cookieParser())
     .use(session({
