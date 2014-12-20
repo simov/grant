@@ -36,12 +36,13 @@
     "mocha"           : "1.21.4",
     "should"          : "4.0.4",
     "istanbul"        : "0.3.2",
-    "coveralls"       : "2.11.2",
+    "coveralls"       : "2.11.2"
   },
 
   "main": "grant.js",
 
   "scripts": {
+    "test": "node_modules/mocha/bin/mocha test/ --require should --reporter spec --timeout 10000",
     "postinstall": "node example/postinstall.js"
   }
 }
