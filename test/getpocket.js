@@ -10,11 +10,11 @@ var Grant = require('../'),
 describe('getpocket', function () {
   function url (path) {
     var c = config.server
-    return c.protocol + '://' + c.host + ':' + c.port + path
+    return c.protocol + '://' + c.host + path
   }
 
   var grant, app, server
-  var config = {server: {protocol:'http', host:'localhost', port:5000, callback:'/'}}
+  var config = {server: {protocol:'http', host:'localhost:5000', callback:'/'}}
 
   before(function (done) {
     grant = new Grant(config)
@@ -43,7 +43,7 @@ describe('getpocket', function () {
   it('step2', function () {
     var url = getpocket.step2(grant.config.getpocket, {code:'code'})
     url.should.equal('/authorize_url?request_token=code'+
-      '&redirect_uri=http%3A%2F%2Flocalhost%2Fconnect%2Fgetpocket%2Fcallback')
+      '&redirect_uri=http%3A%2F%2Flocalhost%3A5000%2Fconnect%2Fgetpocket%2Fcallback')
   })
 
   it('step3', function (done) {

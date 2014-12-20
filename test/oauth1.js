@@ -10,11 +10,11 @@ var Grant = require('../'),
 describe('oauth1', function () {
   function url (path) {
     var c = config.server
-    return c.protocol + '://' + c.host + ':' + c.port + path
+    return c.protocol + '://' + c.host + path
   }
 
   var grant, app, server
-  var config = {server: {protocol:'http', host:'localhost', port:5000, callback:'/'}}
+  var config = {server: {protocol:'http', host:'localhost:5000', callback:'/'}}
 
   before(function (done) {
     grant = new Grant(config)

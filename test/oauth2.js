@@ -10,11 +10,11 @@ var Grant = require('../'),
 describe('oauth2', function () {
   function url (path) {
     var c = config.server
-    return c.protocol + '://' + c.host + ':' + c.port + path
+    return c.protocol + '://' + c.host + path
   }
 
   var grant, app, server
-  var config = {server: {protocol:'http', host:'localhost', port:5000, callback:'/'}}
+  var config = {server: {protocol:'http', host:'localhost:5000', callback:'/'}}
 
   before(function (done) {
     grant = new Grant(config)
@@ -32,7 +32,7 @@ describe('oauth2', function () {
   it('step1', function () {
     var url = oauth2.step1(grant.config.facebook);
     url.should.equal('/authorize_url?response_type=code'+
-      '&redirect_uri=http%3A%2F%2Flocalhost%2Fconnect%2Ffacebook%2Fcallback')
+      '&redirect_uri=http%3A%2F%2Flocalhost%3A5000%2Fconnect%2Ffacebook%2Fcallback')
   })
 
   it('step2', function (done) {
