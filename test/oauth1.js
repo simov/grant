@@ -27,9 +27,6 @@ describe('oauth1', function () {
     app.post('/request_url', function (req, res) {
       res.end(qs.stringify({some:'data'}))
     })
-    app.get('/authorize_url', function (req, res) {
-      res.end(JSON.stringify(req.session.grant))
-    })
     app.post('/access_url', function (req, res) {
       res.end(JSON.stringify({some:'data'}))
     })
