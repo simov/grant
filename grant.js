@@ -52,8 +52,8 @@ function Grant (_config) {
     connect(req, res)
   })
 
-  function p (config, session) {
-    var provider = config[session.provider]
+  function p (_config, session) {
+    var provider = _config[session.provider]
     if (session.override && provider.overrides) {
       var override = provider.overrides[session.override]
       if (override) provider = override
