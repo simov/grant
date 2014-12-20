@@ -1,10 +1,10 @@
 
 # Grant
 
-[![img-npm-version]][npm]
+[![npm-version]][npm] [![coveralls-status]][coveralls]
 
 
-## Providers [Playground][example]
+## Providers [Playground][playground]
 
 | | | | | | |
 :---: | :---: | :---: | :---: | :---: | :---:
@@ -143,15 +143,15 @@ request.post('http://mydomain.com/connect/facebook', {
 
 MIT
 
-
-  [mashape]: https://www.mashape.com/
-  [guardian]: http://guardianjs.com/
-  [bible]: http://oauthbible.com/
-  [example]: https://grant-oauth.herokuapp.com/
+  [playground]: https://grant-oauth.herokuapp.com/
   [npm]: https://www.npmjs.org/package/grant
+  [travis]: https://travis-ci.org/simov/grant
+  [coveralls]: https://coveralls.io/r/simov/grant?branch=master
 
-  [img-npm-version]: http://img.shields.io/npm/v/grant.svg?style=flat-square (NPM Version)
-  [img-npm-downloads]: http://img.shields.io/npm/dm/grant.svg?style=flat-square (NPM Downloads)
+  [npm-version]: http://img.shields.io/npm/v/grant.svg?style=flat-square (NPM Version)
+  [npm-downloads]: http://img.shields.io/npm/dm/grant.svg?style=flat-square (NPM Downloads)
+  [travis-ci]: https://img.shields.io/travis/simov/grant/master.svg?style=flat-square (Build Status)
+  [coveralls-status]: https://img.shields.io/coveralls/simov/grant.svg?style=flat-square (Coveralls Status)
 
   [routes]: #reserved-routes-for-grant
   [configuration]: #configuration
