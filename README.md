@@ -17,11 +17,11 @@
 [twitter](https://dev.twitter.com) | [vimeo](https://developer.vimeo.com/) | [yahoo](https://developer.yahoo.com/) | [yammer](https://developer.yammer.com/)
 
 
-## Usage
+## Express
 
 ```js
 var express = require('express');
-var Grant = require('grant');
+var Grant = require('grant').express();
 
 var grant = new Grant({...configuration see below...});
 
@@ -33,8 +33,24 @@ app.use(cookieParser());
 app.use(session());
 ```
 
+## Koa
 
-#### Reserved Routes for Grant
+```js
+var koa = require('koa');
+var Grant = require('grant').koa();
+
+var grant = new Grant({...configuration see below...});
+
+var app = express();
+// mount grant
+app.use(mount(grant))
+// app server middlewares
+app.use(session(app))
+app.use(bodyParser())
+```
+
+
+## Reserved Routes for Grant
 
 ```bash
 /connect/:provider/:override?
