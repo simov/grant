@@ -8,6 +8,7 @@ var express = require('express'),
 var consolidate = require('consolidate'),
   hogan = require('hogan.js');
 var extend = require('extend');
+var Grant = require('../index').express()
 
 var config = {
   server: require('./config/server.json'),
@@ -26,7 +27,7 @@ function transform (config) {
 }
 
 
-var grant = new require('grant')(transform(config));
+var grant = new Grant(transform(config));
 
 
 var app = express()
