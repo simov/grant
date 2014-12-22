@@ -1,7 +1,7 @@
 
 var should = require('should')
   qs = require('qs')
-var Grant = require('../'),
+var Grant = require('../').express(),
   utils = require('../lib/utils')
 
 
