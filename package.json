@@ -1,13 +1,14 @@
 {
   "name": "grant",
   "version": "1.1.4",
-  "description": "Authentication Middleware for Express",
+  "description": "Authentication Middleware for Express and Koa",
 
   "keywords": [
     "oauth",
     "authentication",
     "middleware",
-    "express"
+    "express",
+    "koa"
   ],
 
   "license": "MIT",
