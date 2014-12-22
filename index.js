@@ -1,4 +1,6 @@
 
+exports = module.exports = require('./lib/express')
+
 exports.express = function () {
   return require('./lib/express')
 }
