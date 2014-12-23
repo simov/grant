@@ -13,6 +13,7 @@ var extend = require('extend')
 var hogan = require('hogan.js')
 var Grant = require('../index').koa()
 var template = hogan.compile(fs.readFileSync(path.join(__dirname, 'template.html'),'utf8'))
+var port = 3000
 
 
 var config = {
@@ -75,6 +76,6 @@ app.get('/', function *(next) {
   })
 })
 
-app.listen(3000, function() {
-  console.log('Koa server listening on port ' + app.get('port'));
+app.listen(port, function() {
+  console.log('Koa server listening on port ' + port);
 });
