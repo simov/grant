@@ -6,12 +6,12 @@ var koa = require('koa'),
   router = require('koa-router'),
   mount = require('koa-mount'),
   bodyParser = require('koa-bodyparser'),
+  koaqs = require('koa-qs'),
   session = require('koa-session'),
   favicon = require('koa-favicon'),
   accesslog = require('koa-accesslog')
 
-var qs = require('qs'),
-  extend = require('extend'),
+var extend = require('extend'),
   hogan = require('hogan.js'),
   Grant = require('../index').koa()
 
@@ -46,6 +46,7 @@ app.use(mount(grant))
 app.use(bodyParser())
 app.use(session(app))
 app.use(router(app))
+koaqs(app)
 
 app.get('/', function *(next) {
   var session = this.session.grant||{}
@@ -57,22 +58,18 @@ app.get('/', function *(next) {
     return
   }
 
-  console.log(this.query)
-  console.log(qs.parse(qs.stringify(this.query)))
-  var $this = this
-
   var providers = Object.keys(grant.config)
   var params = []
 
   providers.forEach(function (provider) {
     var obj = {url:'/connect/'+provider, name:provider}
     if (session.provider == provider) {
-      obj.credentials = $this.query
-      var key = $this.query.error ? 'error' : 'raw'
-      obj.credentials[key] = JSON.stringify($this.query[key], null, 4)
+      obj.credentials = this.query
+      var key = this.query.error ? 'error' : 'raw'
+      obj.credentials[key] = JSON.stringify(this.query[key], null, 4)
     }
     params.push(obj)
-  })
+  }.bind(this))
   this.body = template.render({
     providers:params,
     count:providers.length-1//linkedin2
