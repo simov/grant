@@ -123,7 +123,7 @@ app.use(bodyParser())
     ```
 
 
-#### Dynamic Override
+## Dynamic Override
 
 Additionally you can make a `POST` request to the `/connect/:provider/:override?` route to override your provider's options dynamically for each request
 
@@ -132,6 +132,39 @@ Additionally you can make a `POST` request to the `/connect/:provider/:override?
 request.post('http://mydomain.com/connect/facebook', {
   form: {scope:['some','other','scopes']}
 }, function (err, res, body) {});
+```
+
+
+## Return Data
+
+The OAuth data is returned as a querystring in your _final_ callback
+
+For OAuth the `access_token` and the `access_secret` are accessible directly, `raw` contains the raw response data
+
+```js
+{
+  access_token:'...',
+  access_secret:'...',
+  raw:{
+    oauth_token:'...',
+    oauth_token_secret:'...',
+    some:'other data'
+  }
+}
+```
+
+For OAuth2 the `access_token` and the `refresh_token` (if present) are accessible directly, `raw` contains the raw response data
+
+```js
+{
+  access_token:'...',
+  refresh_token:'...',
+  raw:{
+    access_token:'...',
+    refresh_token:'...',
+    some:'other data'
+  }
+}
 ```
 
 
