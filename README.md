@@ -189,11 +189,19 @@ For OAuth2 the `access_token` and the `refresh_token` (if present) are accessibl
 - Some providers may employ custom authorization parameters outside of the ones specified in the [configuration][configuration] section. For example: Google - `access_type`, Reddit - `duration`, Trello - `expiration`, and so on. Refer to the provider's OAuth documentation for more details
 
 
+## What's Next
+
+Once you have your access tokens secured, you can start making authorized requests on behalf of your users. _**[Purest][purest]**_ is a great REST API library that supports **dozens** of REST API providers
+
+
 ## License
 
 MIT
 
   [playground]: https://grant-oauth.herokuapp.com/
+  [purest]: https://github.com/simov/purest
+  [request]: https://github.com/request/request
+
   [npm]: https://www.npmjs.org/package/grant
   [travis]: https://travis-ci.org/simov/grant
   [coveralls]: https://coveralls.io/r/simov/grant?branch=master
