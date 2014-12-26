@@ -275,6 +275,11 @@
     "oauth": 2,
     "scope_delimiter": " "
   },
+  "vk": {
+    "authorize_url": "https://oauth.vk.com/authorize",
+    "access_url": "https://oauth.vk.com/access_token",
+    "oauth": 2
+  },
   "yahoo": {
     "request_url": "https://api.login.yahoo.com/oauth/v2/get_request_token",
     "authorize_url": "https://api.login.yahoo.com/oauth/v2/request_auth",

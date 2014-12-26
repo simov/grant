@@ -209,13 +209,10 @@
   },
   "vimeo": {
   },
+  "vk": {
+  },
   "yahoo": {
   },
   "yammer": {
-  },
-
-
-  "disqus": {
-    "scope": ["read", "write"]
   }
 }
