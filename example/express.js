@@ -3,8 +3,7 @@ var express = require('express'),
   logger = require('morgan'),
   bodyParser = require('body-parser'),
   cookieParser = require('cookie-parser'),
-  session = require('express-session'),
-  favicon = require('serve-favicon')
+  session = require('express-session')
 
 var consolidate = require('consolidate'),
   hogan = require('hogan.js'),
@@ -32,23 +31,21 @@ var grant = new Grant(transform(config))
 
 
 var app = express()
-  .use(favicon(__dirname+'/favicon.ico'))
-  .use(cookieParser())
-  .use(session({
+app.use(logger('dev'))
+app.use(grant)
+app.use(bodyParser.json())
+app.use(bodyParser.urlencoded({extended: true}))
+app.use(cookieParser())
+app.use(session({
     name: 'grant', secret: 'very secret',
     saveUninitialized: true, resave: true
   }))
-  .use(grant)
-  .set('port', process.env.PORT||3000)
 
-  .set('views', __dirname)
-  .set('view engine', 'html')
-  .set('view cache', true)
-  .engine('html', consolidate.hogan)
-
-  .use(logger('dev'))
-  .use(bodyParser.json())
-  .use(bodyParser.urlencoded({extended: true}))
+app.set('port', process.env.PORT||3000)
+app.set('views', __dirname)
+app.set('view engine', 'html')
+app.set('view cache', true)
+app.engine('html', consolidate.hogan)
 
 
 app.get('/', function (req, res) {
