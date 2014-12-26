@@ -8,11 +8,10 @@ var koa = require('koa'),
   bodyParser = require('koa-bodyparser'),
   koaqs = require('koa-qs'),
   session = require('koa-session'),
-  favicon = require('koa-favicon'),
   accesslog = require('koa-accesslog')
 
-var extend = require('extend'),
-  hogan = require('hogan.js'),
+var hogan = require('hogan.js'),
+  extend = require('extend'),
   Grant = require('../index').koa()
 
 var template = hogan.compile(fs.readFileSync(path.join(__dirname, 'template.html'),'utf8')),
@@ -48,6 +47,7 @@ app.use(session(app))
 app.use(router(app))
 koaqs(app)
 
+
 app.get('/', function *(next) {
   var session = this.session.grant||{}
 
@@ -63,7 +63,7 @@ app.get('/', function *(next) {
     return
   }
 
-  console.log(req.query)
+  console.log(this.query)
 
   var providers = Object.keys(grant.config)
   var params = []
