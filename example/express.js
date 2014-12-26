@@ -38,29 +38,6 @@ var app = express()
     name: 'grant', secret: 'very secret',
     saveUninitialized: true, resave: true
   }))
-
-  .use(function (req, res, next) {
-    if (/^\/connect\/(\w+)$/.test(req.url)) {
-      var name = req.url.replace(/^\/connect\/(\w+)$/,'$1')
-      var provider = grant.config[name]
-
-      if (provider.protocol == 'https') {
-        if (/^http:/.test(req.headers.referer)) {
-          var url = provider.protocol+'://'+provider.host+'/connect/'+provider.name
-          return res.redirect(url)
-        }
-      }
-      else {
-        if (/^https:/.test(req.headers.referer)) {
-          var url = provider.protocol+'://'+provider.host+'/connect/'+provider.name
-          return res.redirect(url)
-        }
-      }
-    }
-
-    next()
-  })
-
   .use(grant)
   .set('port', process.env.PORT||3000)
 
