@@ -77,6 +77,11 @@ var app = express()
 app.get('/', function (req, res) {
   var session = req.session.grant||{}
 
+  // evernote sandbox urls
+  grant.config.evernote.request_url = grant.config.evernote.request_url.replace('www','sandbox')
+  grant.config.evernote.authorize_url = grant.config.evernote.authorize_url.replace('www','sandbox')
+  grant.config.evernote.access_url = grant.config.evernote.access_url.replace('www','sandbox')
+
   // feedly sandbox redirect_uri
   if (session.provider == 'feedly' && req.query.code) {
     var q = require('querystring')
