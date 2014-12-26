@@ -280,6 +280,11 @@
     "access_url": "https://oauth.vk.com/access_token",
     "oauth": 2
   },
+  "wordpress": {
+    "authorize_url": "https://public-api.wordpress.com/oauth2/authorize",
+    "access_url": "https://public-api.wordpress.com/oauth2/token",
+    "oauth": 2
+  },
   "yahoo": {
     "request_url": "https://api.login.yahoo.com/oauth/v2/get_request_token",
     "authorize_url": "https://api.login.yahoo.com/oauth/v2/request_auth",
