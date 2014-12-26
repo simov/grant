@@ -40,7 +40,8 @@
   "coinbase": {
     "authorize_url": "https://www.coinbase.com/oauth/authorize",
     "access_url": "https://www.coinbase.com/oauth/token",
-    "oauth": 2
+    "oauth": 2,
+    "scope_delimiter": "+"
   },
   "deviantart": {
     "authorize_url": "https://www.deviantart.com/oauth2/authorize",
@@ -226,7 +227,8 @@
   "spotify": {
     "authorize_url": "https://accounts.spotify.com/authorize",
     "access_url": "https://accounts.spotify.com/api/token",
-    "oauth": 2
+    "oauth": 2,
+    "scope_delimiter": " "
   },
   "stackexchange": {
     "authorize_url": "https://stackexchange.com/oauth",
