@@ -40,6 +40,8 @@
   "dropbox": {
     "protocol": "https"
   },
+  "eventbrite": {
+  },
   "evernote": {
   },
   "facebook": {
