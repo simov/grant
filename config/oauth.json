@@ -234,6 +234,11 @@
     "oauth": 2,
     "scope_delimiter": " "
   },
+  "shopify": {
+    "authorize_url": "https://[subdomain].myshopify.com/admin/oauth/authorize",
+    "access_url": "https://[subdomain].myshopify.com/admin/oauth/access_token",
+    "oauth": 2
+  },
   "slack": {
     "authorize_url": "https://slack.com/oauth/authorize",
     "access_url": "https://slack.com/api/oauth.access",
