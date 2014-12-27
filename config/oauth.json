@@ -300,6 +300,12 @@
     "access_url": "https://oauth.vk.com/access_token",
     "oauth": 2
   },
+  "withings": {
+    "request_url": "https://oauth.withings.com/account/request_token",
+    "authorize_url": "https://oauth.withings.com/account/authorize",
+    "access_url": "https://oauth.withings.com/account/access_token",
+    "oauth": 1
+  },
   "wordpress": {
     "authorize_url": "https://public-api.wordpress.com/oauth2/authorize",
     "access_url": "https://public-api.wordpress.com/oauth2/token",
