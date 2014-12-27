@@ -186,6 +186,7 @@ For OAuth2 the `access_token` and the `refresh_token` (if present) are accessibl
 ## Quirks
 
 - To use LinkedIn's OAuth2 flow you should use `linkedin2` for provider name, instead of `linkedin` which is for OAuth1
+- For Zendesk you should specify your company's sub domain name through the `subdomain` option
 - Some providers may employ custom authorization parameters outside of the ones specified in the [configuration][configuration] section. You can pass these custom parameters directly in your configuration, for example: Google - `access_type`, Reddit - `duration`, Trello - `expiration`, and so on. Refer to the provider's OAuth documentation for more details
 
 
