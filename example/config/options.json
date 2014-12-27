@@ -176,6 +176,12 @@
   "salesforce": {
     "protocol": "https"
   },
+  "shopify": {
+    "scope": [
+      "read_content"
+    ],
+    "subdomain": "outofindex"
+  },
   "slack": {
   },
   "soundcloud": {
