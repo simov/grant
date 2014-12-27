@@ -218,6 +218,11 @@
     "oauth": 2,
     "scope_delimiter": " "
   },
+  "podio": {
+    "authorize_url": "https://podio.com/oauth/authorize",
+    "access_url": "https://podio.com/oauth/token",
+    "oauth": 2
+  },
   "rdio": {
     "request_url": "http://api.rdio.com/oauth/request_token",
     "authorize_url": "https://www.rdio.com/oauth/authorize",
