@@ -60,6 +60,8 @@
       "https://cloud.feedly.com/subscriptions"
     ]
   },
+  "flattr": {
+  },
   "flickr": {
     "scope": [
       "delete"

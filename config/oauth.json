@@ -96,6 +96,11 @@
     "access_url": "http://cloud.feedly.com/v3/auth/token",
     "oauth": 2
   },
+  "flattr": {
+    "authorize_url": "https://flattr.com/oauth/authorize",
+    "access_url": "https://flattr.com/oauth/token",
+    "oauth": 2
+  },
   "flickr": {
     "request_url": "https://www.flickr.com/services/oauth/request_token",
     "authorize_url": "https://www.flickr.com/services/oauth/authorize",
