@@ -190,6 +190,11 @@
     "access_url": "https://login.mailchimp.com/oauth2/token",
     "oauth": 2
   },
+  "meetup": {
+    "authorize_url": "https://secure.meetup.com/oauth2/authorize",
+    "access_url": "https://secure.meetup.com/oauth2/access",
+    "oauth": 2
+  },
   "mixcloud": {
     "authorize_url": "https://www.mixcloud.com/oauth/authorize",
     "access_url": "https://www.mixcloud.com/oauth/access_token",
