@@ -228,5 +228,12 @@
   "yammer": {
   },
   "yandex": {
+  },
+  "zendesk": {
+    "protocol": "https",
+    "scope": [
+      "read"
+    ],
+    "subdomain": "outofindex"
   }
 }
