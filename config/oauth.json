@@ -21,6 +21,11 @@
     "access_url": "https://app.asana.com/-/oauth_token",
     "oauth": 2
   },
+  "basecamp": {
+    "authorize_url": "https://launchpad.37signals.com/authorization/new",
+    "access_url": "https://launchpad.37signals.com/authorization/token",
+    "oauth": 2
+  },
   "bitbucket": {
     "request_url": "https://bitbucket.org/api/1.0/oauth/request_token",
     "authorize_url": "https://bitbucket.org/api/1.0/oauth/authenticate",
