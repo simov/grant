@@ -91,6 +91,11 @@
     "access_url": "https://api.everyplay.com/oauth2/access_token",
     "oauth": 2
   },
+  "eyeem": {
+    "authorize_url": "http://www.eyeem.com/oauth/authorize",
+    "access_url": "http://api.eyeem.com/v2/oauth/token",
+    "oauth": 2
+  },
   "facebook": {
     "authorize_url": "https://www.facebook.com/dialog/oauth",
     "access_url": "https://graph.facebook.com/oauth/access_token",
