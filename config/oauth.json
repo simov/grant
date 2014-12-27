@@ -11,6 +11,11 @@
     "oauth": 2,
     "scope_delimiter": " "
   },
+  "angellist": {
+    "authorize_url": "https://angel.co/api/oauth/authorize",
+    "access_url": "https://angel.co/api/oauth/token",
+    "oauth": 2
+  },
   "asana": {
     "authorize_url": "https://app.asana.com/-/oauth_authorize",
     "access_url": "https://app.asana.com/-/oauth_token",
