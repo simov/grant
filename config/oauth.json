@@ -218,6 +218,12 @@
     "oauth": 2,
     "scope_delimiter": " "
   },
+  "rdio": {
+    "request_url": "http://api.rdio.com/oauth/request_token",
+    "authorize_url": "https://www.rdio.com/oauth/authorize",
+    "access_url": "http://api.rdio.com/oauth/access_token",
+    "oauth": 1
+  },
   "redbooth": {
     "authorize_url": "https://redbooth.com/oauth2/authorize",
     "access_url": "https://redbooth.com/oauth2/token",
