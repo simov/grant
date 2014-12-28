@@ -136,6 +136,12 @@
     "access_url": "http://cloud.feedly.com/v3/auth/token",
     "oauth": 2
   },
+  "fitbit": {
+    "request_url": "https://api.fitbit.com/oauth/request_token",
+    "authorize_url": "https://www.fitbit.com/oauth/authorize",
+    "access_url": "https://api.fitbit.com/oauth/access_token",
+    "oauth": 1
+  },
   "flattr": {
     "authorize_url": "https://flattr.com/oauth/authorize",
     "access_url": "https://flattr.com/oauth/token",
