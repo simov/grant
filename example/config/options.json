@@ -24,6 +24,8 @@
   },
   "buffer": {
   },
+  "cheddar": {
+  },
   "coinbase": {
     "scope": [
       "user"
