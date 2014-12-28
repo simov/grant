@@ -327,6 +327,11 @@
     "access_url": "https://connect.stripe.com/oauth/token",
     "oauth": 2
   },
+  "traxo": {
+    "authorize_url": "https://www.traxo.com/oauth/authenticate",
+    "access_url": "https://www.traxo.com/oauth/token",
+    "oauth": 2
+  },
   "trello": {
     "request_url": "https://trello.com/1/OAuthGetRequestToken",
     "authorize_url": "https://trello.com/1/OAuthAuthorizeToken",
