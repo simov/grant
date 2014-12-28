@@ -224,6 +224,8 @@
     ],
     "expiration": "never"
   },
+  "tripit": {
+  },
   "twitch": {
     "scope": [
       "user_read"

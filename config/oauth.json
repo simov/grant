@@ -307,6 +307,12 @@
     "access_url": "https://trello.com/1/OAuthGetAccessToken",
     "oauth": 1
   },
+  "tripit": {
+    "request_url": "https://api.tripit.com/oauth/request_token",
+    "authorize_url": "https://www.tripit.com/oauth/authorize",
+    "access_url": "https://api.tripit.com/oauth/access_token",
+    "oauth": 1
+  },
   "tumblr": {
     "request_url": "http://www.tumblr.com/oauth/request_token",
     "authorize_url": "http://www.tumblr.com/oauth/authorize",
