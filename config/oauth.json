@@ -379,6 +379,12 @@
     "access_url": "https://public-api.wordpress.com/oauth2/token",
     "oauth": 2
   },
+  "xing": {
+    "request_url": "https://api.xing.com/v1/request_token",
+    "authorize_url": "https://api.xing.com/v1/authorize",
+    "access_url": "https://api.xing.com/v1/access_token",
+    "oauth": 1
+  },
   "yahoo": {
     "request_url": "https://api.login.yahoo.com/oauth/v2/get_request_token",
     "authorize_url": "https://api.login.yahoo.com/oauth/v2/request_auth",
