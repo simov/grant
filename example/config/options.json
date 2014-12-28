@@ -227,6 +227,9 @@
   "stripe": {
     "protocol": "https"
   },
+  "traxo": {
+    "state": "Grant"
+  },
   "trello": {
     "scope": [
       "read",
