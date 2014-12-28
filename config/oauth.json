@@ -16,6 +16,11 @@
     "access_url": "https://angel.co/api/oauth/token",
     "oauth": 2
   },
+  "appnet": {
+    "authorize_url": "https://account.app.net/oauth/authenticate",
+    "access_url": "https://account.app.net/oauth/access_token",
+    "oauth": 2
+  },
   "asana": {
     "authorize_url": "https://app.asana.com/-/oauth_authorize",
     "access_url": "https://app.asana.com/-/oauth_token",
@@ -205,6 +210,12 @@
   "instagram": {
     "authorize_url": "https://api.instagram.com/oauth/authorize",
     "access_url": "https://api.instagram.com/oauth/access_token",
+    "oauth": 2,
+    "scope_delimiter": " "
+  },
+  "jawbone": {
+    "authorize_url": "https://jawbone.com/auth/oauth2/auth",
+    "access_url": "https://jawbone.com/auth/oauth2/token",
     "oauth": 2,
     "scope_delimiter": " "
   },

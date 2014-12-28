@@ -9,6 +9,9 @@
   },
   "angellist": {
   },
+  "appnet": {
+    "protocol": "https"
+  },
   "asana": {
   },
   "assembla": {
@@ -125,6 +128,8 @@
     "protocol": "https"
   },
   "instagram": {
+  },
+  "jawbone": {
   },
   "linkedin": {
     "scope": [
