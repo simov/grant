@@ -52,6 +52,11 @@
     "access_url": "https://api.bufferapp.com/1/oauth2/token.json",
     "oauth": 2
   },
+  "cheddar": {
+    "authorize_url": "https://api.cheddarapp.com/oauth/authorize",
+    "access_url": "https://api.cheddarapp.com/oauth/token",
+    "oauth": 2
+  },
   "coinbase": {
     "authorize_url": "https://www.coinbase.com/oauth/authorize",
     "access_url": "https://www.coinbase.com/oauth/token",
