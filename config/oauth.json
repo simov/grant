@@ -68,6 +68,11 @@
     "access_url": "https://api.dailymile.com/oauth/token",
     "oauth": 2
   },
+  "deezer": {
+    "authorize_url": "https://connect.deezer.com/oauth/auth.php",
+    "access_url": "https://connect.deezer.com/oauth/access_token.php",
+    "oauth": 2
+  },
   "deviantart": {
     "authorize_url": "https://www.deviantart.com/oauth2/authorize",
     "access_url": "https://www.deviantart.com/oauth2/token",
