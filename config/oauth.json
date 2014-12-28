@@ -63,6 +63,11 @@
     "oauth": 2,
     "scope_delimiter": "+"
   },
+  "dailymile": {
+    "authorize_url": "https://api.dailymile.com/oauth/authorize",
+    "access_url": "https://api.dailymile.com/oauth/token",
+    "oauth": 2
+  },
   "deviantart": {
     "authorize_url": "https://www.deviantart.com/oauth2/authorize",
     "access_url": "https://www.deviantart.com/oauth2/token",
