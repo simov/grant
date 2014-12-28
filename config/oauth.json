@@ -269,6 +269,11 @@
     "access_url": "https://ssl.reddit.com/api/v1/access_token",
     "oauth": 2
   },
+  "runkeeper": {
+    "authorize_url": "https://runkeeper.com/apps/authorize",
+    "access_url": "https://runkeeper.com/apps/token",
+    "oauth": 2
+  },
   "salesforce": {
     "authorize_url": "https://login.salesforce.com/services/oauth2/authorize",
     "access_url": "https://login.salesforce.com/services/oauth2/token",
