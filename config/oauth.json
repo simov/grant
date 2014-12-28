@@ -285,6 +285,12 @@
     "access_url": "https://[subdomain].myshopify.com/admin/oauth/access_token",
     "oauth": 2
   },
+  "skyrock": {
+    "request_url": "https://api.skyrock.com/v2/oauth/initiate",
+    "authorize_url": "https://api.skyrock.com/v2/oauth/authorize",
+    "access_url": "https://api.skyrock.com/v2/oauth/token",
+    "oauth": 1
+  },
   "slack": {
     "authorize_url": "https://slack.com/oauth/authorize",
     "access_url": "https://slack.com/api/oauth.access",
