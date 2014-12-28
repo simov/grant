@@ -306,6 +306,11 @@
     "access_url": "https://api.stocktwits.com/api/2/oauth/token",
     "oauth": 2
   },
+  "strava": {
+    "authorize_url": "https://www.strava.com/oauth/authorize",
+    "access_url": "https://www.strava.com/oauth/token",
+    "oauth": 2
+  },
   "stripe": {
     "authorize_url": "https://connect.stripe.com/oauth/authorize",
     "access_url": "https://connect.stripe.com/oauth/token",

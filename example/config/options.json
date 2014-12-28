@@ -218,6 +218,8 @@
       "publish_watch_lists", "follow_users", "follow_stocks"
     ]
   },
+  "strava": {
+  },
   "stripe": {
     "protocol": "https"
   },
