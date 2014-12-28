@@ -189,6 +189,8 @@
     "state": "Grant",
     "duration": "permanent"
   },
+  "runkeeper": {
+  },
   "salesforce": {
     "protocol": "https"
   },
