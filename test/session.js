@@ -75,7 +75,7 @@ describe('session', function () {
     })
   })
 
-  after(function () {
-    server.close()
+  after(function (done) {
+    server.close(done)
   })
 })
