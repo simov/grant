@@ -14,12 +14,14 @@
   "angellist": {
     "authorize_url": "https://angel.co/api/oauth/authorize",
     "access_url": "https://angel.co/api/oauth/token",
-    "oauth": 2
+    "oauth": 2,
+    "scope_delimiter": " "
   },
   "appnet": {
     "authorize_url": "https://account.app.net/oauth/authenticate",
     "access_url": "https://account.app.net/oauth/access_token",
-    "oauth": 2
+    "oauth": 2,
+    "scope_delimiter": " "
   },
   "asana": {
     "authorize_url": "https://app.asana.com/-/oauth_authorize",
@@ -145,7 +147,8 @@
   "flattr": {
     "authorize_url": "https://flattr.com/oauth/authorize",
     "access_url": "https://flattr.com/oauth/token",
-    "oauth": 2
+    "oauth": 2,
+    "scope_delimiter": " "
   },
   "flickr": {
     "request_url": "https://www.flickr.com/services/oauth/request_token",
@@ -250,7 +253,8 @@
   "meetup": {
     "authorize_url": "https://secure.meetup.com/oauth2/authorize",
     "access_url": "https://secure.meetup.com/oauth2/access",
-    "oauth": 2
+    "oauth": 2,
+    "scope_delimiter": "+"
   },
   "mixcloud": {
     "authorize_url": "https://www.mixcloud.com/oauth/authorize",
