@@ -264,6 +264,7 @@
   "vk": {
   },
   "withings": {
+    "protocol": "https"
   },
   "wordpress": {
   },
