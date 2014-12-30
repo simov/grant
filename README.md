@@ -4,17 +4,9 @@
 [![npm-version]][npm] [![coveralls-status]][coveralls]
 
 
-## Providers [Playground][playground]
+## 80 Supported Providers - [OAuth Playground][playground]
 
-| | | | | | |
-:---: | :---: | :---: | :---: | :---: | :---:
-[500px](https://developers.500px.com/) | [amazon](http://login.amazon.com/documentation) | [asana](http://developer.asana.com/documentation/) | [bitbucket](https://confluence.atlassian.com/display/BITBUCKET/Use+the+Bitbucket+REST+APIs) | [bitly](http://dev.bitly.com) | [box](https://developers.box.com/)
-[deviantart](https://www.deviantart.com/developers/) | [digitalocean](https://developers.digitalocean.com/) | [dropbox](https://www.dropbox.com/developers) | [facebook](https://developers.facebook.com) | [feedly](https://developer.feedly.com/) | [flickr](https://www.flickr.com/services/api/)
-[flowdock](https://www.flowdock.com/api) | [foursquare](https://developer.foursquare.com/) | [github](http://developer.github.com) | [gitter](https://developer.gitter.im/docs/welcome) | [google](https://developers.google.com/) | [heroku](https://devcenter.heroku.com/categories/platform-api)
-[imgur](https://api.imgur.com/) | [instagram](http://instagram.com/developer) | [linkedin](http://developer.linkedin.com) [(2)][quirks] | [live](http://msdn.microsoft.com/en-us/library/dn783283.aspx) | [mailchimp](http://apidocs.mailchimp.com/) | [odesk](https://developers.odesk.com/)
-[openstreetmap](http://wiki.openstreetmap.org/wiki/API_v0.6) | [paypal](https://developer.paypal.com/docs/) | [redbooth](https://redbooth.com/api/) | [salesforce](https://www.salesforce.com/us/developer/docs/api_rest) | [slack](https://api.slack.com/) | [soundcloud](http://developers.soundcloud.com)
-[stackexchange](https://api.stackexchange.com) | [stocktwits](http://stocktwits.com/developers) | [stripe](https://stripe.com/docs) | [trello](https://trello.com/docs/) | [tumblr](http://www.tumblr.com/docs/en/api/v2) | [twitch](https://github.com/justintv/twitch-api)
-[twitter](https://dev.twitter.com) | [vimeo](https://developer.vimeo.com/) | [yahoo](https://developer.yahoo.com/) | [yammer](https://developer.yammer.com/)
+[`500px`](https://developers.500px.com/) | [`amazon`](http://login.amazon.com/documentation) | [`angellist`](https://angel.co/api) | [`appnet`](https://developers.app.net/reference/resources/) | [`asana`](http://developer.asana.com/documentation/) | [`assembla`](http://api-doc.assembla.com/) | [`basecamp`](https://github.com/basecamp/bcx-api/) | [`bitbucket`](https://confluence.atlassian.com/display/BITBUCKET) | [`bitly`](http://dev.bitly.com) | [`box`](https://developers.box.com/) | [`buffer`](http://dev.buffer.com) | [`cheddar`](https://cheddarapp.com/developer/) | [`coinbase`](https://www.coinbase.com/docs/api/overview) | [`dailymile`](http://www.dailymile.com/api/documentation) | [`dailymotion`](https://developer.dailymotion.com/documentation#graph-api) | [`deezer`](http://developers.deezer.com/) | [`deviantart`](https://www.deviantart.com/developers/) | [`digitalocean`](https://developers.digitalocean.com/) | [`disqus`](https://disqus.com/api/docs/) | [`dropbox`](https://www.dropbox.com/developers) | [`eventbrite`](http://developer.eventbrite.com/) | [`evernote`](https://dev.evernote.com/doc/) | [`everyplay`](https://developers.everyplay.com/) | [`eyeem`](https://www.eyeem.com/developers) | [`facebook`](https://developers.facebook.com) | [`feedly`](https://developer.feedly.com/) | [`fitbit`](http://dev.fitbit.com/) | [`flattr`](http://developers.flattr.net/) | [`flickr`](https://www.flickr.com/services/api/) | [`flowdock`](https://www.flowdock.com/api) | [`foursquare`](https://developer.foursquare.com/) | [`geeklist`](http://hackers.geekli.st/) | [`getpocket`](http://getpocket.com/developer/) | [`github`](http://developer.github.com) | [`gitter`](https://developer.gitter.im/docs/welcome) | [`goodreads`](https://www.goodreads.com/api) | [`google`](https://developers.google.com/) | [`harvest`](https://github.com/harvesthq/api) | [`heroku`](https://devcenter.heroku.com/categories/platform-api) | [`imgur`](https://api.imgur.com/) | [`instagram`](http://instagram.com/developer) | [`jawbone`](https://jawbone.com/up/developer/) | [`linkedin`](http://developer.linkedin.com) | [`live`](http://msdn.microsoft.com/en-us/library/dn783283.aspx) | [`mailchimp`](http://apidocs.mailchimp.com/) | [`meetup`](http://www.meetup.com/meetup_api/) | [`mixcloud`](http://www.mixcloud.com/developers/) | [`odesk`](https://developers.odesk.com) | [`openstreetmap`](http://wiki.openstreetmap.org/wiki/API_v0.6) | [`paypal`](https://developer.paypal.com/docs/) | [`podio`](https://developers.podio.com/) | [`rdio`](http://www.rdio.com/developers/) | [`redbooth`](https://redbooth.com/api/) | [`reddit`](http://www.reddit.com/dev/api) | [`runkeeper`](http://developer.runkeeper.com/healthgraph/overview) | [`salesforce`](https://www.salesforce.com/us/developer/docs/api_rest) | [`shopify`](http://docs.shopify.com/api) | [`skyrock`](http://www.skyrock.com/developer/documentation/) | [`slack`](https://api.slack.com/) | [`soundcloud`](http://developers.soundcloud.com) | [`spotify`](https://developer.spotify.com) | [`stackexchange`](https://api.stackexchange.com) | [`stocktwits`](http://stocktwits.com/developers) | [`strava`](http://strava.github.io/api/) | [`stripe`](https://stripe.com/docs) | [`traxo`](https://developer.traxo.com/) | [`trello`](https://trello.com/docs/) | [`tripit`](https://www.tripit.com/developer) | [`tumblr`](http://www.tumblr.com/docs/en/api/v2) | [`twitch`](https://github.com/justintv/twitch-api) | [`twitter`](https://dev.twitter.com) | [`vimeo`](https://developer.vimeo.com/) | [`vk`](http://vk.com/dev) | [`withings`](http://oauth.withings.com/api) | [`wordpress`](https://developer.wordpress.com/docs/api/) | [`xing`](https://dev.xing.com/docs) | [`yahoo`](https://developer.yahoo.com/) | [`yammer`](https://developer.yammer.com/) | [`yandex`](http://api.yandex.com/) | [`zendesk`](https://developer.zendesk.com/rest_api/docs/core/introduction)
 
 
 ## Express
@@ -32,6 +24,7 @@ app.use(grant);
 app.use(cookieParser());
 app.use(session());
 ```
+
 
 ## Koa
 
@@ -211,6 +204,9 @@ MIT
   [npm-downloads]: http://img.shields.io/npm/dm/grant.svg?style=flat-square (NPM Downloads)
   [travis-ci]: https://img.shields.io/travis/simov/grant/master.svg?style=flat-square (Build Status)
   [coveralls-status]: https://img.shields.io/coveralls/simov/grant.svg?style=flat-square (Coveralls Status)
+
+  [express-example]: https://github.com/simov/grant/blob/master/example/express.js
+  [koa-example]: https://github.com/simov/grant/blob/master/example/koa.js
 
   [routes]: #reserved-routes-for-grant
   [configuration]: #configuration
