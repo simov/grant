@@ -123,4 +123,37 @@ describe('config', function () {
       })
     })
   })
+
+  describe('provider', function () {
+    it('default', function () {
+      var cfg = {google:{callback:'/'}}
+      var session = {provider:'google'}
+      var provider = config.provider(cfg, session)
+      should.deepEqual(provider, {callback:'/'})
+    })
+    it('override no overrides', function () {
+      var cfg = {google:{callback:'/'}}
+      var session = {provider:'google', override:'contacts'}
+      var provider = config.provider(cfg, session)
+      should.deepEqual(provider, {callback:'/'})
+    })
+    it('override not matching', function () {
+      var cfg = {google:{callback:'/', overrides:{gmail:{callback:'/gmail'}}}}
+      var session = {provider:'google', override:'contacts'}
+      var provider = config.provider(cfg, session)
+      should.deepEqual(provider, {callback:'/', overrides:{gmail:{callback:'/gmail'}}})
+    })
+    it('override match', function () {
+      var cfg = {google:{callback:'/', overrides:{contacts:{callback:'/contacts'}}}}
+      var session = {provider:'google', override:'contacts'}
+      var provider = config.provider(cfg, session)
+      should.deepEqual(provider, {callback:'/contacts'})
+    })
+    it('dynamic', function () {
+      var cfg = {google:{callback:'/'}}
+      var session = {dynamic:{callback:'/contacts'}}
+      var provider = config.provider(cfg, session)
+      should.deepEqual(provider, {callback:'/contacts'})
+    })
+  })
 })
