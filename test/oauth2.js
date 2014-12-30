@@ -47,7 +47,7 @@ describe('oauth2', function () {
     url.should.equal('/?raw%5Bsome%5D=data')
   })
 
-  after(function () {
-    server.close()
+  after(function (done) {
+    server.close(done)
   })
 })
