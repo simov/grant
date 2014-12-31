@@ -5,6 +5,7 @@
 
   "keywords": [
     "oauth",
+    "oauth2",
     "authentication",
     "middleware",
     "express",
