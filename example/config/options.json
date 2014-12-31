@@ -215,6 +215,8 @@
   },
   "slack": {
   },
+  "slice": {
+  },
   "soundcloud": {
     "scope": [
       "non-expiring"
