@@ -12,29 +12,29 @@
 ## Express
 
 ```js
-var express = require('express');
-var Grant = require('grant').express();
+var express = require('express')
+var Grant = require('grant').express()
 
-var grant = new Grant({...configuration see below...});
+var grant = new Grant({...configuration see below...})
 
-var app = express();
+var app = express()
 // mount grant
-app.use(grant);
+app.use(grant)
 // app server middlewares
-app.use(cookieParser());
-app.use(session());
+app.use(cookieParser())
+app.use(session())
 ```
 
 
 ## Koa
 
 ```js
-var koa = require('koa');
-var Grant = require('grant').koa();
+var koa = require('koa')
+var Grant = require('grant').koa()
 
-var grant = new Grant({...configuration see below...});
+var grant = new Grant({...configuration see below...})
 
-var app = express();
+var app = koa()
 // mount grant
 app.use(mount(grant))
 // app server middlewares
@@ -75,67 +75,82 @@ app.use(bodyParser())
 - **server** - configuration about your server
   - **protocol** - either `http` or `https`
   - **host** - your server's host name `localhost:3000` | `dummy.com:5000` | `mysite.com` ...
-  - **callback** - common callback for all providers in your config
-- **provider1** - any supported provider _(see the above table)_ `google` | `facebook` ...
+  - **callback** - common callback for all providers in your config `/callback` | `/done` ...
+- **provider1** - any supported provider _(see the list above)_ `facebook` | `twitter` ...
   - **key** - `consumer_key` or `client_id` of your app
   - **secret** - `consumer_secret` or `client_secret` of your app
-  - **scope** - OAuth scopes array
-  - **state** - OAuth state string
-  - **callback** - specific callback to use for this provider _(overrides the global one specified in the `server` key)_<br>
-    - These callbacks are used only on your server!<br>
-    - These callbacks are not the one you specify for your app!
-    - You should always specify the `callback` or `redirect` url of your app like this:<br>
-    `http(s)://mydomain.com/connect/[provider]/callback` where<br>
-      - _provider_ is one of the above provider names
-      - _mydomain.com_ is your site's domain name
-  - **protocol** | **host** - additionally you can override these common values inherited from the `server` key
-  - **custom1** - create sub configuration for that provider<br>
-    _You can override any of the above keys here_<br>
-    _**Example**_<br>
-    
-    ```js
-    "facebook": {
-      "key": "...",
-      "secret": "...",
-      // by default request publish permissions via /connect/facebook
-      "scope": ["publish_actions", "publish_stream"],
-      // set specific callback route on your server for this provider only
-      "callback": "/facebook/callback"
-      // custom override keys
-      "groups": {
-        // request only group permissions via /connect/facebook/groups
-        "scope": ["user_groups", "friends_groups"]
-      },
-      "pages": {
-        // request only page permissions via /connect/facebook/pages
-        "scope": ["manage_pages"],
-        // additionally use specific callback route on your server for this override only
-        "callback": "/pages/callback"
-      }
-    }
-    ```
+  - **scope** - array of OAuth scopes to request
+  - **state** - OAuth state string to pass
+  - **callback** - specific callback to use for this provider _(overrides the global one specified under the `server` key)_
+
+
+## Redirect Url
+
+For `callback/redirect` url of your OAuth application you should **always** use this format
+
+`[protocol]://[host]/connect/[provider]/callback`
+
+Where `protocol` and `host` should match the ones from which you initiate the flow, and `provider` is the provider's name from the list of supported providers
+
+The path you specify in the `callback` key in the Grant's configuration is where you'll receive the response data from the OAuth flow as a querystring, **after** the `[protocol]://[host]/connect/[provider]/callback` route was hit
+
+
+## Static Overrides
+
+You can add arbitrary keys inside your provider's configuration to create sub configurations that overrides the _global_ settings for this provider
+
+```js
+"facebook": {
+  "key": "...",
+  "secret": "...",
+  // by default request publish permissions via /connect/facebook
+  "scope": ["publish_actions", "publish_stream"],
+  // set specific callback route on your server for this provider only
+  "callback": "/facebook/callback"
+  // custom override keys
+  "groups": {
+    // request only group permissions via /connect/facebook/groups
+    "scope": ["user_groups", "friends_groups"]
+  },
+  "pages": {
+    // request only page permissions via /connect/facebook/pages
+    "scope": ["manage_pages"],
+    // additionally use specific callback route on your server for this override only
+    "callback": "/pages/callback"
+  }
+}
+```
 
 
 ## Dynamic Override
 
-Additionally you can make a `POST` request to the `/connect/:provider/:override?` route to override your provider's options dynamically for each request
+Additionally you can make a `POST` request to the `/connect/:provider/:override?` route to override your provider's configuration dynamically on each request
 
-```js
-// example using request
-request.post('http://mydomain.com/connect/facebook', {
-  form: {scope:['some','other','scopes']}
-}, function (err, res, body) {});
+```html
+<form action="/connect/facebook" method="post" accept-charset="utf-8">
+  <input name="state" type="text" value="" />
+  <input name="scope" type="checkbox" value="read" />
+  <input name="scope" type="checkbox" value="write" />
+  <button>submit</button>
+</form>
 ```
 
 
-## Return Data
+## Quirks
 
-The OAuth data is returned as a querystring in your _final_ callback
+- To use LinkedIn's OAuth2 flow you should use `linkedin2` for provider name, instead of `linkedin` which is for OAuth1
+- For Zendesk and Shopify you should specify your company's sub domain name through the `subdomain` option
+- Some providers may employ custom authorization parameters outside of the ones specified in the [configuration][configuration] section. You can pass those custom parameters directly in your configuration, for example: Google - `access_type`, Reddit - `duration`, Trello - `expiration`, and so on. Refer to the provider's OAuth documentation for more details
+
+
+## Response Data
+
+The OAuth data is returned as a querystring in your **final** callback _(the one you specify in the `callback` key of your Grant configuration)_
 
 
 #### OAuth1
 
-For OAuth the `access_token` and the `access_secret` are accessible directly, `raw` contains the raw response data
+For OAuth1 the `access_token` and the `access_secret` are accessible directly, `raw` contains the raw response data
 
 ```js
 {
@@ -183,23 +198,43 @@ In case of an error, the `error` key will be populated with the raw error data
 ## Typical Flow
 
 1. Register OAuth application on your provider's web site
-2. For `callback` or `redirect` url you should always use this format<br>
-  `http(s)://mydomain.com/connect/[provider]/callback` where<br>
-  - _provider_ is one of the above provider names
-  - _mydomain.com_ is your site's domain name
-3. Under the `server` key of your configuration
-  - `host` - set up host to match the one used in your app's redirect url
-  - `protocol` - set up protocol to match the one used in your app's redirect url
-  - `callback` - set a common callback route to use on your server. This is the final callback when the OAuth flow is complete. Grant will redirect you to it after hitting the `http(s)://mydomain.com/connect/[provider]/callback` specified for your OAuth app. Therefore the `callback` value should be something different than the [reserved routes][routes] for Grant
-4. Set any other provider specific configuration options under that provider key name. For example choose some `scope` to request from the user, and set specific `callback` route on your server to handle the response from that provider
-5. Navigate to the `/connect/:provider/:override?` route to start the OAuth flow. Once the flow is complete, you will be redirected back to the route specified in your `callback` key. You can access the response OAuth data through the ExpressJS's `req.query` key
-
-
-## Quirks
-
-- To use LinkedIn's OAuth2 flow you should use `linkedin2` for provider name, instead of `linkedin` which is for OAuth1
-- For Zendesk and Shopify you should specify your company's sub domain name through the `subdomain` option
-- Some providers may employ custom authorization parameters outside of the ones specified in the [configuration][configuration] section. You can pass these custom parameters directly in your configuration, for example: Google - `access_type`, Reddit - `duration`, Trello - `expiration`, and so on. Refer to the provider's OAuth documentation for more details
+2. For `callback/redirect` url **always** use this format
+  `[protocol]://[host]/connect/[provider]/callback`
+3. Create a `config.json` file containig
+  ```js
+  "server": {
+    "protocol": "https",
+    "host": "mywebsite.com",
+    "callback": "/handle_oauth_response"
+  },
+  "facebook": {
+    "key": "client_id",
+    "secret": "client_secret",
+    "scope": ["user_about_me"]
+  },
+  "twitter": {
+    "key": "consumer_key",
+    "secret": "consumer_secret",
+    "callback": "/handle_twitter_response"
+  }
+  ```
+4. Initialize Grant and mount it
+  ```js
+  // express
+  var express = require('express')
+  var Grant = require('grant').express()
+  var grant = new Grant(require('./config.json'))
+  var app = express()
+  app.use(grant)
+  // koa
+  var koa = require('koa')
+  var Grant = require('grant').koa()
+  var grant = new Grant(require('./config.json'))
+  var app = koa()
+  app.use(mount(grant))
+  ```
+5. Navigate to `/connect/facebook` to initiate the OAuth flow for Facebook, or navigate to `/connect/twitter` to initiate the OAuth flow for Twitter
+6. Once the OAuth flow is complete for Facebook you'll receive the response data as a querystring in the `/handle_oauth_response` route, and for Twitter in the `/handle_twitter_response` route
 
 
 ## What's Next
