@@ -60,7 +60,7 @@ describe('session', function () {
       json:true
     }, function (err, res, body) {
       should.deepEqual(body, {provider:'facebook', override:'contacts',
-        dynamic:{scope:['scope1','scope2'], state:'Grant'}})
+        dynamic:{scope:['scope1','scope2'], state:'Grant'}, state:'Grant'})
       done()
     })
   })
