@@ -16,7 +16,7 @@ describe('error', function () {
   var config = {server: {protocol:'http', host:'localhost:5000', callback:'/'}}
 
   describe('oauth2', function () {
-    describe('authorize', function () {
+    describe('step1 - missing code', function () {
       before(function (done) {
         grant = new Grant(config)
         app = express().use(grant)
@@ -50,7 +50,42 @@ describe('error', function () {
       })
     })
 
-    describe('access', function () {
+    describe('step1 - state mismatch', function () {
+      before(function (done) {
+        grant = new Grant(config)
+        app = express().use(grant)
+
+        grant.config.facebook.authorize_url = url('/authorize_url')
+        grant.config.facebook.state = 'Grant'
+
+        app.get('/authorize_url', function (req, res) {
+          res.redirect(url('/connect/facebook/callback?'+
+            'code=code&state=Purest'))
+        })
+
+        app.get('/', function (req, res) {
+          res.end(JSON.stringify(req.query))
+        })
+
+        server = app.listen(5000, done)
+      })
+
+      it('authorize', function (done) {
+        request.get(url('/connect/facebook'), {
+          jar:request.jar(),
+          json:true
+        }, function (err, res, body) {
+          should.deepEqual(body, {error: {error:'OAuth2 state mismatch'}})
+          done()
+        })
+      })
+
+      after(function (done) {
+        server.close(done)
+      })
+    })
+
+    describe('step2 - error response', function () {
       before(function (done) {
         grant = new Grant(config)
         app = express().use(grant)
