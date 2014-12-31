@@ -132,6 +132,9 @@ request.post('http://mydomain.com/connect/facebook', {
 
 The OAuth data is returned as a querystring in your _final_ callback
 
+
+#### OAuth1
+
 For OAuth the `access_token` and the `access_secret` are accessible directly, `raw` contains the raw response data
 
 ```js
@@ -146,6 +149,9 @@ For OAuth the `access_token` and the `access_secret` are accessible directly, `r
 }
 ```
 
+
+#### OAuth2
+
 For OAuth2 the `access_token` and the `refresh_token` (if present) are accessible directly, `raw` contains the raw response data
 
 ```js
@@ -156,6 +162,19 @@ For OAuth2 the `access_token` and the `refresh_token` (if present) are accessibl
     access_token:'...',
     refresh_token:'...',
     some:'other data'
+  }
+}
+```
+
+
+#### Error
+
+In case of an error, the `error` key will be populated with the raw error data
+
+```js
+{
+  error:{
+    some:'error data'
   }
 }
 ```
