@@ -398,6 +398,11 @@
     "access_url": "https://api.twitter.com/oauth/access_token",
     "oauth": 1
   },
+  "uber": {
+    "authorize_url": "https://login.uber.com/oauth/authorize",
+    "access_url": "https://login.uber.com/oauth/token",
+    "oauth": 2
+  },
   "vimeo": {
     "authorize_url": "https://api.vimeo.com/oauth/authorize",
     "access_url": "https://api.vimeo.com/oauth/access_token",
