@@ -327,6 +327,11 @@
     "access_url": "https://slack.com/api/oauth.access",
     "oauth": 2
   },
+  "slice": {
+    "authorize_url": "https://api.slice.com/oauth/authorize",
+    "access_url": "https://api.slice.com/oauth/token",
+    "oauth": 2
+  },
   "soundcloud": {
     "authorize_url": "https://soundcloud.com/connect",
     "access_url": "https://api.soundcloud.com/oauth2/token",
