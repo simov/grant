@@ -75,7 +75,7 @@ describe('error', function () {
           jar:request.jar(),
           json:true
         }, function (err, res, body) {
-          should.deepEqual(body, {error: {error:'OAuth2 state mismatch'}})
+          should.deepEqual(body, {error: {error:'Grant: OAuth2 state mismatch'}})
           done()
         })
       })
