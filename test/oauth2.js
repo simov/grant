@@ -111,4 +111,94 @@ describe('oauth2', function () {
       server.close(done)
     })
   })
+
+  describe('custom', function () {
+    describe('step1', function () {
+      before(function () {
+        grant = new Grant(config)
+      })
+
+      it('basecamp', function () {
+        var url = oauth2.step1(grant.config.basecamp)
+        var query = qs.parse(url.split('?')[1])
+        query.type.should.equal('web_server')
+      })
+
+      it('google', function () {
+        grant.config.google.access_type = 'offline'
+        var url = oauth2.step1(grant.config.google)
+        var query = qs.parse(url.split('?')[1])
+        query.access_type.should.equal('offline')
+      })
+
+      it('reddit', function () {
+        grant.config.reddit.duration = 'permanent'
+        var url = oauth2.step1(grant.config.reddit)
+        var query = qs.parse(url.split('?')[1])
+        query.duration.should.equal('permanent')
+      })
+
+      it('shopify', function () {
+        grant.config.shopify.subdomain = 'grant'
+        var url = oauth2.step1(grant.config.shopify)
+        url.indexOf('https://grant.myshopify.com').should.equal(0)
+      })
+
+      it('zendesk', function () {
+        grant.config.zendesk.subdomain = 'grant'
+        var url = oauth2.step1(grant.config.zendesk)
+        url.indexOf('https://grant.zendesk.com').should.equal(0)
+      })
+    })
+
+    describe('step2', function () {
+      before(function (done) {
+        grant = new Grant(config)
+        app = express().use(grant)
+
+        grant.config.basecamp.access_url = url('/access_url')
+        grant.config.assembla.access_url = url('/access_url')
+        grant.config.reddit.access_url = url('/access_url')
+
+        app.post('/access_url', function (req, res) {
+          (req.headers.authorization)
+            ? res.end(JSON.stringify({basic:true}))
+            : res.end(JSON.stringify(req.body))
+        })
+        server = app.listen(5000, done)
+      })
+
+      it('basecamp', function (done) {
+        oauth2.step2(grant.config.basecamp, {code:'code'}, {}, function (err, body) {
+          var query = JSON.parse(body)
+          query.type.should.equal('web_server')
+          done()
+        })
+      })
+
+      it('assembla', function (done) {
+        grant.config.assembla.key = 'key'
+        grant.config.assembla.secret = 'secret'
+        oauth2.step2(grant.config.assembla, {code:'code'}, {}, function (err, body) {
+          var query = JSON.parse(body)
+          query.basic.should.equal(true)
+          done()
+        })
+      })
+
+      it('reddit', function (done) {
+        grant.config.reddit.key = 'key'
+        grant.config.reddit.secret = 'secret'
+        oauth2.step2(grant.config.reddit, {code:'code'}, {}, function (err, body) {
+          var query = JSON.parse(body)
+          query.basic.should.equal(true)
+          done()
+        })
+      })
+
+      after(function (done) {
+        server.close(done)
+      })
+    })
+  })
 })
