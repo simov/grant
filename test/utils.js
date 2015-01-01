@@ -26,6 +26,12 @@ describe('options', function () {
       var str = utils.toQuerystring({}, 'some=data')
       should.deepEqual(qs.parse(str), {raw:{some:'data'}})
     })
+    it('elance', function () {
+      var str = utils.toQuerystring(grant.config.elance,
+        {data:{access_token:'token', refresh_token:'refresh'}})
+      should.deepEqual(qs.parse(str), {access_token:'token', refresh_token:'refresh',
+        raw:{data:{access_token:'token', refresh_token:'refresh'}}})
+    })
     it('getpocket', function () {
       var str = utils.toQuerystring(grant.config.getpocket, {access_token:'token'})
       should.deepEqual(qs.parse(str),

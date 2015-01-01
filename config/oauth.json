@@ -107,6 +107,11 @@
     "access_url": "https://api.dropbox.com/1/oauth2/token",
     "oauth": 2
   },
+  "elance": {
+    "authorize_url": "https://api.elance.com/api2/oauth/authorize",
+    "access_url": "https://api.elance.com/api2/oauth/token",
+    "oauth": 2
+  },
   "eventbrite": {
     "authorize_url": "https://www.eventbrite.com/oauth/authorize",
     "access_url": "https://www.eventbrite.com/oauth/token",
