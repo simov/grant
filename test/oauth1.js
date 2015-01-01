@@ -90,7 +90,7 @@ describe('oauth1', function () {
       })
     })
 
-    it('step2 - mising oauth_token - response error', function () {
+    it('step2 - mising oauth_token - error response', function () {
       var url = oauth1.step2(grant.config.twitter, {error:'invalid'})
       url.should.equal('/?error%5Berror%5D=invalid')
     })
