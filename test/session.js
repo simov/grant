@@ -24,7 +24,7 @@ describe('session', function () {
     grant.config.twitter.authorize_url = '/authorize_url'
 
     app.post('/request_url', function (req, res) {
-      res.end(qs.stringify({some:'data'}))
+      res.end(qs.stringify({oauth_token:'token'}))
     })
     app.get('/authorize_url', function (req, res) {
       res.end(JSON.stringify(req.session.grant))
@@ -70,7 +70,7 @@ describe('session', function () {
       jar:request.jar(),
       json:true
     }, function (err, res, body) {
-      should.deepEqual(body, {provider:'twitter', step1:{some:'data'}})
+      should.deepEqual(body, {provider:'twitter', step1:{oauth_token:'token'}})
       done()
     })
   })
