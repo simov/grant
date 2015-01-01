@@ -53,6 +53,9 @@
   "dropbox": {
     "protocol": "https"
   },
+  "elance": {
+    "protocol": "https"
+  },
   "eventbrite": {
   },
   "evernote": {
