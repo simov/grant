@@ -67,10 +67,17 @@ describe('oauth2', function () {
       server = app.listen(5000, done)
     })
 
-    it('step1 - missing code', function (done) {
+    it('step1 - missing code - error response', function (done) {
       oauth2.step2(grant.config.facebook, {error:'invalid'}, {}, function (err, body) {
         err.should.equal('error%5Berror%5D=invalid')
         should.deepEqual(qs.parse(err), {error: {error:'invalid'}})
+        done()
+      })
+    })
+    it('step1 - missing code - empty response', function (done) {
+      oauth2.step2(grant.config.facebook, {}, {}, function (err, body) {
+        err.should.equal('error%5Berror%5D=Grant%3A%20authorize_url')
+        should.deepEqual(qs.parse(err), {error: {error:'Grant: authorize_url'}})
         done()
       })
     })
