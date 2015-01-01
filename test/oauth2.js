@@ -77,8 +77,8 @@ describe('oauth2', function () {
 
     it('step1 - state mismatch', function (done) {
       oauth2.step2(grant.config.facebook, {code:'code',state:'Purest'}, {state:'Grant'}, function (err, body) {
-        err.should.equal('error%5Berror%5D=OAuth2%20state%20mismatch')
-        should.deepEqual(qs.parse(err), {error: {error:'OAuth2 state mismatch'}})
+        err.should.equal('error%5Berror%5D=Grant%3A%20OAuth2%20state%20mismatch')
+        should.deepEqual(qs.parse(err), {error: {error:'Grant: OAuth2 state mismatch'}})
         done()
       })
     })
