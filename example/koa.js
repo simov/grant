@@ -48,13 +48,17 @@ app.use(router(app))
 koaqs(app)
 
 
+// evernote sandbox urls
+grant.config.evernote.request_url = grant.config.evernote.request_url.replace('www','sandbox')
+grant.config.evernote.authorize_url = grant.config.evernote.authorize_url.replace('www','sandbox')
+grant.config.evernote.access_url = grant.config.evernote.access_url.replace('www','sandbox')
+// feedly sandbox urls
+grant.config.feedly.authorize_url = grant.config.feedly.authorize_url.replace('cloud','sandbox')
+grant.config.feedly.access_url = grant.config.feedly.access_url.replace('cloud','sandbox')
+
+
 app.get('/', function *(next) {
   var session = this.session.grant||{}
-
-  // evernote sandbox urls
-  grant.config.evernote.request_url = grant.config.evernote.request_url.replace('www','sandbox')
-  grant.config.evernote.authorize_url = grant.config.evernote.authorize_url.replace('www','sandbox')
-  grant.config.evernote.access_url = grant.config.evernote.access_url.replace('www','sandbox')
 
   // feedly sandbox redirect_uri
   if (session.provider == 'feedly' && this.query.code) {
