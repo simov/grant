@@ -221,9 +221,6 @@
   "slice": {
   },
   "soundcloud": {
-    "scope": [
-      "non-expiring"
-    ]
   },
   "spotify": {
   },
