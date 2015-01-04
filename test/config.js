@@ -92,20 +92,10 @@ describe('config', function () {
     })
 
     describe('custom', function () {
-      it('google', function () {
-        var options = {server:{}, google:{google:true, access_type:'offline'}}
+      it('non reserved parameter', function () {
+        var options = {server:{}, google:{access_type:'offline'}}
         var cfg = config.init(options)
         cfg.google.access_type.should.equal('offline')
-      })
-      it('reddit', function () {
-        var options = {server:{}, reddit:{reddit:true, duration:'permanent'}}
-        var cfg = config.init(options)
-        cfg.reddit.duration.should.equal('permanent')
-      })
-      it('trello', function () {
-        var options = {server:{}, trello:{trello:true, expiration:'never'}}
-        var cfg = config.init(options)
-        cfg.trello.expiration.should.equal('never')
       })
     })
 
