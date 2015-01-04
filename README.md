@@ -80,7 +80,7 @@ app.use(bodyParser())
   - **key** - `consumer_key` or `client_id` of your app
   - **secret** - `consumer_secret` or `client_secret` of your app
   - **scope** - array of OAuth scopes to request
-  - **state** - OAuth state string to pass
+  - **state** - OAuth state string to send
   - **callback** - specific callback to use for this provider _(overrides the global one specified under the `server` key)_
 
 
@@ -88,16 +88,18 @@ app.use(bodyParser())
 
 For `callback/redirect` url of your OAuth application you should **always** use this format
 
-`[protocol]://[host]/connect/[provider]/callback`
+```
+[protocol]://[host]/connect/[provider]/callback
+```
 
 Where `protocol` and `host` should match the ones from which you initiate the flow, and `provider` is the provider's name from the list of supported providers
 
-The path you specify in the `callback` key in the Grant's configuration is where you'll receive the response data from the OAuth flow as a querystring, **after** the `[protocol]://[host]/connect/[provider]/callback` route was hit
+The path you specify in the `callback` key in the Grant's configuration is where you'll receive the response data from the OAuth flow as a querystring, **after** the `[protocol]://[host]/connect/[provider]/callback` route have been hit
 
 
 ## Static Overrides
 
-You can add arbitrary keys inside your provider's configuration to create sub configurations that overrides the _global_ settings for that provider
+You can add arbitrary _{object}_ keys inside your provider's configuration to create sub configurations that override the _global_ settings for that provider
 
 ```js
 // navigate to /connect/facebook
@@ -106,7 +108,7 @@ You can add arbitrary keys inside your provider's configuration to create sub co
   "secret": "...",
   // by default request publish permissions
   "scope": ["publish_actions", "publish_stream"],
-  // set specific callback route on your server for this provider only
+  // set specific callback route on your server for this provider
   "callback": "/facebook/callback"
   // navigate to /connect/facebook/groups
   "groups": {
@@ -117,8 +119,8 @@ You can add arbitrary keys inside your provider's configuration to create sub co
   "pages": {
     // request only page permissions
     "scope": ["manage_pages"],
-    // additionally use specific callback route on your server for this override only
-    "callback": "/pages/callback"
+    // additionally use specific callback route on your server for this override
+    "callback": "/facebook_pages/callback"
   }
 }
 ```
@@ -142,7 +144,7 @@ Additionally you can make a `POST` request to the `/connect/:provider/:override?
 
 - To use LinkedIn's OAuth2 flow you should use `linkedin2` for provider name, instead of `linkedin` which is for OAuth1
 - For Zendesk and Shopify you should specify your company's sub domain name through the `subdomain` option
-- Some providers may employ custom authorization parameters outside of the ones specified in the [configuration][configuration] section. You can pass those custom parameters directly in your configuration, for example: Google - `access_type`, Reddit - `duration`, Trello - `expiration`, and so on. Refer to the provider's OAuth documentation for more details
+- Some providers may employ custom authorization parameters outside of the ones specified in the [configuration][configuration] section. You can pass those custom parameters directly in your configuration, for example: Google - `access_type:'offline'`, Reddit - `duration:'permanent'`, Trello - `expiration:'never'`, and so on. Refer to the provider's OAuth documentation, and the Grant's [OAuth configuration][oauth-config] for more details
 
 
 ## Response Data
@@ -203,6 +205,7 @@ In case of an error, the `error` key will be populated with the raw error data
 2. For `callback/redirect` url **always** use this format
   `[protocol]://[host]/connect/[provider]/callback`
 3. Create a `config.json` file containig
+
   ```js
   "server": {
     "protocol": "https",
@@ -221,14 +224,15 @@ In case of an error, the `error` key will be populated with the raw error data
   }
   ```
 4. Initialize Grant and mount it
+
   ```js
-  // express
+  // Express
   var express = require('express')
   var Grant = require('grant').express()
   var grant = new Grant(require('./config.json'))
   var app = express()
   app.use(grant)
-  // koa
+  // or Koa
   var koa = require('koa')
   var Grant = require('grant').koa()
   var grant = new Grant(require('./config.json'))
@@ -261,6 +265,7 @@ MIT
   [travis-ci]: https://img.shields.io/travis/simov/grant/master.svg?style=flat-square (Build Status)
   [coveralls-status]: https://img.shields.io/coveralls/simov/grant.svg?style=flat-square (Coveralls Status)
 
+  [oauth-config]: https://github.com/simov/grant/blob/master/config/oauth.json
   [express-example]: https://github.com/simov/grant/blob/master/example/express.js
   [koa-example]: https://github.com/simov/grant/blob/master/example/koa.js
 
