@@ -124,30 +124,59 @@ describe('oauth2', function () {
         query.type.should.equal('web_server')
       })
 
-      it('google', function () {
-        grant.config.google.access_type = 'offline'
-        var url = oauth2.step1(grant.config.google)
-        var query = qs.parse(url.split('?')[1])
-        query.access_type.should.equal('offline')
+      describe('custom_parameters', function () {
+        it('coinbase', function () {
+          grant.config.coinbase.meta = {
+            send_limit_amount:'5', send_limit_currency:'USD', send_limit_period:'day'
+          }
+          var url = oauth2.step1(grant.config.coinbase)
+          var query = qs.parse(url.split('?')[1])
+          should.deepEqual(query.meta, {
+            send_limit_amount:'5', send_limit_currency:'USD', send_limit_period:'day'
+          })
+        })
+
+        it('google', function () {
+          grant.config.google.access_type = 'offline'
+          var url = oauth2.step1(grant.config.google)
+          var query = qs.parse(url.split('?')[1])
+          query.access_type.should.equal('offline')
+        })
+
+        it('reddit', function () {
+          grant.config.reddit.duration = 'permanent'
+          var url = oauth2.step1(grant.config.reddit)
+          var query = qs.parse(url.split('?')[1])
+          query.duration.should.equal('permanent')
+        })
+
+        it('spotify', function () {
+          grant.config.spotify.show_dialog = 'true'
+          var url = oauth2.step1(grant.config.spotify)
+          var query = qs.parse(url.split('?')[1])
+          query.show_dialog.should.equal('true')
+        })
+
+        it('wordpress', function () {
+          grant.config.wordpress.blog = 'Grant'
+          var url = oauth2.step1(grant.config.wordpress)
+          var query = qs.parse(url.split('?')[1])
+          query.blog.should.equal('Grant')
+        })
       })
 
-      it('reddit', function () {
-        grant.config.reddit.duration = 'permanent'
-        var url = oauth2.step1(grant.config.reddit)
-        var query = qs.parse(url.split('?')[1])
-        query.duration.should.equal('permanent')
-      })
+      describe('subdomain', function () {
+        it('shopify', function () {
+          grant.config.shopify.subdomain = 'grant'
+          var url = oauth2.step1(grant.config.shopify)
+          url.indexOf('https://grant.myshopify.com').should.equal(0)
+        })
 
-      it('shopify', function () {
-        grant.config.shopify.subdomain = 'grant'
-        var url = oauth2.step1(grant.config.shopify)
-        url.indexOf('https://grant.myshopify.com').should.equal(0)
-      })
-
-      it('zendesk', function () {
-        grant.config.zendesk.subdomain = 'grant'
-        var url = oauth2.step1(grant.config.zendesk)
-        url.indexOf('https://grant.zendesk.com').should.equal(0)
+        it('zendesk', function () {
+          grant.config.zendesk.subdomain = 'grant'
+          var url = oauth2.step1(grant.config.zendesk)
+          url.indexOf('https://grant.zendesk.com').should.equal(0)
+        })
       })
     })
 
@@ -176,23 +205,47 @@ describe('oauth2', function () {
         })
       })
 
-      it('assembla', function (done) {
-        grant.config.assembla.key = 'key'
-        grant.config.assembla.secret = 'secret'
-        oauth2.step2(grant.config.assembla, {code:'code'}, {}, function (err, body) {
-          var query = JSON.parse(body)
-          query.basic.should.equal(true)
-          done()
+      describe('basic auth', function () {
+        it('assembla', function (done) {
+          grant.config.assembla.key = 'key'
+          grant.config.assembla.secret = 'secret'
+          oauth2.step2(grant.config.assembla, {code:'code'}, {}, function (err, body) {
+            var query = JSON.parse(body)
+            query.basic.should.equal(true)
+            done()
+          })
+        })
+
+        it('reddit', function (done) {
+          grant.config.reddit.key = 'key'
+          grant.config.reddit.secret = 'secret'
+          oauth2.step2(grant.config.reddit, {code:'code'}, {}, function (err, body) {
+            var query = JSON.parse(body)
+            query.basic.should.equal(true)
+            done()
+          })
         })
       })
 
-      it('reddit', function (done) {
-        grant.config.reddit.key = 'key'
-        grant.config.reddit.secret = 'secret'
-        oauth2.step2(grant.config.reddit, {code:'code'}, {}, function (err, body) {
-          var query = JSON.parse(body)
-          query.basic.should.equal(true)
-          done()
+      describe('subdomain', function () {
+        it('shopify', function (done) {
+          grant.config.shopify.access_url = url('/[subdomain]')
+          grant.config.shopify.subdomain = 'access_url'
+          oauth2.step2(grant.config.shopify, {code:'code'}, {}, function (err, body) {
+            var query = JSON.parse(body)
+            query.code.should.equal('code')
+            done()
+          })
+        })
+
+        it('zendesk', function (done) {
+          grant.config.zendesk.access_url = url('/[subdomain]')
+          grant.config.zendesk.subdomain = 'access_url'
+          oauth2.step2(grant.config.zendesk, {code:'code'}, {}, function (err, body) {
+            var query = JSON.parse(body)
+            query.code.should.equal('code')
+            done()
+          })
         })
       })
 

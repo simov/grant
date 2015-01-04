@@ -68,7 +68,8 @@
     "authorize_url": "https://www.coinbase.com/oauth/authorize",
     "access_url": "https://www.coinbase.com/oauth/token",
     "oauth": 2,
-    "scope_delimiter": " "
+    "scope_delimiter": " ",
+    "custom_parameters": ["meta"]
   },
   "dailymile": {
     "authorize_url": "https://api.dailymile.com/oauth/authorize",
@@ -204,7 +205,8 @@
     "authorize_url": "https://accounts.google.com/o/oauth2/auth",
     "access_url": "https://accounts.google.com/o/oauth2/token",
     "oauth": 2,
-    "scope_delimiter": " "
+    "scope_delimiter": " ",
+    "custom_parameters": ["access_type"]
   },
   "harvest": {
     "authorize_url": "https://api.harvestapp.com/oauth2/authorize",
@@ -303,7 +305,8 @@
   "reddit": {
     "authorize_url": "https://ssl.reddit.com/api/v1/authorize",
     "access_url": "https://ssl.reddit.com/api/v1/access_token",
-    "oauth": 2
+    "oauth": 2,
+    "custom_parameters": ["duration"]
   },
   "runkeeper": {
     "authorize_url": "https://runkeeper.com/apps/authorize",
@@ -319,7 +322,8 @@
   "shopify": {
     "authorize_url": "https://[subdomain].myshopify.com/admin/oauth/authorize",
     "access_url": "https://[subdomain].myshopify.com/admin/oauth/access_token",
-    "oauth": 2
+    "oauth": 2,
+    "subdomain": true
   },
   "skyrock": {
     "request_url": "https://api.skyrock.com/v2/oauth/initiate",
@@ -346,7 +350,8 @@
     "authorize_url": "https://accounts.spotify.com/authorize",
     "access_url": "https://accounts.spotify.com/api/token",
     "oauth": 2,
-    "scope_delimiter": " "
+    "scope_delimiter": " ",
+    "custom_parameters": ["show_dialog"]
   },
   "stackexchange": {
     "authorize_url": "https://stackexchange.com/oauth",
@@ -428,7 +433,8 @@
   "wordpress": {
     "authorize_url": "https://public-api.wordpress.com/oauth2/authorize",
     "access_url": "https://public-api.wordpress.com/oauth2/token",
-    "oauth": 2
+    "oauth": 2,
+    "custom_parameters": ["blog"]
   },
   "xing": {
     "request_url": "https://api.xing.com/v1/request_token",
@@ -456,6 +462,7 @@
     "authorize_url": "https://[subdomain].zendesk.com/oauth/authorizations/new",
     "access_url": "https://[subdomain].zendesk.com/oauth/tokens",
     "oauth": 2,
-    "scope_delimiter": " "
+    "scope_delimiter": " ",
+    "subdomain": true
   }
 }
