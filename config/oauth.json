@@ -68,7 +68,7 @@
     "authorize_url": "https://www.coinbase.com/oauth/authorize",
     "access_url": "https://www.coinbase.com/oauth/token",
     "oauth": 2,
-    "scope_delimiter": "+"
+    "scope_delimiter": " "
   },
   "dailymile": {
     "authorize_url": "https://api.dailymile.com/oauth/authorize",
@@ -259,7 +259,7 @@
     "authorize_url": "https://secure.meetup.com/oauth2/authorize",
     "access_url": "https://secure.meetup.com/oauth2/access",
     "oauth": 2,
-    "scope_delimiter": "+"
+    "scope_delimiter": " "
   },
   "mixcloud": {
     "authorize_url": "https://www.mixcloud.com/oauth/authorize",
