@@ -125,21 +125,23 @@ describe('oauth1', function () {
         grant = new Grant(config)
       })
 
-      it('flickr', function () {
-        grant.config.flickr.scope = ['read','write']
-        var url = oauth1.step2(grant.config.flickr, {oauth_token:'token'})
-        var query = qs.parse(url.split('?')[1])
-        should.deepEqual(query,
-          {oauth_token:'token', perms:['read','write']})
-      })
+      describe('custom_parameters', function () {
+        it('flickr', function () {
+          grant.config.flickr.scope = ['read','write']
+          var url = oauth1.step2(grant.config.flickr, {oauth_token:'token'})
+          var query = qs.parse(url.split('?')[1])
+          should.deepEqual(query,
+            {oauth_token:'token', perms:['read','write']})
+        })
 
-      it('trello', function () {
-        grant.config.trello.scope = ['read','write']
-        grant.config.trello.expiration = 'never'
-        var url = oauth1.step2(grant.config.trello, {oauth_token:'token'})
-        var query = qs.parse(url.split('?')[1])
-        should.deepEqual(query,
-          {oauth_token:'token', scope:['read','write'], expiration:'never'})
+        it('trello', function () {
+          grant.config.trello.scope = ['read','write']
+          grant.config.trello.expiration = 'never'
+          var url = oauth1.step2(grant.config.trello, {oauth_token:'token'})
+          var query = qs.parse(url.split('?')[1])
+          should.deepEqual(query,
+            {oauth_token:'token', scope:['read','write'], expiration:'never'})
+        })
       })
 
       it('tripit', function () {
