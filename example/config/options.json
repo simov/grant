@@ -96,6 +96,10 @@
   },
   "foursquare": {
   },
+  "freshbooks": {
+    "protocol": "https",
+    "subdomain": "outofindex"
+  },
   "geeklist": {
   },
   "getpocket": {
