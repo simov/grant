@@ -53,6 +53,9 @@
   "dropbox": {
     "protocol": "https"
   },
+  "edmodo": {
+    "protocol": "https"
+  },
   "elance": {
     "protocol": "https"
   },
