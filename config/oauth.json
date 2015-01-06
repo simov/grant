@@ -108,6 +108,12 @@
     "access_url": "https://api.dropbox.com/1/oauth2/token",
     "oauth": 2
   },
+  "edmodo": {
+    "authorize_url": "https://api.edmodo.com/oauth/authorize",
+    "access_url": "https://api.edmodo.com/oauth/token",
+    "oauth": 2,
+    "scope_delimiter": " "
+  },
   "elance": {
     "authorize_url": "https://api.elance.com/api2/oauth/authorize",
     "access_url": "https://api.elance.com/api2/oauth/token",
