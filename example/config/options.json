@@ -39,6 +39,9 @@
   "dailymotion": {
   },
   "deezer": {
+    "scope": [
+      "offline_access"
+    ]
   },
   "deviantart": {
   },
