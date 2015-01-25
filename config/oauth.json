@@ -377,6 +377,12 @@
     "access_url": "https://api.stocktwits.com/api/2/oauth/token",
     "oauth": 2
   },
+  "stormz": {
+    "authorize_url": "https://stormz.me/oauth/authorize",
+    "access_url": "https://stormz.me/oauth/token",
+    "oauth": 2,
+    "scope_delimiter": " "
+  },
   "strava": {
     "authorize_url": "https://www.strava.com/oauth/authorize",
     "access_url": "https://www.strava.com/oauth/token",
