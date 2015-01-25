@@ -276,6 +276,10 @@
   "vimeo": {
   },
   "vk": {
+    "scope": [
+      "status",
+      "offline"
+    ]
   },
   "withings": {
     "protocol": "https"
