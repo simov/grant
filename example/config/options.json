@@ -245,6 +245,8 @@
       "publish_watch_lists", "follow_users", "follow_stocks"
     ]
   },
+  "stormz": {
+  },
   "strava": {
   },
   "stripe": {
