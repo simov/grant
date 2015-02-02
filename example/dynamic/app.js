@@ -7,8 +7,8 @@ var express = require('express')
   , cookieParser = require('cookie-parser')
   , session = require('express-session')
 
-var Grant = require('grant').express()
-  , grant = new Grant(require('./config'))
+var Grant = require('../../index').express()
+  , grant = new Grant(require('./config.json'))
 
 var request = require('request')
 
