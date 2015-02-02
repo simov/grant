@@ -34,7 +34,7 @@
     "koa-bodyparser"  : "1.3.0",
     "koa-session"     : "3.0.0",
 
-    "request"         : "2.52.0",
+    "request"         : "2.53.0",
     "qs"              : "2.3.3",
     "deep-copy"       : "*"
   },
