@@ -11,7 +11,7 @@ $ npm install
 
 ## Configure
 
-Edit the `config.json` file with your own OAuth application credentials.
+Edit the `config.json` file with your own OAuth application credentials
 
 
 ## Run the App

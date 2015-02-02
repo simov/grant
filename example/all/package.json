@@ -1,8 +1,10 @@
 {
-  "name": "grant-example",
+  "name": "grant-all-example",
   "version": "0.0.0",
-  "description": "Example application for Grant",
+  "description": "All Providers",
   "private": true,
+
+  "keywords": [],
   
   "license": "MIT",
   "homepage": "https://github.com/simov/grant",
