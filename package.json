@@ -49,7 +49,6 @@
   "main": "index.js",
 
   "scripts": {
-    "test": "node_modules/mocha/bin/mocha test/ --require should --reporter spec --timeout 10000",
-    "postinstall": "node example/postinstall.js"
+    "test": "node_modules/mocha/bin/mocha test/ --require should --reporter spec --timeout 10000"
   }
 }
