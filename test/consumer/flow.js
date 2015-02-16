@@ -6,7 +6,7 @@ var express = require('express')
 var Grant = require('../../').express()
 
 
-describe('session', function () {
+describe('flow', function () {
   function url (path) {
     var c = config.server
     return c.protocol + '://' + c.host + path
