@@ -1,3 +1,4 @@
 --require should
 --reporter spec
 --timeout 1000000
+--recursive

@@ -1,10 +1,10 @@
 
-var express = require('express'),
-  request = require('request'),
-  should = require('should'),
-  qs = require('qs')
-var Grant = require('../').express(),
-  oauth1 = require('../lib/oauth1')
+var express = require('express')
+  , request = require('request')
+  , should = require('should')
+  , qs = require('qs')
+var Grant = require('../../').express()
+  , oauth1 = require('../../lib/flow/oauth1')
 
 
 describe('oauth1', function () {
