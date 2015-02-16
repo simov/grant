@@ -8,3 +8,7 @@ exports.express = function () {
 exports.koa = function () {
   return require('./lib/koa')
 }
+
+exports.hapi = function () {
+  return require('./lib/hapi')
+}
