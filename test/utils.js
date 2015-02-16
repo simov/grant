@@ -1,8 +1,8 @@
 
 var should = require('should')
-  qs = require('qs')
-var Grant = require('../').express(),
-  utils = require('../lib/utils')
+  , qs = require('qs')
+var Grant = require('../').express()
+  , utils = require('../lib/utils')
 
 
 describe('options', function () {

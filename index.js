@@ -1,14 +1,14 @@
 
-exports = module.exports = require('./lib/express')
+exports = module.exports = require('./lib/consumer/express')
 
 exports.express = function () {
-  return require('./lib/express')
+  return require('./lib/consumer/express')
 }
 
 exports.koa = function () {
-  return require('./lib/koa')
+  return require('./lib/consumer/koa')
 }
 
 exports.hapi = function () {
-  return require('./lib/hapi')
+  return require('./lib/consumer/hapi')
 }
