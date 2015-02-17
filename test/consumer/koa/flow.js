@@ -1,6 +1,4 @@
 
-if (parseInt(process.version.split('.')[1]) < 12) return
-
 var request = require('request')
   , should = require('should')
   , qs = require('qs')
