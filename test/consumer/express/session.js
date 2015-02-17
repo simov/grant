@@ -1,23 +1,23 @@
 
-var express = require('express')
-  , request = require('request')
+var request = require('request')
   , should = require('should')
   , qs = require('qs')
+var express = require('express')
 var Grant = require('../../../').express()
 
 
-describe('session', function () {
+describe('session - express', function () {
   function url (path) {
     var c = config.server
     return c.protocol + '://' + c.host + path
   }
 
-  var grant, app, server
   var config = {server: {protocol:'http', host:'localhost:5000'}}
+  var server
 
   before(function (done) {
-    grant = new Grant(config)
-    app = express().use(grant)
+    var grant = new Grant(config)
+    var app = express().use(grant)
 
     grant.config.facebook.authorize_url = '/authorize_url'
     grant.config.twitter.request_url = url('/request_url')

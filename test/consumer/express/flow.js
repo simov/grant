@@ -1,23 +1,23 @@
 
-var express = require('express')
-  , request = require('request')
+var request = require('request')
   , should = require('should')
   , qs = require('qs')
+var express = require('express')
 var Grant = require('../../../').express()
 
 
 describe('flow - express', function () {
   function url (path) {
-    var c = _config.server
+    var c = config.server
     return c.protocol + '://' + c.host + path
   }
 
-  var _config = {server: {protocol:'http', host:'localhost:5000', callback:'/'}}
+  var config = {server: {protocol:'http', host:'localhost:5000', callback:'/'}}
   var server
 
   describe('oauth1', function () {
     before(function (done) {
-      var grant = new Grant(_config)
+      var grant = new Grant(config)
       var app = express().use(grant)
 
       grant.config.twitter.request_url = url('/request_url')
@@ -63,7 +63,7 @@ describe('flow - express', function () {
 
   describe('oauth2', function () {
     before(function (done) {
-      var grant = new Grant(_config)
+      var grant = new Grant(config)
       var app = express().use(grant)
 
       grant.config.facebook.authorize_url = url('/authorize_url')
@@ -103,7 +103,7 @@ describe('flow - express', function () {
 
   describe('custom', function () {
     before(function (done) {
-      var grant = new Grant(_config)
+      var grant = new Grant(config)
       var app = express().use(grant)
 
       grant.config.getpocket.request_url = url('/request_url')
