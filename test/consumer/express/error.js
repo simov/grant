@@ -3,7 +3,7 @@ var express = require('express')
   , request = require('request')
   , should = require('should')
   , qs = require('qs')
-var Grant = require('../../').express()
+var Grant = require('../../../').express()
 
 
 describe('error', function () {

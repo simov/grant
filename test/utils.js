@@ -5,7 +5,7 @@ var Grant = require('../').express()
   , utils = require('../lib/utils')
 
 
-describe('options', function () {
+describe('utils', function () {
   var grant
 
   before(function () {
