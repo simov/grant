@@ -19,7 +19,7 @@ describe('error - hapi', function () {
   describe('oauth2', function () {
     describe('step1 - missing code', function () {
       before(function (done) {
-        var grant = new Grant(config)
+        var grant = new Grant()
 
         server = new Hapi.Server()
         server.connection({host:'localhost', port:5000})
@@ -104,7 +104,7 @@ describe('error - hapi', function () {
 
     describe('step2 - error response', function () {
       before(function (done) {
-        var grant = new Grant(config)
+        var grant = new Grant()
 
         server = new Hapi.Server()
         server.connection({host:'localhost', port:5000})
