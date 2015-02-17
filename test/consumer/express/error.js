@@ -1,25 +1,25 @@
 
-var express = require('express')
-  , request = require('request')
+var request = require('request')
   , should = require('should')
   , qs = require('qs')
+var express = require('express')
 var Grant = require('../../../').express()
 
 
-describe('error', function () {
+describe('error - express', function () {
   function url (path) {
     var c = config.server
     return c.protocol + '://' + c.host + path
   }
 
-  var grant, app, server
   var config = {server: {protocol:'http', host:'localhost:5000', callback:'/'}}
+  var server
 
   describe('oauth2', function () {
     describe('step1 - missing code', function () {
       before(function (done) {
-        grant = new Grant(config)
-        app = express().use(grant)
+        var grant = new Grant(config)
+        var app = express().use(grant)
 
         grant.config.facebook.authorize_url = url('/authorize_url')
 
@@ -52,8 +52,8 @@ describe('error', function () {
 
     describe('step1 - state mismatch', function () {
       before(function (done) {
-        grant = new Grant(config)
-        app = express().use(grant)
+        var grant = new Grant(config)
+        var app = express().use(grant)
 
         grant.config.facebook.authorize_url = url('/authorize_url')
         grant.config.facebook.state = 'Grant'
@@ -87,8 +87,8 @@ describe('error', function () {
 
     describe('step2 - error response', function () {
       before(function (done) {
-        grant = new Grant(config)
-        app = express().use(grant)
+        var grant = new Grant(config)
+        var app = express().use(grant)
 
         grant.config.facebook.authorize_url = url('/authorize_url')
         grant.config.facebook.access_url = url('/access_url')

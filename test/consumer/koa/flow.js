@@ -4,7 +4,6 @@ if (parseInt(process.version.split('.')[1]) < 12) return
 var request = require('request')
   , should = require('should')
   , qs = require('qs')
-
 var koa = require('koa')
   , router = require('koa-router')
   , mount = require('koa-mount')
@@ -16,16 +15,16 @@ var Grant = require('../../../').koa()
 
 describe('flow - koa', function () {
   function url (path) {
-    var c = _config.server
+    var c = config.server
     return c.protocol + '://' + c.host + path
   }
 
-  var _config = {server: {protocol:'http', host:'localhost:5000', callback:'/'}}
+  var config = {server: {protocol:'http', host:'localhost:5000', callback:'/'}}
   var server
 
   describe('oauth1', function () {
     before(function (done) {
-      var grant = new Grant(_config)
+      var grant = new Grant(config)
 
       var app = koa()
       app.keys = ['secret','key']
@@ -79,7 +78,7 @@ describe('flow - koa', function () {
 
   describe('oauth2', function () {
     before(function (done) {
-      var grant = new Grant(_config)
+      var grant = new Grant(config)
 
       var app = koa()
       app.keys = ['secret','key']
@@ -127,7 +126,7 @@ describe('flow - koa', function () {
 
   describe('custom', function () {
     before(function (done) {
-      var grant = new Grant(_config)
+      var grant = new Grant(config)
 
       var app = koa()
       app.keys = ['secret','key']

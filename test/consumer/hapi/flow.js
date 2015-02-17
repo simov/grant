@@ -1,19 +1,19 @@
 
-var Hapi = require('hapi')
-  , yar = require('yar')
-  , request = require('request')
+var request = require('request')
   , should = require('should')
   , qs = require('qs')
+var Hapi = require('hapi')
+  , yar = require('yar')
 var Grant = require('../../../').hapi()
 
 
 describe('flow - hapi', function () {
   function url (path) {
-    var c = _config.server
+    var c = config.server
     return c.protocol + '://' + c.host + path
   }
 
-  var _config = {server: {protocol:'http', host:'localhost:5000', callback:'/'}}
+  var config = {server: {protocol:'http', host:'localhost:5000', callback:'/'}}
   var server
 
   describe('oauth1', function () {
@@ -41,7 +41,7 @@ describe('flow - hapi', function () {
       }})
 
       server.register([
-        {register:grant, options:_config},
+        {register:grant, options:config},
         {register:yar, options:{cookieOptions:{password:'password', isSecure:false}}}
       ], function (err) {
         if (err) return done(err)
@@ -92,7 +92,7 @@ describe('flow - hapi', function () {
       }})
 
       server.register([
-        {register:grant, options:_config},
+        {register:grant, options:config},
         {register:yar, options:{cookieOptions:{password:'password', isSecure:false}}}
       ], function (err) {
         if (err) return done(err)
@@ -147,7 +147,7 @@ describe('flow - hapi', function () {
       }})
 
       server.register([
-        {register:grant, options:_config},
+        {register:grant, options:config},
         {register:yar, options:{cookieOptions:{password:'password', isSecure:false}}}
       ], function (err) {
         if (err) return done(err)
