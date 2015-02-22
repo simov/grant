@@ -14,14 +14,14 @@
 
   "license": "MIT",
   "homepage": "https://github.com/simov/grant",
-  
+
   "author": "Simeon Velichkov <simeonvelichkov@gmail.com> (http://simov.github.io)",
 
   "repository": {
     "type": "git",
     "url": "git://github.com/simov/grant.git"
   },
-  
+
   "dependencies": {
     "express"         : "4.4.4",
     "body-parser"     : "1.4.3",
@@ -46,12 +46,15 @@
     "mocha"           : "1.21.4",
     "should"          : "4.0.4",
     "istanbul"        : "0.3.2",
-    "coveralls"       : "2.11.2"
+    "coveralls"       : "2.11.2",
+    "eslint"          : "0.14.1"
   },
 
   "main": "index.js",
 
   "scripts": {
-    "test": "node_modules/mocha/bin/mocha test/ test/flow/ test/consumer/express/ test/consumer/hapi/"
+    "test": "npm run lint-lib && npm run lint-test && node_modules/mocha/bin/mocha test/ test/flow/ test/consumer/express/ test/consumer/hapi/",
+    "lint-lib": "node node_modules/eslint/bin/eslint lib/ && echo Lint lib passed",
+    "lint-test": "node node_modules/eslint/bin/eslint --config test/.eslintrc test/ && echo Lint test passed"
   }
 }
