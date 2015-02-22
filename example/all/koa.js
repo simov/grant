@@ -82,6 +82,7 @@ app.get('/', function *(next) {
     params.push(obj)
   }.bind(this))
   this.body = template.render({
+    consumer:'Koa',
     providers:params,
     count:providers.length-1//linkedin2
   })
