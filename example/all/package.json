@@ -1,21 +1,21 @@
 {
   "name": "grant-all-example",
   "version": "0.0.0",
-  "description": "All Providers",
+  "description": "All Consumers",
   "private": true,
 
   "keywords": [],
-  
+
   "license": "MIT",
   "homepage": "https://github.com/simov/grant",
-  
+
   "author": "Simeon Velichkov <simeonvelichkov@gmail.com> (http://simov.github.io)",
 
   "repository": {
     "type": "git",
     "url": "git://github.com/simov/grant.git"
   },
-  
+
   "dependencies": {
     "express"         : "4.4.4",
     "body-parser"     : "1.4.3",
@@ -30,6 +30,10 @@
     "koa-qs"          : "1.0.1",
     "koa-session"     : "3.0.0",
     "koa-accesslog"   : "0.0.2",
+
+    "hapi"            : "8.2.0",
+    "yar"             : "3.0.3",
+    "hapi-hogan"      : "1.0.1",
 
     "consolidate"     : "0.9.1",
     "hogan.js"        : "3.0.2",
