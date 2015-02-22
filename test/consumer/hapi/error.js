@@ -1,7 +1,7 @@
+'use strict'
 
 var request = require('request')
   , should = require('should')
-  , qs = require('qs')
 var Hapi = require('hapi')
   , yar = require('yar')
 var Grant = require('../../../').hapi()
@@ -31,7 +31,7 @@ describe('error - hapi', function () {
         server.route({method:'GET', path:'/', handler: function (req, res) {
           res(JSON.stringify(req.query))
         }})
-        
+
         server.register([
           {register:grant, options:config},
           {register:yar, options:{cookieOptions:{password:'password', isSecure:false}}}

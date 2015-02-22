@@ -1,6 +1,6 @@
+'use strict'
 
 var express = require('express')
-  , request = require('request')
   , should = require('should')
   , qs = require('qs')
 var Grant = require('../../').express()
@@ -190,7 +190,7 @@ describe('oauth2', function () {
         grant.config.reddit.access_url = url('/access_url')
 
         app.post('/access_url', function (req, res) {
-          (req.headers.authorization)
+          return (req.headers.authorization)
             ? res.end(JSON.stringify({basic:true}))
             : res.end(JSON.stringify(req.body))
         })

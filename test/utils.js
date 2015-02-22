@@ -1,3 +1,4 @@
+'use strict'
 
 var should = require('should')
   , qs = require('qs')

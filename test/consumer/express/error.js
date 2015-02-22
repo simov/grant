@@ -1,7 +1,7 @@
+'use strict'
 
 var request = require('request')
   , should = require('should')
-  , qs = require('qs')
 var express = require('express')
 var Grant = require('../../../').express()
 
