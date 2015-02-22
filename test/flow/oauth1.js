@@ -1,6 +1,6 @@
+'use strict'
 
 var express = require('express')
-  , request = require('request')
   , should = require('should')
   , qs = require('qs')
 var Grant = require('../../').express()
@@ -145,8 +145,8 @@ describe('oauth1', function () {
       })
 
       it('tripit', function () {
-        var _url = oauth1.step2(grant.config.tripit, {oauth_token:'token'})
-        var query = qs.parse(_url.split('?')[1])
+        var uri = oauth1.step2(grant.config.tripit, {oauth_token:'token'})
+        var query = qs.parse(uri.split('?')[1])
         should.deepEqual(query,
           {oauth_token:'token', oauth_callback:url('/connect/tripit/callback')})
       })

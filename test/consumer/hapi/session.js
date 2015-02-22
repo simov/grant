@@ -1,3 +1,4 @@
+'use strict'
 
 var request = require('request')
   , should = require('should')
@@ -18,7 +19,7 @@ describe('session - hapi', function () {
 
   before(function (done) {
     var grant = new Grant()
-    
+
     server = new Hapi.Server()
     server.connection({host:'localhost', port:5000})
 

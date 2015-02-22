@@ -1,7 +1,7 @@
+'use strict'
 
 var request = require('request')
   , should = require('should')
-  , qs = require('qs')
 var koa = require('koa')
   , router = require('koa-router')
   , mount = require('koa-mount')

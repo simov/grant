@@ -1,3 +1,4 @@
+'use strict'
 
 var should = require('should')
 var config = require('../lib/config')
