@@ -1,0 +1,25 @@
+{
+  "name": "grant-hapi-example",
+  "version": "0.0.0",
+  "description": "Hapi Example",
+  "private": true,
+
+  "keywords": [],
+
+  "license": "MIT",
+  "homepage": "https://github.com/simov/grant",
+
+  "author": "Simeon Velichkov <simeonvelichkov@gmail.com> (http://simov.github.io)",
+
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/simov/grant.git"
+  },
+
+  "dependencies": {
+    "hapi"      : "8.2.0",
+    "yar"       : "3.0.3"
+  },
+
+  "main": "app.js"
+}
