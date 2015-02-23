@@ -9,6 +9,13 @@ $ cd examples/hapi
 $ npm install
 ```
 
+## OAuth Application
+
+Create OAuth application for Facebook and Twitter. For Twitter set the callback url to be `http://dummy.com:3000/connect/twitter/callback`, for Facebook set the application domain to be `dummy.com`
+
+In your `hosts` file add this line `dummy.com 127.0.0.1`
+
+
 ## Configure
 
 Edit the `config.json` file with your own OAuth application credentials
