@@ -43,6 +43,28 @@ app.use(bodyParser())
 ```
 
 
+## Hapi
+
+```js
+var Hapi = require('hapi')
+var yar = require('yar')
+var Grant = require('grant').hapi()
+
+var grant = new Grant()
+var server = new Hapi.Server()
+
+server.register([{
+  register: grant,
+  options: {...configuration see below...}
+}, {
+  register: yar,
+  options: {cookieOptions: {password:'password', isSecure:false}}
+}], function (err) {
+  server.start()
+})
+```
+
+
 ## Reserved Routes for Grant
 
 ```bash
@@ -137,6 +159,17 @@ Additionally you can make a `POST` request to the `/connect/:provider/:override?
   <input name="scope" type="checkbox" value="write" />
   <button>submit</button>
 </form>
+```
+
+Alternatively you can use a `GET` request with the `/connect/:provider/:override?` route
+
+```js
+app.get('/connect_facebook', function (req, res) {
+  // generate some random state parameter for each request
+  var state = (Math.floor(Math.random() * 999999) + 1)
+
+  res.redirect('/connect/facebook?state=' + state)
+})
 ```
 
 
@@ -238,6 +271,7 @@ In case of an error, the `error` key will be populated with the raw error data
   var grant = new Grant(require('./config.json'))
   var app = koa()
   app.use(mount(grant))
+  // or Hapi (see above)
   ```
 5. Navigate to `/connect/facebook` to initiate the OAuth flow for Facebook, or navigate to `/connect/twitter` to initiate the OAuth flow for Twitter
 6. Once the OAuth flow is complete for Facebook you'll receive the response data as a querystring in the `/handle_oauth_response` route, and for Twitter in the `/handle_twitter_response` route
