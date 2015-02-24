@@ -51,7 +51,7 @@ describe('session - koa', function () {
       jar:request.jar(),
       json:true
     }, function (err, res, body) {
-      should.deepEqual(body, {provider:'facebook'})
+      should.deepEqual(body, {provider:'facebook', dynamic:{}})
       done()
     })
   })
@@ -61,14 +61,27 @@ describe('session - koa', function () {
       jar:request.jar(),
       json:true
     }, function (err, res, body) {
-      should.deepEqual(body, {provider:'facebook', override:'contacts'})
+      should.deepEqual(body, {provider:'facebook', override:'contacts', dynamic:{}})
       done()
     })
   })
 
-  it('dynamic', function (done) {
+  it('dynamic - POST', function (done) {
     request.post(url('/connect/facebook/contacts'), {
       form:{scope:['scope1','scope2'], state:'Grant'},
+      jar:request.jar(),
+      followAllRedirects:true,
+      json:true
+    }, function (err, res, body) {
+      should.deepEqual(body, {provider:'facebook', override:'contacts',
+        dynamic:{scope:['scope1','scope2'], state:'Grant'}, state:'Grant'})
+      done()
+    })
+  })
+
+  it('dynamic - GET', function (done) {
+    request.get(url('/connect/facebook/contacts'), {
+      qs:{scope:['scope1','scope2'], state:'Grant'},
       jar:request.jar(),
       followAllRedirects:true,
       json:true
@@ -84,7 +97,7 @@ describe('session - koa', function () {
       jar:request.jar(),
       json:true
     }, function (err, res, body) {
-      should.deepEqual(body, {provider:'twitter', step1:{oauth_token:'token'}})
+      should.deepEqual(body, {provider:'twitter', step1:{oauth_token:'token'}, dynamic:{}})
       done()
     })
   })
