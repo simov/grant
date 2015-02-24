@@ -1,7 +1,7 @@
 {
   "name": "grant",
   "version": "2.0.0",
-  "description": "Authentication Middleware for Express and Koa",
+  "description": "Authentication Middleware for Express, Koa and Hapi",
 
   "keywords": [
     "oauth",
@@ -9,7 +9,8 @@
     "authentication",
     "middleware",
     "express",
-    "koa"
+    "koa",
+    "hapi"
   ],
 
   "license": "MIT",
