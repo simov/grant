@@ -38,6 +38,13 @@ app.get('/connect_facebook', function (req, res) {
   })
 })
 
+app.get('/connect_facebook2', function (req, res) {
+  // some random 6 digit number
+  var state = (Math.floor(Math.random() * 999999) + 1)
+
+  res.redirect('/connect/facebook?state=' + state)
+})
+
 app.get('/handle_facebook_callback', function (req, res) {
   console.log('The state was', req.session.grant.state)
   console.log(req.query)
