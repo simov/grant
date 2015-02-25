@@ -118,10 +118,12 @@ describe('oauth2', function () {
         grant = new Grant(config)
       })
 
-      it('basecamp', function () {
-        var url = oauth2.step1(grant.config.basecamp)
-        var query = qs.parse(url.split('?')[1])
-        query.type.should.equal('web_server')
+      describe('web_server', function () {
+        it('basecamp', function () {
+          var url = oauth2.step1(grant.config.basecamp)
+          var query = qs.parse(url.split('?')[1])
+          query.type.should.equal('web_server')
+        })
       })
 
       describe('custom_parameters', function () {
@@ -197,11 +199,13 @@ describe('oauth2', function () {
         server = app.listen(5000, done)
       })
 
-      it('basecamp', function (done) {
-        oauth2.step2(grant.config.basecamp, {code:'code'}, {}, function (err, body) {
-          var query = JSON.parse(body)
-          query.type.should.equal('web_server')
-          done()
+      describe('web_server', function () {
+        it('basecamp', function (done) {
+          oauth2.step2(grant.config.basecamp, {code:'code'}, {}, function (err, body) {
+            var query = JSON.parse(body)
+            query.type.should.equal('web_server')
+            done()
+          })
         })
       })
 
