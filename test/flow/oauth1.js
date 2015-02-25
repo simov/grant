@@ -120,6 +120,43 @@ describe('oauth1', function () {
   })
 
   describe('custom', function () {
+    describe('step1', function () {
+      before(function (done) {
+        grant = new Grant(config)
+        app = express().use(grant)
+
+        app.post('/request_url', function (req, res) {
+          res.end(qs.stringify({oauth:req.headers.authorization}))
+        })
+        server = app.listen(5000, done)
+      })
+
+      describe('signature_method', function () {
+        it('freshbooks', function (done) {
+          grant.config.freshbooks.request_url = url('/request_url')
+          oauth1.step1(grant.config.freshbooks, function (err, body) {
+            body.oauth.should.match(/oauth_signature_method="PLAINTEXT"/)
+            done()
+          })
+        })
+      })
+
+      describe('subdomain', function () {
+        it('freshbooks', function (done) {
+          grant.config.freshbooks.request_url = url('/[subdomain]')
+          grant.config.freshbooks.subdomain = 'request_url'
+          oauth1.step1(grant.config.freshbooks, function (err, body) {
+            body.oauth.should.be.type('string')
+            done()
+          })
+        })
+      })
+
+      after(function (done) {
+        server.close(done)
+      })
+    })
+
     describe('step2', function () {
       before(function () {
         grant = new Grant(config)
@@ -144,11 +181,78 @@ describe('oauth1', function () {
         })
       })
 
-      it('tripit', function () {
-        var uri = oauth1.step2(grant.config.tripit, {oauth_token:'token'})
-        var query = qs.parse(uri.split('?')[1])
-        should.deepEqual(query,
-          {oauth_token:'token', oauth_callback:url('/connect/tripit/callback')})
+      describe('subdomain', function () {
+        it('freshbooks', function () {
+          grant.config.freshbooks.subdomain = 'grant'
+          var url = oauth1.step2(grant.config.freshbooks, {oauth_token:'token'})
+          url.indexOf('https://grant.freshbooks.com').should.equal(0)
+        })
+      })
+
+      describe('oauth_callback', function () {
+        it('tripit', function () {
+          var uri = oauth1.step2(grant.config.tripit, {oauth_token:'token'})
+          var query = qs.parse(uri.split('?')[1])
+          should.deepEqual(query,
+            {oauth_token:'token', oauth_callback:url('/connect/tripit/callback')})
+        })
+      })
+    })
+
+    describe('step3', function () {
+      before(function (done) {
+        grant = new Grant(config)
+        app = express().use(grant)
+
+        app.post('/access_url', function (req, res) {
+          res.end(qs.stringify({oauth:req.headers.authorization}))
+        })
+        server = app.listen(5000, done)
+      })
+
+      describe('signature_method', function () {
+        it('freshbooks', function (done) {
+          grant.config.freshbooks.access_url = url('/access_url')
+          oauth1.step3(grant.config.freshbooks, {}, {oauth_token:'token'}, function (err, url) {
+            var query = qs.parse(url.split('?')[1])
+            query.raw.oauth.should.match(/oauth_signature_method="PLAINTEXT"/)
+            done()
+          })
+        })
+      })
+
+      describe('oauth_verifier', function () {
+        it('goodreads', function (done) {
+          grant.config.goodreads.access_url = url('/access_url')
+          oauth1.step3(grant.config.goodreads, {}, {oauth_token:'token'}, function (err, url) {
+            var query = qs.parse(url.split('?')[1])
+            query.raw.oauth.should.not.match(/verifier/)
+            done()
+          })
+        })
+        it('tripit', function (done) {
+          grant.config.tripit.access_url = url('/access_url')
+          oauth1.step3(grant.config.tripit, {}, {oauth_token:'token'}, function (err, url) {
+            var query = qs.parse(url.split('?')[1])
+            query.raw.oauth.should.not.match(/verifier/)
+            done()
+          })
+        })
+      })
+
+      describe('subdomain', function () {
+        it('freshbooks', function (done) {
+          grant.config.freshbooks.access_url = url('/[subdomain]')
+          grant.config.freshbooks.subdomain = 'access_url'
+          oauth1.step3(grant.config.freshbooks, {}, {oauth_token:'token'}, function (err, url) {
+            url.should.be.type('string')
+            done()
+          })
+        })
+      })
+
+      after(function (done) {
+        server.close(done)
       })
     })
   })
