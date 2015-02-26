@@ -286,7 +286,8 @@ For example, you may want to get the user's profile after the OAuth flow has com
 ```js
 var Purest = require('purest')
   , facebook = new Purest({provider:'facebook'})
-  , twitter = new Purest({provider:'twitter'})
+  , twitter = new Purest({provider:'twitter',
+    key:'[CONSUMER_KEY]', secret:'[CONSUMER_SECRET]'})
 
 facebook.query()
   .get('me')
