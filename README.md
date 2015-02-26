@@ -281,6 +281,31 @@ In case of an error, the `error` key will be populated with the raw error data
 
 Once you have your access tokens secured, you can start making authorized requests on behalf of your users. _**[Purest][purest]**_ is a great REST API library that supports **dozens** of REST API providers
 
+For example, you may want to get the user's profile after the OAuth flow has completed
+
+```js
+var Purest = require('purest')
+  , facebook = new Purest({provider:'facebook'})
+  , twitter = new Purest({provider:'twitter'})
+
+facebook.query()
+  .get('me')
+  .auth('[ACCESS_TOKEN]')
+  .request(function (err, res, body) {
+    // here body is a parsed JSON object containing things such as
+    // id, first_name, last_name, gender, username and so on
+  })
+
+twitter.query()
+  .get('users/show')
+  .qs({screen_name:'nodejs'})
+  .auth('[ACCESS_TOKEN]', '[ACCESS_SECRET]')
+  .request(function (err, res, body) {
+    // here body is a parsed JSON object containing things such as
+    // id, screen_name and so on
+  })
+```
+
 
 ## License
 
