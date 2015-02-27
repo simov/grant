@@ -18,6 +18,9 @@
     // Require === and !==
     'eqeqeq': false,
 
+    // Validate Indentation
+    'indent': [2, 2],
+
     // Ensures Callback Error Handling
     'handle-callback-err': false,
 
