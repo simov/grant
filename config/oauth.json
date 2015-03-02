@@ -282,6 +282,12 @@
     "access_url": "https://www.mixcloud.com/oauth/access_token",
     "oauth": 2
   },
+  "moves": {
+    "authorize_url": "https://api.moves-app.com/oauth/v1/authorize",
+    "access_url": "https://api.moves-app.com/oauth/v1/access_token",
+    "oauth": 2,
+    "scope_delimiter": " "
+  },
   "odesk": {
     "request_url": "https://www.odesk.com/api/auth/v1/oauth/token/request",
     "authorize_url": "https://www.odesk.com/services/api/auth",
