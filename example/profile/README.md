@@ -1,5 +1,5 @@
 
-# Express Example
+# Profile Example
 
 
 ## Install
