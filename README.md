@@ -11,9 +11,13 @@
 
 ## Express
 
+```bash
+npm install grant-express
+```
+
 ```js
 var express = require('express')
-var Grant = require('grant').express()
+var Grant = require('grant-express')
 
 var grant = new Grant({...configuration see below...})
 
@@ -28,9 +32,13 @@ app.use(session())
 
 ## Koa
 
+```bash
+npm install grant-koa
+```
+
 ```js
 var koa = require('koa')
-var Grant = require('grant').koa()
+var Grant = require('grant-koa')
 
 var grant = new Grant({...configuration see below...})
 
@@ -45,10 +53,14 @@ app.use(bodyParser())
 
 ## Hapi
 
+```bash
+npm install grant-hapi
+```
+
 ```js
 var Hapi = require('hapi')
 var yar = require('yar')
-var Grant = require('grant').hapi()
+var Grant = require('grant-hapi')
 
 var grant = new Grant()
 var server = new Hapi.Server()
