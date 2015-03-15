@@ -273,13 +273,13 @@ In case of an error, the `error` key will be populated with the raw error data
   ```js
   // Express
   var express = require('express')
-  var Grant = require('grant').express()
+  var Grant = require('grant-express')
   var grant = new Grant(require('./config.json'))
   var app = express()
   app.use(grant)
   // or Koa
   var koa = require('koa')
-  var Grant = require('grant').koa()
+  var Grant = require('grant-koa')
   var grant = new Grant(require('./config.json'))
   var app = koa()
   app.use(mount(grant))
