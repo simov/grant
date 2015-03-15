@@ -2,7 +2,7 @@
 var Hapi = require('hapi')
   , yar = require('yar')
 
-var Grant = require('../../index').hapi()
+var Grant = require('grant-hapi')
   , grant = new Grant()
 
 var server = new Hapi.Server()

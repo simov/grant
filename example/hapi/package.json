@@ -18,7 +18,9 @@
 
   "dependencies": {
     "hapi"      : "8.2.0",
-    "yar"       : "3.0.3"
+    "yar"       : "3.0.3",
+
+    "grant-hapi"   : "*"
   },
 
   "main": "app.js"

@@ -7,7 +7,7 @@ var koa = require('koa')
   , session = require('koa-session')
   , accesslog = require('koa-accesslog')
 
-var Grant = require('../../index').koa()
+var Grant = require('grant-koa')
   , grant = new Grant(require('./config.json'))
 
 var app = koa()
