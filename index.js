@@ -1,6 +1,4 @@
 
-exports = module.exports = require('./lib/consumer/express')
-
 exports.express = function () {
   return require('./lib/consumer/express')
 }
