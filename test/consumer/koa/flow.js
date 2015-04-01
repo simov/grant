@@ -27,9 +27,9 @@ describe('flow - koa', function () {
 
       var app = koa()
       app.keys = ['secret','key']
+      app.use(session(app))
       app.use(mount(grant))
       app.use(bodyParser())
-      app.use(session(app))
       app.use(router(app))
       koaqs(app)
 
@@ -81,9 +81,9 @@ describe('flow - koa', function () {
 
       var app = koa()
       app.keys = ['secret','key']
+      app.use(session(app))
       app.use(mount(grant))
       app.use(bodyParser())
-      app.use(session(app))
       app.use(router(app))
       koaqs(app)
 
@@ -129,9 +129,9 @@ describe('flow - koa', function () {
 
       var app = koa()
       app.keys = ['secret','key']
+      app.use(session(app))
       app.use(mount(grant))
       app.use(bodyParser())
-      app.use(session(app))
       app.use(router(app))
       koaqs(app)
 
