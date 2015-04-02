@@ -17,14 +17,14 @@ npm install grant-express
 
 ```js
 var express = require('express')
-var Grant = require('grant-express')
 
-var grant = new Grant({...configuration see below...})
+var Grant = require('grant-express')
+  , grant = new Grant({/*configuration see below*/})
 
 var app = express()
 // mount grant
 app.use(grant)
-// app server middlewares
+// other middlewares
 app.use(cookieParser())
 app.use(session())
 ```
@@ -38,15 +38,20 @@ npm install grant-koa
 
 ```js
 var koa = require('koa')
-var Grant = require('grant-koa')
+  , mount = require('koa-mount')
+  // https://github.com/simov/grant/tree/master/example/koa-session
+  , session = require('any session store')
 
-var grant = new Grant({...configuration see below...})
+var Grant = require('grant-koa')
+  , grant = new Grant({/*configuration see below*/})
 
 var app = koa()
+// required: set the session store before mounting grant!
+app.keys = ['keys']
+app.use(session(...))
 // mount grant
 app.use(mount(grant))
-// app server middlewares
-app.use(session(app))
+// other middlewares
 app.use(bodyParser())
 ```
 
@@ -59,15 +64,15 @@ npm install grant-hapi
 
 ```js
 var Hapi = require('hapi')
-var yar = require('yar')
+  , yar = require('yar')
+
 var Grant = require('grant-hapi')
+  , grant = new Grant()
 
-var grant = new Grant()
 var server = new Hapi.Server()
-
 server.register([{
   register: grant,
-  options: {...configuration see below...}
+  options: {/*configuration see below*/}
 }, {
   register: yar,
   options: {cookieOptions: {password:'password', isSecure:false}}
@@ -273,15 +278,19 @@ In case of an error, the `error` key will be populated with the raw error data
   ```js
   // Express
   var express = require('express')
-  var Grant = require('grant-express')
-  var grant = new Grant(require('./config.json'))
+    , Grant = require('grant-express')
+    , grant = new Grant(require('./config.json'))
   var app = express()
   app.use(grant)
   // or Koa
   var koa = require('koa')
+    , mount = require('koa-mount')
+    , session = require('koa-session')
   var Grant = require('grant-koa')
-  var grant = new Grant(require('./config.json'))
+    , grant = new Grant(require('./config.json'))
   var app = koa()
+  app.keys = ['keys']
+  app.use(session(app))
   app.use(mount(grant))
   // or Hapi (see above)
   ```
