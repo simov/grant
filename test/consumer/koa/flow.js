@@ -19,11 +19,11 @@ describe('flow - koa', function () {
   }
 
   var config = {server: {protocol:'http', host:'localhost:5000', callback:'/'}}
-  var server
+  var server, grant
 
   describe('oauth1', function () {
     before(function (done) {
-      var grant = new Grant(config)
+      grant = new Grant(config)
 
       var app = koa()
       app.keys = ['secret','key']
@@ -51,22 +51,29 @@ describe('flow - koa', function () {
         })
       })
       app.get('/', function* (next) {
-        this.body = JSON.stringify(this.request.query)
+        this.body = JSON.stringify(this.session.grant.response || this.request.query)
       })
 
       server = app.listen(5000, done)
     })
 
     it('twitter', function (done) {
-      request.get(url('/connect/twitter'), {
-        jar:request.jar(),
-        json:true
-      }, function (err, res, body) {
-        should.deepEqual(body, {
-          access_token:'token', access_secret:'secret',
-          raw: {oauth_token:'token', oauth_token_secret:'secret'}
+      function assert (done) {
+        request.get(url('/connect/twitter'), {
+          jar:request.jar(),
+          json:true
+        }, function (err, res, body) {
+          should.deepEqual(body, {
+            access_token:'token', access_secret:'secret',
+            raw: {oauth_token:'token', oauth_token_secret:'secret'}
+          })
+          done()
         })
-        done()
+      }
+      grant.config.twitter.transport = 'querystring'
+      assert(function () {
+        grant.config.twitter.transport = 'session'
+        assert(done)
       })
     })
 

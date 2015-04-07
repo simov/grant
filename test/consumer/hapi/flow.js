@@ -15,11 +15,11 @@ describe('flow - hapi', function () {
   }
 
   var config = {server: {protocol:'http', host:'localhost:5000', callback:'/'}}
-  var server
+  var server, grant
 
   describe('oauth1', function () {
     before(function (done) {
-      var grant = new Grant()
+      grant = new Grant()
 
       server = new Hapi.Server()
       server.connection({host:'localhost', port:5000})
@@ -38,7 +38,7 @@ describe('flow - hapi', function () {
         }))
       }})
       server.route({method:'GET', path:'/', handler: function (req, res) {
-        res(JSON.stringify(req.query))
+        res(JSON.stringify(req.session.get('grant').response || req.query))
       }})
 
       server.register([
@@ -56,15 +56,22 @@ describe('flow - hapi', function () {
     })
 
     it('twitter', function (done) {
-      request.get(url('/connect/twitter'), {
-        jar:request.jar(),
-        json:true
-      }, function (err, res, body) {
-        should.deepEqual(body, {
-          access_token:'token', access_secret:'secret',
-          raw: {oauth_token:'token', oauth_token_secret:'secret'}
+      function assert (done) {
+        request.get(url('/connect/twitter'), {
+          jar:request.jar(),
+          json:true
+        }, function (err, res, body) {
+          should.deepEqual(body, {
+            access_token:'token', access_secret:'secret',
+            raw: {oauth_token:'token', oauth_token_secret:'secret'}
+          })
+          done()
         })
-        done()
+      }
+      grant.register.config.twitter.transport = 'querystring'
+      assert(function () {
+        grant.register.config.twitter.transport = 'session'
+        assert(done)
       })
     })
 
