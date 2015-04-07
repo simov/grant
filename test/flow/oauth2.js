@@ -45,7 +45,7 @@ describe('oauth2', function () {
 
     it('step3', function () {
       var url = oauth2.step3(grant.config.facebook, {some:'data'})
-      url.should.equal('/?raw%5Bsome%5D=data')
+      url.should.equal('raw%5Bsome%5D=data')
     })
 
     after(function (done) {

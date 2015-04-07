@@ -48,7 +48,7 @@ describe('getpocket', function () {
 
   it('step3', function (done) {
     getpocket.step3(grant.config.getpocket, {}, function (err, url) {
-      url.should.equal('/?raw%5Bsome%5D=data')
+      url.should.equal('raw%5Bsome%5D=data')
       done()
     })
   })

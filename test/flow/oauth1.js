@@ -48,7 +48,7 @@ describe('oauth1', function () {
 
     it('step3', function (done) {
       oauth1.step3(grant.config.twitter, {}, {oauth_token:'token'}, function (err, url) {
-        url.should.equal('/?raw%5Bsome%5D=data')
+        url.should.equal('raw%5Bsome%5D=data')
         done()
       })
     })
@@ -213,8 +213,8 @@ describe('oauth1', function () {
       describe('signature_method', function () {
         it('freshbooks', function (done) {
           grant.config.freshbooks.access_url = url('/access_url')
-          oauth1.step3(grant.config.freshbooks, {}, {oauth_token:'token'}, function (err, url) {
-            var query = qs.parse(url.split('?')[1])
+          oauth1.step3(grant.config.freshbooks, {}, {oauth_token:'token'}, function (err, response) {
+            var query = qs.parse(response)
             query.raw.oauth.should.match(/oauth_signature_method="PLAINTEXT"/)
             done()
           })
@@ -224,16 +224,16 @@ describe('oauth1', function () {
       describe('oauth_verifier', function () {
         it('goodreads', function (done) {
           grant.config.goodreads.access_url = url('/access_url')
-          oauth1.step3(grant.config.goodreads, {}, {oauth_token:'token'}, function (err, url) {
-            var query = qs.parse(url.split('?')[1])
+          oauth1.step3(grant.config.goodreads, {}, {oauth_token:'token'}, function (err, response) {
+            var query = qs.parse(response)
             query.raw.oauth.should.not.match(/verifier/)
             done()
           })
         })
         it('tripit', function (done) {
           grant.config.tripit.access_url = url('/access_url')
-          oauth1.step3(grant.config.tripit, {}, {oauth_token:'token'}, function (err, url) {
-            var query = qs.parse(url.split('?')[1])
+          oauth1.step3(grant.config.tripit, {}, {oauth_token:'token'}, function (err, response) {
+            var query = qs.parse(response)
             query.raw.oauth.should.not.match(/verifier/)
             done()
           })
