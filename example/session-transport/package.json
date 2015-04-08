@@ -1,0 +1,30 @@
+{
+  "name": "grant-session-transport-example",
+  "version": "0.0.0",
+  "description": "Session Transport Example",
+  "private": true,
+
+  "keywords": [],
+
+  "license": "MIT",
+  "homepage": "https://github.com/simov/grant",
+
+  "author": "Simeon Velichkov <simeonvelichkov@gmail.com> (http://simov.github.io)",
+
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/simov/grant.git"
+  },
+
+  "dependencies": {
+    "express"         : "4.4.4",
+    "body-parser"     : "1.4.3",
+    "cookie-parser"   : "1.3.1",
+    "express-session" : "1.5.1",
+    "morgan"          : "1.1.1",
+
+    "grant-express"   : "*"
+  },
+
+  "main": "app.js"
+}
