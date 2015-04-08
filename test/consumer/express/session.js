@@ -14,10 +14,10 @@ describe('session - express', function () {
   }
 
   var config = {server: {protocol:'http', host:'localhost:5000'}}
-  var server
+  var server, grant
 
   before(function (done) {
-    var grant = new Grant(config)
+    grant = new Grant(config)
     var app = express().use(grant)
 
     grant.config.facebook.authorize_url = '/authorize_url'
@@ -85,6 +85,19 @@ describe('session - express', function () {
       json:true
     }, function (err, res, body) {
       should.deepEqual(body, {provider:'twitter', step1:{oauth_token:'token'}, dynamic:{}})
+      done()
+    })
+  })
+
+  it('state auto generated', function (done) {
+    grant.config.facebook.state = true
+    request.get(url('/connect/facebook'), {
+      jar:request.jar(),
+      followAllRedirects:true,
+      json:true
+    }, function (err, res, body) {
+      body.state.should.match(/\d+/)
+      body.state.should.be.type('string')
       done()
     })
   })

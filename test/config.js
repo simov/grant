@@ -60,6 +60,30 @@ describe('config', function () {
     })
   })
 
+  describe('state', function () {
+    it('string', function () {
+      var provider = {state:'123'}
+        , state = config.state(provider)
+      state.should.equal('123')
+    })
+    it('number', function () {
+      var provider = {state:123}
+        , state = config.state(provider)
+      state.should.equal('123')
+    })
+    it('boolean true', function () {
+      var provider = {state:true}
+        , state = config.state(provider)
+      state.should.match(/\d+/)
+      state.should.be.type('string')
+    })
+    it('boolean false', function () {
+      var provider = {state:false}
+        , state = config.state(provider)
+      should.equal(state, undefined)
+    })
+  })
+
   describe('init', function () {
     it('shortcuts', function () {
       var options = {server:{}, facebook:{key:'key',secret:'secret'}}
@@ -145,6 +169,14 @@ describe('config', function () {
       var session = {dynamic:{callback:'/contacts'}}
       var provider = config.provider(cfg, session)
       should.deepEqual(provider, {callback:'/contacts'})
+    })
+    it('state dcopy', function () {
+      var cfg = {google:{callback:'/', state:true}}
+      var session = {provider:'google'}
+      var provider = config.provider(cfg, session)
+      cfg.google.state.should.equal(true)
+      provider.state.should.match(/\d+/)
+      provider.state.should.be.type('string')
     })
   })
 })
