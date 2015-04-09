@@ -63,23 +63,23 @@ describe('config', function () {
   describe('state', function () {
     it('string', function () {
       var provider = {state:'123'}
-        , state = config.state(provider)
+      var state = config.state(provider)
       state.should.equal('123')
     })
     it('number', function () {
       var provider = {state:123}
-        , state = config.state(provider)
+      var state = config.state(provider)
       state.should.equal('123')
     })
     it('boolean true', function () {
       var provider = {state:true}
-        , state = config.state(provider)
+      var state = config.state(provider)
       state.should.match(/\d+/)
       state.should.be.type('string')
     })
     it('boolean false', function () {
       var provider = {state:false}
-        , state = config.state(provider)
+      var state = config.state(provider)
       should.equal(state, undefined)
     })
   })
@@ -94,11 +94,16 @@ describe('config', function () {
       cfg.facebook.secret.should.equal('secret')
     })
     it('set server config', function () {
-      var options = {server:{protocol:'http', host:'localhost:3000', callback:'/'}}
+      var options = {server:{
+        protocol:'http', host:'localhost:3000', callback:'/',
+        transport:'session', state:true
+      }}
       var cfg = config.init(options)
       cfg.facebook.protocol.should.equal('http')
       cfg.facebook.host.should.equal('localhost:3000')
       cfg.facebook.callback.should.equal('/')
+      cfg.facebook.transport.should.equal('session')
+      cfg.facebook.state.should.equal(true)
     })
     it('override server config', function () {
       var options = {
