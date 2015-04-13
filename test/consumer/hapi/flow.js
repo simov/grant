@@ -119,7 +119,7 @@ describe('flow - hapi', function () {
       }, function (err, res, body) {
         should.deepEqual(body, {
           access_token:'token', refresh_token:'refresh',
-          raw: {access_token:'token', refresh_token:'refresh', expires_in:3600}
+          raw: {access_token:'token', refresh_token:'refresh', expires_in:'3600'}
         })
         done()
       })
