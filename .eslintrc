@@ -24,6 +24,9 @@
     // Enforce Property Spacing
     'key-spacing': false,
 
+    // Disallow Empty Block Statements
+    'no-empty': false,
+
     // Disallow Redeclaring Variables
     'no-redeclare': false,
 
@@ -31,7 +34,7 @@
     'no-shadow': false,
 
     // Disallow Unused Variables
-    'no-unused-vars': [2, {'vars': 'all', 'args': 'none'}],
+    'no-unused-vars': false,
 
     // Disallow Early Use
     'no-use-before-define': [2, 'nofunc'],
