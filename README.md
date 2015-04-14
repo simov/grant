@@ -97,7 +97,9 @@ server.register([{
   "server": {
     "protocol": "http",
     "host": "localhost:3000",
-    "callback": "/callback"
+    "callback": "/callback",
+    "transport": "session",
+    "state": true
   },
   "provider1": {
     "key": "...",
@@ -115,6 +117,8 @@ server.register([{
   - **protocol** - either `http` or `https`
   - **host** - your server's host name `localhost:3000` | `dummy.com:5000` | `mysite.com` ...
   - **callback** - common callback for all providers in your config `/callback` | `/done` ...
+  - **transport** - transport to use to deliver the response data in your final callback `querystring` | `session` _(defaults to querystring if omitted)_
+  - **state** - generate 6 digit random state number on each authorization attempt `true` _(OAuth2 only, defaults to false if omitted)_
 - **provider1** - any supported provider _(see the list above)_ `facebook` | `twitter` ...
   - **key** - `consumer_key` or `client_id` of your app
   - **secret** - `consumer_secret` or `client_secret` of your app
@@ -182,7 +186,7 @@ Alternatively you can use a `GET` request with the `/connect/:provider/:override
 
 ```js
 app.get('/connect_facebook', function (req, res) {
-  // generate some random state parameter for each request
+  // generate random state parameter on each authorization attempt
   var state = (Math.floor(Math.random() * 999999) + 1)
 
   res.redirect('/connect/facebook?state=' + state)
@@ -200,6 +204,8 @@ app.get('/connect_facebook', function (req, res) {
 ## Response Data
 
 The OAuth data is returned as a querystring in your **final** callback _(the one you specify in the `callback` key of your Grant configuration)_
+
+Alternatively the response data can be returned in the session, see the [configuration][configuration] section above and the [session transport][session-transport-example] example
 
 
 #### OAuth1
@@ -349,6 +355,7 @@ MIT
   [oauth-config]: https://github.com/simov/grant/blob/master/config/oauth.json
   [express-example]: https://github.com/simov/grant/blob/master/example/express.js
   [koa-example]: https://github.com/simov/grant/blob/master/example/koa.js
+  [session-transport-example]: https://github.com/simov/grant/blob/master/example/session-transport/app.js
 
   [routes]: #reserved-routes-for-grant
   [configuration]: #configuration
