@@ -85,6 +85,12 @@ describe('config', function () {
   })
 
   describe('init', function () {
+    it('custom providers', function () {
+      var options = {server:{}, custom:{}}
+      var cfg = config.init(options)
+      cfg.custom.should.be.instanceOf(Object)
+    })
+
     it('shortcuts', function () {
       var options = {server:{}, facebook:{key:'key',secret:'secret'}}
       var cfg = config.init(options)
