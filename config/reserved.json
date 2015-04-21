@@ -1,0 +1,22 @@
+[
+  "request_url",
+  "authorize_url",
+  "access_url",
+  "oauth",
+  "scope_delimiter",
+  "custom_parameters",
+  "subdomain",
+
+  "protocol",
+  "host",
+  "callback",
+  "transport",
+  "state",
+
+  "key",
+  "secret",
+  "scope",
+
+  "name",
+  "overrides"
+]
