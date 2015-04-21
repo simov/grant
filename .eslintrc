@@ -27,6 +27,9 @@
     // Disallow Empty Block Statements
     'no-empty': false,
 
+    // Disallow Functions in Loops
+    'no-loop-func': false,
+
     // Disallow Redeclaring Variables
     'no-redeclare': false,
 
