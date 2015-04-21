@@ -131,6 +131,19 @@ describe('config', function () {
       cfg.facebook.state.should.equal('Grant')
     })
 
+    it('override oauth options', function () {
+      var options = {
+        server:{},
+        facebook:{
+          authorize_url:'https://custom_authorize_url',
+          access_url:'https://custom_access_url'
+        }
+      }
+      var cfg = config.init(options)
+      cfg.facebook.authorize_url.should.equal('https://custom_authorize_url')
+      cfg.facebook.access_url.should.equal('https://custom_access_url')
+    })
+
     describe('custom', function () {
       it('skip on non string value', function () {
         var options = {server:{}, google:{access_type:{}}}
