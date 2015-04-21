@@ -90,14 +90,21 @@ describe('config', function () {
       var cfg = config.init(options)
       cfg.facebook.facebook.should.equal(true)
       cfg.facebook.name.should.equal('facebook')
+    })
+    it('credentials', function () {
+      var options = {server:{}, facebook:{key:'key',secret:'secret'}}
+      var cfg = config.init(options)
       cfg.facebook.key.should.equal('key')
       cfg.facebook.secret.should.equal('secret')
     })
-    it('set server config', function () {
-      var options = {server:{
-        protocol:'http', host:'localhost:3000', callback:'/',
-        transport:'session', state:true
-      }}
+
+    it('use server options', function () {
+      var options = {
+        server:{
+          protocol:'http', host:'localhost:3000', callback:'/',
+          transport:'session', state:true
+        }
+      }
       var cfg = config.init(options)
       cfg.facebook.protocol.should.equal('http')
       cfg.facebook.host.should.equal('localhost:3000')
@@ -105,24 +112,47 @@ describe('config', function () {
       cfg.facebook.transport.should.equal('session')
       cfg.facebook.state.should.equal(true)
     })
-    it('override server config', function () {
+    it('override server options', function () {
       var options = {
-        server:{protocol:'http', host:'localhost:3000', callback:'/'},
-        facebook:{protocol:'https', host:'dummy.com:3000', callback:'/callback'}
+        server:{
+          protocol:'http', host:'localhost:3000', callback:'/',
+          transport:'session', state:true
+        },
+        facebook:{
+          protocol:'https', host:'dummy.com:3000', callback:'/callback',
+          transport:'querystring', state:'Grant'
+        }
       }
       var cfg = config.init(options)
       cfg.facebook.protocol.should.equal('https')
       cfg.facebook.host.should.equal('dummy.com:3000')
       cfg.facebook.callback.should.equal('/callback')
-    })
-    it('set state', function () {
-      var options = {server:{}, facebook:{state:'Grant'}}
-      var cfg = config.init(options)
+      cfg.facebook.transport.should.equal('querystring')
       cfg.facebook.state.should.equal('Grant')
     })
 
     describe('custom', function () {
-      it('non reserved parameter', function () {
+      it('skip on non string value', function () {
+        var options = {server:{}, google:{access_type:{}}}
+        var cfg = config.init(options)
+        should.equal(cfg.google.access_type, undefined)
+      })
+      it('skip on reserved key', function () {
+        var options = {server:{}, google:{custom:'something'}}
+        var cfg = config.init(options)
+        should.equal(cfg.google.access_type, undefined)
+      })
+      it('skip on missing custom_parameters option', function () {
+        var options = {server:{}, facebook:{something:'interesting'}}
+        var cfg = config.init(options)
+        should.equal(cfg.google.access_type, undefined)
+      })
+      it('skip on not defined custom_parameters', function () {
+        var options = {server:{}, google:{something:'interesting'}}
+        var cfg = config.init(options)
+        should.equal(cfg.google.access_type, undefined)
+      })
+      it('set custom_parameters value', function () {
         var options = {server:{}, google:{access_type:'offline'}}
         var cfg = config.init(options)
         cfg.google.access_type.should.equal('offline')
@@ -130,6 +160,13 @@ describe('config', function () {
     })
 
     describe('overrides', function () {
+      it('skip on reserved key', function () {
+        var options = {server:{}, facebook:{
+          scope:['scope1'], callback:'/callback', transport:{scope:['scope2']}}
+        }
+        var cfg = config.init(options)
+        should.deepEqual(cfg.facebook.overrides, {})
+      })
       it('override provider options', function () {
         var options = {server:{}, facebook:{
           scope:['scope1'], callback:'/callback', custom:{scope:['scope2']}}
@@ -137,7 +174,6 @@ describe('config', function () {
         var cfg = config.init(options)
         cfg.facebook.scope.should.equal('scope1')
         cfg.facebook.callback.should.equal('/callback')
-        cfg.facebook.overrides.should.be.type('object')
         cfg.facebook.overrides.custom.scope.should.equal('scope2')
         cfg.facebook.overrides.custom.callback.should.equal('/callback')
       })
