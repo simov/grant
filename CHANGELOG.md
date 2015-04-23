@@ -1,14 +1,18 @@
 
 ## Change Log
 
+### v3.2.0 (2015/04/23)
+- `Changed` any of the [reserved keys](https://github.com/simov/grant/blob/master/config/reserved.json) can be overriden for a provider
+- `Changed` allow [custom provider](https://github.com/simov/grant#custom-providers) configuration
+
 ### v3.1.0 (2015/04/14)
 - `Added` transport option, this allows the response data to be returned in the final callback either as querystring or in the [session](https://github.com/simov/grant/blob/master/example/session-transport/app.js)
 - `Added` state:true option, this enables auto generated random state on each authorization attempt (OAuth2 only)
 
 ### v3.0.3 (2015/04/02)
-- `Changed` allow any session store in [Koa middleware](https://github.com/simov/grant#koa)
+- `Changed` allow any session store to be used with the [Koa middleware](https://github.com/simov/grant#koa)
 - `Added` Koa [session store examples](https://github.com/simov/grant/tree/master/example/koa-session)
-- `Changed` use koa-route instead of koa-router in Koa middleware
+- `Changed` using koa-route instead of koa-router internally in the Koa middleware
 - `Changed` bumped a few module dependency versions
 - `Changed` grant-hapi now uses peerDependencies
 
@@ -27,7 +31,7 @@
 - `Added` a bunch of [examples](https://github.com/simov/grant/tree/master/example)
 
 ### v2.0.0 (2015/01/06)
-- Completely re-written using the [request](https://github.com/request/request) module
+- Complete rewrite of Grant using the [request](https://github.com/request/request) module
 - `Added` Koa middleware
 - `Changed` the [response data](https://github.com/simov/grant#response-data) format, now containing a `raw` key in it
 - `Changed` [custom authorization parameters](https://github.com/simov/grant#quirks) regarding token expiration are no longer part of the scope array
