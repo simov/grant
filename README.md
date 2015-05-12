@@ -103,7 +103,7 @@ server.register([{
 
 ## Reserved Routes for Grant
 
-```bash
+```
 /connect/:provider/:override?
 /connect/:provider/callback
 ```
@@ -173,7 +173,7 @@ You can add arbitrary _{object}_ keys inside your provider's configuration to cr
   // by default request publish permissions
   "scope": ["publish_actions", "publish_stream"],
   // set specific callback route on your server for this provider
-  "callback": "/facebook/callback"
+  "callback": "/facebook/callback",
   // navigate to /connect/facebook/groups
   "groups": {
     // request only group permissions
@@ -284,7 +284,7 @@ You can easily configure different development environments
 Then you can pass the environment flag
 
 ```bash
-$ NODE_ENV=production node app.js
+NODE_ENV=production node app.js
 ```
 
 And use it in your application
