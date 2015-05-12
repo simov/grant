@@ -3,11 +3,10 @@
 var request = require('request')
   , should = require('should')
 var koa = require('koa')
+  , session = require('koa-session')
   , router = require('koa-router')
   , mount = require('koa-mount')
-  , bodyParser = require('koa-bodyparser')
   , koaqs = require('koa-qs')
-  , session = require('koa-session')
 var Grant = require('../../../').koa()
 
 
@@ -26,10 +25,9 @@ describe('error - koa', function () {
         var grant = new Grant(config)
 
         var app = koa()
-        app.keys = ['secret','key']
+        app.keys = ['grant']
         app.use(session(app))
         app.use(mount(grant))
-        app.use(bodyParser())
         app.use(router(app))
         koaqs(app)
 
@@ -66,10 +64,9 @@ describe('error - koa', function () {
         var grant = new Grant(config)
 
         var app = koa()
-        app.keys = ['secret','key']
+        app.keys = ['grant']
         app.use(session(app))
         app.use(mount(grant))
-        app.use(bodyParser())
         app.use(router(app))
         koaqs(app)
 
@@ -107,10 +104,9 @@ describe('error - koa', function () {
         var grant = new Grant(config)
 
         var app = koa()
-        app.keys = ['secret','key']
+        app.keys = ['grant']
         app.use(session(app))
         app.use(mount(grant))
-        app.use(bodyParser())
         app.use(router(app))
         koaqs(app)
 

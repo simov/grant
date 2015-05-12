@@ -4,6 +4,7 @@ var request = require('request')
   , should = require('should')
   , qs = require('qs')
 var express = require('express')
+  , session = require('express-session')
 var Grant = require('../../../').express()
 
 
@@ -19,7 +20,9 @@ describe('flow - express', function () {
   describe('oauth1', function () {
     before(function (done) {
       grant = new Grant(config)
-      var app = express().use(grant)
+      var app = express()
+      app.use(session({secret:'grant'}))
+      app.use(grant)
 
       grant.config.twitter.request_url = url('/request_url')
       grant.config.twitter.authorize_url = url('/authorize_url')
@@ -72,7 +75,9 @@ describe('flow - express', function () {
   describe('oauth2', function () {
     before(function (done) {
       var grant = new Grant(config)
-      var app = express().use(grant)
+      var app = express()
+      app.use(session({secret:'grant'}))
+      app.use(grant)
 
       grant.config.facebook.authorize_url = url('/authorize_url')
       grant.config.facebook.access_url = url('/access_url')
@@ -112,7 +117,9 @@ describe('flow - express', function () {
   describe('custom', function () {
     before(function (done) {
       var grant = new Grant(config)
-      var app = express().use(grant)
+      var app = express()
+      app.use(session({secret:'grant'}))
+      app.use(grant)
 
       grant.config.getpocket.request_url = url('/request_url')
       grant.config.getpocket.authorize_url = url('/authorize_url')

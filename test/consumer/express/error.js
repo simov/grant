@@ -3,6 +3,7 @@
 var request = require('request')
   , should = require('should')
 var express = require('express')
+  , session = require('express-session')
 var Grant = require('../../../').express()
 
 
@@ -19,7 +20,9 @@ describe('error - express', function () {
     describe('step1 - missing code', function () {
       before(function (done) {
         var grant = new Grant(config)
-        var app = express().use(grant)
+        var app = express()
+        app.use(session({secret:'grant'}))
+        app.use(grant)
 
         grant.config.facebook.authorize_url = url('/authorize_url')
 
@@ -53,7 +56,9 @@ describe('error - express', function () {
     describe('step1 - state mismatch', function () {
       before(function (done) {
         var grant = new Grant(config)
-        var app = express().use(grant)
+        var app = express()
+        app.use(session({secret:'grant'}))
+        app.use(grant)
 
         grant.config.facebook.authorize_url = url('/authorize_url')
         grant.config.facebook.state = 'Grant'
@@ -88,7 +93,9 @@ describe('error - express', function () {
     describe('step2 - error response', function () {
       before(function (done) {
         var grant = new Grant(config)
-        var app = express().use(grant)
+        var app = express()
+        app.use(session({secret:'grant'}))
+        app.use(grant)
 
         grant.config.facebook.authorize_url = url('/authorize_url')
         grant.config.facebook.access_url = url('/access_url')

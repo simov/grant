@@ -4,6 +4,8 @@ var request = require('request')
   , should = require('should')
   , qs = require('qs')
 var express = require('express')
+  , bodyParser = require('body-parser')
+  , session = require('express-session')
 var Grant = require('../../../').express()
 
 
@@ -18,7 +20,10 @@ describe('session - express', function () {
 
   before(function (done) {
     grant = new Grant(config)
-    var app = express().use(grant)
+    var app = express()
+    app.use(bodyParser.urlencoded({extended:true}))
+    app.use(session({secret:'grant'}))
+    app.use(grant)
 
     grant.config.facebook.authorize_url = '/authorize_url'
     grant.config.twitter.request_url = url('/request_url')

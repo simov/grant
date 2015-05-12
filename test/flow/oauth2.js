@@ -1,6 +1,7 @@
 'use strict'
 
 var express = require('express')
+  , bodyParser = require('body-parser')
   , should = require('should')
   , qs = require('qs')
 var Grant = require('../../').express()
@@ -185,7 +186,7 @@ describe('oauth2', function () {
     describe('step2', function () {
       before(function (done) {
         grant = new Grant(config)
-        app = express().use(grant)
+        app = express().use(grant).use(bodyParser.urlencoded({extended:true}))
 
         grant.config.basecamp.access_url = url('/access_url')
         grant.config.assembla.access_url = url('/access_url')
