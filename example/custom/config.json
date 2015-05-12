@@ -1,0 +1,15 @@
+{
+  "server": {
+    "protocol": "http",
+    "host": "localhost:3000"
+  },
+  "oauthbin": {
+    "request_url": "http://oauthbin.com/v1/request-token",
+    "authorize_url": "http://localhost:3000/authorize",
+    "access_url": "http://oauthbin.com/v1/access-token",
+    "oauth": 1,
+    "key": "key",
+    "secret": "secret",
+    "callback": "/callback"
+  }
+}
