@@ -36,16 +36,15 @@ npm install grant-express
 
 ```js
 var express = require('express')
-
+  , session = require('express-session')
 var Grant = require('grant-express')
-  , grant = new Grant({/*configuration see below*/})
+  , grant = new Grant({/*configuration - see below*/})
 
 var app = express()
+// REQUIRED: (any session store - see ./example/express-session)
+app.use(session({secret:'grant'}))
 // mount grant
 app.use(grant)
-// other middlewares
-app.use(cookieParser())
-app.use(session())
 ```
 
 
@@ -57,21 +56,17 @@ npm install grant-koa
 
 ```js
 var koa = require('koa')
+  , session = require('koa-session')
   , mount = require('koa-mount')
-  // https://github.com/simov/grant/tree/master/example/koa-session
-  , session = require('any session store')
-
 var Grant = require('grant-koa')
-  , grant = new Grant({/*configuration see below*/})
+  , grant = new Grant({/*configuration - see below*/})
 
 var app = koa()
-// required: set the session store before mounting grant!
-app.keys = ['keys']
-app.use(session(...))
+// REQUIRED: (any session store - see ./example/koa-session)
+app.keys = ['grant']
+app.use(session(app))
 // mount grant
 app.use(mount(grant))
-// other middlewares
-app.use(bodyParser())
 ```
 
 
@@ -84,18 +79,22 @@ npm install grant-hapi
 ```js
 var Hapi = require('hapi')
   , yar = require('yar')
-
 var Grant = require('grant-hapi')
   , grant = new Grant()
 
 var server = new Hapi.Server()
-server.register([{
-  register: grant,
-  options: {/*configuration see below*/}
-}, {
-  register: yar,
-  options: {cookieOptions: {password:'password', isSecure:false}}
-}], function (err) {
+server.register([
+  // REQUIRED:
+  {
+    register: yar,
+    options: {cookieOptions: {password:'grant', isSecure:false}}
+  },
+  // register grant
+  {
+    register: grant,
+    options: {/*configuration - see below*/}
+  }
+], function (err) {
   server.start()
 })
 ```
@@ -203,6 +202,19 @@ Additionally you can make a `POST` request to the `/connect/:provider/:override?
   <input name="scope" type="checkbox" value="write" />
   <button>submit</button>
 </form>
+```
+
+Keep in mind that in this case you'll have to mount the `body-parser` middleware for `express` or `koa` before mounting grant
+
+```js
+// express
+var bodyParser = require('body-parser')
+app.use(bodyParser.urlencoded({extended:true}))
+app.use(grant)
+// koa
+var bodyParser = require('koa-bodyparser')
+app.use(bodyParser())
+app.use(mount(grant))
 ```
 
 Alternatively you can use a `GET` request with the `/connect/:provider/:override?` route
@@ -377,9 +389,11 @@ In case of an error, the `error` key will be populated with the raw error data
   ```js
   // Express
   var express = require('express')
-    , Grant = require('grant-express')
+    , session = require('express-session')
+  var Grant = require('grant-express')
     , grant = new Grant(require('./config.json'))
   var app = express()
+  app.use(session({secret:'grant'}))
   app.use(grant)
   // or Koa (see above)
   // or Hapi (see above)
