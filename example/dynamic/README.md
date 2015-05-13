@@ -29,6 +29,6 @@ $ node app.js
 
 ## Start the Flow
 
-To start the OAuth flow for Facebook and dynamically override the `state` parameter via `POST` request navigate to `http://dummy.com:3000/connect_facebook`
+To start the OAuth flow for Facebook and dynamically override the `state` parameter via `POST` request navigate to `http://dummy.com:3000/connect_facebook_post`
 
-Alternatively to start the OAuth flow for Facebook and dynamically override the `state` parameter via `GET` request navigate to `http://dummy.com:3000/connect_facebook2`
+Alternatively to start the OAuth flow for Facebook and dynamically override the `state` parameter via `GET` request navigate to `http://dummy.com:3000/connect_facebook_get`

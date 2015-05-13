@@ -4,7 +4,6 @@ process.env.NODE_TLS_REJECT_UNAUTHORIZED = '0';
 var express = require('express')
   , logger = require('morgan')
   , bodyParser = require('body-parser')
-  , cookieParser = require('cookie-parser')
   , session = require('express-session')
 
 var Grant = require('grant-express')
@@ -14,21 +13,19 @@ var request = require('request')
 
 var app = express()
 app.use(logger('dev'))
+// REQUIRED:
+app.use(session({secret:'very secret'}))
+// REQUIRED: (when making POST requests to /connect/:provider/:override?)
+app.use(bodyParser.urlencoded({extended:true}))
+// mount grant
 app.use(grant)
-app.use(bodyParser.json())
-app.use(bodyParser.urlencoded({extended: true}))
-app.use(cookieParser())
-app.use(session({
-  name: 'grant', secret: 'very secret',
-  saveUninitialized: true, resave: true
-}))
 
-app.get('/connect_facebook', function (req, res) {
+app.get('/connect_facebook_post', function (req, res) {
   var url = grant.config.facebook.protocol + '://'
     + grant.config.facebook.host + '/connect/facebook'
   request.post(url, {
     form: {
-      // some random 6 digit number
+      // generate 6 digit random state number on each authorization attempt
       state: (Math.floor(Math.random() * 999999) + 1)
     },
     followRedirect: false
@@ -38,8 +35,8 @@ app.get('/connect_facebook', function (req, res) {
   })
 })
 
-app.get('/connect_facebook2', function (req, res) {
-  // some random 6 digit number
+app.get('/connect_facebook_get', function (req, res) {
+  // generate 6 digit random state number on each authorization attempt
   var state = (Math.floor(Math.random() * 999999) + 1)
 
   res.redirect('/connect/facebook?state=' + state)
@@ -51,6 +48,6 @@ app.get('/handle_facebook_callback', function (req, res) {
   res.end(JSON.stringify(req.query, null, 2))
 })
 
-app.listen(3000, function() {
+app.listen(3000, function () {
   console.log('Express server listening on port ' + 3000)
 })

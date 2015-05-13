@@ -18,18 +18,23 @@ server.route({method: 'GET', path: '/handle_twitter_callback', handler: function
   res(JSON.stringify(req.query, null, 2))
 }})
 
-server.register([{
-  register: grant,
-  options: require('./config.json')
-}, {
-  register: yar,
-  options: {
-    cookieOptions: {
-      password: 'password',
-      isSecure: false
+server.register([
+  // REQUIRED:
+  {
+    register: yar,
+    options: {
+      cookieOptions: {
+        password: 'grant',
+        isSecure: false
+      }
     }
+  },
+  // mount grant
+  {
+    register: grant,
+    options: require('./config.json')
   }
-}], function (err) {
+], function (err) {
   if (err) throw err
 
   server.start()

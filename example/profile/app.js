@@ -1,9 +1,7 @@
 
 var express = require('express')
-  , logger = require('morgan')
-  , bodyParser = require('body-parser')
-  , cookieParser = require('cookie-parser')
   , session = require('express-session')
+  , logger = require('morgan')
 
 var Grant = require('grant-express')
   , grant = new Grant(require('./config.json'))
@@ -16,14 +14,10 @@ var Purest = require('purest')
 
 var app = express()
 app.use(logger('dev'))
+// REQUIRED:
+app.use(session({secret:'very secret'}))
+// mount grant
 app.use(grant)
-app.use(bodyParser.json())
-app.use(bodyParser.urlencoded({extended: true}))
-app.use(cookieParser())
-app.use(session({
-  name: 'grant', secret: 'very secret',
-  saveUninitialized: true, resave: true
-}))
 
 app.get('/handle_facebook_callback', function (req, res) {
   facebook.query()
@@ -50,6 +44,6 @@ app.get('/handle_twitter_callback', function (req, res) {
     })
 })
 
-app.listen(3000, function() {
+app.listen(3000, function () {
   console.log('Express server listening on port ' + 3000)
 })
