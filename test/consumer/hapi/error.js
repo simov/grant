@@ -16,6 +16,27 @@ describe('error - hapi', function () {
   var config = {server: {protocol:'http', host:'localhost:5000', callback:'/'}}
   var server
 
+  describe('missing plugin', function () {
+    it('session', function (done) {
+      var grant = new Grant()
+      server = new Hapi.Server()
+      server.connection({host:'localhost', port:5000})
+
+      server.register([{register:grant, options:config}], function (err) {
+        if (err) return done(err)
+        server.start(function () {
+          request.get(url('/connect/facebook'), {
+            jar:request.jar(),
+            json:true
+          }, function (err, res, body) {
+            body.statusCode.should.equal(500)
+            server.stop(done)
+          })
+        })
+      })
+    })
+  })
+
   describe('oauth2', function () {
     describe('step1 - missing code', function () {
       before(function (done) {

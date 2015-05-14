@@ -16,6 +16,36 @@ describe('error - express', function () {
   var config = {server: {protocol:'http', host:'localhost:5000', callback:'/'}}
   var server
 
+  describe('missing middleware', function () {
+    it('session', function (done) {
+      var grant = new Grant(config)
+      var app = express().use(grant)
+      var server = app.listen(5000, function () {
+        request.get(url('/connect/facebook'), {
+          jar:request.jar(),
+          json:true
+        }, function (err, res, body) {
+          body.match(/Error: Grant: mount session middleware first/)
+          server.close(done)
+        })
+      })
+    })
+
+    it('body-parser', function (done) {
+      var grant = new Grant(config)
+      var app = express().use(session({secret:'grant'})).use(grant)
+      var server = app.listen(5000, function () {
+        request.post(url('/connect/facebook'), {
+          jar:request.jar(),
+          json:true
+        }, function (err, res, body) {
+          body.match(/Error: Grant: mount body parser middleware first/)
+          server.close(done)
+        })
+      })
+    })
+  })
+
   describe('oauth2', function () {
     describe('step1 - missing code', function () {
       before(function (done) {
