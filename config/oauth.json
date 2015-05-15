@@ -351,6 +351,11 @@
     "oauth": 2,
     "scope_delimiter": " "
   },
+  "shoeboxed": {
+    "authorize_url": "https://id.shoeboxed.com/oauth/authorize",
+    "access_url": "https://id.shoeboxed.com/oauth/token",
+    "oauth": 2
+  },
   "shopify": {
     "authorize_url": "https://[subdomain].myshopify.com/admin/oauth/authorize",
     "access_url": "https://[subdomain].myshopify.com/admin/oauth/access_token",
