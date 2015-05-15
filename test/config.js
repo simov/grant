@@ -33,6 +33,30 @@ describe('config', function () {
     })
   })
 
+  describe('credentials', function () {
+    it('key secret', function () {
+      var provider = {oauth:2, key:'key1', secret:'secret1'}
+      var options = {key:'key2', secret:'secret2'}
+      config.credentials(provider, options)
+      provider.key.should.equal('key1')
+      provider.secret.should.equal('secret1')
+    })
+    it('consumer_key consumer_secret', function () {
+      var provider = {oauth:1, key:'key1', secret:'secret1'}
+      var options = {consumer_key:'key2', consumer_secret:'secret2'}
+      config.credentials(provider, options)
+      provider.key.should.equal('key2')
+      provider.secret.should.equal('secret2')
+    })
+    it('client_id client_secret', function () {
+      var provider = {oauth:2, key:'key1', secret:'secret1'}
+      var options = {client_id:'key2', client_secret:'secret2'}
+      config.credentials(provider, options)
+      provider.key.should.equal('key2')
+      provider.secret.should.equal('secret2')
+    })
+  })
+
   describe('override', function () {
     it('dcopy', function () {
       var provider = {scope:['scope1'], callback:'/'}
