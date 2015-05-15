@@ -1,6 +1,7 @@
 
 process.env.NODE_TLS_REJECT_UNAUTHORIZED = '0';
 
+var fs = require('fs')
 var express = require('express')
   , logger = require('morgan')
   , bodyParser = require('body-parser')
@@ -46,6 +47,11 @@ app.get('/handle_facebook_callback', function (req, res) {
   console.log('The state was', req.session.grant.state)
   console.log(req.query)
   res.end(JSON.stringify(req.query, null, 2))
+})
+
+app.get('/form', function (req, res) {
+  res.writeHead(200, {'content-type': 'text/html'})
+  res.end(fs.readFileSync('./form.html', 'utf8'))
 })
 
 app.listen(3000, function () {

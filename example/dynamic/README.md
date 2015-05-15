@@ -11,7 +11,7 @@ $ npm install
 
 ## OAuth Application
 
-Create OAuth application for Facebook and Twitter. For Twitter set the callback url to be `http://dummy.com:3000/connect/twitter/callback`, for Facebook set the application domain to be `dummy.com`
+Create OAuth application for Facebook. Set the application domain to be `dummy.com`
 
 In your `hosts` file add this line `dummy.com 127.0.0.1`
 
@@ -31,4 +31,6 @@ $ node app.js
 
 To start the OAuth flow for Facebook and dynamically override the `state` parameter via `POST` request navigate to `http://dummy.com:3000/connect_facebook_post`
 
-Alternatively to start the OAuth flow for Facebook and dynamically override the `state` parameter via `GET` request navigate to `http://dummy.com:3000/connect_facebook_get`
+To start the OAuth flow for Facebook and dynamically override the `state` parameter via `GET` request navigate to `http://dummy.com:3000/connect_facebook_get`
+
+Alternatively navigate to `http://dummy.com:3000/form` to choose `state` and `scope` to request
