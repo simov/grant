@@ -71,6 +71,12 @@
     "scope_delimiter": " ",
     "custom_parameters": ["meta"]
   },
+  "copy": {
+    "request_url": "https://api.copy.com/oauth/request",
+    "authorize_url": "https://www.copy.com/applications/authorize",
+    "access_url": "https://api.copy.com/oauth/access",
+    "oauth": 1
+  },
   "dailymile": {
     "authorize_url": "https://api.dailymile.com/oauth/authorize",
     "access_url": "https://api.dailymile.com/oauth/token",

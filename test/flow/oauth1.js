@@ -126,9 +126,28 @@ describe('oauth1', function () {
         app = express().use(grant)
 
         app.post('/request_url', function (req, res) {
-          res.end(qs.stringify({oauth:req.headers.authorization}))
+          res.end(qs.stringify({oauth:req.headers.authorization, scope:req.query.scope}))
         })
         server = app.listen(5000, done)
+      })
+
+      describe('querystring scope', function () {
+        it('copy', function (done) {
+          grant.config.copy.request_url = url('/request_url')
+          grant.config.copy.scope = '{"profile":{"read":true}}'
+          oauth1.step1(grant.config.copy, function (err, body) {
+            body.scope.should.equal('{"profile":{"read":true}}')
+            done()
+          })
+        })
+        it('linkedin', function (done) {
+          grant.config.linkedin.request_url = url('/request_url')
+          grant.config.linkedin.scope = 'scope1,scope2'
+          oauth1.step1(grant.config.linkedin, function (err, body) {
+            body.scope.should.equal('scope1,scope2')
+            done()
+          })
+        })
       })
 
       describe('signature_method', function () {
@@ -146,7 +165,7 @@ describe('oauth1', function () {
           grant.config.freshbooks.request_url = url('/[subdomain]')
           grant.config.freshbooks.subdomain = 'request_url'
           oauth1.step1(grant.config.freshbooks, function (err, body) {
-            body.oauth.should.be.type('string')
+            body.oauth.should.match(/OAuth/)
             done()
           })
         })

@@ -25,11 +25,17 @@ describe('config', function () {
       config.scope(provider, options)
       provider.scope.should.equal('scope1,scope2')
     })
-    it('set linkedin scopes as querystring', function () {
-      var provider = {linkedin:true, request_url:'https://requestToken'}
-      var options = {scope:['scope1','scope2']}
+    it('stringify scope object for `copy`', function () {
+      var provider = {copy:true}
+      var options = {scope: {profile: {read:true}}}
       config.scope(provider, options)
-      provider.request_url.should.equal('https://requestToken?scope=scope1,scope2')
+      provider.scope.should.equal('{"profile":{"read":true}}')
+    })
+    it('do not stringify already stringified scope for `copy`', function () {
+      var provider = {copy:true, scope:'{"profile":{"read":true}}'}
+      var options = {}
+      config.scope(provider, options)
+      provider.scope.should.equal('{"profile":{"read":true}}')
     })
   })
 
