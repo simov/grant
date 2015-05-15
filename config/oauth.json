@@ -38,6 +38,12 @@
     "access_url": "https://launchpad.37signals.com/authorization/token",
     "oauth": 2
   },
+  "beatsmusic": {
+    "authorize_url": "https://partner.api.beatsmusic.com/v1/oauth2/authorize",
+    "access_url": "https://partner.api.beatsmusic.com/v1/oauth2/token",
+    "oauth": 2,
+    "custom_parameters": ["as"]
+  },
   "bitbucket": {
     "request_url": "https://bitbucket.org/api/1.0/oauth/request_token",
     "authorize_url": "https://bitbucket.org/api/1.0/oauth/authenticate",
