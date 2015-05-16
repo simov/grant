@@ -463,6 +463,12 @@
     "access_url": "https://login.uber.com/oauth/token",
     "oauth": 2
   },
+  "upwork": {
+    "request_url": "https://www.upwork.com/api/auth/v1/oauth/token/request",
+    "authorize_url": "https://www.upwork.com/services/api/auth",
+    "access_url": "https://www.upwork.com/api/auth/v1/oauth/token/access",
+    "oauth": 1
+  },
   "vimeo": {
     "authorize_url": "https://api.vimeo.com/oauth/authorize",
     "access_url": "https://api.vimeo.com/oauth/access_token",
