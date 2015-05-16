@@ -110,6 +110,12 @@
     "oauth": 2,
     "scope_delimiter": " "
   },
+  "discogs": {
+    "request_url": "https://api.discogs.com/oauth/request_token",
+    "authorize_url": "https://discogs.com/oauth/authorize",
+    "access_url": "https://api.discogs.com/oauth/access_token",
+    "oauth": 1
+  },
   "disqus": {
     "authorize_url": "https://disqus.com/api/oauth/2.0/authorize/",
     "access_url": "https://disqus.com/api/oauth/2.0/access_token/",
