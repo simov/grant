@@ -4,27 +4,31 @@
 [![npm-version]][npm] [![coveralls-status]][coveralls]
 
 
-## 87 Supported Providers / [OAuth Playground][playground]
+## 91 Supported Providers / [OAuth Playground][playground]
 
-[`500px`](https://developers.500px.com/) | [`amazon`](http://login.amazon.com/documentation) | [`angellist`](https://angel.co/api) | [`appnet`](https://developers.app.net/reference/resources/) | [`asana`](http://developer.asana.com/documentation/) | [`assembla`](http://api-doc.assembla.com/) | [`basecamp`](https://github.com/basecamp/bcx-api/) | [`bitbucket`](https://confluence.atlassian.com/display/BITBUCKET) | [`bitly`](http://dev.bitly.com) | [`box`](https://developers.box.com/) | [`buffer`](http://dev.buffer.com) | [`cheddar`](https://cheddarapp.com/developer/) | [`coinbase`](https://www.coinbase.com/docs/api/overview) | [`dailymile`](http://www.dailymile.com/api/documentation) | [`dailymotion`](https://developer.dailymotion.com/documentation#graph-api) | [`deezer`](http://developers.deezer.com/) | [`deviantart`](https://www.deviantart.com/developers/) | [`digitalocean`](https://developers.digitalocean.com/) | [`disqus`](https://disqus.com/api/docs/) | [`dropbox`](https://www.dropbox.com/developers) | [`edmodo`](https://developers.edmodo.com/) | [`elance`](https://www.elance.com/q/api2) | [`eventbrite`](http://developer.eventbrite.com/) | [`evernote`](https://dev.evernote.com/doc/) | [`everyplay`](https://developers.everyplay.com/) | [`eyeem`](https://www.eyeem.com/developers) | [`facebook`](https://developers.facebook.com) | [`feedly`](https://developer.feedly.com/) | [`fitbit`](http://dev.fitbit.com/) | [`flattr`](http://developers.flattr.net/) | [`flickr`](https://www.flickr.com/services/api/) | [`flowdock`](https://www.flowdock.com/api) | [`foursquare`](https://developer.foursquare.com/) | [`freshbooks`](https://www.freshbooks.com/developers) | [`geeklist`](http://hackers.geekli.st/) | [`getpocket`](http://getpocket.com/developer/) | [`github`](http://developer.github.com) | [`gitter`](https://developer.gitter.im/docs/welcome) | [`goodreads`](https://www.goodreads.com/api) | [`google`](https://developers.google.com/) | [`harvest`](https://github.com/harvesthq/api) | [`heroku`](https://devcenter.heroku.com/categories/platform-api) | [`imgur`](https://api.imgur.com/) | [`instagram`](http://instagram.com/developer) | [`jawbone`](https://jawbone.com/up/developer/) | [`linkedin`](http://developer.linkedin.com) | [`live`](http://msdn.microsoft.com/en-us/library/dn783283.aspx) | [`mailchimp`](http://apidocs.mailchimp.com/) | [`meetup`](http://www.meetup.com/meetup_api/) | [`mixcloud`](http://www.mixcloud.com/developers/) | [`moves`](https://dev.moves-app.com/) | [`odesk`](https://developers.odesk.com) | [`openstreetmap`](http://wiki.openstreetmap.org/wiki/API_v0.6) | [`paypal`](https://developer.paypal.com/docs/) | [`podio`](https://developers.podio.com/) | [`rdio`](http://www.rdio.com/developers/) | [`redbooth`](https://redbooth.com/api/) | [`reddit`](http://www.reddit.com/dev/api) | [`runkeeper`](http://developer.runkeeper.com/) | [`salesforce`](https://www.salesforce.com/us/developer/docs/api_rest) | [`shopify`](http://docs.shopify.com/api) | [`skyrock`](http://www.skyrock.com/developer/documentation/) | [`slack`](https://api.slack.com/) | [`slice`](https://developer.slice.com/) | [`soundcloud`](http://developers.soundcloud.com) | [`spotify`](https://developer.spotify.com) | [`stackexchange`](https://api.stackexchange.com) | [`stocktwits`](http://stocktwits.com/developers) | [`stormz`](http://developer.stormz.me) | [`strava`](http://strava.github.io/api/) | [`stripe`](https://stripe.com/docs) | [`traxo`](https://developer.traxo.com/) | [`trello`](https://trello.com/docs/) | [`tripit`](https://www.tripit.com/developer) | [`tumblr`](http://www.tumblr.com/docs/en/api/v2) | [`twitch`](https://github.com/justintv/twitch-api) | [`twitter`](https://dev.twitter.com) | [`uber`](https://developer.uber.com/v1/api-reference/) | [`vimeo`](https://developer.vimeo.com/) | [`vk`](http://vk.com/dev) | [`withings`](http://oauth.withings.com/api) | [`wordpress`](https://developer.wordpress.com/docs/api/) | [`xing`](https://dev.xing.com/docs) | [`yahoo`](https://developer.yahoo.com/) | [`yammer`](https://developer.yammer.com/) | [`yandex`](http://api.yandex.com/) | [`zendesk`](https://developer.zendesk.com)
+[`500px`](https://developers.500px.com/) | [`amazon`](http://login.amazon.com/documentation) | [`angellist`](https://angel.co/api) | [`appnet`](https://developers.app.net/reference/resources/) | [`asana`](http://developer.asana.com/documentation/) | [`assembla`](http://api-doc.assembla.com/) | [`basecamp`](https://github.com/basecamp/bcx-api/) | [`beatsmusic`](https://developer.beatsmusic.com) | [`bitbucket`](https://confluence.atlassian.com/display/BITBUCKET) | [`bitly`](http://dev.bitly.com) | [`box`](https://developers.box.com/) | [`buffer`](http://dev.buffer.com) | [`cheddar`](https://cheddarapp.com/developer/) | [`coinbase`](https://www.coinbase.com/docs/api/overview) | [`copy`](https://developers.copy.com) | [`dailymile`](http://www.dailymile.com/api/documentation) | [`dailymotion`](https://developer.dailymotion.com/documentation#graph-api) | [`deezer`](http://developers.deezer.com/) | [`deviantart`](https://www.deviantart.com/developers/) | [`digitalocean`](https://developers.digitalocean.com/) | [`discogs`](http://www.discogs.com/developers/) | [`disqus`](https://disqus.com/api/docs/) | [`dropbox`](https://www.dropbox.com/developers) | [`edmodo`](https://developers.edmodo.com/) | [`elance`](https://www.elance.com/q/api2) | [`eventbrite`](http://developer.eventbrite.com/) | [`evernote`](https://dev.evernote.com/doc/) | [`everyplay`](https://developers.everyplay.com/) | [`eyeem`](https://www.eyeem.com/developers) | [`facebook`](https://developers.facebook.com) | [`feedly`](https://developer.feedly.com/) | [`fitbit`](http://dev.fitbit.com/) | [`flattr`](http://developers.flattr.net/) | [`flickr`](https://www.flickr.com/services/api/) | [`flowdock`](https://www.flowdock.com/api) | [`foursquare`](https://developer.foursquare.com/) | [`freshbooks`](https://www.freshbooks.com/developers) | [`geeklist`](http://hackers.geekli.st/) | [`getpocket`](http://getpocket.com/developer/) | [`github`](http://developer.github.com) | [`gitter`](https://developer.gitter.im/docs/welcome) | [`goodreads`](https://www.goodreads.com/api) | [`google`](https://developers.google.com/) | [`harvest`](https://github.com/harvesthq/api) | [`heroku`](https://devcenter.heroku.com/categories/platform-api) | [`imgur`](https://api.imgur.com/) | [`instagram`](http://instagram.com/developer) | [`jawbone`](https://jawbone.com/up/developer/) | [`linkedin`](http://developer.linkedin.com) | [`live`](http://msdn.microsoft.com/en-us/library/dn783283.aspx) | [`mailchimp`](http://apidocs.mailchimp.com/) | [`meetup`](http://www.meetup.com/meetup_api/) | [`mixcloud`](http://www.mixcloud.com/developers/) | [`moves`](https://dev.moves-app.com/) | [`odesk`](https://developers.odesk.com) | [`openstreetmap`](http://wiki.openstreetmap.org/wiki/API_v0.6) | [`paypal`](https://developer.paypal.com/docs/) | [`podio`](https://developers.podio.com/) | [`rdio`](http://www.rdio.com/developers/) | [`redbooth`](https://redbooth.com/api/) | [`reddit`](http://www.reddit.com/dev/api) | [`runkeeper`](http://developer.runkeeper.com/) | [`salesforce`](https://www.salesforce.com/us/developer/docs/api_rest) | [`shoeboxed`](https://github.com/Shoeboxed/api) | [`shopify`](http://docs.shopify.com/api) | [`skyrock`](http://www.skyrock.com/developer/documentation/) | [`slack`](https://api.slack.com/) | [`slice`](https://developer.slice.com/) | [`soundcloud`](http://developers.soundcloud.com) | [`spotify`](https://developer.spotify.com) | [`stackexchange`](https://api.stackexchange.com) | [`stocktwits`](http://stocktwits.com/developers) | [`stormz`](http://developer.stormz.me) | [`strava`](http://strava.github.io/api/) | [`stripe`](https://stripe.com/docs) | [`traxo`](https://developer.traxo.com/) | [`trello`](https://trello.com/docs/) | [`tripit`](https://www.tripit.com/developer) | [`tumblr`](http://www.tumblr.com/docs/en/api/v2) | [`twitch`](https://github.com/justintv/twitch-api) | [`twitter`](https://dev.twitter.com) | [`uber`](https://developer.uber.com/v1/api-reference/) | [`upwork`](https://developers.upwork.com) | [`vimeo`](https://developer.vimeo.com/) | [`vk`](http://vk.com/dev) | [`withings`](http://oauth.withings.com/api) | [`wordpress`](https://developer.wordpress.com/docs/api/) | [`xing`](https://dev.xing.com/docs) | [`yahoo`](https://developer.yahoo.com/) | [`yammer`](https://developer.yammer.com/) | [`yandex`](http://api.yandex.com/) | [`zendesk`](https://developer.zendesk.com)
 
 
 ## Table of Contents
 
-- [Express][express]
-- [Koa][koa]
-- [Hapi][hapi]
-- [Reserved Routes for Grant][reserved-routes-for-grant]
-- [Configuration][configuration]
-- [Redirect Url][redirect-url]
-- [Static Overrides][static-overrides]
-- [Dynamic Override][dynamic-override]
-- [Quirks][quirks]
-- [Custom Providers][custom-providers]
-- [Development Environments][development-environments]
+- [Providers][grant]
+- Middleware
+  - [Express][express]
+  - [Koa][koa]
+  - [Hapi][hapi]
+  - [Reserved Routes for Grant][reserved-routes-for-grant]
+- Configuration
+  - [Basics][configuration]
+  - [Redirect Url][redirect-url]
+  - [Static Overrides][static-overrides]
+  - [Dynamic Override][dynamic-override]
+  - [Custom Parameters][custom-parameters]
+  - [Custom Providers][custom-providers]
+  - [Development Environments][development-environments]
 - [Response Data][response-data]
-- [Typical Flow][typical-flow]
-- [Get User Profile][get-user-profile]
+- Misc
+  - [Typical Flow][typical-flow]
+  - [Get User Profile][get-user-profile]
 - [Examples][examples]
 
 
@@ -229,11 +233,13 @@ app.get('/connect_facebook', function (req, res) {
 ```
 
 
-## Quirks
+## Custom Parameters
+
+- Some providers may employ custom authorization parameters outside of the ones specified in the [configuration][configuration] section. You can pass those custom parameters directly in your configuration, for example: Google - `access_type:'offline'`, Reddit - `duration:'permanent'`, Trello - `expiration:'never'`, and so on. Refer to the provider's OAuth documentation, and the Grant's [OAuth configuration][oauth-config] (search for `custom_parameters`)
+
+- For Freshbooks, Shopify and Zendesk you should specify your company's sub domain name through the `subdomain` option
 
 - To use the LinkedIn's OAuth2 flow you should use `linkedin2` as a provider name, instead of `linkedin` which is for OAuth1
-- For Freshbooks, Shopify and Zendesk you should specify your company's sub domain name through the `subdomain` option
-- Some providers may employ custom authorization parameters outside of the ones specified in the [configuration][configuration] section. You can pass those custom parameters directly in your configuration, for example: Google - `access_type:'offline'`, Reddit - `duration:'permanent'`, Trello - `expiration:'never'`, and so on. Refer to the provider's OAuth documentation, and the Grant's [OAuth configuration][oauth-config] (search for `custom_parameters`)
 
 
 ## Custom Providers
@@ -469,7 +475,7 @@ MIT
   [redirect-url]: #redirect-url
   [static-overrides]: #static-overrides
   [dynamic-override]: #dynamic-override
-  [quirks]: #quirks
+  [custom-parameters]: #custom-parameters
   [custom-providers]: #custom-providers
   [development-environments]: #development-environments
   [response-data]: #response-data
