@@ -19,11 +19,16 @@ describe('error - hapi', function () {
   describe('missing plugin', function () {
     it('session', function (done) {
       var grant = new Grant()
-      server = new Hapi.Server()
+      server = new Hapi.Server({debug: {request:false}})
       server.connection({host:'localhost', port:5000})
 
       server.register([{register:grant, options:config}], function (err) {
         if (err) return done(err)
+
+        server.on('request-error', function (req, err) {
+          err.message.should.equal('Uncaught error: Grant: register session plugin first')
+        })
+
         server.start(function () {
           request.get(url('/connect/facebook'), {
             jar:request.jar(),

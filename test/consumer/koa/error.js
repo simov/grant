@@ -22,7 +22,14 @@ describe('error - koa', function () {
   describe('missing middleware', function () {
     it('session', function (done) {
       var grant = new Grant(config)
-      var app = koa().use(mount(grant))
+      var app = koa()
+      app.use(function *(next) {
+        try {yield next}
+        catch (err) {
+          err.message.should.equal('Grant: mount session middleware first')
+        }
+      })
+      app.use(mount(grant))
       var server = app.listen(5000, function () {
         request.get(url('/connect/facebook'), {
           jar:request.jar(),
@@ -39,6 +46,12 @@ describe('error - koa', function () {
       var app = koa()
       app.keys = ['grant']
       app.use(session(app))
+      app.use(function *(next) {
+        try {yield next}
+        catch (err) {
+          err.message.should.equal('Grant: mount body parser middleware first')
+        }
+      })
       app.use(mount(grant))
       var server = app.listen(5000, function () {
         request.post(url('/connect/facebook'), {

@@ -20,6 +20,10 @@ describe('error - express', function () {
     it('session', function (done) {
       var grant = new Grant(config)
       var app = express().use(grant)
+      app.use(function (err, req, res, next) {
+        err.message.should.equal('Grant: mount session middleware first')
+        next()
+      })
       var server = app.listen(5000, function () {
         request.get(url('/connect/facebook'), {
           jar:request.jar(),
@@ -36,6 +40,10 @@ describe('error - express', function () {
       var app = express()
       app.use(session({secret:'grant', saveUninitialized:true, resave:true}))
       app.use(grant)
+      app.use(function (err, req, res, next) {
+        err.message.should.equal('Grant: mount body parser middleware first')
+        next()
+      })
       var server = app.listen(5000, function () {
         request.post(url('/connect/facebook'), {
           jar:request.jar(),
