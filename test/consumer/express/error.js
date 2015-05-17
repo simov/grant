@@ -33,7 +33,9 @@ describe('error - express', function () {
 
     it('body-parser', function (done) {
       var grant = new Grant(config)
-      var app = express().use(session({secret:'grant'})).use(grant)
+      var app = express()
+      app.use(session({secret:'grant', saveUninitialized:true, resave:true}))
+      app.use(grant)
       var server = app.listen(5000, function () {
         request.post(url('/connect/facebook'), {
           jar:request.jar(),
@@ -51,7 +53,7 @@ describe('error - express', function () {
       before(function (done) {
         var grant = new Grant(config)
         var app = express()
-        app.use(session({secret:'grant'}))
+        app.use(session({secret:'grant', saveUninitialized:true, resave:true}))
         app.use(grant)
 
         grant.config.facebook.authorize_url = url('/authorize_url')
@@ -87,7 +89,7 @@ describe('error - express', function () {
       before(function (done) {
         var grant = new Grant(config)
         var app = express()
-        app.use(session({secret:'grant'}))
+        app.use(session({secret:'grant', saveUninitialized:true, resave:true}))
         app.use(grant)
 
         grant.config.facebook.authorize_url = url('/authorize_url')
@@ -124,7 +126,7 @@ describe('error - express', function () {
       before(function (done) {
         var grant = new Grant(config)
         var app = express()
-        app.use(session({secret:'grant'}))
+        app.use(session({secret:'grant', saveUninitialized:true, resave:true}))
         app.use(grant)
 
         grant.config.facebook.authorize_url = url('/authorize_url')

@@ -22,7 +22,7 @@ describe('session - express', function () {
     grant = new Grant(config)
     var app = express()
     app.use(bodyParser.urlencoded({extended:true}))
-    app.use(session({secret:'grant'}))
+    app.use(session({secret:'grant', saveUninitialized:true, resave:true}))
     app.use(grant)
 
     grant.config.facebook.authorize_url = '/authorize_url'

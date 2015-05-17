@@ -21,7 +21,7 @@ describe('flow - express', function () {
     before(function (done) {
       grant = new Grant(config)
       var app = express()
-      app.use(session({secret:'grant'}))
+      app.use(session({secret:'grant', saveUninitialized:true, resave:true}))
       app.use(grant)
 
       grant.config.twitter.request_url = url('/request_url')
@@ -76,7 +76,7 @@ describe('flow - express', function () {
     before(function (done) {
       var grant = new Grant(config)
       var app = express()
-      app.use(session({secret:'grant'}))
+      app.use(session({secret:'grant', saveUninitialized:true, resave:true}))
       app.use(grant)
 
       grant.config.facebook.authorize_url = url('/authorize_url')
@@ -118,7 +118,7 @@ describe('flow - express', function () {
     before(function (done) {
       var grant = new Grant(config)
       var app = express()
-      app.use(session({secret:'grant'}))
+      app.use(session({secret:'grant', saveUninitialized:true, resave:true}))
       app.use(grant)
 
       grant.config.getpocket.request_url = url('/request_url')
