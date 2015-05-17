@@ -1,6 +1,13 @@
 
 ## Change Log
 
+### v3.3.0 (2015/05/17)
+- `Changed` the Express middleware is no longer using the [express-session middleware](https://github.com/simov/grant#express) internally
+- `Changed` the Express and Koa middlewares are no longer using their [body-parser middleware](https://github.com/simov/grant#dynamic-override) internally
+- `Changed` Express is set as peerDependency in grant-express
+- `Changed` Koa is set as peerDependency in grant-koa
+- `Changed` Yar is no longer set as peerDependency in grant-hapi, although using session is still required
+
 ### v3.2.0 (2015/04/23)
 - `Changed` any of the [reserved keys](https://github.com/simov/grant/blob/master/config/reserved.json) can be overriden for a provider
 - `Changed` allow [custom provider](https://github.com/simov/grant#custom-providers) configuration
