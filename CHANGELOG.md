@@ -1,6 +1,9 @@
 
 ## Change Log
 
+### v3.3.1 (2015/05/21)
+- `Added` official support for 10 more providers
+
 ### v3.3.0 (2015/05/17)
 - `Changed` the Express middleware is no longer using the [express-session middleware](https://github.com/simov/grant#express) internally
 - `Changed` the Express and Koa middlewares are no longer using their [body-parser middleware](https://github.com/simov/grant#dynamic-override) internally
