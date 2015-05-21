@@ -1,4 +1,10 @@
 {
+  "23andme": {
+    "authorize_url": "https://api.23andme.com/authorize",
+    "access_url": "https://api.23andme.com/token",
+    "oauth": 2,
+    "scope_delimiter": " "
+  },
   "500px": {
     "request_url": "https://api.500px.com/v1/oauth/request_token",
     "authorize_url": "https://api.500px.com/v1/oauth/authorize",
@@ -65,6 +71,11 @@
     "access_url": "https://api.bufferapp.com/1/oauth2/token.json",
     "oauth": 2
   },
+  "campaignmonitor": {
+    "authorize_url": "https://api.createsend.com/oauth",
+    "access_url": "https://api.createsend.com/oauth/token",
+    "oauth": 2
+  },
   "cheddar": {
     "authorize_url": "https://api.cheddarapp.com/oauth/authorize",
     "access_url": "https://api.cheddarapp.com/oauth/token",
@@ -76,6 +87,11 @@
     "oauth": 2,
     "scope_delimiter": " ",
     "custom_parameters": ["meta"]
+  },
+  "constantcontact": {
+    "authorize_url": "https://oauth2.constantcontact.com/oauth2/oauth/siteowner/authorize",
+    "access_url": "https://oauth2.constantcontact.com/oauth2/oauth/token",
+    "oauth": 2
   },
   "copy": {
     "request_url": "https://api.copy.com/oauth/request",
@@ -222,6 +238,11 @@
     "access_url": "https://github.com/login/oauth/access_token",
     "oauth": 2
   },
+  "gitlab": {
+    "authorize_url": "https://gitlab.com/oauth/authorize",
+    "access_url": "https://gitlab.com/oauth/token",
+    "oauth": 2
+  },
   "gitter": {
     "authorize_url": "https://gitter.im/login/oauth/authorize",
     "access_url": "https://gitter.im/login/oauth/token",
@@ -289,6 +310,11 @@
     "access_url": "https://login.mailchimp.com/oauth2/token",
     "oauth": 2
   },
+  "mapmyfitness": {
+    "authorize_url": "https://www.mapmyfitness.com/v7.1/oauth2/uacf/authorize",
+    "access_url": "https://api.mapmyfitness.com/v7.1/oauth2/access_token",
+    "oauth": 2
+  },
   "meetup": {
     "authorize_url": "https://secure.meetup.com/oauth2/authorize",
     "access_url": "https://secure.meetup.com/oauth2/access",
@@ -305,6 +331,11 @@
     "access_url": "https://api.moves-app.com/oauth/v1/access_token",
     "oauth": 2,
     "scope_delimiter": " "
+  },
+  "myob": {
+    "authorize_url": "https://secure.myob.com/oauth2/account/authorize",
+    "access_url": "https://secure.myob.com/oauth2/v1/authorize",
+    "oauth": 2
   },
   "odesk": {
     "request_url": "https://www.odesk.com/api/auth/v1/oauth/token/request",
@@ -323,6 +354,12 @@
     "access_url": "https://api.paypal.com/v1/identity/openidconnect/tokenservice",
     "oauth": 2,
     "scope_delimiter": " "
+  },
+  "plurk": {
+    "request_url": "http://www.plurk.com/OAuth/request_token",
+    "authorize_url": "http://www.plurk.com/OAuth/authorize",
+    "access_url": "http://www.plurk.com/OAuth/access_token",
+    "oauth": 1
   },
   "podio": {
     "authorize_url": "https://podio.com/oauth/authorize",
@@ -384,6 +421,12 @@
     "access_url": "https://api.slice.com/oauth/token",
     "oauth": 2
   },
+  "socrata": {
+    "authorize_url": "https://[subdomain]/oauth/authorize",
+    "access_url": "https://[subdomain]/oauth/access_token",
+    "oauth": 2,
+    "subdomain": true
+  },
   "soundcloud": {
     "authorize_url": "https://soundcloud.com/connect",
     "access_url": "https://api.soundcloud.com/oauth2/token",
@@ -395,6 +438,13 @@
     "oauth": 2,
     "scope_delimiter": " ",
     "custom_parameters": ["show_dialog"]
+  },
+  "square": {
+    "authorize_url": "https://connect.squareup.com/oauth2/authorize",
+    "access_url": "https://connect.squareup.com/oauth2/token",
+    "oauth": 2,
+    "scope_delimiter": " ",
+    "custom_parameters": ["locale", "session", "plan_id"]
   },
   "stackexchange": {
     "authorize_url": "https://stackexchange.com/oauth",
@@ -468,6 +518,12 @@
     "authorize_url": "https://www.upwork.com/services/api/auth",
     "access_url": "https://www.upwork.com/api/auth/v1/oauth/token/access",
     "oauth": 1
+  },
+  "vend": {
+    "authorize_url": "https://secure.vendhq.com/connect",
+    "access_url": "https://[subdomain].vendhq.com/api/1.0/token",
+    "oauth": 2,
+    "subdomain": true
   },
   "vimeo": {
     "authorize_url": "https://api.vimeo.com/oauth/authorize",
