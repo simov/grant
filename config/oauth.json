@@ -11,6 +11,11 @@
     "access_url": "https://api.500px.com/v1/oauth/access_token",
     "oauth": 1
   },
+  "acton": {
+    "authorize_url": "https://restapi.actonsoftware.com/authorize",
+    "access_url": "https://restapi.actonsoftware.com/token",
+    "oauth": 2
+  },
   "amazon": {
     "authorize_url": "https://www.amazon.com/ap/oa",
     "access_url": "https://api.amazon.com/auth/o2/token",
