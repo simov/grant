@@ -56,6 +56,15 @@
 
   "main": "index.js",
 
+  "files": [
+    "config/",
+    "lib/",
+    "CHANGELOG.md",
+    "LICENSE",
+    "README.md",
+    "index.js"
+  ],
+
   "scripts": {
     "test": "npm run lint-lib && npm run lint-test && npm run test-ci",
     "test-ci": "v=$(node --version | cut -b 4-5) && if [ $v -ge 12 ]; then node_modules/mocha/bin/mocha --harmony --recursive test/; else node_modules/mocha/bin/mocha test/ test/flow/ test/consumer/express/ test/consumer/hapi/; fi",
