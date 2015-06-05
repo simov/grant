@@ -66,10 +66,10 @@
   ],
 
   "scripts": {
-    "test": "npm run lint-lib && npm run lint-test && npm run test-ci",
-    "test-ci": "v=$(node --version | cut -b 4-5) && if [ $v -ge 12 ]; then node_modules/mocha/bin/mocha --harmony --recursive test/; else node_modules/mocha/bin/mocha test/ test/flow/ test/consumer/express/ test/consumer/hapi/; fi",
-    "test-cov": "node node_modules/.bin/istanbul cover ./node_modules/mocha/bin/_mocha test/ test/flow/ test/consumer/express/ test/consumer/hapi/",
-    "lint-lib": "node node_modules/eslint/bin/eslint lib/ && echo Lint lib passed",
-    "lint-test": "node node_modules/eslint/bin/eslint --config test/.eslintrc test/ && echo Lint test passed"
+    "test"      : "npm run lint-lib && npm run lint-test && npm run test-ci",
+    "test-ci"   : "v=$(node --version | cut -b 4-5) && if [ $v -ge 12 ]; then mocha --harmony --recursive test/; else mocha test/ test/flow/ test/consumer/express/ test/consumer/hapi/; fi",
+    "test-cov"  : "istanbul cover _mocha test/ test/flow/ test/consumer/express/ test/consumer/hapi/",
+    "lint-lib"  : "eslint lib/ && echo Lint lib passed",
+    "lint-test" : "eslint --config test/.eslintrc test/ && echo Lint test passed"
   }
 }
