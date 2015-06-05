@@ -1,7 +1,7 @@
 
 # Grant
 
-[![npm-version]][npm] [![coveralls-status]][coveralls]
+[![npm-version]][npm] [![travis-ci]][travis] [![coveralls-status]][coveralls]
 
 
 ## 100+ Supported Providers / [OAuth Playground][playground]
@@ -455,9 +455,8 @@ MIT
   [coveralls]: https://coveralls.io/r/simov/grant?branch=master
 
   [npm-version]: http://img.shields.io/npm/v/grant.svg?style=flat-square (NPM Version)
-  [npm-downloads]: http://img.shields.io/npm/dm/grant.svg?style=flat-square (NPM Downloads)
   [travis-ci]: https://img.shields.io/travis/simov/grant/master.svg?style=flat-square (Build Status)
-  [coveralls-status]: https://img.shields.io/coveralls/simov/grant.svg?style=flat-square (Coveralls Status)
+  [coveralls-status]: https://img.shields.io/coveralls/simov/grant.svg?style=flat-square (Test Coverage)
 
   [oauth-config]: https://github.com/simov/grant/blob/master/config/oauth.json
   [reserved-keys]: https://github.com/simov/grant/blob/master/config/reserved.json
