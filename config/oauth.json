@@ -49,6 +49,12 @@
     "access_url": "https://launchpad.37signals.com/authorization/token",
     "oauth": 2
   },
+  "beatport": {
+    "request_url": "https://oauth-api.beatport.com/identity/1/oauth/request-token",
+    "authorize_url": "https://oauth-api.beatport.com/identity/1/oauth/authorize",
+    "access_url": "https://oauth-api.beatport.com/identity/1/oauth/access-token",
+    "oauth": 1
+  },
   "beatsmusic": {
     "authorize_url": "https://partner.api.beatsmusic.com/v1/oauth2/authorize",
     "access_url": "https://partner.api.beatsmusic.com/v1/oauth2/token",
