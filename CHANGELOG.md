@@ -1,6 +1,10 @@
 
 ## Change Log
 
+### v3.3.2 (2015/06/05)
+- `Changed` a few minor changes to the project's meta files
+- `Added` official support for 2 more providers
+
 ### v3.3.1 (2015/05/21)
 - `Added` official support for 10 more providers
 
