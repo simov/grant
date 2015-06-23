@@ -524,6 +524,11 @@
     "access_url": "https://login.uber.com/oauth/token",
     "oauth": 2
   },
+  "underarmour": {
+    "authorize_url": "https://www.mapmyfitness.com/v7.1/oauth2/uacf/authorize",
+    "access_url": "https://api.mapmyfitness.com/v7.1/oauth2/access_token",
+    "oauth": 2
+  },
   "upwork": {
     "request_url": "https://www.upwork.com/api/auth/v1/oauth/token/request",
     "authorize_url": "https://www.upwork.com/services/api/auth",
