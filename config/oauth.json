@@ -483,6 +483,12 @@
     "access_url": "https://connect.stripe.com/oauth/token",
     "oauth": 2
   },
+  "surveymonkey": {
+    "authorize_url": "https://api.surveymonkey.com/oauth/authorize",
+    "access_url": "https://api.surveymonkey.net/oauth/token",
+    "oauth": 2,
+    "custom_parameters": ["api_key"]
+  },
   "traxo": {
     "authorize_url": "https://www.traxo.com/oauth/authenticate",
     "access_url": "https://www.traxo.com/oauth/token",

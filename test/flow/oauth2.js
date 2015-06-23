@@ -160,6 +160,13 @@ describe('oauth2', function () {
           query.show_dialog.should.equal('true')
         })
 
+        it('surveymonkey', function () {
+          grant.config.surveymonkey.api_key = 'api_key'
+          var url = oauth2.step1(grant.config.surveymonkey)
+          var query = qs.parse(url.split('?')[1])
+          query.api_key.should.equal('api_key')
+        })
+
         it('wordpress', function () {
           grant.config.wordpress.blog = 'Grant'
           var url = oauth2.step1(grant.config.wordpress)
@@ -189,13 +196,19 @@ describe('oauth2', function () {
         app = express().use(grant).use(bodyParser.urlencoded({extended:true}))
 
         grant.config.basecamp.access_url = url('/access_url')
-        grant.config.assembla.access_url = url('/access_url')
         grant.config.reddit.access_url = url('/access_url')
+        grant.config.surveymonkey.access_url = url('/access_url')
 
         app.post('/access_url', function (req, res) {
-          return (req.headers.authorization)
-            ? res.end(JSON.stringify({basic:true}))
-            : res.end(JSON.stringify(req.body))
+          if (req.headers.authorization) {
+            res.end(JSON.stringify({basic:true}))
+          }
+          else if (req.url.split('?')[1]) {
+            res.end(JSON.stringify(qs.parse(req.url.split('?')[1])))
+          }
+          else {
+            res.end(JSON.stringify(req.body))
+          }
         })
         server = app.listen(5000, done)
       })
@@ -205,6 +218,17 @@ describe('oauth2', function () {
           oauth2.step2(grant.config.basecamp, {code:'code'}, {}, function (err, body) {
             var query = JSON.parse(body)
             query.type.should.equal('web_server')
+            done()
+          })
+        })
+      })
+
+      describe('api_key', function () {
+        it('surveymonkey', function (done) {
+          grant.config.surveymonkey.api_key = 'api_key'
+          oauth2.step2(grant.config.surveymonkey, {code:'code'}, {}, function (err, body) {
+            var query = JSON.parse(body)
+            query.api_key.should.equal('api_key')
             done()
           })
         })
