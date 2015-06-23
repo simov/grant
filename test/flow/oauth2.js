@@ -211,16 +211,6 @@ describe('oauth2', function () {
       })
 
       describe('basic auth', function () {
-        it('assembla', function (done) {
-          grant.config.assembla.key = 'key'
-          grant.config.assembla.secret = 'secret'
-          oauth2.step2(grant.config.assembla, {code:'code'}, {}, function (err, body) {
-            var query = JSON.parse(body)
-            query.basic.should.equal(true)
-            done()
-          })
-        })
-
         it('reddit', function (done) {
           grant.config.reddit.key = 'key'
           grant.config.reddit.secret = 'secret'

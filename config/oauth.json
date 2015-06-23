@@ -41,7 +41,7 @@
   },
   "assembla": {
     "authorize_url": "https://api.assembla.com/authorization",
-    "access_url": "https://_client_id:_client_secret@api.assembla.com/token",
+    "access_url": "https://api.assembla.com/token",
     "oauth": 2
   },
   "basecamp": {
