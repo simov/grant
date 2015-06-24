@@ -501,6 +501,11 @@
     "oauth": 2,
     "custom_parameters": ["api_key"]
   },
+  "thingiverse": {
+    "authorize_url": "https://www.thingiverse.com/login/oauth/authorize",
+    "access_url": "https://www.thingiverse.com/login/oauth/access_token",
+    "oauth": 2
+  },
   "trakt": {
     "authorize_url": "https://api.trakt.tv/oauth/authorize",
     "access_url": "https://api.trakt.tv/oauth/token",
