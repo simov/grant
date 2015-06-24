@@ -495,6 +495,11 @@
     "oauth": 2,
     "custom_parameters": ["api_key"]
   },
+  "trakt": {
+    "authorize_url": "https://api.trakt.tv/oauth/authorize",
+    "access_url": "https://api.trakt.tv/oauth/token",
+    "oauth": 2
+  },
   "traxo": {
     "authorize_url": "https://www.traxo.com/oauth/authenticate",
     "access_url": "https://www.traxo.com/oauth/token",
