@@ -148,6 +148,12 @@
     "access_url": "https://disqus.com/api/oauth/2.0/access_token/",
     "oauth": 2
   },
+  "dribbble": {
+    "authorize_url": "https://dribbble.com/oauth/authorize",
+    "access_url": "https://dribbble.com/oauth/token",
+    "oauth": 2,
+    "scope_delimiter": " "
+  },
   "dropbox": {
     "authorize_url": "https://www.dropbox.com/1/oauth2/authorize",
     "access_url": "https://api.dropbox.com/1/oauth2/token",
