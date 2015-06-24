@@ -140,6 +140,14 @@ describe('oauth1', function () {
             done()
           })
         })
+        it('etsy', function (done) {
+          grant.config.etsy.request_url = url('/request_url')
+          grant.config.etsy.scope = 'email_r profile_r'
+          oauth1.step1(grant.config.etsy, function (err, body) {
+            body.scope.should.equal('email_r profile_r')
+            done()
+          })
+        })
         it('linkedin', function (done) {
           grant.config.linkedin.request_url = url('/request_url')
           grant.config.linkedin.scope = 'scope1,scope2'

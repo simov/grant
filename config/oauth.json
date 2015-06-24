@@ -187,6 +187,13 @@
     "access_url": "https://api.elance.com/api2/oauth/token",
     "oauth": 2
   },
+  "etsy": {
+    "request_url": "https://openapi.etsy.com/v2/oauth/request_token",
+    "authorize_url": "https://www.etsy.com/oauth/signin",
+    "access_url": "https://openapi.etsy.com/v2/oauth/access_token",
+    "oauth": 1,
+    "scope_delimiter": " "
+  },
   "eventbrite": {
     "authorize_url": "https://www.eventbrite.com/oauth/authorize",
     "access_url": "https://www.eventbrite.com/oauth/token",
