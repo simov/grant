@@ -110,6 +110,12 @@
     "access_url": "https://api.copy.com/oauth/access",
     "oauth": 1
   },
+  "coursera": {
+    "authorize_url": "https://accounts.coursera.org/oauth2/v1/auth",
+    "access_url": "https://accounts.coursera.org/oauth2/v1/token",
+    "oauth": 2,
+    "scope_delimiter": " "
+  },
   "dailymile": {
     "authorize_url": "https://api.dailymile.com/oauth/authorize",
     "access_url": "https://api.dailymile.com/oauth/token",
