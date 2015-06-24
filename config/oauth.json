@@ -547,6 +547,12 @@
     "access_url": "https://www.upwork.com/api/auth/v1/oauth/token/access",
     "oauth": 1
   },
+  "uservoice": {
+    "request_url": "https://outofindex.uservoice.com/oauth/request_token",
+    "authorize_url": "https://outofindex.uservoice.com/oauth/authorize",
+    "access_url": "https://outofindex.uservoice.com/oauth/access_token",
+    "oauth": 1
+  },
   "vend": {
     "authorize_url": "https://secure.vendhq.com/connect",
     "access_url": "https://[subdomain].vendhq.com/api/1.0/token",
