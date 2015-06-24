@@ -131,6 +131,11 @@
     "access_url": "https://connect.deezer.com/oauth/access_token.php",
     "oauth": 2
   },
+  "delivery": {
+    "authorize_url": "https://api.delivery.com/third_party/authorize",
+    "access_url": "https://api.delivery.com/third_party/access_token",
+    "oauth": 2
+  },
   "deviantart": {
     "authorize_url": "https://www.deviantart.com/oauth2/authorize",
     "access_url": "https://www.deviantart.com/oauth2/token",
