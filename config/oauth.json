@@ -170,6 +170,12 @@
     "access_url": "https://api.dropbox.com/1/oauth2/token",
     "oauth": 2
   },
+  "echosign": {
+    "authorize_url": "https://secure.echosign.com/public/oauth",
+    "access_url": "https://secure.echosign.com/oauth/token",
+    "oauth": 2,
+    "scope_delimiter": " "
+  },
   "edmodo": {
     "authorize_url": "https://api.edmodo.com/oauth/authorize",
     "access_url": "https://api.edmodo.com/oauth/token",
