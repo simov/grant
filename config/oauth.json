@@ -220,6 +220,11 @@
     "access_url": "https://graph.facebook.com/oauth/access_token",
     "oauth": 2
   },
+  "familysearch": {
+    "authorize_url": "https://ident.familysearch.org/cis-web/oauth2/v3/authorization",
+    "access_url": "https://ident.familysearch.org/cis-web/oauth2/v3/token",
+    "oauth": 2
+  },
   "feedly": {
     "authorize_url": "https://cloud.feedly.com/v3/auth/auth",
     "access_url": "http://cloud.feedly.com/v3/auth/token",
