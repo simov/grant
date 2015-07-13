@@ -192,7 +192,7 @@ You can add arbitrary _{object}_ keys inside your provider's configuration to cr
 }
 ```
 
-_(the custom key names cannot be one of the [reserved ones][reserved-keys])_
+_(the custom key names cannot be one of the [reserved keys][reserved-keys])_
 
 
 ## Dynamic Override
@@ -227,7 +227,6 @@ Alternatively you can use a `GET` request with the `/connect/:provider/:override
 app.get('/connect_facebook', function (req, res) {
   // generate random state parameter on each authorization attempt
   var state = (Math.floor(Math.random() * 999999) + 1)
-
   res.redirect('/connect/facebook?state=' + state)
 })
 ```
@@ -237,7 +236,9 @@ app.get('/connect_facebook', function (req, res) {
 
 - Some providers may employ custom authorization parameters outside of the ones specified in the [configuration][configuration] section. You can pass those custom parameters directly in your configuration, for example: Google - `access_type:'offline'`, Reddit - `duration:'permanent'`, Trello - `expiration:'never'`, and so on. Refer to the provider's OAuth documentation, and the Grant's [OAuth configuration][oauth-config] (search for `custom_parameters`)
 
-- For Freshbooks, Shopify, Socrata, Vend and Zendesk you should specify your company's sub domain name through the `subdomain` option
+- Some providers require you to set your company name as a subdomain in the authorization urls. For example for Freshbooks, Shopify, Vend and Zendesk you can set that value through the `subdomain` option (alternatively you can override the entire `request_url`, `authorize_url` and `access_url` in your configuration)
+
+- Some providers may have a _sandbox_ urls for testing. To use them just override the entire `request_url`, `authorize_url` and `access_url` in your configuration
 
 - For SurveyMonkey set your Mashery user name as `key` and your application key as `api_key`
 
