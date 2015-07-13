@@ -24,8 +24,8 @@
   },
 
   "dependencies": {
-    "request"         : "2.53.0",
-    "qs"              : "2.4.1",
+    "request"         : "2.58.0",
+    "qs"              : "4.0.0",
     "deep-copy"       : "*"
   },
 
