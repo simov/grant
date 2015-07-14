@@ -214,7 +214,7 @@ describe('config', function () {
           scope:['scope1'], callback:'/callback', transport:{scope:['scope2']}}
         }
         var cfg = config.init(options)
-        should.deepEqual(cfg.facebook.overrides, {})
+        should.equal(cfg.facebook.overrides, undefined)
       })
       it('override provider options', function () {
         var options = {server:{}, facebook:{
