@@ -2,6 +2,7 @@
 
 var should = require('should')
 var config = require('../lib/config')
+  , Grant = require('../').express()
 
 
 describe('config', function () {
@@ -263,6 +264,14 @@ describe('config', function () {
       cfg.google.state.should.equal(true)
       provider.state.should.match(/\d+/)
       provider.state.should.be.type('string')
+    })
+  })
+
+  describe('expose', function () {
+    it('config and _config', function () {
+      var grant = new Grant()
+      grant.config.should.be.type('object')
+      grant._config.oauth.should.be.type('object')
     })
   })
 })
