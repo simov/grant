@@ -15,7 +15,10 @@ describe('session - express', function () {
     return c.protocol + '://' + c.host + path
   }
 
-  var config = {server: {protocol:'http', host:'localhost:5000'}}
+  var config = {
+    server: {protocol:'http', host:'localhost:5000'},
+    facebook:{}, twitter:{}
+  }
   var server, grant
 
   before(function (done) {

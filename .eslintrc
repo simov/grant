@@ -36,6 +36,9 @@
     // Disallow Shadowing
     'no-shadow': false,
 
+    // Disallow Dangling Underscores in Identifiers (no-underscore-dangle)
+    'no-underscore-dangle': false,
+
     // Disallow Unused Variables
     'no-unused-vars': false,
 

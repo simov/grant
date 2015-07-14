@@ -10,7 +10,10 @@ describe('utils', function () {
   var grant
 
   before(function () {
-    grant = new Grant({server: {protocol:'http', host:'localhost:5000', callback:'/'}})
+    grant = new Grant({
+      server: {protocol:'http', host:'localhost:5000', callback:'/'},
+      elance:{}, facebook:{}, getpocket:{}, twitter:{}, yammer:{}
+    })
   })
 
   it('redirect_uri', function () {

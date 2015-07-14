@@ -13,7 +13,10 @@ describe('error - hapi', function () {
     return c.protocol + '://' + c.host + path
   }
 
-  var config = {server: {protocol:'http', host:'localhost:5000', callback:'/'}}
+  var config = {
+    server: {protocol:'http', host:'localhost:5000', callback:'/'},
+    facebook:{}
+  }
   var server
 
   describe('missing plugin', function () {

@@ -139,7 +139,8 @@ describe('config', function () {
         server:{
           protocol:'http', host:'localhost:3000', callback:'/',
           transport:'session', state:true
-        }
+        },
+        facebook:{}
       }
       var cfg = config.init(options)
       cfg.facebook.protocol.should.equal('http')
@@ -186,20 +187,15 @@ describe('config', function () {
         var cfg = config.init(options)
         should.equal(cfg.google.access_type, undefined)
       })
-      it('skip on reserved key', function () {
-        var options = {server:{}, google:{custom:'something'}}
-        var cfg = config.init(options)
-        should.equal(cfg.google.access_type, undefined)
-      })
       it('skip on missing custom_parameters option', function () {
         var options = {server:{}, facebook:{something:'interesting'}}
         var cfg = config.init(options)
-        should.equal(cfg.google.access_type, undefined)
+        should.equal(cfg.facebook.something, undefined)
       })
       it('skip on not defined custom_parameters', function () {
         var options = {server:{}, google:{something:'interesting'}}
         var cfg = config.init(options)
-        should.equal(cfg.google.access_type, undefined)
+        should.equal(cfg.google.something, undefined)
       })
       it('set custom_parameters value', function () {
         var options = {server:{}, google:{access_type:'offline'}}
@@ -256,7 +252,7 @@ describe('config', function () {
     })
     it('dynamic', function () {
       var cfg = {google:{callback:'/'}}
-      var session = {dynamic:{callback:'/contacts'}}
+      var session = {provider:'google', dynamic:{callback:'/contacts'}}
       var provider = config.provider(cfg, session)
       should.deepEqual(provider, {callback:'/contacts'})
     })

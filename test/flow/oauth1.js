@@ -1,5 +1,6 @@
 'use strict'
 
+var util = require('util')
 var express = require('express')
   , should = require('should')
   , qs = require('qs')
@@ -14,7 +15,10 @@ describe('oauth1', function () {
   }
 
   var grant, app, server
-  var config = {server: {protocol:'http', host:'localhost:5000', callback:'/'}}
+  var config = {
+    server: {protocol:'http', host:'localhost:5000', callback:'/'},
+    twitter:{}
+  }
 
   describe('success', function () {
     before(function (done) {
@@ -122,6 +126,10 @@ describe('oauth1', function () {
   describe('custom', function () {
     describe('step1', function () {
       before(function (done) {
+        util._extend(config, {
+          copy:{}, etsy:{}, flickr:{}, freshbooks:{}, goodreads:{},
+          linkedin:{}, trello:{}, tripit:{}
+        })
         grant = new Grant(config)
         app = express().use(grant)
 

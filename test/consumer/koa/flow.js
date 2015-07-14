@@ -17,7 +17,10 @@ describe('flow - koa', function () {
     return c.protocol + '://' + c.host + path
   }
 
-  var config = {server: {protocol:'http', host:'localhost:5000', callback:'/'}}
+  var config = {
+    server: {protocol:'http', host:'localhost:5000', callback:'/'},
+    facebook:{}, getpocket:{}, twitter:{}
+  }
   var server, grant
 
   describe('oauth1', function () {

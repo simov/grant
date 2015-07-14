@@ -14,7 +14,10 @@ describe('getpocket', function () {
   }
 
   var grant, app, server
-  var config = {server: {protocol:'http', host:'localhost:5000', callback:'/'}}
+  var config = {
+    server: {protocol:'http', host:'localhost:5000', callback:'/'},
+    getpocket:{}
+  }
 
   before(function (done) {
     grant = new Grant(config)

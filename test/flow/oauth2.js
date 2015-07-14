@@ -1,5 +1,6 @@
 'use strict'
 
+var util = require('util')
 var express = require('express')
   , bodyParser = require('body-parser')
   , should = require('should')
@@ -15,7 +16,10 @@ describe('oauth2', function () {
   }
 
   var grant, app, server
-  var config = {server: {protocol:'http', host:'localhost:5000', callback:'/'}}
+  var config = {
+    server: {protocol:'http', host:'localhost:5000', callback:'/'},
+    facebook:{}
+  }
 
   describe('success', function () {
     before(function (done) {
@@ -116,6 +120,10 @@ describe('oauth2', function () {
   describe('custom', function () {
     describe('step1', function () {
       before(function () {
+        util._extend(config, {
+          basecamp:{}, coinbase:{}, google:{}, reddit:{}, shopify:{},
+          spotify:{}, surveymonkey:{}, wordpress:{}, zendesk:{}
+        })
         grant = new Grant(config)
       })
 
