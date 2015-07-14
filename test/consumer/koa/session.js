@@ -95,6 +95,25 @@ describe('session - koa', function () {
     })
   })
 
+  it('dynamic - non configured provider', function (done) {
+    var authorize_url = grant._config.oauth.google.authorize_url
+    grant._config.oauth.google.authorize_url = '/authorize_url'
+    should.equal(grant.config.google, undefined)
+
+    request.get(url('/connect/google'), {
+      qs:{scope:['scope1','scope2'], state:'Grant'},
+      jar:request.jar(),
+      followAllRedirects:true,
+      json:true
+    }, function (err, res, body) {
+      should.deepEqual(body, {provider:'google',
+        dynamic:{scope:['scope1','scope2'], state:'Grant'}, state:'Grant'})
+      grant.config.google.should.be.type('object')
+      grant._config.oauth.google.authorize_url = authorize_url
+      done()
+    })
+  })
+
   it('step1', function (done) {
     request.get(url('/connect/twitter'), {
       jar:request.jar(),
