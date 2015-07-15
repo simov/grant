@@ -25,6 +25,7 @@
   - [Custom Parameters][custom-parameters]
   - [Custom Providers][custom-providers]
   - [Development Environments][development-environments]
+  - [Programmatic Access][programmatic-access]
 - [Response Data][response-data]
 - Misc
   - [Typical Flow][typical-flow]
@@ -316,6 +317,23 @@ var grant = new Grant(config[process.env.NODE_ENV||'development'])
 ```
 
 
+## Programmatic Access
+
+Once you initialize a new instance of Grant
+
+```js
+var grant = new Grant(require('./config'))
+```
+
+You get a special `config` _(`register.config` for Hapi)_ property attached to that instance. It contains the generated configuration data for all of the providers defined in your config file
+
+> In case of dynamic access to a non pre-configured provider, it's automatically added to the `config` list on first access to the `/connect/:provider` route
+
+There is a `_config` property attached as well, which contains the data from the [config/oauth.json][oauth-config] file as well as all of the configuration methods used internally by Grant
+
+> Typically you don't want to use the `_config` property directly. Also note that changes made to the `config` property are per Grant instance, where changes to the `_config` property are global
+
+
 ## Response Data
 
 The OAuth response data is returned as a querystring in your **final** callback - the one you specify in the `callback` key of your Grant configuration
@@ -480,6 +498,7 @@ MIT
   [custom-parameters]: #custom-parameters
   [custom-providers]: #custom-providers
   [development-environments]: #development-environments
+  [programmatic-access]: #programmatic-access
   [response-data]: #response-data
   [typical-flow]: #typical-flow
   [get-user-profile]: #get-user-profile
