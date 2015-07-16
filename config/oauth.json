@@ -638,9 +638,10 @@
     "oauth": 2
   },
   "yandex": {
-    "authorize_url": "https://oauth.yandex.ru/authorize",
-    "access_url": "https://oauth.yandex.ru/token",
-    "oauth": 2
+    "authorize_url": "https://oauth.yandex.com/authorize",
+    "access_url": "https://oauth.yandex.com/token",
+    "oauth": 2,
+    "custom_parameters": ["device_id", "device_name"]
   },
   "zendesk": {
     "authorize_url": "https://[subdomain].zendesk.com/oauth/authorizations/new",
