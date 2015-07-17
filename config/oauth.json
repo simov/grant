@@ -334,6 +334,11 @@
     "oauth": 2,
     "scope_delimiter": " "
   },
+  "kakao": {
+    "authorize_url": "https://kauth.kakao.com/oauth/authorize",
+    "access_url": "https://kauth.kakao.com/oauth/token",
+    "oauth": 2
+  },
   "linkedin": {
     "request_url": "https://api.linkedin.com/uas/oauth/requestToken",
     "authorize_url": "https://www.linkedin.com/uas/oauth/authenticate",
