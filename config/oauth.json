@@ -517,6 +517,12 @@
     "access_url": "https://connect.stripe.com/oauth/token",
     "oauth": 2
   },
+  "surveygizmo": {
+    "request_url": "http://restapi.surveygizmo.com/head/oauth/request_token",
+    "authorize_url": "http://restapi.surveygizmo.com/head/oauth/authenticate",
+    "access_url": "http://restapi.surveygizmo.com/head/oauth/access_token",
+    "oauth": 1
+  },
   "surveymonkey": {
     "authorize_url": "https://api.surveymonkey.com/oauth/authorize",
     "access_url": "https://api.surveymonkey.net/oauth/token",
