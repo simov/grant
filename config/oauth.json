@@ -408,10 +408,9 @@
     "oauth": 2
   },
   "rdio": {
-    "request_url": "http://api.rdio.com/oauth/request_token",
-    "authorize_url": "https://www.rdio.com/oauth/authorize",
-    "access_url": "http://api.rdio.com/oauth/access_token",
-    "oauth": 1
+    "authorize_url": "https://www.rdio.com/oauth2/authorize",
+    "access_url": "https://services.rdio.com/oauth2/token",
+    "oauth": 2
   },
   "redbooth": {
     "authorize_url": "https://redbooth.com/oauth2/authorize",
