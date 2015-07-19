@@ -540,8 +540,8 @@
     "oauth": 2
   },
   "trakt": {
-    "authorize_url": "https://api.trakt.tv/oauth/authorize",
-    "access_url": "https://api.trakt.tv/oauth/token",
+    "authorize_url": "https://api-v2launch.trakt.tv/oauth/authorize",
+    "access_url": "https://api-v2launch.trakt.tv/oauth/token",
     "oauth": 2
   },
   "traxo": {
