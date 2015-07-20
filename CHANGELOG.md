@@ -1,6 +1,16 @@
 
 ## Change Log
 
+### v3.4.0 (2015/07/20)
+- `Changed` better configuration initialization
+- `Added` docs about the [programmatic access](https://github.com/simov/grant#programmatic-access)
+- `Added` docs about how to utilize [sandbox urls](https://github.com/simov/grant#custom-parameters)
+- `Added` official support for 3 more providers
+- `Changed` bumped module dependency versions
+- `Changed` migrated *rdio* to [OAuth2](https://github.com/simov/grant/blob/master/config/oauth.json#L420-L424)
+- `Changed` updated the *trakt* [urls](https://github.com/simov/grant/blob/master/config/oauth.json#L543-L544)
+- `Added` [custom_parameters](https://github.com/simov/grant/blob/master/config/oauth.json#L655) for *yandex*
+
 ### v3.3.3 (2015/06/24)
 - `Added` official support for 9 more providers
 
