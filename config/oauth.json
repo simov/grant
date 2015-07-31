@@ -619,6 +619,11 @@
     "access_url": "https://oauth.vk.com/access_token",
     "oauth": 2
   },
+  "weibo": {
+    "authorize_url": "https://api.weibo.com/oauth2/authorize",
+    "access_url": "https://api.weibo.com/oauth2/access_token",
+    "oauth": 2
+  },
   "withings": {
     "request_url": "https://oauth.withings.com/account/request_token",
     "authorize_url": "https://oauth.withings.com/account/authorize",
