@@ -433,7 +433,7 @@ _(also take a look at the [examples][examples])_
 
 ## Get User Profile
 
-Once you have your access tokens secured, you can start making authorized requests on behalf of your users. _**[Purest][purest]**_ is a great REST API library that supports **dozens** of REST API providers
+Once you have your access tokens secured, you can start making authorized requests on behalf of your users. **[Purest][purest]** is a generic REST API library that supports **hundreds** of REST API providers
 
 For example, you may want to get the user's profile after the OAuth flow has completed
 
