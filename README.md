@@ -4,7 +4,7 @@
 [![npm-version]][npm] [![travis-ci]][travis] [![coveralls-status]][coveralls]
 
 
-## 100+ Supported Providers / [OAuth Playground][playground]
+## 100+ Supported Providers / [OAuth Playground][grant-oauth]
 
 [`23andme`](https://api.23andme.com) | [`500px`](http://developers.500px.com) | [`acton`](https://developer.act-on.com) | [`amazon`](http://login.amazon.com/documentation) | [`angellist`](https://angel.co/api) | [`appnet`](https://developers.app.net) | [`asana`](https://asana.com/developers) | [`assembla`](http://api-doc.assembla.com) | [`basecamp`](https://github.com/basecamp/bcx-api) | [`beatport`](https://oauth-api.beatport.com) | [`beatsmusic`](https://developer.beatsmusic.com) | [`bitbucket`](https://confluence.atlassian.com/display/BITBUCKET) | [`bitly`](http://dev.bitly.com) | [`box`](https://developers.box.com) | [`buffer`](https://dev.buffer.com) | [`campaignmonitor`](https://www.campaignmonitor.com/api) | [`cheddar`](https://cheddarapp.com/developer) | [`coinbase`](https://developers.coinbase.com) | [`constantcontact`](https://developer.constantcontact.com) | [`copy`](https://developers.copy.com) | [`coursera`](https://tech.coursera.org) | [`dailymile`](http://www.dailymile.com/api/documentation) | [`dailymotion`](https://developer.dailymotion.com) | [`deezer`](http://developers.deezer.com) | [`delivery`](https://developers.delivery.com) | [`deviantart`](https://www.deviantart.com/developers/) | [`digitalocean`](https://developers.digitalocean.com) | [`discogs`](http://www.discogs.com/developers) | [`disqus`](https://disqus.com/api/docs) | [`dribbble`](http://developer.dribbble.com) | [`dropbox`](https://www.dropbox.com/developers) | [`echosign`](https://secure.echosign.com/public/docs/restapi/v3) | [`edmodo`](https://developers.edmodo.com) | [`elance`](https://www.elance.com/q/api2) | [`etsy`](https://www.etsy.com/developers) | [`eventbrite`](http://developer.eventbrite.com) | [`evernote`](https://dev.evernote.com) | [`everyplay`](https://developers.everyplay.com) | [`eyeem`](https://www.eyeem.com/developers) | [`facebook`](https://developers.facebook.com) | [`familysearch`](https://familysearch.org/developers) | [`feedly`](https://developer.feedly.com) | [`fitbit`](http://dev.fitbit.com) | [`flattr`](http://developers.flattr.net) | [`flickr`](https://www.flickr.com/services) | [`flowdock`](https://www.flowdock.com/api) | [`foursquare`](https://developer.foursquare.com) | [`freshbooks`](https://www.freshbooks.com/developers) | [`geeklist`](http://hackers.geekli.st) | [`getpocket`](http://getpocket.com/developer) | [`github`](https://developer.github.com) | [`gitlab`](http://doc.gitlab.com/ce/api) | [`gitter`](https://developer.gitter.im) | [`goodreads`](https://www.goodreads.com/api) | [`google`](https://developers.google.com) | [`harvest`](https://github.com/harvesthq/api) | [`heroku`](https://devcenter.heroku.com/categories/platform-api) | [`imgur`](https://api.imgur.com) | [`instagram`](https://instagram.com/developer) | [`jawbone`](https://jawbone.com/up/developer) | [`kakao`](https://developers.kakao.com) | [`linkedin`](https://developer.linkedin.com) | [`live`](https://msdn.microsoft.com/en-us/library/dn783283.aspx) | [`mailchimp`](https://apidocs.mailchimp.com) | [`mapmyfitness`](https://developer.underarmour.com) | [`meetup`](http://www.meetup.com/meetup_api) | [`mixcloud`](https://www.mixcloud.com/developers) | [`moves`](https://dev.moves-app.com) | [`myob`](http://developer.myob.com) | [`odesk`](https://developers.odesk.com) | [`openstreetmap`](http://wiki.openstreetmap.org/wiki/API_v0.6) | [`paypal`](https://developer.paypal.com) | [`plurk`](http://www.plurk.com/API) | [`podio`](https://developers.podio.com) | [`rdio`](http://www.rdio.com/developers) | [`redbooth`](https://redbooth.com/api) | [`reddit`](http://www.reddit.com/dev/api) | [`runkeeper`](http://developer.runkeeper.com) | [`salesforce`](https://developer.salesforce.com) | [`shoeboxed`](https://github.com/Shoeboxed/api) | [`shopify`](https://docs.shopify.com/api) | [`skyrock`](http://www.skyrock.com/developer) | [`slack`](https://api.slack.com) | [`slice`](https://developer.slice.com) | [`socrata`](http://dev.socrata.com) | [`soundcloud`](https://developers.soundcloud.com) | [`spotify`](https://developer.spotify.com) | [`square`](https://connect.squareup.com) | [`stackexchange`](https://api.stackexchange.com) | [`stocktwits`](http://stocktwits.com/developers) | [`stormz`](http://developer.stormz.me) | [`strava`](http://strava.github.io/api) | [`stripe`](https://stripe.com/docs) | [`surveygizmo`](http://apihelp.surveygizmo.com) | [`surveymonkey`](https://developer.surveymonkey.com) | [`thingiverse`](http://www.thingiverse.com/developers) | [`trakt`](http://docs.trakt.apiary.io) | [`traxo`](https://developer.traxo.com) | [`trello`](https://trello.com/docs) | [`tripit`](https://www.tripit.com/developer) | [`tumblr`](https://www.tumblr.com/docs/en/api/v2) | [`twitch`](http://dev.twitch.tv) | [`twitter`](https://dev.twitter.com) | [`uber`](https://developer.uber.com) | [`underarmour`](https://developer.underarmour.com) | [`upwork`](https://developers.upwork.com) | [`uservoice`](https://developer.uservoice.com) | [`vend`](https://developers.vendhq.com) | [`vimeo`](https://developer.vimeo.com) | [`vk`](http://vk.com/dev) | [`weibo`](http://open.weibo.com) | [`withings`](http://oauth.withings.com/api) | [`wordpress`](https://developer.wordpress.com) | [`xing`](https://dev.xing.com) | [`yahoo`](https://developer.yahoo.com) | [`yammer`](https://developer.yammer.com) | [`yandex`](https://tech.yandex.com) | [`zendesk`](https://developer.zendesk.com)
 
@@ -30,7 +30,7 @@
 - Misc
   - [Typical Flow][typical-flow]
   - [Get User Profile][get-user-profile]
-- [Examples][examples]
+- [Examples][grant-examples]
 
 
 ## Express
@@ -428,7 +428,7 @@ In case of an error, the `error` key will be populated with the raw error data
 5. Navigate to `/connect/facebook` to initiate the OAuth flow for Facebook, or navigate to `/connect/twitter` to initiate the OAuth flow for Twitter
 6. Once the OAuth flow is completed you will receive the response data in the `/handle_facebook_response` route for Facebook, and in the `/handle_twitter_response` route for Twitter
 
-_(also take a look at the [examples][examples])_
+_(also take a look at the [examples][grant-examples])_
 
 
 ## Get User Profile
@@ -461,28 +461,30 @@ twitter.query()
   })
 ```
 
+> Full list of all providers and how to get their *user profile* endpoint can be found [here][purest-user]
+
 
 ## License
 
 MIT
 
 
-  [playground]: https://grant-oauth.herokuapp.com/
-  [purest]: https://github.com/simov/purest
-  [request]: https://github.com/request/request
+  [npm-version]: http://img.shields.io/npm/v/grant.svg?style=flat-square (NPM Version)
+  [travis-ci]: https://img.shields.io/travis/simov/grant/master.svg?style=flat-square (Build Status)
+  [coveralls-status]: https://img.shields.io/coveralls/simov/grant.svg?style=flat-square (Test Coverage)
 
   [npm]: https://www.npmjs.org/package/grant
   [travis]: https://travis-ci.org/simov/grant
   [coveralls]: https://coveralls.io/r/simov/grant?branch=master
 
-  [npm-version]: http://img.shields.io/npm/v/grant.svg?style=flat-square (NPM Version)
-  [travis-ci]: https://img.shields.io/travis/simov/grant/master.svg?style=flat-square (Build Status)
-  [coveralls-status]: https://img.shields.io/coveralls/simov/grant.svg?style=flat-square (Test Coverage)
+  [grant-oauth]: https://grant-oauth.herokuapp.com
+  [purest]: https://github.com/simov/purest
+  [purest-user]: https://github.com/simov/purest/blob/master/test/request/get.js
+  [request]: https://github.com/request/request
 
   [oauth-config]: https://github.com/simov/grant/blob/master/config/oauth.json
   [reserved-keys]: https://github.com/simov/grant/blob/master/config/reserved.json
-
-  [examples]: https://github.com/simov/grant/tree/master/example
+  [grant-examples]: https://github.com/simov/grant/tree/master/example
   [session-transport-example]: https://github.com/simov/grant/blob/master/example/session-transport/app.js
 
   [grant]: #grant
