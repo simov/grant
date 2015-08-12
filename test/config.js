@@ -78,7 +78,7 @@ describe('config', function () {
     it('boolean true', function () {
       var provider = {state:true}
         , state = config.state(provider)
-      state.should.match(/\d+/)
+      state.should.match(/^\w+$/)
       state.should.be.type('string')
     })
     it('boolean false', function () {
