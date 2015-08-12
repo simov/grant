@@ -305,7 +305,10 @@
     "access_url": "https://accounts.google.com/o/oauth2/token",
     "oauth": 2,
     "scope_delimiter": " ",
-    "custom_parameters": ["access_type"]
+    "custom_parameters": [
+      "access_type", "approval_prompt", "login_hint", "include_granted_scopes",
+      "prompt"
+    ]
   },
   "harvest": {
     "authorize_url": "https://api.harvestapp.com/oauth2/authorize",
