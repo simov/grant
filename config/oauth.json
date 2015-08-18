@@ -420,6 +420,14 @@
     "access_url": "https://podio.com/oauth/token",
     "oauth": 2
   },
+  "ravelry": {
+    "request_url": "https://www.ravelry.com/oauth/request_token",
+    "authorize_url": "https://www.ravelry.com/oauth/authorize",
+    "access_url": "https://www.ravelry.com/oauth/access_token",
+    "oauth": 1,
+    "scope_delimiter": " ",
+    "custom_parameters": ["scope"]
+  },
   "rdio": {
     "authorize_url": "https://www.rdio.com/oauth2/authorize",
     "access_url": "https://services.rdio.com/oauth2/token",
