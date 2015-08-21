@@ -12,21 +12,23 @@
 ## Table of Contents
 
 - [Providers][grant]
-- Middleware
+- **Middleware**
   - [Express][express]
   - [Koa][koa]
   - [Hapi][hapi]
   - [Reserved Routes for Grant][reserved-routes-for-grant]
-- Configuration
+- **Configuration**
   - [Basics][configuration]
   - [Redirect Url][redirect-url]
   - [Static Overrides][static-overrides]
   - [Dynamic Override][dynamic-override]
+- **Advanced Configuration**
   - [Custom Parameters][custom-parameters]
   - [Custom Providers][custom-providers]
   - [Development Environments][development-environments]
   - [Programmatic Access][programmatic-access]
-- [Response Data][response-data]
+  - [Sandbox Redirect URI][sandbox-redirect-uri]
+- **[Response Data][response-data]**
 - Misc
   - [Typical Flow][typical-flow]
   - [Get User Profile][get-user-profile]
@@ -235,15 +237,27 @@ app.get('/connect_facebook', function (req, res) {
 
 ## Custom Parameters
 
-- Some providers may employ custom authorization parameters outside of the ones specified in the [configuration][configuration] section. You can pass those custom parameters directly in your configuration, for example: Google - `access_type:'offline'`, Reddit - `duration:'permanent'`, Trello - `expiration:'never'`, and so on. Refer to the provider's OAuth documentation, and the Grant's [OAuth configuration][oauth-config] (search for `custom_parameters`)
+##### Authorization Parameters
 
-- Some providers require you to set your company name as a subdomain in the authorization urls. For example for Freshbooks, Shopify, Vend and Zendesk you can set that value through the `subdomain` option (alternatively you can override the entire `request_url`, `authorize_url` and `access_url` in your configuration)
+Some providers may employ custom authorization parameters outside of the ones specified in the [configuration][configuration] section. You can pass those custom parameters directly in your configuration.
 
-- Some providers may have a _sandbox_ urls for testing. To use them just override the entire `request_url`, `authorize_url` and `access_url` in your configuration
+For example: Google - `access_type:'offline'`, Reddit - `duration:'permanent'`, Trello - `expiration:'never'`, and so on.
 
-- For SurveyMonkey set your Mashery user name as `key` and your application key as `api_key`
+Refer to the provider's OAuth documentation, and the Grant's [OAuth configuration][oauth-config] *(search for `custom_parameters`)*
 
-- To use the LinkedIn's OAuth2 flow you should use `linkedin2` as a provider name, instead of `linkedin` which is for OAuth1
+##### Subdomain
+
+Some providers require you to set your company name as a subdomain in the authorization urls. For example for Freshbooks, Shopify, Vend and Zendesk you can set that value through the `subdomain` option *(alternatively you can override the entire `request_url`, `authorize_url` and `access_url` in your configuration)*
+
+##### Sandbox URLs
+
+Some providers may have _sandbox_ urls for testing. To use them just override the entire `request_url`, `authorize_url` and `access_url` in your configuration
+
+##### Misc
+
+For SurveyMonkey set your Mashery user name as `key` and your application key as `api_key`
+
+To use the LinkedIn's OAuth2 flow you should use `linkedin2` as provider name, instead of `linkedin` which is for OAuth1
 
 
 ## Custom Providers
@@ -332,6 +346,36 @@ You get a special `config` _(`register.config` for Hapi)_ property attached to t
 There is a `_config` property attached as well, which contains the data from the [config/oauth.json][oauth-config] file as well as all of the configuration methods used internally by Grant
 
 > Typically you don't want to use the `_config` property directly. Also note that changes made to the `config` property are per Grant instance, where changes to the `_config` property are global
+
+
+## Sandbox Redirect URI
+
+In a few very rare cases you may want to override the default `redirect_uri` that Grant generates for you. For example Feedly supports only `http://localhost` as redirect URL of their Sandbox OAuth application
+
+```js
+"feedly": {
+  "redirect_uri": "http://localhost"
+}
+```
+
+In case you override the `redirect_uri` in your config, you'll have to redirect the user from there to the `[protocol]://[host]/connect/[provider]/callback` route that Grant uses to execute the last step of the OAuth flow
+
+```js
+var qs = require('querystring')
+
+app.get('/', function (req, res) {
+  if (process.env.NODE_ENV == 'development' &&
+      req.session.grant &&
+      req.session.grant.provider == 'feedly' &&
+      req.query.code
+  ) {
+    res.redirect('/connect/' + req.session.grant.provider + '/callback?'
+      + qs.stringify(req.query))
+  }
+})
+```
+
+After that you'll get the results from the OAuth flow inside the route specified in the `callback` key of your configuration
 
 
 ## Response Data
@@ -501,6 +545,7 @@ MIT
   [custom-providers]: #custom-providers
   [development-environments]: #development-environments
   [programmatic-access]: #programmatic-access
+  [sandbox-redirect-uri]: #sandbox-redirect-uri
   [response-data]: #response-data
   [typical-flow]: #typical-flow
   [get-user-profile]: #get-user-profile
