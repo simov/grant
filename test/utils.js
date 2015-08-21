@@ -16,9 +16,16 @@ describe('utils', function () {
     })
   })
 
-  it('redirect_uri', function () {
-    utils.redirect_uri(grant.config.facebook)
-      .should.equal('http://localhost:5000/connect/facebook/callback')
+  describe('redirect_uri', function () {
+    it('default', function () {
+      utils.redirect_uri(grant.config.facebook)
+        .should.equal('http://localhost:5000/connect/facebook/callback')
+    })
+    it('override', function () {
+      grant.config.facebook.redirect_uri = 'http://localhost:5000'
+      utils.redirect_uri(grant.config.facebook)
+        .should.equal('http://localhost:5000')
+    })
   })
 
   describe('toQuerystring', function () {
