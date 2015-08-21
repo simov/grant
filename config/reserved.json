@@ -15,7 +15,12 @@
 
   "key",
   "secret",
+  "consumer_key",
+  "consumer_secret",
+  "client_id",
+  "client_secret",
   "scope",
+  "redirect_uri",
 
   "name",
   "overrides"
