@@ -80,7 +80,6 @@ describe('oauth1', function () {
 
     it('step1 - network error', function (done) {
       oauth1.step1(grant.config.twitter, function (err, body) {
-        err.should.equal('error%5BCannot%20POST%20%2Frequest_err%0A%5D=')
         should.deepEqual(qs.parse(err), {error: {'Cannot POST /request_err\n': ''}})
         done()
       })
@@ -88,7 +87,6 @@ describe('oauth1', function () {
     it('step1 - error response', function (done) {
       grant.config.twitter.request_url = url('/request_url')
       oauth1.step1(grant.config.twitter, function (err, body) {
-        err.should.equal('error%5Berror%5D=invalid')
         should.deepEqual(qs.parse(err), {error: {error:'invalid'}})
         done()
       })
@@ -96,24 +94,25 @@ describe('oauth1', function () {
 
     it('step2 - mising oauth_token - error response', function () {
       var url = oauth1.step2(grant.config.twitter, {error:'invalid'})
-      url.should.equal('/?error%5Berror%5D=invalid')
+      should.deepEqual(qs.parse(url.replace('/?','')),
+        {error: {error:'invalid'}})
     })
     it('step2 - mising oauth_token - empty response', function () {
       var url = oauth1.step2(grant.config.twitter, {})
-      url.should.equal('/?error%5Berror%5D=Grant%3A%20request_url')
+      should.deepEqual(qs.parse(url.replace('/?','')),
+        {error: {error:'Grant: OAuth1 missing oauth_token parameter'}})
     })
 
     it('step3 - mising oauth_token - response error', function (done) {
       oauth1.step3(grant.config.twitter, {}, {error:'invalid'}, function (err, body) {
-        err.should.equal('error%5Berror%5D=invalid')
         should.deepEqual(qs.parse(err), {error: {error:'invalid'}})
         done()
       })
     })
     it('step3 - mising oauth_token - empty response', function (done) {
       oauth1.step3(grant.config.twitter, {}, {}, function (err, body) {
-        err.should.equal('error%5Berror%5D=Grant%3A%20authorize_url')
-        should.deepEqual(qs.parse(err), {error: {error:'Grant: authorize_url'}})
+        should.deepEqual(qs.parse(err),
+          {error: {error:'Grant: OAuth1 missing oauth_token parameter'}})
         done()
       })
     })

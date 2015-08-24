@@ -74,22 +74,20 @@ describe('oauth2', function () {
 
     it('step1 - missing code - error response', function (done) {
       oauth2.step2(grant.config.facebook, {error:'invalid'}, {}, function (err, body) {
-        err.should.equal('error%5Berror%5D=invalid')
         should.deepEqual(qs.parse(err), {error: {error:'invalid'}})
         done()
       })
     })
     it('step1 - missing code - empty response', function (done) {
       oauth2.step2(grant.config.facebook, {}, {}, function (err, body) {
-        err.should.equal('error%5Berror%5D=Grant%3A%20authorize_url')
-        should.deepEqual(qs.parse(err), {error: {error:'Grant: authorize_url'}})
+        should.deepEqual(qs.parse(err),
+          {error: {error:'Grant: OAuth2 missing code parameter'}})
         done()
       })
     })
 
     it('step1 - state mismatch', function (done) {
       oauth2.step2(grant.config.facebook, {code:'code',state:'Purest'}, {state:'Grant'}, function (err, body) {
-        err.should.equal('error%5Berror%5D=Grant%3A%20OAuth2%20state%20mismatch')
         should.deepEqual(qs.parse(err), {error: {error:'Grant: OAuth2 state mismatch'}})
         done()
       })
@@ -97,7 +95,6 @@ describe('oauth2', function () {
 
     it('step2 - network error', function (done) {
       oauth2.step2(grant.config.facebook, {code:'code'}, {}, function (err, body) {
-        err.should.equal('error%5BCannot%20POST%20%2Faccess_err%0A%5D=')
         should.deepEqual(qs.parse(err), {error: {'Cannot POST /access_err\n': ''}})
         done()
       })
@@ -106,7 +103,6 @@ describe('oauth2', function () {
     it('step2 - error response', function (done) {
       grant.config.facebook.access_url = url('/access_url')
       oauth2.step2(grant.config.facebook, {code:'code'}, {}, function (err, body) {
-        err.should.equal('error%5Berror%5D=invalid')
         should.deepEqual(qs.parse(err), {error: {error:'invalid'}})
         done()
       })
