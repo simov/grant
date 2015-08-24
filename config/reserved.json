@@ -23,5 +23,6 @@
   "redirect_uri",
 
   "name",
-  "overrides"
+  "overrides",
+  "custom_params"
 ]

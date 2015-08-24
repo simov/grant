@@ -194,6 +194,7 @@ describe('config', function () {
         oauth:2,
         scope_delimiter:'+',
         custom_parameters:['a', 'b'],
+        custom_params: {},
         key:'key',
         secret:'secret',
         scope:'a+b'
@@ -222,7 +223,7 @@ describe('config', function () {
         var options = {server:{}, custom:{
           access_type:'offline', custom_parameters:['access_type']}}
         var provider = config.initProvider('custom', options)
-        provider.access_type.should.equal('offline')
+        provider.custom_params.access_type.should.equal('offline')
       })
     })
 

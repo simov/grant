@@ -206,12 +206,12 @@ describe('oauth1', function () {
         })
 
         it('trello', function () {
+          grant.config.trello.custom_params = {expiration:'never', name:'Grant'}
           grant.config.trello.scope = ['read','write']
-          grant.config.trello.expiration = 'never'
           var url = oauth1.step2(grant.config.trello, {oauth_token:'token'})
           var query = qs.parse(url.split('?')[1])
           should.deepEqual(query,
-            {oauth_token:'token', scope:['read','write'], expiration:'never'})
+            {oauth_token:'token', scope:['read','write'], expiration:'never', name:'Grant'})
         })
       })
 

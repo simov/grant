@@ -565,7 +565,7 @@
     "authorize_url": "https://trello.com/1/OAuthAuthorizeToken",
     "access_url": "https://trello.com/1/OAuthGetAccessToken",
     "oauth": 1,
-    "custom_parameters": ["scope", "expiration"]
+    "custom_parameters": ["scope", "expiration", "name"]
   },
   "tripit": {
     "request_url": "https://api.tripit.com/oauth/request_token",
