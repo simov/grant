@@ -136,50 +136,100 @@ describe('oauth2', function () {
       })
 
       describe('custom_parameters', function () {
-        it('coinbase', function () {
-          grant.config.coinbase.meta = {
-            send_limit_amount:'5', send_limit_currency:'USD', send_limit_period:'day'
-          }
-          var url = oauth2.step1(grant.config.coinbase)
-          var query = qs.parse(url.split('?')[1])
-          should.deepEqual(query.meta, {
-            send_limit_amount:'5', send_limit_currency:'USD', send_limit_period:'day'
+        describe('as array', function () {
+          it('coinbase', function () {
+            grant.config.coinbase.meta = {
+              send_limit_amount:'5', send_limit_currency:'USD', send_limit_period:'day'
+            }
+            var url = oauth2.step1(grant.config.coinbase)
+            var query = qs.parse(url.split('?')[1])
+            should.deepEqual(query.meta, {
+              send_limit_amount:'5', send_limit_currency:'USD', send_limit_period:'day'
+            })
+          })
+
+          it('google', function () {
+            grant.config.google.access_type = 'offline'
+            var url = oauth2.step1(grant.config.google)
+            var query = qs.parse(url.split('?')[1])
+            query.access_type.should.equal('offline')
+          })
+
+          it('reddit', function () {
+            grant.config.reddit.duration = 'permanent'
+            var url = oauth2.step1(grant.config.reddit)
+            var query = qs.parse(url.split('?')[1])
+            query.duration.should.equal('permanent')
+          })
+
+          it('spotify', function () {
+            grant.config.spotify.show_dialog = 'true'
+            var url = oauth2.step1(grant.config.spotify)
+            var query = qs.parse(url.split('?')[1])
+            query.show_dialog.should.equal('true')
+          })
+
+          it('surveymonkey', function () {
+            grant.config.surveymonkey.api_key = 'api_key'
+            var url = oauth2.step1(grant.config.surveymonkey)
+            var query = qs.parse(url.split('?')[1])
+            query.api_key.should.equal('api_key')
+          })
+
+          it('wordpress', function () {
+            grant.config.wordpress.blog = 'Grant'
+            var url = oauth2.step1(grant.config.wordpress)
+            var query = qs.parse(url.split('?')[1])
+            query.blog.should.equal('Grant')
           })
         })
 
-        it('google', function () {
-          grant.config.google.access_type = 'offline'
-          var url = oauth2.step1(grant.config.google)
-          var query = qs.parse(url.split('?')[1])
-          query.access_type.should.equal('offline')
-        })
+        describe('as object', function () {
+          it('coinbase', function () {
+            grant.config.coinbase.custom_parameters = {meta:{
+              send_limit_amount:'5', send_limit_currency:'USD', send_limit_period:'day'
+            }}
+            var url = oauth2.step1(grant.config.coinbase)
+            var query = qs.parse(url.split('?')[1])
+            should.deepEqual(query.meta, {
+              send_limit_amount:'5', send_limit_currency:'USD', send_limit_period:'day'
+            })
+          })
 
-        it('reddit', function () {
-          grant.config.reddit.duration = 'permanent'
-          var url = oauth2.step1(grant.config.reddit)
-          var query = qs.parse(url.split('?')[1])
-          query.duration.should.equal('permanent')
-        })
+          it('google', function () {
+            grant.config.google.custom_parameters = {access_type:'offline'}
+            var url = oauth2.step1(grant.config.google)
+            var query = qs.parse(url.split('?')[1])
+            query.access_type.should.equal('offline')
+          })
 
-        it('spotify', function () {
-          grant.config.spotify.show_dialog = 'true'
-          var url = oauth2.step1(grant.config.spotify)
-          var query = qs.parse(url.split('?')[1])
-          query.show_dialog.should.equal('true')
-        })
+          it('reddit', function () {
+            grant.config.reddit.custom_parameters = {duration:'permanent'}
+            var url = oauth2.step1(grant.config.reddit)
+            var query = qs.parse(url.split('?')[1])
+            query.duration.should.equal('permanent')
+          })
 
-        it('surveymonkey', function () {
-          grant.config.surveymonkey.api_key = 'api_key'
-          var url = oauth2.step1(grant.config.surveymonkey)
-          var query = qs.parse(url.split('?')[1])
-          query.api_key.should.equal('api_key')
-        })
+          it('spotify', function () {
+            grant.config.spotify.custom_parameters = {show_dialog:'true'}
+            var url = oauth2.step1(grant.config.spotify)
+            var query = qs.parse(url.split('?')[1])
+            query.show_dialog.should.equal('true')
+          })
 
-        it('wordpress', function () {
-          grant.config.wordpress.blog = 'Grant'
-          var url = oauth2.step1(grant.config.wordpress)
-          var query = qs.parse(url.split('?')[1])
-          query.blog.should.equal('Grant')
+          it('surveymonkey', function () {
+            grant.config.surveymonkey.custom_parameters = {api_key:'api_key'}
+            var url = oauth2.step1(grant.config.surveymonkey)
+            var query = qs.parse(url.split('?')[1])
+            query.api_key.should.equal('api_key')
+          })
+
+          it('wordpress', function () {
+            grant.config.wordpress.custom_parameters = {blog:'Grant'}
+            var url = oauth2.step1(grant.config.wordpress)
+            var query = qs.parse(url.split('?')[1])
+            query.blog.should.equal('Grant')
+          })
         })
       })
 

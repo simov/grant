@@ -198,21 +198,45 @@ describe('oauth1', function () {
       })
 
       describe('custom_parameters', function () {
-        it('flickr', function () {
-          grant.config.flickr.scope = ['read','write']
-          var url = oauth1.step2(grant.config.flickr, {oauth_token:'token'})
-          var query = qs.parse(url.split('?')[1])
-          should.deepEqual(query,
-            {oauth_token:'token', perms:['read','write']})
+        describe('as array',function () {
+          it('flickr', function () {
+            grant.config.flickr.scope = ['read','write']
+            var url = oauth1.step2(grant.config.flickr, {oauth_token:'token'})
+            var query = qs.parse(url.split('?')[1])
+            should.deepEqual(query,
+              {oauth_token:'token', perms:['read','write']})
+          })
+
+          it('trello', function () {
+            grant.config.trello.scope = ['read','write']
+            grant.config.trello.expiration = 'never'
+            var url = oauth1.step2(grant.config.trello, {oauth_token:'token'})
+            var query = qs.parse(url.split('?')[1])
+            should.deepEqual(query,
+              {oauth_token:'token', scope:['read','write'], expiration:'never'})
+          })
         })
 
-        it('trello', function () {
-          grant.config.trello.scope = ['read','write']
-          grant.config.trello.expiration = 'never'
-          var url = oauth1.step2(grant.config.trello, {oauth_token:'token'})
-          var query = qs.parse(url.split('?')[1])
-          should.deepEqual(query,
-            {oauth_token:'token', scope:['read','write'], expiration:'never'})
+        describe('as object', function () {
+          it('flickr', function () {
+            grant.config.flickr.custom_parameters = {perms: ['read','write']}
+            var url = oauth1.step2(grant.config.flickr, {oauth_token:'token'})
+            var query = qs.parse(url.split('?')[1])
+            should.deepEqual(query,
+              {oauth_token:'token', perms:['read','write']})
+          })
+
+          it('trello', function () {
+            grant.config.trello.custom_parameters = {
+              scope:['read','write'],
+              expiration:'never',
+              name: 'random'
+            }
+            var url = oauth1.step2(grant.config.trello, {oauth_token:'token'})
+            var query = qs.parse(url.split('?')[1])
+            should.deepEqual(query,
+              {oauth_token:'token', scope:['read','write'], expiration:'never', name:'random'})
+          })
         })
       })
 
