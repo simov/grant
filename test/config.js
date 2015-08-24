@@ -262,6 +262,20 @@ describe('config', function () {
         custom:{custom:true, name:'custom'}
       })
     })
+    it('without server key', function () {
+      var options = {facebook:{}, custom:{}}
+        , cfg = config.init(options)
+      should.deepEqual(cfg, {
+        server:{},
+        facebook:{
+          authorize_url:'https://www.facebook.com/dialog/oauth',
+          access_url:'https://graph.facebook.com/oauth/access_token',
+          oauth:2,
+          facebook:true,
+          name:'facebook' },
+        custom:{custom:true, name:'custom'}
+      })
+    })
   })
 
   describe('provider', function () {
