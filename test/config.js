@@ -88,6 +88,48 @@ describe('config', function () {
     })
   })
 
+  describe('custom_params', function () {
+    it('no custom params', function () {
+      var provider = {}
+        , options = {}
+      config.custom_params(provider, options)
+      should.deepEqual(provider, {})
+    })
+    it('options params override provider params', function () {
+      var provider = {custom_params:{name:'purest'}}
+        , options = {custom_params:{name:'grant'}}
+      config.custom_params(provider, options)
+      should.deepEqual(provider, {custom_params:{name:'grant'}})
+    })
+    it('skip on non string value', function () {
+      var provider = {custom_parameters:['access_type']}
+        , options = {access_type:{}}
+      config.custom_params(provider, options)
+      should.deepEqual(provider, {custom_parameters:['access_type']})
+    })
+    it('skip on reserved key', function () {
+      var provider = {custom_parameters:['name']}
+        , options = {name:'grant'}
+      config.custom_params(provider, options)
+      should.deepEqual(provider, {custom_parameters:['name']})
+    })
+    it('skip on not defined custom_parameters', function () {
+      var provider = {custom_parameters:['access_type']}
+        , options = {something:'interesting'}
+      config.custom_params(provider, options)
+      should.deepEqual(provider, {custom_parameters:['access_type']})
+    })
+    it('set custom_parameters value', function () {
+      var provider = {custom_parameters:['expiration']}
+        , options = {expiration:'never', custom_params:{name:'grant'}}
+      config.custom_params(provider, options)
+      should.deepEqual(provider, {
+        custom_parameters:['expiration'],
+        custom_params:{expiration:'never', name:'grant'}
+      })
+    })
+  })
+
   describe('override', function () {
     it('dcopy', function () {
       var provider = {scope:['scope1'], callback:'/'}
@@ -194,45 +236,17 @@ describe('config', function () {
         oauth:2,
         scope_delimiter:'+',
         custom_parameters:['a', 'b'],
-        custom_params: {},
         key:'key',
         secret:'secret',
         scope:'a+b'
       })
     })
 
-    describe('custom parameters', function () {
-      it('skip on missing custom_parameters option', function () {
-        var options = {server:{}, custom:{access_type:'offline'}}
-          , provider = config.initProvider('custom', options)
-        should.equal(provider.access_type, undefined)
-      })
-      it('skip on non string value', function () {
-        var options = {server:{}, custom:{
-          access_type:{}, custom_parameters:['access_type']}}
-        var provider = config.initProvider('custom', options)
-        should.equal(provider.access_type, undefined)
-      })
-      it('skip on not defined custom_parameters', function () {
-        var options = {server:{}, custom:{
-          something:'interesting', custom_parameters:['access_type']}}
-        var provider = config.initProvider('custom', options)
-        should.equal(provider.something, undefined)
-      })
-      it('set custom_parameters value', function () {
-        var options = {server:{}, custom:{
-          access_type:'offline', custom_parameters:['access_type']}}
-        var provider = config.initProvider('custom', options)
-        provider.custom_params.access_type.should.equal('offline')
-      })
-      it('use custom_params in config', function () {
-        var options = {server:{}, custom:{
-          custom_parameters:['access_type', 'name'],
-          access_type:'offline', custom_params:{name:'Grant'}}}
-        var provider = config.initProvider('custom', options)
-        should.deepEqual(provider.custom_params,
-          {access_type:'offline', name:'Grant'})
-      })
+    it('skip on missing custom_parameters and custom_params option', function () {
+      var options = {server:{}, custom:{access_type:'offline'}}
+        , provider = config.initProvider('custom', options)
+      should.equal(provider.access_type, undefined)
+      should.equal(provider.custom_params, undefined)
     })
 
     describe('static overrides', function () {
@@ -332,10 +346,14 @@ describe('config', function () {
         provider.callback.should.equal('/contacts')
       })
       it('custom_parameters', function () {
-        var cfg = {trello:{custom_parameters:['name'], custom_params:{}}}
-          , session = {provider:'trello', dynamic:{name:'Grant'}}
-          , provider = config.provider(cfg, session)
-        provider.custom_params.name.should.equal('Grant')
+        var cfg = {trello:{custom_parameters:['expiration']}}
+        var session = {
+          provider:'trello',
+          dynamic:{expiration:'never', custom_params:{name:'grant'}}
+        }
+        var provider = config.provider(cfg, session)
+        should.deepEqual(provider.custom_params,
+          {name:'grant', expiration:'never'})
       })
     })
 
