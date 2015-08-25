@@ -225,6 +225,14 @@ describe('config', function () {
         var provider = config.initProvider('custom', options)
         provider.custom_params.access_type.should.equal('offline')
       })
+      it('use custom_params in config', function () {
+        var options = {server:{}, custom:{
+          custom_parameters:['access_type', 'name'],
+          access_type:'offline', custom_params:{name:'Grant'}}}
+        var provider = config.initProvider('custom', options)
+        should.deepEqual(provider.custom_params,
+          {access_type:'offline', name:'Grant'})
+      })
     })
 
     describe('static overrides', function () {
