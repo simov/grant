@@ -101,12 +101,6 @@ describe('config', function () {
       config.custom_params(provider, options)
       should.deepEqual(provider, {custom_params:{name:'grant'}})
     })
-    it('skip on non string value', function () {
-      var provider = {custom_parameters:['access_type']}
-        , options = {access_type:{}}
-      config.custom_params(provider, options)
-      should.deepEqual(provider, {custom_parameters:['access_type']})
-    })
     it('skip on reserved key', function () {
       var provider = {custom_parameters:['name']}
         , options = {name:'grant'}
@@ -126,6 +120,15 @@ describe('config', function () {
       should.deepEqual(provider, {
         custom_parameters:['expiration'],
         custom_params:{expiration:'never', name:'grant'}
+      })
+    })
+    it('set object as custom_parameters value', function () {
+      var provider = {custom_parameters:['meta']}
+        , options = {meta:{a:'b'}}
+      config.custom_params(provider, options)
+      should.deepEqual(provider, {
+        custom_parameters:['meta'],
+        custom_params:{meta:{a:'b'}}
       })
     })
   })
@@ -354,6 +357,14 @@ describe('config', function () {
         var provider = config.provider(cfg, session)
         should.deepEqual(provider.custom_params,
           {name:'grant', expiration:'never'})
+      })
+      it('custom_parameters object value', function () {
+        var cfg = {coinbase:{custom_parameters:['meta']}}
+        var session = {
+          provider:'coinbase', dynamic:{meta:{a:'b'}}
+        }
+        var provider = config.provider(cfg, session)
+        should.deepEqual(provider.custom_params, {meta:{a:'b'}})
       })
     })
 
