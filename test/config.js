@@ -316,12 +316,21 @@ describe('config', function () {
       })
     })
 
-    it('dynamic', function () {
-      var cfg = {google:{callback:'/'}}
-        , session = {provider:'google', dynamic:{callback:'/contacts'}}
-        , provider = config.provider(cfg, session)
-      provider.callback.should.equal('/contacts')
+    describe('dynamic', function () {
+      it('override', function () {
+        var cfg = {google:{callback:'/'}}
+          , session = {provider:'google', dynamic:{callback:'/contacts'}}
+          , provider = config.provider(cfg, session)
+        provider.callback.should.equal('/contacts')
+      })
+      it('custom_parameters', function () {
+        var cfg = {trello:{custom_parameters:['name'], custom_params:{}}}
+          , session = {provider:'trello', dynamic:{name:'Grant'}}
+          , provider = config.provider(cfg, session)
+        provider.custom_params.name.should.equal('Grant')
+      })
     })
+
     it('state dcopy', function () {
       var cfg = {google:{callback:'/', state:true}}
         , session = {provider:'google'}
