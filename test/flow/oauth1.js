@@ -196,7 +196,7 @@ describe('oauth1', function () {
         grant = new Grant(config)
       })
 
-      describe('custom_parameters', function () {
+      describe('custom_params', function () {
         it('flickr', function () {
           grant.config.flickr.scope = ['read','write']
           var url = oauth1.step2(grant.config.flickr, {oauth_token:'token'})

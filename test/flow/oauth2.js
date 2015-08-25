@@ -131,7 +131,7 @@ describe('oauth2', function () {
         })
       })
 
-      describe('custom_parameters', function () {
+      describe('custom_params', function () {
         it('coinbase', function () {
           grant.config.coinbase.custom_params = {meta:{
             send_limit_amount:'5', send_limit_currency:'USD', send_limit_period:'day'
