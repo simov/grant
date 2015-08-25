@@ -173,4 +173,72 @@ describe('error - express', function () {
       })
     })
   })
+
+  describe('missing provider', function () {
+    var grant
+    before(function (done) {
+      grant = new Grant(config)
+      var app = express()
+      app.use(session({secret:'grant', saveUninitialized:true, resave:true}))
+      app.use(grant)
+
+      app.get('/', function (req, res) {
+        res.writeHead(200, {'x-test':true})
+        res.end(JSON.stringify(req.query))
+      })
+      server = app.listen(5000, done)
+    })
+
+    it('connect', function (done) {
+      request.get(url('/connect/custom'), {
+        jar:request.jar(),
+        json:true
+      }, function (err, res, body) {
+        res.headers['x-test'].should.equal('true')
+        should.deepEqual(body, {
+          error: 'Grant: missing or misconfigured provider'})
+        done()
+      })
+    })
+    it('connect - no callback', function (done) {
+      delete grant.config.custom.callback
+      request.get(url('/connect/custom'), {
+        jar:request.jar(),
+        json:true
+      }, function (err, res, body) {
+        should.equal(res.headers['x-test'], undefined)
+        should.deepEqual(body, {
+          error: 'Grant: missing or misconfigured provider'})
+        done()
+      })
+    })
+
+    it('callback', function (done) {
+      request.get(url('/connect/custom/callback'), {
+        jar:request.jar(),
+        json:true
+      }, function (err, res, body) {
+        res.headers['x-test'].should.equal('true')
+        should.deepEqual(body, {
+          error: 'Grant: missing session or misconfigured provider'})
+        done()
+      })
+    })
+    it('callback - no callback', function (done) {
+      delete grant.config.undefined.callback
+      request.get(url('/connect/custom/callback'), {
+        jar:request.jar(),
+        json:true
+      }, function (err, res, body) {
+        should.equal(res.headers['x-test'], undefined)
+        should.deepEqual(body, {
+          error: 'Grant: missing session or misconfigured provider'})
+        done()
+      })
+    })
+
+    after(function (done) {
+      server.close(done)
+    })
+  })
 })

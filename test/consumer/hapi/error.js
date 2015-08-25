@@ -176,4 +176,79 @@ describe('error - hapi', function () {
       })
     })
   })
+
+  describe('missing provider', function () {
+    var grant
+    before(function (done) {
+      grant = new Grant()
+
+      server = new Hapi.Server()
+      server.connection({host:'localhost', port:5000})
+
+      server.route({method:'GET', path:'/', handler: function (req, res) {
+        res(JSON.stringify(req.query)).header('x-test', true)
+      }})
+
+      server.register([
+        {register:grant, options:config},
+        {register:yar, options:{cookieOptions:{password:'password', isSecure:false}}}
+      ], function (err) {
+        if (err) return done(err)
+
+        server.start(done)
+      })
+    })
+
+    it('connect', function (done) {
+      request.get(url('/connect/custom'), {
+        jar:request.jar(),
+        json:true
+      }, function (err, res, body) {
+        res.headers['x-test'].should.equal('true')
+        should.deepEqual(body, {
+          error: 'Grant: missing or misconfigured provider'})
+        done()
+      })
+    })
+    it('connect - no callback', function (done) {
+      delete grant.register.config.custom.callback
+      request.get(url('/connect/custom'), {
+        jar:request.jar(),
+        json:true
+      }, function (err, res, body) {
+        should.equal(res.headers['x-test'], undefined)
+        should.deepEqual(body, {
+          error: 'Grant: missing or misconfigured provider'})
+        done()
+      })
+    })
+
+    it('callback', function (done) {
+      request.get(url('/connect/custom/callback'), {
+        jar:request.jar(),
+        json:true
+      }, function (err, res, body) {
+        res.headers['x-test'].should.equal('true')
+        should.deepEqual(body, {
+          error: 'Grant: missing session or misconfigured provider'})
+        done()
+      })
+    })
+    it('callback - no callback', function (done) {
+      delete grant.register.config.undefined.callback
+      request.get(url('/connect/custom/callback'), {
+        jar:request.jar(),
+        json:true
+      }, function (err, res, body) {
+        should.equal(res.headers['x-test'], undefined)
+        should.deepEqual(body, {
+          error: 'Grant: missing session or misconfigured provider'})
+        done()
+      })
+    })
+
+    after(function (done) {
+      server.stop(done)
+    })
+  })
 })

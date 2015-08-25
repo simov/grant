@@ -191,4 +191,75 @@ describe('error - koa', function () {
       })
     })
   })
+
+  describe('missing provider', function () {
+    var grant
+    before(function (done) {
+      grant = new Grant(config)
+      var app = koa()
+      app.keys = ['grant']
+      app.use(session(app))
+      app.use(mount(grant))
+      app.use(router(app))
+      koaqs(app)
+
+      app.get('/', function* (next) {
+        this.response.set('x-test', true)
+        this.body = JSON.stringify(this.request.query)
+      })
+      server = app.listen(5000, done)
+    })
+
+    it('connect', function (done) {
+      request.get(url('/connect/custom'), {
+        jar:request.jar(),
+        json:true
+      }, function (err, res, body) {
+        res.headers['x-test'].should.equal('true')
+        should.deepEqual(body, {
+          error: 'Grant: missing or misconfigured provider'})
+        done()
+      })
+    })
+    it('connect - no callback', function (done) {
+      delete grant.config.custom.callback
+      request.get(url('/connect/custom'), {
+        jar:request.jar(),
+        json:true
+      }, function (err, res, body) {
+        should.equal(res.headers['x-test'], undefined)
+        should.deepEqual(body, {
+          error: 'Grant: missing or misconfigured provider'})
+        done()
+      })
+    })
+
+    it('callback', function (done) {
+      request.get(url('/connect/custom/callback'), {
+        jar:request.jar(),
+        json:true
+      }, function (err, res, body) {
+        res.headers['x-test'].should.equal('true')
+        should.deepEqual(body, {
+          error: 'Grant: missing session or misconfigured provider'})
+        done()
+      })
+    })
+    it('callback - no callback', function (done) {
+      delete grant.config.undefined.callback
+      request.get(url('/connect/custom/callback'), {
+        jar:request.jar(),
+        json:true
+      }, function (err, res, body) {
+        should.equal(res.headers['x-test'], undefined)
+        should.deepEqual(body, {
+          error: 'Grant: missing session or misconfigured provider'})
+        done()
+      })
+    })
+
+    after(function (done) {
+      server.close(done)
+    })
+  })
 })
