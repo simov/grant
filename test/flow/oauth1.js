@@ -127,7 +127,7 @@ describe('oauth1', function () {
       before(function (done) {
         util._extend(config, {
           copy:{}, etsy:{}, flickr:{}, freshbooks:{}, goodreads:{},
-          linkedin:{}, trello:{}, tripit:{}
+          linkedin:{}, ravelry:{}, trello:{}, tripit:{}
         })
         grant = new Grant(config)
         app = express().use(grant)
@@ -203,6 +203,14 @@ describe('oauth1', function () {
           var query = qs.parse(url.split('?')[1])
           should.deepEqual(query,
             {oauth_token:'token', perms:['read','write']})
+        })
+
+        it('ravelry', function () {
+          grant.config.ravelry.scope = ['read','write']
+          var url = oauth1.step2(grant.config.ravelry, {oauth_token:'token'})
+          var query = qs.parse(url.split('?')[1])
+          should.deepEqual(query,
+            {oauth_token:'token', scope:['read','write']})
         })
 
         it('trello', function () {
