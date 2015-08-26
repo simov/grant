@@ -420,6 +420,11 @@
     "access_url": "https://podio.com/oauth/token",
     "oauth": 2
   },
+  "pushbullet": {
+    "authorize_url": "https://www.pushbullet.com/authorize",
+    "access_url": "https://api.pushbullet.com/oauth2/token",
+    "oauth": 2
+  },
   "ravelry": {
     "request_url": "https://www.ravelry.com/oauth/request_token",
     "authorize_url": "https://www.ravelry.com/oauth/authorize",
@@ -550,6 +555,11 @@
     "access_url": "https://www.thingiverse.com/login/oauth/access_token",
     "oauth": 2
   },
+  "todoist": {
+    "authorize_url": "https://todoist.com/oauth/authorize",
+    "access_url": "https://todoist.com/oauth/access_token",
+    "oauth": 2
+  },
   "trakt": {
     "authorize_url": "https://api-v2launch.trakt.tv/oauth/authorize",
     "access_url": "https://api-v2launch.trakt.tv/oauth/token",
@@ -646,6 +656,11 @@
     "access_url": "https://public-api.wordpress.com/oauth2/token",
     "oauth": 2,
     "custom_parameters": ["blog"]
+  },
+  "wrike": {
+    "authorize_url": "https://www.wrike.com/oauth2/authorize",
+    "access_url": "https://www.wrike.com/oauth2/token",
+    "oauth": 2
   },
   "xing": {
     "request_url": "https://api.xing.com/v1/request_token",
