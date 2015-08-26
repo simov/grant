@@ -28,6 +28,7 @@
   - [Development Environments][development-environments]
   - [Programmatic Access][programmatic-access]
   - [Sandbox Redirect URI][sandbox-redirect-uri]
+  - [Quirks][quirks]
 - **[Response Data][response-data]**
 - Misc
   - [Typical Flow][typical-flow]
@@ -237,27 +238,21 @@ app.get('/connect_facebook', function (req, res) {
 
 ## Custom Parameters
 
-##### Authorization Parameters
+Some providers may employ custom authorization parameters outside of the ones specified in the [configuration][configuration] section. You can pass those custom parameters directly in your configuration:
 
-Some providers may employ custom authorization parameters outside of the ones specified in the [configuration][configuration] section. You can pass those custom parameters directly in your configuration.
-
-For example: Google - `access_type:'offline'`, Reddit - `duration:'permanent'`, Trello - `expiration:'never'`, and so on.
+```js
+"google": {
+  "custom_params": {"access_type":"offline"}
+},
+"reddit": {
+  "custom_params": {"duration":"permanent"}
+},
+"trello": {
+  "custom_params": {"name":"my app", "expiration":"never"}
+}
+```
 
 Refer to the provider's OAuth documentation, and the Grant's [OAuth configuration][oauth-config] *(search for `custom_parameters`)*
-
-##### Subdomain
-
-Some providers require you to set your company name as a subdomain in the authorization urls. For example for Freshbooks, Shopify, Vend and Zendesk you can set that value through the `subdomain` option *(alternatively you can override the entire `request_url`, `authorize_url` and `access_url` in your configuration)*
-
-##### Sandbox URLs
-
-Some providers may have _sandbox_ urls for testing. To use them just override the entire `request_url`, `authorize_url` and `access_url` in your configuration
-
-##### Misc
-
-For SurveyMonkey set your Mashery user name as `key` and your application key as `api_key`
-
-To use the LinkedIn's OAuth2 flow you should use `linkedin2` as provider name, instead of `linkedin` which is for OAuth1
 
 
 ## Custom Providers
@@ -350,7 +345,7 @@ There is a `_config` property attached as well, which contains the data from the
 
 ## Sandbox Redirect URI
 
-In a few very rare cases you may want to override the default `redirect_uri` that Grant generates for you. For example Feedly supports only `http://localhost` as redirect URL of their Sandbox OAuth application
+Very rarely you may want to override the default `redirect_uri` that Grant generates for you. For example Feedly supports only `http://localhost` as redirect URL of their Sandbox OAuth application
 
 ```js
 "feedly": {
@@ -358,7 +353,7 @@ In a few very rare cases you may want to override the default `redirect_uri` tha
 }
 ```
 
-In case you override the `redirect_uri` in your config, you'll have to redirect the user from there to the `[protocol]://[host]/connect/[provider]/callback` route that Grant uses to execute the last step of the OAuth flow
+In case you override the `redirect_uri` in your config, you'll have to redirect the user to the `[protocol]://[host]/connect/[provider]/callback` route that Grant uses to execute the last step of the OAuth flow:
 
 ```js
 var qs = require('querystring')
@@ -375,7 +370,97 @@ app.get('/', function (req, res) {
 })
 ```
 
-After that you'll get the results from the OAuth flow inside the route specified in the `callback` key of your configuration
+After that you'll get the results from the OAuth flow inside the route specified in the `callback` key of your configuration.
+
+
+## Quirks
+
+
+##### Subdomain
+
+Some providers require you to set your company name as a *subdomain* in the authorization urls. For example for Freshbooks, Shopify, Vend and Zendesk you can set that value through the `subdomain` option:
+
+```js
+"shopify": {
+  "subdomain": "mycompany"
+}
+```
+
+Then Grant will generate the correct OAuth URLs:
+
+```js
+"authorize_url": "https://mycompany.myshopify.com/admin/oauth/authorize",
+"access_url": "https://mycompany.myshopify.com/admin/oauth/access_token"
+```
+
+> Alternatively you can override the entire `request_url`, `authorize_url` and `access_url` in your configuration.
+
+
+##### Sandbox URLs
+
+Some providers may have _sandbox_ urls for testing. To use them just override the entire `request_url`, `authorize_url` and `access_url` in your configuration *(notice the `sandbox` bits)*:
+
+```js
+"paypal": {
+  "authorize_url": "https://www.sandbox.paypal.com/webapps/auth/protocol/openidconnect/v1/authorize",
+  "access_url": "https://api.sandbox.paypal.com/v1/identity/openidconnect/tokenservice"
+},
+"evernote": {
+  "request_url": "https://sandbox.evernote.com/oauth",
+  "authorize_url": "https://sandbox.evernote.com/OAuth.action",
+  "access_url": "https://sandbox.evernote.com/oauth"
+}
+```
+
+
+##### Flickr
+
+Flickr uses a custom authorization parameter to pass its scopes called `perms`. However you should use the regular `scope` option in your configuration:
+
+```js
+"flickr": {
+  "scope": ["write"]
+}
+```
+
+
+##### Ravelry, Trello
+
+OAuth1 doesn't support `scope` parameter natively, however you should pass your scopes using the regular `scope` option instead of `custom_params`:
+
+```js
+"ravelry": {
+  "scope": ["profile-only", "forum-write"]
+},
+"trello": {
+  "scope": ["read", "write"],
+  "custom_params": {"name":"my app", "expiration":"never"}
+}
+```
+
+
+##### SurveyMonkey
+
+For SurveyMonkey set your Mashery user name as `key` and your application key as `api_key`:
+
+```js
+"surveymonkey": {
+  "key": "[MASHERY_USER_NAME]",
+  "secret": "[CLIENT_SECRET]",
+  "api_key": "[CLIENT_ID]"
+}
+```
+
+
+##### LinkedIn
+
+To use the LinkedIn's OAuth2 flow you should use `linkedin2` as provider name, instead of `linkedin` which is for OAuth1:
+
+```js
+"linkedin2": {
+  // then navigate to /connect/linkedin2
+}
+```
 
 
 ## Response Data
@@ -546,6 +631,7 @@ MIT
   [development-environments]: #development-environments
   [programmatic-access]: #programmatic-access
   [sandbox-redirect-uri]: #sandbox-redirect-uri
+  [quirks]: #quirks
   [response-data]: #response-data
   [typical-flow]: #typical-flow
   [get-user-profile]: #get-user-profile
