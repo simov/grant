@@ -131,7 +131,6 @@ server.register([
     "key": "...",
     "secret": "...",
     "scope": ["scope1", "scope2", ...],
-    "state": "some state",
     "callback": "/provider1/callback"
   },
   "provider2": {...},
@@ -251,6 +250,8 @@ Some providers may employ custom authorization parameters outside of the ones sp
   "custom_params": {"name":"my app", "expiration":"never"}
 }
 ```
+
+> Any custom parameter that is not a [reserved][reserved-keys] one, and is listed under the `custom_parameters` array for that provider, can be defined along with the rest of the keys as well.
 
 Refer to the provider's OAuth documentation, and the Grant's [OAuth configuration][oauth-config] *(search for `custom_parameters`)*.
 
