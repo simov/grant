@@ -196,7 +196,17 @@ describe('oauth1', function () {
         grant = new Grant(config)
       })
 
-      describe('custom_params', function () {
+      describe('custom_parameters', function () {
+        it('trello', function () {
+          grant.config.trello.custom_params = {expiration:'never', name:'Grant'}
+          var url = oauth1.step2(grant.config.trello, {oauth_token:'token'})
+          var query = qs.parse(url.split('?')[1])
+          should.deepEqual(query,
+            {oauth_token:'token', expiration:'never', name:'Grant'})
+        })
+      })
+
+      describe('scope', function () {
         it('flickr', function () {
           grant.config.flickr.scope = ['read','write']
           var url = oauth1.step2(grant.config.flickr, {oauth_token:'token'})
@@ -223,20 +233,20 @@ describe('oauth1', function () {
         })
       })
 
-      describe('subdomain', function () {
-        it('freshbooks', function () {
-          grant.config.freshbooks.subdomain = 'grant'
-          var url = oauth1.step2(grant.config.freshbooks, {oauth_token:'token'})
-          url.indexOf('https://grant.freshbooks.com').should.equal(0)
-        })
-      })
-
       describe('oauth_callback', function () {
         it('tripit', function () {
           var uri = oauth1.step2(grant.config.tripit, {oauth_token:'token'})
           var query = qs.parse(uri.split('?')[1])
           should.deepEqual(query,
             {oauth_token:'token', oauth_callback:url('/connect/tripit/callback')})
+        })
+      })
+
+      describe('subdomain', function () {
+        it('freshbooks', function () {
+          grant.config.freshbooks.subdomain = 'grant'
+          var url = oauth1.step2(grant.config.freshbooks, {oauth_token:'token'})
+          url.indexOf('https://grant.freshbooks.com').should.equal(0)
         })
       })
     })

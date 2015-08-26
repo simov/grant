@@ -1,12 +1,12 @@
 'use strict'
 
-var util = require('util')
 var express = require('express')
   , bodyParser = require('body-parser')
   , should = require('should')
   , qs = require('qs')
 var Grant = require('../../').express()
   , oauth2 = require('../../lib/flow/oauth2')
+  , oauth = require('../../config/oauth')
 
 
 describe('oauth2', function () {
@@ -115,87 +115,69 @@ describe('oauth2', function () {
 
   describe('custom', function () {
     describe('step1', function () {
-      before(function () {
-        util._extend(config, {
-          basecamp:{}, coinbase:{}, google:{}, reddit:{}, shopify:{},
-          spotify:{}, surveymonkey:{}, wordpress:{}, zendesk:{}
+      describe('custom_parameters', function () {
+        var config = {}
+        for (var key in oauth) {
+          var provider = oauth[key]
+          if (provider.oauth == 2 && provider.custom_parameters) {
+            config[key] = {}
+            provider.custom_parameters.forEach(function (param, index) {
+              config[key][param] = index.toString()
+            })
+          }
+        }
+        var grant = new Grant(config)
+        delete config.server
+
+        Object.keys(config).forEach(function (key) {
+          it(key, function () {
+            var url = oauth2.step1(grant.config[key])
+            var query = qs.parse(url.split('?')[1])
+            delete query.response_type
+            delete query.redirect_uri
+            should.deepEqual(query, config[key])
+          })
         })
-        grant = new Grant(config)
+      })
+
+      describe('subdomain', function () {
+        var config = {}
+        for (var key in oauth) {
+          var provider = oauth[key]
+          if (provider.oauth == 2 && provider.subdomain) {
+            config[key] = {subdomain:'grant'}
+          }
+        }
+        var grant = new Grant(config)
+        delete config.server
+
+        Object.keys(config).forEach(function (key) {
+          it(key, function () {
+            var url = oauth2.step1(grant.config[key])
+            if (key != 'vend') {
+              url.should.match(/grant/)
+            }
+          })
+        })
       })
 
       describe('web_server', function () {
+        var config = {basecamp:{}}
+        var grant = new Grant(config)
         it('basecamp', function () {
           var url = oauth2.step1(grant.config.basecamp)
           var query = qs.parse(url.split('?')[1])
           query.type.should.equal('web_server')
         })
       })
-
-      describe('custom_params', function () {
-        it('coinbase', function () {
-          grant.config.coinbase.custom_params = {meta:{
-            send_limit_amount:'5', send_limit_currency:'USD', send_limit_period:'day'
-          }}
-          var url = oauth2.step1(grant.config.coinbase)
-          var query = qs.parse(url.split('?')[1])
-          should.deepEqual(query.meta, {
-            send_limit_amount:'5', send_limit_currency:'USD', send_limit_period:'day'
-          })
-        })
-
-        it('google', function () {
-          grant.config.google.custom_params = {access_type:'offline'}
-          var url = oauth2.step1(grant.config.google)
-          var query = qs.parse(url.split('?')[1])
-          query.access_type.should.equal('offline')
-        })
-
-        it('reddit', function () {
-          grant.config.reddit.custom_params = {duration:'permanent'}
-          var url = oauth2.step1(grant.config.reddit)
-          var query = qs.parse(url.split('?')[1])
-          query.duration.should.equal('permanent')
-        })
-
-        it('spotify', function () {
-          grant.config.spotify.custom_params = {show_dialog:'true'}
-          var url = oauth2.step1(grant.config.spotify)
-          var query = qs.parse(url.split('?')[1])
-          query.show_dialog.should.equal('true')
-        })
-
-        it('surveymonkey', function () {
-          grant.config.surveymonkey.custom_params = {api_key:'api_key'}
-          var url = oauth2.step1(grant.config.surveymonkey)
-          var query = qs.parse(url.split('?')[1])
-          query.api_key.should.equal('api_key')
-        })
-
-        it('wordpress', function () {
-          grant.config.wordpress.custom_params = {blog:'Grant'}
-          var url = oauth2.step1(grant.config.wordpress)
-          var query = qs.parse(url.split('?')[1])
-          query.blog.should.equal('Grant')
-        })
-      })
-
-      describe('subdomain', function () {
-        it('shopify', function () {
-          grant.config.shopify.subdomain = 'grant'
-          var url = oauth2.step1(grant.config.shopify)
-          url.indexOf('https://grant.myshopify.com').should.equal(0)
-        })
-
-        it('zendesk', function () {
-          grant.config.zendesk.subdomain = 'grant'
-          var url = oauth2.step1(grant.config.zendesk)
-          url.indexOf('https://grant.zendesk.com').should.equal(0)
-        })
-      })
     })
 
     describe('step2', function () {
       before(function (done) {
+        var config = {
+          server: {protocol:'http', host:'localhost:5000', callback:'/'},
+          basecamp:{}, reddit:{}, surveymonkey:{}, shopify:{}
+        }
         grant = new Grant(config)
         app = express().use(grant).use(bodyParser.urlencoded({extended:true}))
 
@@ -227,17 +209,6 @@ describe('oauth2', function () {
         })
       })
 
-      describe('api_key', function () {
-        it('surveymonkey', function (done) {
-          grant.config.surveymonkey.api_key = 'api_key'
-          oauth2.step2(grant.config.surveymonkey, {code:'code'}, {}, function (err, body) {
-            var query = JSON.parse(body)
-            query.api_key.should.equal('api_key')
-            done()
-          })
-        })
-      })
-
       describe('basic auth', function () {
         it('reddit', function (done) {
           grant.config.reddit.key = 'key'
@@ -250,21 +221,22 @@ describe('oauth2', function () {
         })
       })
 
+      describe('api_key', function () {
+        it('surveymonkey', function (done) {
+          grant.config.surveymonkey.custom_params = {api_key:'api_key'}
+          oauth2.step2(grant.config.surveymonkey, {code:'code'}, {}, function (err, body) {
+            var query = JSON.parse(body)
+            query.api_key.should.equal('api_key')
+            done()
+          })
+        })
+      })
+
       describe('subdomain', function () {
         it('shopify', function (done) {
           grant.config.shopify.access_url = url('/[subdomain]')
           grant.config.shopify.subdomain = 'access_url'
           oauth2.step2(grant.config.shopify, {code:'code'}, {}, function (err, body) {
-            var query = JSON.parse(body)
-            query.code.should.equal('code')
-            done()
-          })
-        })
-
-        it('zendesk', function (done) {
-          grant.config.zendesk.access_url = url('/[subdomain]')
-          grant.config.zendesk.subdomain = 'access_url'
-          oauth2.step2(grant.config.zendesk, {code:'code'}, {}, function (err, body) {
             var query = JSON.parse(body)
             query.code.should.equal('code')
             done()
