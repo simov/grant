@@ -144,33 +144,33 @@ server.register([
   - **host** - your server's host name `localhost:3000` | `dummy.com:5000` | `mysite.com` ...
   - **callback** - common callback for all providers in your config `/callback` | `/done` ...
   - **transport** - transport to use to deliver the response data in your final callback `querystring` | `session` _(defaults to querystring if omitted)_
-  - **state** - generate 6 digit random state number on each authorization attempt `true` | `false` _(OAuth2 only, defaults to false if omitted)_
+  - **state** - generate random state string on each authorization attempt `true` | `false` _(OAuth2 only, defaults to false if omitted)_
 - **provider1** - any [supported provider][grant] `facebook` | `twitter` ...
   - **key** - `consumer_key` or `client_id` of your app
   - **secret** - `consumer_secret` or `client_secret` of your app
   - **scope** - array of OAuth scopes to request
-  - **state** - OAuth state string to send
   - **callback** - specific callback to use for this provider _(overrides the global one specified under the `server` key)_
+  - **custom_params** - custom authorization parameters _(see the [Custom Parameters][custom-parameters] section)_
 
 _(additionally any of the [reserved keys][reserved-keys] can be overriden for a provider)_
 
 
 ## Redirect Url
 
-For `callback/redirect` url of your OAuth application you should **always** use this format
+For `callback/redirect` url of your OAuth application you should **always** use this format:
 
 ```
 [protocol]://[host]/connect/[provider]/callback
 ```
 
-Where `protocol` and `host` should match the ones from which you initiate the OAuth flow, and `provider` is the provider's name from the list of [supported providers][grant]
+Where `protocol` and `host` should match the ones from which you initiate the OAuth flow, and `provider` is the provider's name from the list of [supported providers][grant].
 
-This `redirect` url is used internally by Grant. You will receive the [response data][response-data] from the OAuth flow in the route specified in the `callback` key of your Grant configuration
+This `redirect` url is used internally by Grant. You will receive the [response data][response-data] from the OAuth flow in the route specified in the `callback` key of your Grant configuration.
 
 
 ## Static Overrides
 
-You can add arbitrary _{object}_ keys inside your provider's configuration to create sub configurations that override the _global_ settings for that provider
+You can add arbitrary _{object}_ keys inside your provider's configuration to create sub configurations that override the _global_ settings for that provider:
 
 ```js
 // navigate to /connect/facebook
@@ -201,7 +201,7 @@ _(the custom key names cannot be one of the [reserved keys][reserved-keys])_
 
 ## Dynamic Override
 
-Additionally you can make a `POST` request to the `/connect/:provider/:override?` route to override your provider's configuration dynamically on each request
+Additionally you can make a `POST` request to the `/connect/:provider/:override?` route to override your provider's configuration dynamically on each request:
 
 ```html
 <form action="/connect/facebook" method="post" accept-charset="utf-8">
@@ -212,7 +212,7 @@ Additionally you can make a `POST` request to the `/connect/:provider/:override?
 </form>
 ```
 
-Keep in mind that in this case you'll have to mount the `body-parser` middleware for `express` or `koa` before mounting grant
+Keep in mind that in this case you'll have to mount the `body-parser` middleware for `express` or `koa` before mounting Grant:
 
 ```js
 // express
@@ -225,7 +225,7 @@ app.use(bodyParser())
 app.use(mount(grant))
 ```
 
-Alternatively you can use a `GET` request with the `/connect/:provider/:override?` route
+Alternatively you can use a `GET` request with the `/connect/:provider/:override?` route:
 
 ```js
 app.get('/connect_facebook', function (req, res) {
@@ -252,14 +252,14 @@ Some providers may employ custom authorization parameters outside of the ones sp
 }
 ```
 
-Refer to the provider's OAuth documentation, and the Grant's [OAuth configuration][oauth-config] *(search for `custom_parameters`)*
+Refer to the provider's OAuth documentation, and the Grant's [OAuth configuration][oauth-config] *(search for `custom_parameters`)*.
 
 
 ## Custom Providers
 
-In case you have a private OAuth provider that you don't want to be part of the [officially supported][oauth-config] ones, you can still define it in your configuration by adding a custom key for it
+In case you have a private OAuth provider that you don't want to be part of the [officially supported][oauth-config] ones, you can still define it in your configuration by adding a custom key for it.
 
-In this case you have to provide all of the required provider keys by yourself. Take a look at the [OAuth configuration][oauth-config] to see how the different types of flows are configured
+In this case you have to provide all of the required provider keys by yourself:
 
 ```js
 {
@@ -278,10 +278,12 @@ In this case you have to provide all of the required provider keys by yourself. 
 }
 ```
 
+Take a look at the [OAuth configuration][oauth-config] to see how various providers are configured.
+
 
 ## Development Environments
 
-You can easily configure different development environments
+You can easily configure different development environments:
 
 ```js
 {
@@ -312,13 +314,13 @@ You can easily configure different development environments
 }
 ```
 
-Then you can pass the environment flag
+Then you can pass the environment flag:
 
 ```bash
 NODE_ENV=production node app.js
 ```
 
-And use it in your application
+And use it in your application:
 
 ```js
 var config = require('./config.json')
@@ -328,19 +330,19 @@ var grant = new Grant(config[process.env.NODE_ENV||'development'])
 
 ## Programmatic Access
 
-Once you initialize a new instance of Grant
+Once you initialize a new instance of Grant:
 
 ```js
 var grant = new Grant(require('./config'))
 ```
 
-You get a special `config` _(`register.config` for Hapi)_ property attached to that instance. It contains the generated configuration data for all of the providers defined in your config file
+You get a special `config` _(`register.config` for Hapi)_ property attached to that instance. It contains the generated configuration data for all of the providers defined in your config file.
 
-> In case of dynamic access to a non pre-configured provider, it's automatically added to the `config` list on first access to the `/connect/:provider` route
+> In case of dynamic access to a non pre-configured provider, it is automatically added to the `config` list on first access to the `/connect/:provider` route.
 
-There is a `_config` property attached as well, which contains the data from the [config/oauth.json][oauth-config] file as well as all of the configuration methods used internally by Grant
+There is a `_config` property attached as well, which contains the data from the [config/oauth.json][oauth-config] file as well as all of the configuration methods used internally by Grant.
 
-> Typically you don't want to use the `_config` property directly. Also note that changes made to the `config` property are per Grant instance, where changes to the `_config` property are global
+> Typically you don't want to use the `_config` property directly. Also note that changes made to the `config` property are per Grant instance, where changes to the `_config` property are global.
 
 
 ## Sandbox Redirect URI
@@ -378,7 +380,7 @@ After that you'll get the results from the OAuth flow inside the route specified
 
 ##### Subdomain
 
-Some providers require you to set your company name as a *subdomain* in the authorization urls. For example for Freshbooks, Shopify, Vend and Zendesk you can set that value through the `subdomain` option:
+Some providers require you to set your company name as a *subdomain* in the OAuth URLs. For example for Freshbooks, Shopify, Vend and Zendesk you can set that value through the `subdomain` option:
 
 ```js
 "shopify": {
@@ -393,12 +395,12 @@ Then Grant will generate the correct OAuth URLs:
 "access_url": "https://mycompany.myshopify.com/admin/oauth/access_token"
 ```
 
-> Alternatively you can override the entire `request_url`, `authorize_url` and `access_url` in your configuration.
+Alternatively you can override the entire `request_url`, `authorize_url` and `access_url` in your configuration.
 
 
 ##### Sandbox URLs
 
-Some providers may have _sandbox_ urls for testing. To use them just override the entire `request_url`, `authorize_url` and `access_url` in your configuration *(notice the `sandbox` bits)*:
+Some providers may have _sandbox_ URLs for testing. To use them just override the entire `request_url`, `authorize_url` and `access_url` in your configuration *(notice the `sandbox` bits)*:
 
 ```js
 "paypal": {
@@ -465,14 +467,14 @@ To use the LinkedIn's OAuth2 flow you should use `linkedin2` as provider name, i
 
 ## Response Data
 
-The OAuth response data is returned as a querystring in your **final** callback - the one you specify in the `callback` key of your Grant configuration
+The OAuth response data is returned as a querystring in your **final** callback - the one you specify in the `callback` key of your Grant configuration.
 
-Alternatively the response data can be returned in the session, see the [configuration][configuration] section above and the [session transport][session-transport-example] example
+Alternatively the response data can be returned in the session, see the [configuration][configuration] section above and the [session transport][session-transport-example] example.
 
 
 #### OAuth1
 
-For OAuth1 the `access_token` and the `access_secret` are accessible directly, `raw` contains the raw response data
+For OAuth1 the `access_token` and the `access_secret` are accessible directly, `raw` contains the raw response data:
 
 ```js
 {
@@ -489,7 +491,7 @@ For OAuth1 the `access_token` and the `access_secret` are accessible directly, `
 
 #### OAuth2
 
-For OAuth2 the `access_token` and the `refresh_token` (if present) are accessible directly, `raw` contains the raw response data
+For OAuth2 the `access_token` and the `refresh_token` (if present) are accessible directly, `raw` contains the raw response data:
 
 ```js
 {
@@ -506,7 +508,7 @@ For OAuth2 the `access_token` and the `refresh_token` (if present) are accessibl
 
 #### Error
 
-In case of an error, the `error` key will be populated with the raw error data
+In case of an error, the `error` key will be populated with the raw error data:
 
 ```js
 {
@@ -562,9 +564,9 @@ _(also take a look at the [examples][grant-examples])_
 
 ## Get User Profile
 
-Once you have your access tokens secured, you can start making authorized requests on behalf of your users. **[Purest][purest]** is a generic REST API library that supports **hundreds** of REST API providers
+Once you have your access tokens secured, you can start making authorized requests on behalf of your users. **[Purest][purest]** is a generic REST API library that supports **hundreds** of REST API providers.
 
-For example, you may want to get the user's profile after the OAuth flow has completed
+For example, you may want to get the user's profile after the OAuth flow has completed:
 
 ```js
 var Purest = require('purest')
@@ -590,7 +592,7 @@ twitter.query()
   })
 ```
 
-> Full list of all providers and how to get their *user profile* endpoint can be found [here][purest-user]
+> Full list of all providers and how to get their *user profile* endpoint can be found [here][purest-user].
 
 
 ## License
