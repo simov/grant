@@ -9,9 +9,6 @@
     // Require Camelcase
     'camelcase': false,
 
-    // Enforces spacing around commas
-    'comma-spacing': false,
-
     // Require Following Curly Brace Conventions
     'curly': false,
 
