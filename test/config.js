@@ -95,33 +95,61 @@ describe('config', function () {
       config.custom_params(provider, options)
       should.deepEqual(provider, {})
     })
-    it('options params override provider params', function () {
-      var provider = {custom_params:{name:'purest'}}
-        , options = {custom_params:{name:'grant'}}
-      config.custom_params(provider, options)
-      should.deepEqual(provider, {custom_params:{name:'grant'}})
-    })
-    it('skip on reserved key', function () {
-      var provider = {custom_parameters:['name']}
-        , options = {name:'grant'}
-      config.custom_params(provider, options)
-      should.deepEqual(provider, {custom_parameters:['name']})
-    })
-    it('skip on not defined custom_parameters', function () {
+
+    it('skip params not defined in custom_parameters', function () {
       var provider = {custom_parameters:['access_type']}
         , options = {something:'interesting'}
       config.custom_params(provider, options)
       should.deepEqual(provider, {custom_parameters:['access_type']})
     })
+    it('skip params that are reserved key', function () {
+      var provider = {custom_parameters:['name']}
+        , options = {name:'grant'}
+      config.custom_params(provider, options)
+      should.deepEqual(provider, {custom_parameters:['name']})
+    })
     it('set custom_parameters value', function () {
+      var provider = {custom_parameters:['expiration']}
+        , options = {expiration:'never'}
+      config.custom_params(provider, options)
+      should.deepEqual(provider, {
+        custom_parameters:['expiration'],
+        custom_params:{expiration:'never'}
+      })
+    })
+
+    it('empty keys in options.custom_params keys are excluded', function () {
+      var provider = {custom_params:{name:'grant'}}
+        , options = {custom_params:{name:''}}
+      config.custom_params(provider, options)
+      should.deepEqual(provider, {custom_params:{name:'grant'}})
+    })
+    it('options.custom_params override provider.custom_params', function () {
+      var provider = {custom_params:{name:'grant'}}
+        , options = {custom_params:{name:'purest'}}
+      config.custom_params(provider, options)
+      should.deepEqual(provider, {custom_params:{name:'purest'}})
+    })
+
+    it('options.key extends provider.custom_params', function () {
+      var provider = {
+        custom_parameters:['expiration'], custom_params:{name:'grant'}}
+      var options = {expiration:'never'}
+      config.custom_params(provider, options)
+      should.deepEqual(provider, {
+        custom_parameters:['expiration'],
+        custom_params:{name:'grant', expiration:'never'}})
+    })
+    it('options.key extends options.custom_params', function () {
       var provider = {custom_parameters:['expiration']}
         , options = {expiration:'never', custom_params:{name:'grant'}}
       config.custom_params(provider, options)
       should.deepEqual(provider, {
         custom_parameters:['expiration'],
-        custom_params:{expiration:'never', name:'grant'}
+        custom_params:{name:'grant', expiration:'never'}
       })
     })
+
     it('set object as custom_parameters value', function () {
       var provider = {custom_parameters:['meta']}
         , options = {meta:{a:'b'}}
@@ -250,6 +278,12 @@ describe('config', function () {
         , provider = config.initProvider('custom', options)
       should.equal(provider.access_type, undefined)
       should.equal(provider.custom_params, undefined)
+    })
+    it('set object as custom_parameters value', function () {
+      var options = {server:{}, custom:{custom_parameters:['meta'], meta:{a:'b'}}}
+        , provider = config.initProvider('custom', options)
+      should.equal(provider.overrides, undefined)
+      should.deepEqual(provider.custom_params, {meta:{a:'b'}})
     })
 
     describe('static overrides', function () {
