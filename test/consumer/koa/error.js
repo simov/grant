@@ -4,7 +4,7 @@ var request = require('request')
   , should = require('should')
 var koa = require('koa')
   , session = require('koa-session')
-  , router = require('koa-router')
+  , route = require('koa-route')
   , mount = require('koa-mount')
   , koaqs = require('koa-qs')
 var Grant = require('../../../').koa()
@@ -77,18 +77,17 @@ describe('error - koa', function () {
         app.keys = ['grant']
         app.use(session(app))
         app.use(mount(grant))
-        app.use(router(app))
         koaqs(app)
 
         grant.config.facebook.authorize_url = url('/authorize_url')
 
-        app.get('/authorize_url', function* (next) {
+        app.use(route.get('/authorize_url', function* (next) {
           this.response.redirect(url('/connect/facebook/callback?'+
             'error%5Bmessage%5D=invalid&error%5Bcode%5D=500'))
-        })
-        app.get('/', function* (next) {
+        }))
+        app.use(route.get('/', function* (next) {
           this.body = JSON.stringify(this.request.query)
-        })
+        }))
 
         server = app.listen(5000, done)
       })
@@ -116,19 +115,18 @@ describe('error - koa', function () {
         app.keys = ['grant']
         app.use(session(app))
         app.use(mount(grant))
-        app.use(router(app))
         koaqs(app)
 
         grant.config.facebook.authorize_url = url('/authorize_url')
         grant.config.facebook.state = 'Grant'
 
-        app.get('/authorize_url', function* (next) {
+        app.use(route.get('/authorize_url', function* (next) {
           this.response.redirect(url('/connect/facebook/callback?'+
             'code=code&state=Purest'))
-        })
-        app.get('/', function* (next) {
+        }))
+        app.use(route.get('/', function* (next) {
           this.body = JSON.stringify(this.request.query)
-        })
+        }))
 
         server = app.listen(5000, done)
       })
@@ -156,22 +154,21 @@ describe('error - koa', function () {
         app.keys = ['grant']
         app.use(session(app))
         app.use(mount(grant))
-        app.use(router(app))
         koaqs(app)
 
         grant.config.facebook.authorize_url = url('/authorize_url')
         grant.config.facebook.access_url = url('/access_url')
 
-        app.get('/authorize_url', function* (next) {
+        app.use(route.get('/authorize_url', function* (next) {
           this.response.redirect(url('/connect/facebook/callback?code=code'))
-        })
-        app.post('/access_url', function* (next) {
+        }))
+        app.use(route.post('/access_url', function* (next) {
           this.response.status = 500
           this.body = 'error%5Bmessage%5D=invalid&error%5Bcode%5D=500'
-        })
-        app.get('/', function* (next) {
+        }))
+        app.use(route.get('/', function* (next) {
           this.body = JSON.stringify(this.request.query)
-        })
+        }))
 
         server = app.listen(5000, done)
       })
@@ -200,13 +197,12 @@ describe('error - koa', function () {
       app.keys = ['grant']
       app.use(session(app))
       app.use(mount(grant))
-      app.use(router(app))
       koaqs(app)
 
-      app.get('/', function* (next) {
+      app.use(route.get('/', function* (next) {
         this.response.set('x-test', true)
         this.body = JSON.stringify(this.request.query)
-      })
+      }))
       server = app.listen(5000, done)
     })
 

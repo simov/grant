@@ -6,7 +6,7 @@ var request = require('request')
 var koa = require('koa')
   , session = require('koa-session')
   , bodyParser = require('koa-bodyparser')
-  , router = require('koa-router')
+  , route = require('koa-route')
   , mount = require('koa-mount')
   , koaqs = require('koa-qs')
 var Grant = require('../../../').koa()
@@ -32,19 +32,18 @@ describe('session - koa', function () {
     app.use(session(app))
     app.use(bodyParser())
     app.use(mount(grant))
-    app.use(router(app))
     koaqs(app)
 
     grant.config.facebook.authorize_url = '/authorize_url'
     grant.config.twitter.request_url = url('/request_url')
     grant.config.twitter.authorize_url = '/authorize_url'
 
-    app.post('/request_url', function* (next) {
+    app.use(route.post('/request_url', function* (next) {
       this.body = qs.stringify({oauth_token:'token'})
-    })
-    app.get('/authorize_url', function* (next) {
+    }))
+    app.use(route.get('/authorize_url', function* (next) {
       this.body = JSON.stringify(this.session.grant)
-    })
+    }))
 
     server = app.listen(5000, done)
   })
