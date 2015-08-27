@@ -19,7 +19,7 @@
   - [Reserved Routes for Grant][reserved-routes-for-grant]
 - **Configuration**
   - [Basics][configuration]
-  - [Redirect Url][redirect-url]
+  - [Redirect URL][redirect-url]
   - [Static Overrides][static-overrides]
   - [Dynamic Override][dynamic-override]
 - **Advanced Configuration**
@@ -154,9 +154,9 @@ server.register([
 _(additionally any of the [reserved keys][reserved-keys] can be overriden for a provider)_
 
 
-## Redirect Url
+## Redirect URL
 
-For `callback/redirect` url of your OAuth application you should **always** use this format:
+For `redirect` URL of your OAuth application you should **always** use this format:
 
 ```
 [protocol]://[host]/connect/[provider]/callback
@@ -164,12 +164,12 @@ For `callback/redirect` url of your OAuth application you should **always** use 
 
 Where `protocol` and `host` should match the ones from which you initiate the OAuth flow, and `provider` is the provider's name from the list of [supported providers][grant].
 
-This `redirect` url is used internally by Grant. You will receive the [response data][response-data] from the OAuth flow in the route specified in the `callback` key of your Grant configuration.
+This `redirect` URL is used internally by Grant. You will receive the [response data][response-data] from the OAuth flow in the route specified in the `callback` key of your Grant configuration.
 
 
 ## Static Overrides
 
-You can add arbitrary _{object}_ keys inside your provider's configuration to create sub configurations that override the _global_ settings for that provider:
+You can add arbitrary `{object}` keys inside your provider's configuration to create sub configurations that override the _global_ settings for that provider:
 
 ```js
 // navigate to /connect/facebook
@@ -211,7 +211,7 @@ Additionally you can make a `POST` request to the `/connect/:provider/:override?
 </form>
 ```
 
-Keep in mind that in this case you'll have to mount the `body-parser` middleware for `express` or `koa` before mounting Grant:
+Keep in mind that in this case you'll have to mount the `body-parser` middleware for Express or Koa before mounting Grant:
 
 ```js
 // express
@@ -224,7 +224,7 @@ app.use(bodyParser())
 app.use(mount(grant))
 ```
 
-Alternatively you can use a `GET` request with the `/connect/:provider/:override?` route:
+Alternatively you can make a `GET` request to the `/connect/:provider/:override?` route:
 
 ```js
 app.get('/connect_facebook', function (req, res) {
@@ -237,7 +237,7 @@ app.get('/connect_facebook', function (req, res) {
 
 ## Custom Parameters
 
-Some providers may employ custom authorization parameters outside of the ones specified in the [configuration][configuration] section. You can pass those custom parameters directly in your configuration:
+Some providers may employ custom authorization parameters outside of the ones specified in the [configuration][configuration] section. You can pass those custom parameters using the `custom_params` option:
 
 ```js
 "google": {
@@ -251,16 +251,16 @@ Some providers may employ custom authorization parameters outside of the ones sp
 }
 ```
 
-> Any custom parameter that is not a [reserved][reserved-keys] one, and is listed under the `custom_parameters` array for that provider, can be defined along with the rest of the keys as well.
+> Additionally any custom parameter that is not a [reserved][reserved-keys] key, and is listed under the `custom_parameters` array for that provider, can be defined along with the rest of the options.
 
 Refer to the provider's OAuth documentation, and the Grant's [OAuth configuration][oauth-config] *(search for `custom_parameters`)*.
 
 
 ## Custom Providers
 
-In case you have a private OAuth provider that you don't want to be part of the [officially supported][oauth-config] ones, you can still define it in your configuration by adding a custom key for it.
+In case you have a private OAuth provider that you don't want to be part of the [officially supported][oauth-config] ones, you can define it in your configuration by adding a custom key for it.
 
-In this case you have to provide all of the required provider keys by yourself:
+In this case you have to specify all of the required provider keys by yourself:
 
 ```js
 {
@@ -268,12 +268,12 @@ In this case you have to provide all of the required provider keys by yourself:
     "protocol": "https",
     "host": "mywebsite.com"
   },
-  "custom1": {
+  "mywebsite": {
     "authorize_url": "https://mywebsite.com/authorize",
     "access_url": "https://mywebsite.com/token",
     "oauth": 2,
-    "key": "client_id",
-    "secret": "client_secret",
+    "key": "[CLIENT_ID]",
+    "secret": "[CLIENT_SECRET]",
     "scope": ["read", "write"]
   }
 }
@@ -348,7 +348,9 @@ There is a `_config` property attached as well, which contains the data from the
 
 ## Sandbox Redirect URI
 
-Very rarely you may want to override the default `redirect_uri` that Grant generates for you. For example Feedly supports only `http://localhost` as redirect URL of their Sandbox OAuth application
+Very rarely you may need to override the default `redirect_uri` that Grant generates for you.
+
+For example Feedly supports only `http://localhost` as redirect URL of their Sandbox OAuth application, and it won't allow the `http://localhost/connect/feedly/callback` path:
 
 ```js
 "feedly": {
@@ -373,7 +375,7 @@ app.get('/', function (req, res) {
 })
 ```
 
-After that you'll get the results from the OAuth flow inside the route specified in the `callback` key of your configuration.
+After that you will receive the results from the OAuth flow inside the route specified in the `callback` key of your configuration.
 
 
 ## Quirks
@@ -396,7 +398,7 @@ Then Grant will generate the correct OAuth URLs:
 "access_url": "https://mycompany.myshopify.com/admin/oauth/access_token"
 ```
 
-Alternatively you can override the entire `request_url`, `authorize_url` and `access_url` in your configuration.
+> Alternatively you can override the entire `request_url`, `authorize_url` and `access_url` in your configuration.
 
 
 ##### Sandbox URLs
@@ -522,10 +524,10 @@ In case of an error, the `error` key will be populated with the raw error data:
 
 ## Typical Flow
 
-1. Register OAuth application on your provider's web site
-2. For `callback/redirect` url of your OAuth application **always** use this format
+1. Register OAuth application on your provider's web site.
+2. For `redirect` URL of your OAuth application **always** use this format:
   `[protocol]://[host]/connect/[provider]/callback`
-3. Create a `config.json` file containing
+3. Create a `config.json` file containing:
 
   ```js
   "server": {
@@ -543,7 +545,7 @@ In case of an error, the `error` key will be populated with the raw error data:
     "callback": "/handle_twitter_response"
   }
   ```
-4. Initialize Grant and mount it
+4. Initialize Grant and mount it:
 
   ```js
   // Express
@@ -554,11 +556,11 @@ In case of an error, the `error` key will be populated with the raw error data:
   var app = express()
   app.use(session({secret:'grant'}))
   app.use(grant)
-  // or Koa (see above)
-  // or Hapi (see above)
+  // or Koa
+  // or Hapi
   ```
-5. Navigate to `/connect/facebook` to initiate the OAuth flow for Facebook, or navigate to `/connect/twitter` to initiate the OAuth flow for Twitter
-6. Once the OAuth flow is completed you will receive the response data in the `/handle_facebook_response` route for Facebook, and in the `/handle_twitter_response` route for Twitter
+5. Navigate to `/connect/facebook` to initiate the OAuth flow for Facebook, or navigate to `/connect/twitter` to initiate the OAuth flow for Twitter.
+6. Once the OAuth flow is completed you will receive the response data in the `/handle_facebook_response` route for Facebook, and in the `/handle_twitter_response` route for Twitter.
 
 _(also take a look at the [examples][grant-examples])_
 
