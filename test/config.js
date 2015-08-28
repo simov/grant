@@ -2,413 +2,326 @@
 
 var should = require('should')
 var config = require('../lib/config')
+  , reserved = require('../config/reserved')
   , Grant = require('../').express()
 
 
 describe('config', function () {
 
-  describe('credentials', function () {
-    it('key secret', function () {
-      var provider = {oauth:2, key:'key1', secret:'secret1'}
-        , options = {key:'key2', secret:'secret2'}
-      config.credentials(provider, options)
-      provider.key.should.equal('key1')
-      provider.secret.should.equal('secret1')
+  describe('initProvider', function () {
+    it('shortcuts', function () {
+      var provider = {}, options = {}, server = {}, name = 'grant'
+      var result = config.initProvider(provider, options, server, name)
+      should.deepEqual(result, {
+        grant:true, name:'grant'
+      })
     })
-    it('consumer_key consumer_secret', function () {
-      var provider = {oauth:1, key:'key1', secret:'secret1'}
-        , options = {consumer_key:'key2', consumer_secret:'secret2'}
-      config.credentials(provider, options)
-      provider.key.should.equal('key2')
-      provider.secret.should.equal('secret2')
+
+    it('consumer_key and consumer_secret', function () {
+      var provider = {consumer_key:'key', consumer_secret:'secret', oauth:1}
+        , options = {}, server = {}, name = 'grant'
+      var result = config.initProvider(provider, options, server, name)
+      should.deepEqual(result, {
+        consumer_key: 'key', consumer_secret: 'secret', oauth: 1,
+        grant: true, name: 'grant', key: 'key', secret: 'secret'
+      })
     })
-    it('client_id client_secret', function () {
-      var provider = {oauth:2, key:'key1', secret:'secret1'}
-        , options = {client_id:'key2', client_secret:'secret2'}
-      config.credentials(provider, options)
-      provider.key.should.equal('key2')
-      provider.secret.should.equal('secret2')
+    it('client_id and client_secret', function () {
+      var provider = {client_id:'key', client_secret:'secret', oauth:2}
+        , options = {}, server = {}, name = 'grant'
+      var result = config.initProvider(provider, options, server, name)
+      should.deepEqual(result, {
+        client_id: 'key', client_secret: 'secret', oauth: 2,
+        grant: true, name: 'grant', key: 'key', secret: 'secret'
+      })
+    })
+
+    describe('scope', function () {
+      it('array with comma', function () {
+        var provider = {scope:['scope1','scope2']}
+          , options = {}, server = {}, name = 'grant'
+        var result = config.initProvider(provider, options, server, name)
+        should.deepEqual(result, {
+          scope:'scope1,scope2', grant:true, name:'grant'
+        })
+      })
+      it('array with delimiter', function () {
+        var provider = {scope:['scope1','scope2'], scope_delimiter:' '}
+          , options = {}, server = {}, name = 'grant'
+        var result = config.initProvider(provider, options, server, name)
+        should.deepEqual(result, {
+          scope:'scope1 scope2', scope_delimiter:' ', grant:true, name:'grant'
+        })
+      })
+      it('stringify scope object', function () {
+        var provider = {scope:{profile:{read:true}}}
+          , options = {}, server = {}, name = 'grant'
+        var result = config.initProvider(provider, options, server, name)
+        should.deepEqual(result, {
+          scope:'{"profile":{"read":true}}', grant:true, name:'grant'
+        })
+      })
+      it('string', function () {
+        var provider = {scope:'scope1,scope2'}
+          , options = {}, server = {}, name = 'grant'
+        var result = config.initProvider(provider, options, server, name)
+        should.deepEqual(result, {
+          scope:'scope1,scope2', grant:true, name:'grant'
+        })
+      })
+    })
+
+    describe('custom_params', function () {
+      it('empty keys in options.custom_params are excluded', function () {
+        var provider = {custom_params:{name:'grant'}}
+          , options = {custom_params:{name:''}}, server = {}, name = 'grant'
+        var result = config.initProvider(provider, options, server, name)
+        should.deepEqual(result, {
+          custom_params:{name:'grant'}, grant:true, name:'grant'
+        })
+      })
+      it('options.custom_params override provider.custom_params', function () {
+        var provider = {custom_params:{name:'grant'}}
+          , options = {custom_params:{name:'purest'}}, server = {}, name = 'grant'
+        var result = config.initProvider(provider, options, server, name)
+        should.deepEqual(result, {
+          custom_params:{name:'purest'}, grant:true, name:'grant'
+        })
+      })
+    })
+
+    describe('custom_parameters', function () {
+      it('skip params not defined in custom_parameters', function () {
+        var provider = {custom_parameters:['access_type']}
+          , options = {something:'interesting'}, server = {}, name = 'grant'
+        var result = config.initProvider(provider, options, server, name)
+        should.deepEqual(result, {
+          custom_parameters:['access_type'], grant:true, name:'grant'
+        })
+      })
+      it('skip params that are reserved keys', function () {
+        var provider = {custom_parameters:['name']}
+          , options = {name:'purest'}, server = {}, name = 'grant'
+        var result = config.initProvider(provider, options, server, name)
+        should.deepEqual(result, {
+          custom_parameters:['name'], grant:true, name:'grant'
+        })
+      })
+
+      it('set custom_parameters value', function () {
+        var provider = {custom_parameters:['expiration']}
+          , options = {expiration:'never'}, server = {}, name = 'grant'
+        var result = config.initProvider(provider, options, server, name)
+        should.deepEqual(result, {
+          custom_parameters:['expiration'], custom_params:{expiration:'never'},
+          grant:true, name:'grant'
+        })
+      })
+      it('set object as custom_parameters value', function () {
+        var provider = {custom_parameters:['meta']}
+          , options = {meta:{a:'b'}}, server = {}, name = 'grant'
+        var result = config.initProvider(provider, options, server, name)
+        should.deepEqual(result, {
+          custom_parameters:['meta'], custom_params:{meta:{a:'b'}},
+          grant:true, name:'grant'
+        })
+      })
+
+      it('custom_parameters extends provider.custom_params', function () {
+        var provider = {custom_parameters:['expiration'], custom_params:{name:'grant'}}
+          , options = {expiration:'never'}, server = {}, name = 'grant'
+        var result = config.initProvider(provider, options, server, name)
+        should.deepEqual(result, {
+          custom_parameters:['expiration'],
+          custom_params:{name:'grant', expiration:'never'},
+          grant:true, name:'grant'
+        })
+      })
+    })
+
+    describe('overrides', function () {
+      // skip custom_parameters
+      // skip reserved keys
+      it('set overrides', function () {
+        var provider = {scope:['scope1'], callback:'/callback'}
+          , options = {sub:{scope:['scope2']}}, server = {}, name = 'grant'
+        var result = config.initProvider(provider, options, server, name)
+        should.deepEqual(result, {
+          scope:'scope1', callback:'/callback', grant:true, name:'grant',
+          overrides:{sub:{
+            scope:'scope2', callback:'/callback', grant:true, name:'grant'
+          }}
+        })
+      })
     })
   })
 
-  describe('scope', function () {
-    it('array with comma', function () {
-      var provider = {}
-        , options = {scope:['scope1','scope2']}
-      config.scope(provider, options)
-      provider.scope.should.equal('scope1,scope2')
+  describe('init', function () {
+    it('initialize only the specified providers', function () {
+      var options = {
+        server:{protocol:'http', host:'localhost:3000'},
+        facebook:{},
+        custom:{}
+      }
+      var result = config.init(options)
+      should.deepEqual(result, {
+        server:{protocol:'http', host:'localhost:3000'},
+        facebook:{
+          authorize_url:'https://www.facebook.com/dialog/oauth',
+          access_url:'https://graph.facebook.com/oauth/access_token',
+          oauth:2, facebook:true, name:'facebook',
+          protocol:'http', host:'localhost:3000'
+        },
+        custom:{
+          custom:true, name:'custom',
+          protocol:'http', host:'localhost:3000'
+        }
+      })
     })
-    it('array with delimiter', function () {
-      var provider = {scope_delimiter:' '}
-        , options = {scope:['scope1','scope2']}
-      config.scope(provider, options)
-      provider.scope.should.equal('scope1 scope2')
-    })
-    it('string', function () {
-      var provider = {}
-        , options = {scope:'scope1,scope2'}
-      config.scope(provider, options)
-      provider.scope.should.equal('scope1,scope2')
-    })
-    it('stringify scope object for `copy`', function () {
-      var provider = {copy:true}
-        , options = {scope: {profile: {read:true}}}
-      config.scope(provider, options)
-      provider.scope.should.equal('{"profile":{"read":true}}')
-    })
-    it('do not stringify already stringified scope for `copy`', function () {
-      var provider = {copy:true, scope:'{"profile":{"read":true}}'}
-        , options = {}
-      config.scope(provider, options)
-      provider.scope.should.equal('{"profile":{"read":true}}')
+    it('initialize without server key', function () {
+      var options = {
+        facebook:{protocol:'http', host:'localhost:3000'},
+        custom:{protocol:'http', host:'localhost:3000'}
+      }
+      var result = config.init(options)
+      should.deepEqual(result, {
+        server:{},
+        facebook:{
+          authorize_url:'https://www.facebook.com/dialog/oauth',
+          access_url:'https://graph.facebook.com/oauth/access_token',
+          oauth:2, facebook:true, name:'facebook',
+          protocol:'http', host:'localhost:3000'
+        },
+        custom:{
+          custom:true, name:'custom',
+          protocol:'http', host:'localhost:3000'
+        }
+      })
     })
   })
 
   describe('state', function () {
     it('string', function () {
       var provider = {state:'123'}
-        , state = config.state(provider)
-      state.should.equal('123')
+        , result = config.state(provider)
+      result.should.equal('123')
     })
     it('number', function () {
       var provider = {state:123}
-        , state = config.state(provider)
-      state.should.equal('123')
+        , result = config.state(provider)
+      result.should.equal('123')
     })
     it('boolean true', function () {
       var provider = {state:true}
-        , state = config.state(provider)
-      state.should.match(/^\w+$/)
-      state.should.be.type('string')
+        , result = config.state(provider)
+      result.should.be.type('string')
+      result.should.match(/^\w+$/)
     })
     it('boolean false', function () {
       var provider = {state:false}
-        , state = config.state(provider)
-      should.equal(state, undefined)
-    })
-  })
-
-  describe('custom_params', function () {
-    it('no custom params', function () {
-      var provider = {}
-        , options = {}
-      config.custom_params(provider, options)
-      should.deepEqual(provider, {})
-    })
-
-    it('skip params not defined in custom_parameters', function () {
-      var provider = {custom_parameters:['access_type']}
-        , options = {something:'interesting'}
-      config.custom_params(provider, options)
-      should.deepEqual(provider, {custom_parameters:['access_type']})
-    })
-    it('skip params that are reserved key', function () {
-      var provider = {custom_parameters:['name']}
-        , options = {name:'grant'}
-      config.custom_params(provider, options)
-      should.deepEqual(provider, {custom_parameters:['name']})
-    })
-    it('set custom_parameters value', function () {
-      var provider = {custom_parameters:['expiration']}
-        , options = {expiration:'never'}
-      config.custom_params(provider, options)
-      should.deepEqual(provider, {
-        custom_parameters:['expiration'],
-        custom_params:{expiration:'never'}
-      })
-    })
-
-    it('empty keys in options.custom_params keys are excluded', function () {
-      var provider = {custom_params:{name:'grant'}}
-        , options = {custom_params:{name:''}}
-      config.custom_params(provider, options)
-      should.deepEqual(provider, {custom_params:{name:'grant'}})
-    })
-    it('options.custom_params override provider.custom_params', function () {
-      var provider = {custom_params:{name:'grant'}}
-        , options = {custom_params:{name:'purest'}}
-      config.custom_params(provider, options)
-      should.deepEqual(provider, {custom_params:{name:'purest'}})
-    })
-
-    it('options.key extends provider.custom_params', function () {
-      var provider = {
-        custom_parameters:['expiration'], custom_params:{name:'grant'}}
-      var options = {expiration:'never'}
-      config.custom_params(provider, options)
-      should.deepEqual(provider, {
-        custom_parameters:['expiration'],
-        custom_params:{name:'grant', expiration:'never'}})
-    })
-    it('options.key extends options.custom_params', function () {
-      var provider = {custom_parameters:['expiration']}
-        , options = {expiration:'never', custom_params:{name:'grant'}}
-      config.custom_params(provider, options)
-      should.deepEqual(provider, {
-        custom_parameters:['expiration'],
-        custom_params:{name:'grant', expiration:'never'}
-      })
-    })
-
-    it('set object as custom_parameters value', function () {
-      var provider = {custom_parameters:['meta']}
-        , options = {meta:{a:'b'}}
-      config.custom_params(provider, options)
-      should.deepEqual(provider, {
-        custom_parameters:['meta'],
-        custom_params:{meta:{a:'b'}}
-      })
-    })
-  })
-
-  describe('override', function () {
-    it('dcopy', function () {
-      var provider = {scope:['scope1'], callback:'/'}
-        , options = {scope:['scope1','scope2']}
-        , copy = config.override(provider, options)
-      should.deepEqual(provider, {scope:['scope1'], callback:'/'})
-      should.deepEqual(copy, {scope:'scope1,scope2', callback:'/'})
-    })
-    it('no options to override', function () {
-      var provider = {scope:['scope1'], callback:'/'}
-        , options = {scope:'', callback:null}
-        , dynamic = config.override(provider, options)
-      should.deepEqual(provider, {scope:['scope1'], callback:'/'})
-      should.deepEqual(dynamic, {scope:'scope1', callback:'/'})
-    })
-    it('override', function () {
-      var provider = {scope:['scope1'], callback:'/'}
-        , options = {scope:['scope1','scope2']}
-        , dynamic = config.override(provider, options)
-      should.deepEqual(provider, {scope:['scope1'], callback:'/'})
-      should.deepEqual(dynamic, {scope:'scope1,scope2', callback:'/'})
-    })
-  })
-
-  describe('initProvider', function () {
-    it('shortcuts', function () {
-      var options = {server:{}, facebook:{}}
-        , provider = config.initProvider('facebook', options)
-      provider.facebook.should.equal(true)
-      provider.name.should.equal('facebook')
-    })
-    it('credentials', function () {
-      var options = {server:{}, facebook:{key:'key',secret:'secret'}}
-        , provider = config.initProvider('facebook', options)
-      provider.key.should.equal('key')
-      provider.secret.should.equal('secret')
-    })
-
-    it('use server options', function () {
-      var options = {
-        server:{
-          protocol:'http', host:'localhost:3000', callback:'/',
-          transport:'session', state:true
-        },
-        facebook:{}
-      }
-      var provider = config.initProvider('facebook', options)
-      provider.protocol.should.equal('http')
-      provider.host.should.equal('localhost:3000')
-      provider.callback.should.equal('/')
-      provider.transport.should.equal('session')
-      provider.state.should.equal(true)
-    })
-    it('override server options', function () {
-      var options = {
-        server:{
-          protocol:'http', host:'localhost:3000', callback:'/',
-          transport:'session', state:true
-        },
-        facebook:{
-          protocol:'https', host:'dummy.com:3000', callback:'/callback',
-          transport:'querystring', state:'Grant'
-        }
-      }
-      var provider = config.initProvider('facebook', options)
-      provider.protocol.should.equal('https')
-      provider.host.should.equal('dummy.com:3000')
-      provider.callback.should.equal('/callback')
-      provider.transport.should.equal('querystring')
-      provider.state.should.equal('Grant')
-    })
-
-    it('override oauth options', function () {
-      var options = {
-        server:{},
-        facebook:{
-          authorize_url:'https://custom_authorize_url',
-          access_url:'https://custom_access_url'
-        }
-      }
-      var provider = config.initProvider('facebook', options)
-      provider.authorize_url.should.equal('https://custom_authorize_url')
-      provider.access_url.should.equal('https://custom_access_url')
-      provider.oauth.should.equal(2)
-    })
-
-    it('custom provider', function () {
-      var options = {server:{}, custom:{
-        authorize_url:'https://custom_authorize_url',
-        access_url:'https://custom_access_url',
-        oauth:2,
-        scope_delimiter:'+',
-        custom_parameters:['a','b'],
-        key:'key',
-        secret:'secret',
-        scope:['a','b']
-      }}
-      var provider = config.initProvider('custom', options)
-      should.deepEqual(provider, {
-        custom:true,
-        name:'custom',
-        authorize_url:'https://custom_authorize_url',
-        access_url:'https://custom_access_url',
-        oauth:2,
-        scope_delimiter:'+',
-        custom_parameters:['a', 'b'],
-        key:'key',
-        secret:'secret',
-        scope:'a+b'
-      })
-    })
-
-    it('skip on missing custom_parameters and custom_params option', function () {
-      var options = {server:{}, custom:{access_type:'offline'}}
-        , provider = config.initProvider('custom', options)
-      should.equal(provider.access_type, undefined)
-      should.equal(provider.custom_params, undefined)
-    })
-    it('set object as custom_parameters value', function () {
-      var options = {server:{}, custom:{custom_parameters:['meta'], meta:{a:'b'}}}
-        , provider = config.initProvider('custom', options)
-      should.equal(provider.overrides, undefined)
-      should.deepEqual(provider.custom_params, {meta:{a:'b'}})
-    })
-
-    describe('static overrides', function () {
-      it('skip on reserved key', function () {
-        var options = {server:{}, facebook:{
-          scope:['scope1'], callback:'/callback', transport:{scope:['scope2']}}
-        }
-        var provider = config.initProvider('facebook', options)
-        should.equal(provider.overrides, undefined)
-      })
-      it('create override', function () {
-        var options = {server:{}, facebook:{
-          scope:['scope1'], callback:'/callback', custom:{scope:['scope2']}}
-        }
-        var provider = config.initProvider('facebook', options)
-        provider.scope.should.equal('scope1')
-        provider.callback.should.equal('/callback')
-        provider.overrides.custom.scope.should.equal('scope2')
-        provider.overrides.custom.callback.should.equal('/callback')
-      })
-    })
-  })
-
-  describe('init', function () {
-    it('only the specified providers', function () {
-      var options = {server:{}, facebook:{}, custom:{}}
-        , cfg = config.init(options)
-      should.deepEqual(cfg, {
-        server:{},
-        facebook:{
-          authorize_url:'https://www.facebook.com/dialog/oauth',
-          access_url:'https://graph.facebook.com/oauth/access_token',
-          oauth:2,
-          facebook:true,
-          name:'facebook' },
-        custom:{custom:true, name:'custom'}
-      })
-    })
-    it('without server key', function () {
-      var options = {facebook:{}, custom:{}}
-        , cfg = config.init(options)
-      should.deepEqual(cfg, {
-        server:{},
-        facebook:{
-          authorize_url:'https://www.facebook.com/dialog/oauth',
-          access_url:'https://graph.facebook.com/oauth/access_token',
-          oauth:2,
-          facebook:true,
-          name:'facebook' },
-        custom:{custom:true, name:'custom'}
-      })
+        , result = config.state(provider)
+      should.equal(result, undefined)
     })
   })
 
   describe('provider', function () {
-    it('default', function () {
-      var cfg = {google:{callback:'/'}}
-        , session = {provider:'google'}
-        , provider = config.provider(cfg, session)
-      provider.callback.should.equal('/')
+    it('pre configured', function () {
+      var options = {grant:{name:'grant'}}
+        , session = {provider:'grant'}
+      var result = config.provider(options, session)
+      should.deepEqual(result, {name:'grant'})
+      should.deepEqual(options, {grant:{name:'grant'}})
     })
-    it('non configured', function () {
-      var cfg = {server:{}}
-        , session = {provider:'custom'}
-        , provider = config.provider(cfg, session)
-      should.deepEqual(provider, {custom:true, name:'custom'})
-      should.deepEqual(cfg, {server:{}, custom:{custom:true, name:'custom'}})
+    it('non configured, existing oauth provider', function () {
+      var options = {}
+        , session = {provider:'facebook'}
+      var result = config.provider(options, session)
+      should.deepEqual(result, {
+        authorize_url:'https://www.facebook.com/dialog/oauth',
+        access_url:'https://graph.facebook.com/oauth/access_token',
+        oauth:2, facebook:true, name:'facebook'
+      })
+      should.deepEqual(options, {facebook:{
+        authorize_url:'https://www.facebook.com/dialog/oauth',
+        access_url:'https://graph.facebook.com/oauth/access_token',
+        oauth:2, facebook:true, name:'facebook'
+      }})
+    })
+    it('non configured, non existing oauth provider', function () {
+      var options = {}
+        , session = {provider:'grant'}
+      var result = config.provider(options, session)
+      should.deepEqual(result, {})
+      should.deepEqual(options, {})
     })
 
     describe('overrides', function () {
-      it('no overrides', function () {
-        var cfg = {google:{callback:'/'}}
-          , session = {provider:'google', override:'contacts'}
-          , provider = config.provider(cfg, session)
-        provider.callback.should.equal('/')
+      it('no existing overrides - defaults to provider', function () {
+        var options = {grant:{callback:'/'}}
+          , session = {provider:'grant', override:'purest'}
+        var result = config.provider(options, session)
+        should.deepEqual(result, {callback:'/'})
       })
-      it('not matching', function () {
-        var cfg = {google:{callback:'/',overrides:{gmail:{callback:'/gmail'}}}}
-          , session = {provider:'google', override:'contacts'}
-          , provider = config.provider(cfg, session)
-        provider.callback.should.equal('/')
+      it('non existing override - defaults to provider', function () {
+        var options = {grant:{
+          callback:'/', overrides:{oauth:{callback:'/callback'}}
+        }}
+        var session = {provider:'grant', override:'purest'}
+        var result = config.provider(options, session)
+        should.deepEqual(result, {
+          callback:'/', overrides:{oauth:{callback:'/callback'}}
+        })
       })
-      it('match', function () {
-        var cfg = {google:{callback:'/',
-          overrides:{contacts:{callback:'/contacts'}}}}
-          , session = {provider:'google', override:'contacts'}
-          , provider = config.provider(cfg, session)
-        provider.callback.should.equal('/contacts')
+      it('pick override', function () {
+        var options = {grant:{
+          callback:'/', overrides:{purest:{callback:'/callback'}}
+        }}
+        var session = {provider:'grant', override:'purest'}
+        var result = config.provider(options, session)
+        should.deepEqual(result, {callback:'/callback'})
       })
     })
 
     describe('dynamic', function () {
-      it('override', function () {
-        var cfg = {google:{callback:'/'}}
-          , session = {provider:'google', dynamic:{callback:'/contacts'}}
-          , provider = config.provider(cfg, session)
-        provider.callback.should.equal('/contacts')
+      it('override provider key', function () {
+        var options = {grant:{callback:'/'}}
+          , session = {provider:'grant', dynamic:{callback:'/callback'}}
+        var result = config.provider(options, session)
+        should.deepEqual(result, {callback:'/callback'})
       })
-      it('custom_parameters', function () {
-        var cfg = {trello:{custom_parameters:['expiration']}}
+      it('override custom_parameters string value', function () {
+        var options = {grant:{custom_parameters:['expiration']}}
         var session = {
-          provider:'trello',
+          provider:'grant',
           dynamic:{expiration:'never', custom_params:{name:'grant'}}
         }
-        var provider = config.provider(cfg, session)
-        should.deepEqual(provider.custom_params,
-          {name:'grant', expiration:'never'})
+        var result = config.provider(options, session)
+        should.deepEqual(result, {
+          custom_parameters:['expiration'],
+          custom_params:{name:'grant', expiration:'never'}
+        })
       })
-      it('custom_parameters object value', function () {
-        var cfg = {coinbase:{custom_parameters:['meta']}}
+      it('override custom_parameters object value', function () {
+        var options = {grant:{custom_parameters:['meta']}}
         var session = {
-          provider:'coinbase', dynamic:{meta:{a:'b'}}
+          provider:'grant', dynamic:{meta:{a:'b'}}
         }
-        var provider = config.provider(cfg, session)
-        should.deepEqual(provider.custom_params, {meta:{a:'b'}})
+        var result = config.provider(options, session)
+        should.deepEqual(result, {
+          custom_parameters:['meta'], custom_params:{meta:{a:'b'}}
+        })
       })
     })
 
-    it('state dcopy', function () {
-      var cfg = {google:{callback:'/', state:true}}
-        , session = {provider:'google'}
-        , provider = config.provider(cfg, session)
-      cfg.google.state.should.equal(true)
-      provider.state.should.match(/\d+/)
-      provider.state.should.be.type('string')
+    describe('state', function () {
+      it('state dcopy', function () {
+        var options = {grant:{state:true}}
+          , session = {provider:'grant'}
+        var result = config.provider(options, session)
+        result.state.should.be.type('string')
+        result.state.should.match(/\d+/)
+        should.deepEqual(options, {grant:{state:true}})
+      })
     })
   })
 
