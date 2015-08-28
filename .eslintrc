@@ -6,50 +6,14 @@
     'generators': true
   },
   'rules': {
-    // Require Camelcase
-    'camelcase': false,
-
-    // Require Following Curly Brace Conventions
-    'curly': false,
-
-    // Require === and !==
-    'eqeqeq': false,
-
     // Validate Indentation
     'indent': [2, 2],
-
-    // Enforce Property Spacing
-    'key-spacing': false,
-
-    // Disallow Empty Block Statements
-    'no-empty': false,
-
-    // Disallow Functions in Loops
-    'no-loop-func': false,
-
-    // Disallow Redeclaring Variables
-    'no-redeclare': false,
-
-    // Disallow Shadowing
-    'no-shadow': false,
-
-    // Disallow Dangling Underscores in Identifiers (no-underscore-dangle)
-    'no-underscore-dangle': false,
-
-    // Disallow Unused Variables
-    'no-unused-vars': false,
-
-    // Disallow Early Use
-    'no-use-before-define': [2, 'nofunc'],
 
     // Enforce Quote Style
     'quotes': [2, 'single'],
 
     // Enforce Semicolons
     'semi': [2, 'never'],
-
-    // Require Spaces Around Infix Operators
-    'space-infix-ops': false,
 
     // Strict Mode
     'strict': [2, 'global']
