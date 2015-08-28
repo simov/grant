@@ -140,15 +140,16 @@ describe('config', function () {
     })
 
     describe('overrides', function () {
-      // skip custom_parameters
-      // skip reserved keys
       it('set overrides', function () {
-        var provider = {scope:['scope1'], callback:'/callback'}
-          , options = {sub:{scope:['scope2']}}, server = {}, name = 'grant'
+        var provider = {scope:['scope'], callback:'/callback'}
+          , options = {sub1:{scope:['scope1']}, sub2:{scope:['scope2']}}
+          , server = {}, name = 'grant'
         var result = config.initProvider(provider, options, server, name)
         should.deepEqual(result, {
-          scope:'scope1', callback:'/callback', grant:true, name:'grant',
-          overrides:{sub:{
+          scope:'scope', callback:'/callback', grant:true, name:'grant',
+          overrides:{sub1:{
+            scope:'scope1', callback:'/callback', grant:true, name:'grant'
+          }, sub2:{
             scope:'scope2', callback:'/callback', grant:true, name:'grant'
           }}
         })
