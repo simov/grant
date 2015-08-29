@@ -17,12 +17,11 @@ describe('error - hapi', function () {
     server: {protocol:'http', host:'localhost:5000', callback:'/'},
     facebook:{}
   }
-  var server
 
   describe('missing plugin', function () {
     it('session', function (done) {
       var grant = new Grant()
-      server = new Hapi.Server({debug: {request:false}})
+      var server = new Hapi.Server({debug: {request:false}})
       server.connection({host:'localhost', port:5000})
 
       server.register([{register:grant, options:config}], function (err) {
@@ -47,6 +46,7 @@ describe('error - hapi', function () {
 
   describe('oauth2', function () {
     describe('step1 - missing code', function () {
+      var server
       before(function (done) {
         var grant = new Grant()
 
@@ -89,6 +89,7 @@ describe('error - hapi', function () {
     })
 
     describe('step1 - state mismatch', function () {
+      var server
       before(function (done) {
         var grant = new Grant()
 
@@ -132,6 +133,7 @@ describe('error - hapi', function () {
     })
 
     describe('step2 - error response', function () {
+      var server
       before(function (done) {
         var grant = new Grant()
 
@@ -178,7 +180,7 @@ describe('error - hapi', function () {
   })
 
   describe('missing provider', function () {
-    var grant
+    var grant, server, jar = request.jar()
     before(function (done) {
       grant = new Grant()
 
@@ -200,8 +202,9 @@ describe('error - hapi', function () {
     })
 
     it('connect', function (done) {
-      request.get(url('/connect/custom'), {
-        jar:request.jar(),
+      delete grant.register.config.facebook.oauth
+      request.get(url('/connect/facebook'), {
+        jar:jar,
         json:true
       }, function (err, res, body) {
         res.headers['x-test'].should.equal('true')
@@ -211,9 +214,9 @@ describe('error - hapi', function () {
       })
     })
     it('connect - no callback', function (done) {
-      delete grant.register.config.custom.callback
-      request.get(url('/connect/custom'), {
-        jar:request.jar(),
+      delete grant.register.config.facebook.callback
+      request.get(url('/connect/facebook'), {
+        jar:jar,
         json:true
       }, function (err, res, body) {
         should.equal(res.headers['x-test'], undefined)
@@ -224,8 +227,9 @@ describe('error - hapi', function () {
     })
 
     it('callback', function (done) {
-      request.get(url('/connect/custom/callback'), {
-        jar:request.jar(),
+      grant.register.config.facebook.callback = '/'
+      request.get(url('/connect/facebook/callback'), {
+        jar:jar,
         json:true
       }, function (err, res, body) {
         res.headers['x-test'].should.equal('true')
@@ -235,9 +239,9 @@ describe('error - hapi', function () {
       })
     })
     it('callback - no callback', function (done) {
-      delete grant.register.config.undefined.callback
-      request.get(url('/connect/custom/callback'), {
-        jar:request.jar(),
+      delete grant.register.config.facebook.callback
+      request.get(url('/connect/facebook/callback'), {
+        jar:jar,
         json:true
       }, function (err, res, body) {
         should.equal(res.headers['x-test'], undefined)

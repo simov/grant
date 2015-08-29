@@ -17,7 +17,6 @@ describe('error - express', function () {
     server: {protocol:'http', host:'localhost:5000', callback:'/'},
     facebook:{}
   }
-  var server
 
   describe('missing middleware', function () {
     it('session', function (done) {
@@ -61,6 +60,7 @@ describe('error - express', function () {
 
   describe('oauth2', function () {
     describe('step1 - missing code', function () {
+      var server
       before(function (done) {
         var grant = new Grant(config)
         var app = express()
@@ -97,6 +97,7 @@ describe('error - express', function () {
     })
 
     describe('step1 - state mismatch', function () {
+      var server
       before(function (done) {
         var grant = new Grant(config)
         var app = express()
@@ -134,6 +135,7 @@ describe('error - express', function () {
     })
 
     describe('step2 - error response', function () {
+      var server
       before(function (done) {
         var grant = new Grant(config)
         var app = express()
@@ -175,7 +177,7 @@ describe('error - express', function () {
   })
 
   describe('missing provider', function () {
-    var grant
+    var grant, server, jar = request.jar()
     before(function (done) {
       grant = new Grant(config)
       var app = express()
@@ -190,8 +192,9 @@ describe('error - express', function () {
     })
 
     it('connect', function (done) {
-      request.get(url('/connect/custom'), {
-        jar:request.jar(),
+      delete grant.config.facebook.oauth
+      request.get(url('/connect/facebook'), {
+        jar:jar,
         json:true
       }, function (err, res, body) {
         res.headers['x-test'].should.equal('true')
@@ -201,9 +204,9 @@ describe('error - express', function () {
       })
     })
     it('connect - no callback', function (done) {
-      delete grant.config.custom.callback
-      request.get(url('/connect/custom'), {
-        jar:request.jar(),
+      delete grant.config.facebook.callback
+      request.get(url('/connect/facebook'), {
+        jar:jar,
         json:true
       }, function (err, res, body) {
         should.equal(res.headers['x-test'], undefined)
@@ -214,8 +217,9 @@ describe('error - express', function () {
     })
 
     it('callback', function (done) {
-      request.get(url('/connect/custom/callback'), {
-        jar:request.jar(),
+      grant.config.facebook.callback = '/'
+      request.get(url('/connect/facebook/callback'), {
+        jar:jar,
         json:true
       }, function (err, res, body) {
         res.headers['x-test'].should.equal('true')
@@ -225,9 +229,9 @@ describe('error - express', function () {
       })
     })
     it('callback - no callback', function (done) {
-      delete grant.config.undefined.callback
-      request.get(url('/connect/custom/callback'), {
-        jar:request.jar(),
+      delete grant.config.facebook.callback
+      request.get(url('/connect/facebook/callback'), {
+        jar:jar,
         json:true
       }, function (err, res, body) {
         should.equal(res.headers['x-test'], undefined)

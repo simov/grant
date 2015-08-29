@@ -46,7 +46,7 @@ describe('session - express', function () {
       jar:request.jar(),
       json:true
     }, function (err, res, body) {
-      should.deepEqual(body, {provider:'facebook', dynamic:{}})
+      should.deepEqual(body, {provider:'facebook'})
       done()
     })
   })
@@ -56,7 +56,7 @@ describe('session - express', function () {
       jar:request.jar(),
       json:true
     }, function (err, res, body) {
-      should.deepEqual(body, {provider:'facebook', override:'contacts', dynamic:{}})
+      should.deepEqual(body, {provider:'facebook', override:'contacts'})
       done()
     })
   })
@@ -111,7 +111,7 @@ describe('session - express', function () {
       jar:request.jar(),
       json:true
     }, function (err, res, body) {
-      should.deepEqual(body, {provider:'twitter', step1:{oauth_token:'token'}, dynamic:{}})
+      should.deepEqual(body, {provider:'twitter', step1:{oauth_token:'token'}})
       done()
     })
   })
