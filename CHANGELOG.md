@@ -1,25 +1,33 @@
 
 ## Change Log
 
+### v3.5.0 (2015/08/30)
+- `Changed` better OAuth2 [random state string](https://github.com/simov/grant/commit/e1cf1e468846e5b2e75f65d8bdf4794a88619c37)
+- `Added` ability to override the [redirect_uri](https://github.com/simov/grant#sandbox-redirect-uri)
+- `Added` ability to configure Grant without having a *server* key
+- `Added` generic error handler for missing or misconfigured provider
+- `Added` introduced `custom_params` option for safer way to define [custom authorization parameters](https://github.com/simov/grant#custom-parameters)
+- `Added` improved documentation about all configuration [quirks](https://github.com/simov/grant#quirks)
+- `Added` official support for 5 new providers
+
 ### v3.4.0 (2015/07/20)
 - `Changed` better configuration initialization
-- `Added` docs about the [programmatic access](https://github.com/simov/grant#programmatic-access)
-- `Added` docs about how to utilize [sandbox urls](https://github.com/simov/grant#custom-parameters)
-- `Added` official support for 3 more providers
 - `Changed` bumped module dependency versions
-- `Changed` migrated *rdio* to [OAuth2](https://github.com/simov/grant/blob/master/config/oauth.json#L420-L424)
-- `Changed` updated the *trakt* [urls](https://github.com/simov/grant/blob/master/config/oauth.json#L543-L544)
-- `Added` [custom_parameters](https://github.com/simov/grant/blob/master/config/oauth.json#L655) for *yandex*
+- `Changed` migrated *rdio* to [OAuth2](https://github.com/simov/grant/blob/3.4.0/config/oauth.json#L420-L424)
+- `Changed` updated the *trakt* [urls](https://github.com/simov/grant/blob/3.4.0/config/oauth.json#L542-L546)
+- `Added` [custom_parameters](https://github.com/simov/grant/blob/3.4.0/config/oauth.json#L655) for *yandex*
+- `Added` docs about the [programmatic access](https://github.com/simov/grant#programmatic-access)
+- `Added` official support for 3 new providers
 
 ### v3.3.3 (2015/06/24)
-- `Added` official support for 9 more providers
+- `Added` official support for 9 new providers
 
 ### v3.3.2 (2015/06/05)
 - `Changed` a few minor changes to the project's meta files
-- `Added` official support for 2 more providers
+- `Added` official support for 2 new providers
 
 ### v3.3.1 (2015/05/21)
-- `Added` official support for 10 more providers
+- `Added` official support for 10 new providers
 
 ### v3.3.0 (2015/05/17)
 - `Changed` the Express middleware is no longer using the [express-session middleware](https://github.com/simov/grant#express) internally
@@ -61,7 +69,7 @@
 - Complete rewrite of Grant using the [request](https://github.com/request/request) module
 - `Added` Koa middleware
 - `Changed` the [response data](https://github.com/simov/grant#response-data) format, now containing a `raw` key in it
-- `Changed` [custom authorization parameters](https://github.com/simov/grant#quirks) regarding token expiration are no longer part of the scope array
+- `Changed` [custom authorization parameters](https://github.com/simov/grant#custom-parameters) regarding token expiration are no longer part of the scope array
 
 
 ---
