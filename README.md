@@ -429,21 +429,6 @@ Flickr uses a custom authorization parameter to pass its scopes called `perms`. 
 ```
 
 
-##### Ravelry, Trello
-
-OAuth1 doesn't support `scope` parameter natively, however you should pass your scopes using the regular `scope` option instead of `custom_params`:
-
-```js
-"ravelry": {
-  "scope": ["profile-only", "forum-write"]
-},
-"trello": {
-  "scope": ["read", "write"],
-  "custom_params": {"name":"my app", "expiration":"never"}
-}
-```
-
-
 ##### SurveyMonkey
 
 For SurveyMonkey set your Mashery user name as `key` and your application key as `api_key`:
@@ -535,8 +520,8 @@ In case of an error, the `error` key will be populated with the raw error data:
     "host": "mywebsite.com"
   },
   "facebook": {
-    "key": "[APP_ID]",
-    "secret": "[APP_SECRET]",
+    "key": "[CLIENT_ID]",
+    "secret": "[CLIENT_SECRET]",
     "callback": "/handle_facebook_response"
   },
   "twitter": {
