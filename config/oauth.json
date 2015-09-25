@@ -99,6 +99,11 @@
     "scope_delimiter": " ",
     "custom_parameters": ["meta"]
   },
+  "concur": {
+    "authorize_url": "https://www.concursolutions.com/net2/oauth2/Login.aspx",
+    "access_url": "https://www.concursolutions.com/net2/oauth2/GetAccessToken.ashx",
+    "oauth": 2
+  },
   "constantcontact": {
     "authorize_url": "https://oauth2.constantcontact.com/oauth2/oauth/siteowner/authorize",
     "access_url": "https://oauth2.constantcontact.com/oauth2/oauth/token",

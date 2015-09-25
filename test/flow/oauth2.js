@@ -176,12 +176,13 @@ describe('oauth2', function () {
       before(function (done) {
         var config = {
           server: {protocol:'http', host:'localhost:5000', callback:'/'},
-          basecamp:{}, reddit:{}, smartsheet:{}, surveymonkey:{}, shopify:{}
+          basecamp:{}, concur:{}, reddit:{}, smartsheet:{}, surveymonkey:{}, shopify:{}
         }
         grant = new Grant(config)
         app = express().use(grant).use(bodyParser.urlencoded({extended:true}))
 
         grant.config.basecamp.access_url = url('/access_url')
+        grant.config.concur.access_url = url('/access_url')
         grant.config.reddit.access_url = url('/access_url')
         grant.config.smartsheet.access_url = url('/access_url')
         grant.config.surveymonkey.access_url = url('/access_url')
@@ -205,6 +206,20 @@ describe('oauth2', function () {
           oauth2.step2(grant.config.basecamp, {code:'code'}, {}, function (err, body) {
             var query = JSON.parse(body)
             query.type.should.equal('web_server')
+            done()
+          })
+        })
+      })
+
+      describe('qs', function () {
+        it('concur', function (done) {
+          grant.config.concur.key = 'key'
+          grant.config.concur.secret = 'secret'
+          oauth2.step2(grant.config.concur, {code:'code'}, {}, function (err, body) {
+            var query = JSON.parse(body)
+            query.should.deepEqual({
+              code:'code', client_id:'key', client_secret:'secret'
+            })
             done()
           })
         })
