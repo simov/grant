@@ -176,13 +176,14 @@ describe('oauth2', function () {
       before(function (done) {
         var config = {
           server: {protocol:'http', host:'localhost:5000', callback:'/'},
-          basecamp:{}, reddit:{}, surveymonkey:{}, shopify:{}
+          basecamp:{}, reddit:{}, smartsheet:{}, surveymonkey:{}, shopify:{}
         }
         grant = new Grant(config)
         app = express().use(grant).use(bodyParser.urlencoded({extended:true}))
 
         grant.config.basecamp.access_url = url('/access_url')
         grant.config.reddit.access_url = url('/access_url')
+        grant.config.smartsheet.access_url = url('/access_url')
         grant.config.surveymonkey.access_url = url('/access_url')
 
         app.post('/access_url', function (req, res) {
@@ -216,6 +217,16 @@ describe('oauth2', function () {
           oauth2.step2(grant.config.reddit, {code:'code'}, {}, function (err, body) {
             var query = JSON.parse(body)
             query.basic.should.equal(true)
+            done()
+          })
+        })
+      })
+
+      describe('hash', function () {
+        it('smartsheet', function (done) {
+          oauth2.step2(grant.config.smartsheet, {code:'code'}, {}, function (err, body) {
+            var query = JSON.parse(body)
+            query.hash.should.be.type('string')
             done()
           })
         })
