@@ -24,9 +24,9 @@
   },
 
   "dependencies": {
-    "request"         : "2.59.0",
-    "qs"              : "4.0.0",
-    "deep-copy"       : "*"
+    "request"         : "2.64.0",
+    "qs"              : "5.1.0",
+    "deep-copy"       : "1.1.0"
   },
 
   "devDependencies": {
