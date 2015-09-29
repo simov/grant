@@ -16,7 +16,8 @@
   - [Express][express]
   - [Koa][koa]
   - [Hapi][hapi]
-  - [Reserved Routes for Grant][reserved-routes-for-grant]
+  - [Reserved Routes][reserved-routes]
+  - [Alternative Require][alternative-require]
 - **Configuration**
   - [Basics][configuration]
   - [Redirect URL][redirect-url]
@@ -108,12 +109,31 @@ server.register([
 ```
 
 
-## Reserved Routes for Grant
+## Reserved Routes
 
 ```
 /connect/:provider/:override?
 /connect/:provider/callback
 ```
+
+
+## Alternative Require
+
+Alternatively you can require Grant directly *(each pair is identical)*:
+
+```js
+// Express
+var Grant = require('grant-express')
+var Grant = require('grant').express()
+// Koa
+var Grant = require('grant-koa')
+var Grant = require('grant').koa()
+// Hapi
+var Grant = require('grant-hapi')
+var Grant = require('grant').hapi()
+```
+
+> Koa requires two additional dependencies: `thunkify` and `koa-route`
 
 
 ## Configuration
@@ -611,7 +631,8 @@ MIT
   [express]: #express
   [koa]: #koa
   [hapi]: #hapi
-  [reserved-routes-for-grant]: #reserved-routes-for-grant
+  [reserved-routes]: #reserved-routes
+  [alternative-require]: #alternative-require
   [configuration]: #configuration
   [redirect-url]: #redirect-url
   [static-overrides]: #static-overrides
