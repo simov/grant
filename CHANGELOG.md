@@ -1,6 +1,11 @@
 
 ## Change Log
 
+### v3.5.1 (2015/09/30)
+- `Changed` bumped module dependency versions
+- `Added` docs about [Alternative Require](https://github.com/simov/grant#alternative-require)
+- `Added` official support for 6 new providers
+
 ### v3.5.0 (2015/08/30)
 - `Changed` better OAuth2 [random state string](https://github.com/simov/grant/commit/e1cf1e468846e5b2e75f65d8bdf4794a88619c37)
 - `Added` ability to override the [redirect_uri](https://github.com/simov/grant#sandbox-redirect-uri)
