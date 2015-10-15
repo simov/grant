@@ -176,8 +176,8 @@ describe('oauth2', function () {
       before(function (done) {
         var config = {
           server: {protocol:'http', host:'localhost:5000', callback:'/'},
-          basecamp:{}, concur:{}, reddit:{}, smartsheet:{}, surveymonkey:{}, shopify:{}
-        }
+          basecamp:{}, concur:{}, reddit:{}, smartsheet:{}, surveymonkey:{}, shopify:{}, fitbit2:{}
+        }        
         grant = new Grant(config)
         app = express().use(grant).use(bodyParser.urlencoded({extended:true}))
 
@@ -186,11 +186,14 @@ describe('oauth2', function () {
         grant.config.reddit.access_url = url('/access_url')
         grant.config.smartsheet.access_url = url('/access_url')
         grant.config.surveymonkey.access_url = url('/access_url')
+        grant.config.fitbit2.access_url = url('/access_url')
 
         app.post('/access_url', function (req, res) {
           if (req.headers.authorization) {
-            res.end(JSON.stringify({basic:true}))
-          }
+              res.end(JSON.stringify({
+                basic: true,
+                auth: req.headers.authorization
+          }))}
           else if (req.url.split('?')[1]) {
             res.end(JSON.stringify(qs.parse(req.url.split('?')[1])))
           }
@@ -234,6 +237,18 @@ describe('oauth2', function () {
             query.basic.should.equal(true)
             done()
           })
+        })
+        it('fitbit2', function (done) {
+            grant.config.fitbit2.key = 'key'
+            grant.config.fitbit2.secret = 'secret'
+            grant.config.fitbit2.custom_params = {client_id: 'client_id'}
+            oauth2.step2(grant.config.fitbit2, { code: 'code' }, {}, function (err, body) {
+                JSON.parse(body).auth
+                .should.equal('Basic ' 
+                     + new Buffer(grant.config.fitbit2.custom_params.client_id + ':' + grant.config.fitbit2.secret)
+                     .toString('base64'))
+                done()
+            })
         })
       })
 

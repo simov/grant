@@ -241,6 +241,11 @@
     "access_url": "https://api.fitbit.com/oauth/access_token",
     "oauth": 1
   },
+  "fitbit2": {
+    "authorize_url": "https://www.fitbit.com/oauth2/authorize",
+    "access_url": "https://api.fitbit.com/oauth2/token",
+    "oauth": 2
+  },
   "flattr": {
     "authorize_url": "https://flattr.com/oauth/authorize",
     "access_url": "https://flattr.com/oauth/token",
