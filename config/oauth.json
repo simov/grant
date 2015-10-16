@@ -244,7 +244,9 @@
   "fitbit2": {
     "authorize_url": "https://www.fitbit.com/oauth2/authorize",
     "access_url": "https://api.fitbit.com/oauth2/token",
-    "oauth": 2
+    "oauth": 2,
+    "scope_delimiter": " ",
+    "custom_parameters": ["prompt"]
   },
   "flattr": {
     "authorize_url": "https://flattr.com/oauth/authorize",

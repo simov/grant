@@ -462,11 +462,14 @@ For SurveyMonkey set your Mashery user name as `key` and your application key as
 ```
 
 
-##### LinkedIn
+##### Fitbit, LinkedIn
 
-To use the LinkedIn's OAuth2 flow you should use `linkedin2` as provider name, instead of `linkedin` which is for OAuth1:
+Initially these providers supported only OAuth1, so the `fitbit` and `linkedin` names are used for that. To use their OAuth2 flow append `2` at the end of their names:
 
 ```js
+"fitbit2": {
+  // then navigate to /connect/fitbit2
+},
 "linkedin2": {
   // then navigate to /connect/linkedin2
 }
