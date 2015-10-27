@@ -16,6 +16,17 @@
     "access_url": "https://restapi.actonsoftware.com/token",
     "oauth": 2
   },
+  "acuityscheduling": {
+    "authorize_url": "https://acuityscheduling.com/oauth2/authorize",
+    "access_url": "https://acuityscheduling.com/oauth2/token",
+    "oauth": 2
+  },
+  "aha": {
+    "authorize_url": "https://[subdomain].aha.io/oauth/authorize",
+    "access_url": "https://[subdomain].aha.io/oauth/token",
+    "oauth": 2,
+    "subdomain": true
+  },
   "amazon": {
     "authorize_url": "https://www.amazon.com/ap/oa",
     "access_url": "https://api.amazon.com/auth/o2/token",
@@ -43,6 +54,13 @@
     "authorize_url": "https://api.assembla.com/authorization",
     "access_url": "https://api.assembla.com/token",
     "oauth": 2
+  },
+  "axosoft": {
+    "authorize_url": "https://[subdomain].axosoft.com/auth",
+    "access_url": "https://[subdomain].axosoft.com/api/oauth2/token",
+    "oauth": 2,
+    "scope_delimiter": " ",
+    "subdomain": true
   },
   "basecamp": {
     "authorize_url": "https://launchpad.37signals.com/authorization/new",
@@ -92,6 +110,11 @@
     "access_url": "https://api.cheddarapp.com/oauth/token",
     "oauth": 2
   },
+  "codeplex": {
+    "authorize_url": "https://www.codeplex.com/oauth/authorize",
+    "access_url": "https://www.codeplex.com/oauth/token",
+    "oauth": 2
+  },
   "coinbase": {
     "authorize_url": "https://www.coinbase.com/oauth/authorize",
     "access_url": "https://www.coinbase.com/oauth/token",
@@ -139,6 +162,11 @@
   "delivery": {
     "authorize_url": "https://api.delivery.com/third_party/authorize",
     "access_url": "https://api.delivery.com/third_party/access_token",
+    "oauth": 2
+  },
+  "deputy": {
+    "authorize_url": "https://once.deputy.com/my/oauth/login",
+    "access_url": "https://once.deputy.com/my/oauth/access_token",
     "oauth": 2
   },
   "deviantart": {
