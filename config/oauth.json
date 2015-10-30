@@ -110,6 +110,11 @@
     "access_url": "https://api.cheddarapp.com/oauth/token",
     "oauth": 2
   },
+  "clio": {
+    "authorize_url": "https://app.goclio.com/oauth/authorize",
+    "access_url": "https://app.goclio.com/oauth/token",
+    "oauth": 2
+  },
   "codeplex": {
     "authorize_url": "https://www.codeplex.com/oauth/authorize",
     "access_url": "https://www.codeplex.com/oauth/token",
