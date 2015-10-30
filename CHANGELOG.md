@@ -1,6 +1,10 @@
 
 ## Change Log
 
+### v3.5.2 (2015/10/30)
+- `Added` OAuth2 support for [FitBit](https://github.com/simov/grant/pull/35)
+- `Added` official support for 6 new providers
+
 ### v3.5.1 (2015/09/30)
 - `Changed` bumped module dependency versions
 - `Added` docs about [Alternative Require](https://github.com/simov/grant#alternative-require)
