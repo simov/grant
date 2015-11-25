@@ -220,6 +220,14 @@
     "oauth": 2,
     "scope_delimiter": " "
   },
+  "egnyte": {
+    "authorize_url": "https://[subdomain].egnyte.com/puboauth/token",
+    "access_url": "https://[subdomain].egnyte.com/puboauth/token",
+    "oauth": 2,
+    "subdomain": true,
+    "scope_delimiter": " ",
+    "custom_parameters": ["mobile"]
+  },
   "elance": {
     "authorize_url": "https://api.elance.com/api2/oauth/authorize",
     "access_url": "https://api.elance.com/api2/oauth/token",
@@ -300,6 +308,11 @@
     "oauth": 2,
     "scope_delimiter": " "
   },
+  "fluidsurveys": {
+    "authorize_url": "https://fluidsurveys.com/accounts/developer/authorize/",
+    "access_url": "https://fluidsurveys.com/accounts/oauth/token/",
+    "oauth": 2
+  },
   "formstack": {
     "authorize_url": "https://www.formstack.com/api/v2/oauth2/authorize",
     "access_url": "https://www.formstack.com/api/v2/oauth2/token",
@@ -308,6 +321,11 @@
   "foursquare": {
     "authorize_url": "https://foursquare.com/oauth2/authenticate",
     "access_url": "https://foursquare.com/oauth2/access_token",
+    "oauth": 2
+  },
+  "freeagent": {
+    "authorize_url": "https://api.freeagent.com/v2/approve_app",
+    "access_url": "https://api.freeagent.com/v2/token_endpoint",
     "oauth": 2
   },
   "freshbooks": {
@@ -366,9 +384,20 @@
       "prompt"
     ]
   },
+  "gumroad": {
+    "authorize_url": "https://gumroad.com/oauth/authorize",
+    "access_url": "https://gumroad.com/oauth/token",
+    "oauth": 2,
+    "scope_delimiter": " "
+  },
   "harvest": {
     "authorize_url": "https://api.harvestapp.com/oauth2/authorize",
     "access_url": "https://api.harvestapp.com/oauth2/token",
+    "oauth": 2
+  },
+  "hellosign": {
+    "authorize_url": "https://www.hellosign.com/oauth/authorize",
+    "access_url": "https://www.hellosign.com/oauth/token",
     "oauth": 2
   },
   "heroku": {
@@ -398,9 +427,19 @@
     "oauth": 2,
     "scope_delimiter": " "
   },
+  "jumplead": {
+    "authorize_url": "https://account.mooloop.com/oauth/authorize",
+    "access_url": "https://account.mooloop.com/oauth/access_token",
+    "oauth": 2
+  },
   "kakao": {
     "authorize_url": "https://kauth.kakao.com/oauth/authorize",
     "access_url": "https://kauth.kakao.com/oauth/token",
+    "oauth": 2
+  },
+  "letsfreckle": {
+    "authorize_url": "https://secure.letsfreckle.com/oauth/2/authorize",
+    "access_url": "https://secure.letsfreckle.com/oauth/2/access_token",
     "oauth": 2
   },
   "linkedin": {
@@ -444,6 +483,12 @@
   "moves": {
     "authorize_url": "https://api.moves-app.com/oauth/v1/authorize",
     "access_url": "https://api.moves-app.com/oauth/v1/access_token",
+    "oauth": 2,
+    "scope_delimiter": " "
+  },
+  "moxtra": {
+    "authorize_url": "https://api.moxtra.com/oauth/authorize",
+    "access_url": "https://api.moxtra.com/oauth/token",
     "oauth": 2,
     "scope_delimiter": " "
   },
