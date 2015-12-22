@@ -127,7 +127,7 @@ describe('oauth1', function () {
       before(function (done) {
         util._extend(config, {
           copy:{}, etsy:{}, flickr:{}, freshbooks:{}, goodreads:{},
-          linkedin:{}, ravelry:{}, trello:{}, tripit:{}
+          intuit:{}, linkedin:{}, ravelry:{}, trello:{}, tripit:{}
         })
         grant = new Grant(config)
         app = express().use(grant)
@@ -298,6 +298,17 @@ describe('oauth1', function () {
           grant.config.freshbooks.subdomain = 'access_url'
           oauth1.step3(grant.config.freshbooks, {}, {oauth_token:'token'}, function (err, url) {
             url.should.be.type('string')
+            done()
+          })
+        })
+      })
+
+      describe('realmId', function () {
+        it('intuit', function (done) {
+          grant.config.intuit.access_url = url('/access_url')
+          oauth1.step3(grant.config.intuit, {}, {oauth_token:'token', realmId:'123'}, function (err, response) {
+            var query = qs.parse(response)
+            query.raw.realmId.should.equal('123')
             done()
           })
         })
