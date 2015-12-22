@@ -214,6 +214,12 @@
     "oauth": 2,
     "scope_delimiter": " "
   },
+  "ecwid": {
+    "authorize_url": "https://my.ecwid.com/api/oauth/authorize",
+    "access_url": "https://my.ecwid.com/api/oauth/token",
+    "oauth": 2,
+    "scope_delimiter": " "
+  },
   "edmodo": {
     "authorize_url": "https://api.edmodo.com/oauth/authorize",
     "access_url": "https://api.edmodo.com/oauth/token",
@@ -384,6 +390,11 @@
       "prompt"
     ]
   },
+  "groove": {
+    "authorize_url": "https://api.groovehq.com/oauth/authorize",
+    "access_url": "https://api.groovehq.com/oauth/token",
+    "oauth": 2
+  },
   "gumroad": {
     "authorize_url": "https://gumroad.com/oauth/authorize",
     "access_url": "https://gumroad.com/oauth/token",
@@ -420,6 +431,12 @@
     "access_url": "https://api.instagram.com/oauth/access_token",
     "oauth": 2,
     "scope_delimiter": " "
+  },
+  "intuit": {
+    "request_url": "https://oauth.intuit.com/oauth/v1/get_request_token",
+    "authorize_url": "https://appcenter.intuit.com/Connect/Begin",
+    "access_url": "https://oauth.intuit.com/oauth/v1/get_access_token",
+    "oauth": 1
   },
   "jawbone": {
     "authorize_url": "https://jawbone.com/auth/oauth2/auth",
