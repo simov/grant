@@ -1,6 +1,9 @@
 
 ## Change Log
 
+### v3.5.4 (2015/12/28)
+- `Added` official support for 11 new providers
+
 ### v3.5.3 (2015/11/28)
 - `Added` official support for 8 new providers
 
