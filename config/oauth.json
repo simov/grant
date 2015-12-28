@@ -481,6 +481,11 @@
     "access_url": "https://login.mailchimp.com/oauth2/token",
     "oauth": 2
   },
+  "mailup": {
+    "authorize_url": "https://services.mailup.com/Authorization/OAuth/Authorization",
+    "access_url": "https://services.mailup.com/Authorization/OAuth/Token",
+    "oauth": 2
+  },
   "mapmyfitness": {
     "authorize_url": "https://www.mapmyfitness.com/v7.1/oauth2/uacf/authorize",
     "access_url": "https://api.mapmyfitness.com/v7.1/oauth2/access_token",
@@ -541,6 +546,28 @@
   "podio": {
     "authorize_url": "https://podio.com/oauth/authorize",
     "access_url": "https://podio.com/oauth/token",
+    "oauth": 2
+  },
+  "producteev": {
+    "authorize_url": "https://www.producteev.com/oauth/v2/auth",
+    "access_url": "https://www.producteev.com/oauth/v2/token",
+    "oauth": 2
+  },
+  "producthunt": {
+    "authorize_url": "https://api.producthunt.com/v1/oauth/authorize",
+    "access_url": "https://api.producthunt.com/v1/oauth/token",
+    "oauth": 2,
+    "scope_delimiter": " "
+  },
+  "projectplace": {
+    "request_url": "https://api.projectplace.com/initiate",
+    "authorize_url": "https://api.projectplace.com/authorize",
+    "access_url": "https://api.projectplace.com/token",
+    "oauth": 1
+  },
+  "projectplace2": {
+    "authorize_url": "https://service.projectplace.com/oauth2/authorize",
+    "access_url": "https://service.projectplace.com/oauth2/access_token",
     "oauth": 2
   },
   "pushbullet": {
@@ -615,6 +642,11 @@
     "oauth": 2,
     "scope_delimiter": " "
   },
+  "socialpilot": {
+    "authorize_url": "https://panel.socialpilot.co/oauth",
+    "access_url": "https://panel.socialpilot.co/oauth/accesstoken",
+    "oauth": 2
+  },
   "socrata": {
     "authorize_url": "https://[subdomain]/oauth/authorize",
     "access_url": "https://[subdomain]/oauth/access_token",
@@ -681,6 +713,11 @@
   "thingiverse": {
     "authorize_url": "https://www.thingiverse.com/login/oauth/authorize",
     "access_url": "https://www.thingiverse.com/login/oauth/access_token",
+    "oauth": 2
+  },
+  "ticketbud": {
+    "authorize_url": "https://api.ticketbud.com/oauth/authorize",
+    "access_url": "https://api.ticketbud.com/oauth/token",
     "oauth": 2
   },
   "todoist": {
@@ -757,6 +794,11 @@
     "oauth": 2,
     "subdomain": true
   },
+  "verticalresponse": {
+    "authorize_url": "https://vrapi.verticalresponse.com/api/v1/oauth/authorize",
+    "access_url": "https://vrapi.verticalresponse.com/api/v1/oauth/access_token",
+    "oauth": 2
+  },
   "vimeo": {
     "authorize_url": "https://api.vimeo.com/oauth/authorize",
     "access_url": "https://api.vimeo.com/oauth/access_token",
@@ -766,6 +808,11 @@
   "vk": {
     "authorize_url": "https://oauth.vk.com/authorize",
     "access_url": "https://oauth.vk.com/access_token",
+    "oauth": 2
+  },
+  "weekdone": {
+    "authorize_url": "https://weekdone.com/oauth_authorize",
+    "access_url": "https://weekdone.com/oauth_token",
     "oauth": 2
   },
   "weibo": {
