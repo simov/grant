@@ -531,6 +531,12 @@
     "access_url": "http://www.openstreetmap.org/oauth/access_token",
     "oauth": 1
   },
+  "optimizely": {
+    "authorize_url": "https://app.optimizely.com/oauth2/authorize",
+    "access_url": "https://app.optimizely.com/oauth2/token",
+    "oauth": 2,
+    "custom_parameters": ["scopes"]
+  },
   "paypal": {
     "authorize_url": "https://www.paypal.com/webapps/auth/protocol/openidconnect/v1/authorize",
     "access_url": "https://api.paypal.com/v1/identity/openidconnect/tokenservice",

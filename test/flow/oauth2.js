@@ -135,7 +135,12 @@ describe('oauth2', function () {
             var query = qs.parse(url.split('?')[1])
             delete query.response_type
             delete query.redirect_uri
-            should.deepEqual(query, config[key])
+            if (key != 'optimizely') {
+              should.deepEqual(query, config[key])
+            }
+            else {
+              should.deepEqual(query, {})
+            }
           })
         })
       })
@@ -168,6 +173,16 @@ describe('oauth2', function () {
           var url = oauth2.step1(grant.config.basecamp)
           var query = qs.parse(url.split('?')[1])
           query.type.should.equal('web_server')
+        })
+      })
+
+      describe('scopes', function () {
+        var config = {optimizely:{scope:['all']}}
+        var grant = new Grant(config)
+        it('optimizely', function () {
+          var url = oauth2.step1(grant.config.optimizely)
+          var query = qs.parse(url.split('?')[1])
+          query.scopes.should.equal('all')
         })
       })
     })
