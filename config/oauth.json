@@ -359,6 +359,11 @@
     "access_url": "https://getpocket.com/v3/oauth/authorize",
     "oauth": "getpocket"
   },
+  "gitbook": {
+    "authorize_url": "https://api.gitbook.com/oauth/authorize",
+    "access_url": "https://api.gitbook.com/oauth/access_token",
+    "oauth": 2
+  },
   "github": {
     "authorize_url": "https://github.com/login/oauth/authorize",
     "access_url": "https://github.com/login/oauth/access_token",
