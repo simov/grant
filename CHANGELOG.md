@@ -1,6 +1,10 @@
 
 ## Change Log
 
+### v3.5.5 (2016/01/17)
+- `Fixed` fix for yar@6.0.0
+- `Added` official support for 2 new providers
+
 ### v3.5.4 (2015/12/28)
 - `Added` official support for 11 new providers
 
