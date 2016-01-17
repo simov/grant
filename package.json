@@ -50,7 +50,7 @@
     "koa-qs"          : "2.x.x",
 
     "hapi"            : "9.x.x",
-    "yar"             : "3.x.x"
+    "yar"             : "4.x.x"
   },
 
   "main": "index.js",
