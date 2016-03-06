@@ -185,6 +185,16 @@ describe('oauth2', function () {
           query.scopes.should.equal('all')
         })
       })
+
+      describe('response_type', function () {
+        var config = {visualstudio:{response_type:'Assertion'}}
+        var grant = new Grant(config)
+        it('visualstudio', function () {
+          var url = oauth2.step1(grant.config.visualstudio)
+          var query = qs.parse(url.split('?')[1])
+          query.response_type.should.equal('Assertion')
+        })
+      })
     })
 
     describe('step2', function () {
@@ -192,7 +202,7 @@ describe('oauth2', function () {
         var config = {
           server: {protocol:'http', host:'localhost:5000', callback:'/'},
           basecamp:{}, concur:{}, fitbit2:{}, reddit:{},
-          smartsheet:{}, surveymonkey:{}, shopify:{}
+          smartsheet:{}, surveymonkey:{}, shopify:{}, visualstudio:{}
         }
         grant = new Grant(config)
         app = express().use(grant).use(bodyParser.urlencoded({extended:true}))
@@ -203,6 +213,7 @@ describe('oauth2', function () {
         grant.config.smartsheet.access_url = url('/access_url')
         grant.config.surveymonkey.access_url = url('/access_url')
         grant.config.fitbit2.access_url = url('/access_url')
+        grant.config.visualstudio.access_url = url('/access_url')
 
         app.post('/access_url', function (req, res) {
           if (req.headers.authorization) {
@@ -279,6 +290,23 @@ describe('oauth2', function () {
           oauth2.step2(grant.config.surveymonkey, {code:'code'}, {}, function (err, body) {
             var query = JSON.parse(body)
             query.api_key.should.equal('api_key')
+            done()
+          })
+        })
+      })
+
+      describe('Assertion Framework for OAuth 2.0', function () {
+        it('visualstudio', function (done) {
+          grant.config.visualstudio.secret = 'secret'
+          oauth2.step2(grant.config.visualstudio, {code:'code'}, {}, function (err, body) {
+            var query = JSON.parse(body)
+            should.deepEqual(query, {
+              client_assertion_type:'urn:ietf:params:oauth:client-assertion-type:jwt-bearer',
+              client_assertion:'secret',
+              grant_type:'urn:ietf:params:oauth:grant-type:jwt-bearer',
+              assertion:'code',
+              redirect_uri:'http://localhost:5000/connect/visualstudio/callback'
+            })
             done()
           })
         })
