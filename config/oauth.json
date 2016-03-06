@@ -816,6 +816,12 @@
     "oauth": 2,
     "scope_delimiter": " "
   },
+  "visualstudio": {
+    "authorize_url": "https://app.vssps.visualstudio.com/oauth2/authorize",
+    "access_url": "https://app.vssps.visualstudio.com/oauth2/token",
+    "oauth": 2,
+    "scope_delimiter": " "
+  },
   "vk": {
     "authorize_url": "https://oauth.vk.com/authorize",
     "access_url": "https://oauth.vk.com/access_token",
