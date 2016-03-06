@@ -49,7 +49,7 @@
     "koa-mount"       : "1.x.x",
     "koa-qs"          : "2.x.x",
 
-    "hapi"            : "9.x.x",
+    "hapi"            : "9.3.1",
     "yar"             : "4.x.x"
   },
 
