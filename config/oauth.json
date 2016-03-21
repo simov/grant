@@ -502,6 +502,12 @@
     "oauth": 2,
     "scope_delimiter": " "
   },
+  "microsoft":{
+    "authorize_url": "https://login.microsoftonline.com/common/oauth2/v2.0/authorize",
+    "access_url": "https://login.microsoftonline.com/common/oauth2/v2.0/token",
+    "oauth": 2,
+    "scope_delimiter": " "      
+  },
   "mixcloud": {
     "authorize_url": "https://www.mixcloud.com/oauth/authorize",
     "access_url": "https://www.mixcloud.com/oauth/access_token",
