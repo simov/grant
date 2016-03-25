@@ -25,7 +25,10 @@ describe('error - hapi', function () {
       server.connection({host: 'localhost', port: 5000})
 
       server.register([{register: grant, options: config}], function (err) {
-        if (err) return done(err)
+        if (err) {
+          done(err)
+          return
+        }
 
         server.on('request-error', function (req, err) {
           err.message.should.equal('Uncaught error: Grant: register session plugin first')
@@ -65,7 +68,10 @@ describe('error - hapi', function () {
           {register: grant, options: config},
           {register: yar, options: {cookieOptions: {password: 'password', isSecure: false}}}
         ], function (err) {
-          if (err) return done(err)
+          if (err) {
+            done(err)
+            return
+          }
 
           grant.register.config.facebook.authorize_url = url('/authorize_url')
 
@@ -108,7 +114,10 @@ describe('error - hapi', function () {
           {register: grant, options: config},
           {register: yar, options: {cookieOptions: {password: 'password', isSecure: false}}}
         ], function (err) {
-          if (err) return done(err)
+          if (err) {
+            done(err)
+            return
+          }
 
           grant.register.config.facebook.authorize_url = url('/authorize_url')
           grant.register.config.facebook.state = 'Grant'
@@ -154,7 +163,10 @@ describe('error - hapi', function () {
           {register: grant, options: config},
           {register: yar, options: {cookieOptions: {password: 'password', isSecure: false}}}
         ], function (err) {
-          if (err) return done(err)
+          if (err) {
+            done(err)
+            return
+          }
 
           grant.register.config.facebook.authorize_url = url('/authorize_url')
           grant.register.config.facebook.access_url = url('/access_url')
@@ -195,7 +207,10 @@ describe('error - hapi', function () {
         {register: grant, options: config},
         {register: yar, options: {cookieOptions: {password: 'password', isSecure: false}}}
       ], function (err) {
-        if (err) return done(err)
+        if (err) {
+          done(err)
+          return
+        }
 
         server.start(done)
       })

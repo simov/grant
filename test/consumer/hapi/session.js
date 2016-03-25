@@ -37,7 +37,10 @@ describe('session - hapi', function () {
       {register: grant, options: config},
       {register: yar, options: {cookieOptions: {password: 'password', isSecure: false}}}
     ], function (err) {
-      if (err) return done(err)
+      if (err) {
+        done(err)
+        return
+      }
 
       grant.register.config.facebook.authorize_url = '/authorize_url'
       grant.register.config.twitter.request_url = url('/request_url')
