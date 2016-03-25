@@ -1,13 +1,13 @@
 
 var koa = require('koa')
-  , session = require('koa-session')
-  , router = require('koa-router')
-  , mount = require('koa-mount')
-  , koaqs = require('koa-qs')
-  , accesslog = require('koa-accesslog')
+var session = require('koa-session')
+var router = require('koa-router')
+var mount = require('koa-mount')
+var koaqs = require('koa-qs')
+var accesslog = require('koa-accesslog')
 
 var Grant = require('grant-koa')
-  , grant = new Grant(require('./config.json'))
+var grant = new Grant(require('./config.json'))
 
 var app = koa()
 app.use(accesslog())

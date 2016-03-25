@@ -1,21 +1,21 @@
 
 var express = require('express')
-  , session = require('express-session')
-  , logger = require('morgan')
+var session = require('express-session')
+var logger = require('morgan')
 
 var Grant = require('grant-express')
-  , grant = new Grant(require('./config.json'))
+var grant = new Grant(require('./config.json'))
 
 var Purest = require('purest')
-  , facebook = new Purest({provider: 'facebook'})
-  , twitter = new Purest({provider: 'twitter',
-      key:grant.config.twitter.key, secret:grant.config.twitter.secret})
+var facebook = new Purest({provider: 'facebook'})
+var twitter = new Purest({provider: 'twitter',
+      key: grant.config.twitter.key, secret: grant.config.twitter.secret})
 
 
 var app = express()
 app.use(logger('dev'))
 // REQUIRED:
-app.use(session({secret:'very secret'}))
+app.use(session({secret: 'very secret'}))
 // mount grant
 app.use(grant)
 
@@ -34,7 +34,7 @@ app.get('/handle_facebook_callback', function (req, res) {
 app.get('/handle_twitter_callback', function (req, res) {
   twitter.query()
     .get('users/show')
-    .qs({user_id:req.query.raw.user_id})
+    .qs({user_id: req.query.raw.user_id})
     .auth(req.query.access_token, req.query.access_secret)
     .request(function (err, _res, body) {
       res.end(JSON.stringify({

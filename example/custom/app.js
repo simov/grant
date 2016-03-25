@@ -1,15 +1,15 @@
 
 var express = require('express')
-  , session = require('express-session')
-  , logger = require('morgan')
+var session = require('express-session')
+var logger = require('morgan')
 
 var Grant = require('grant-express')
-  , grant = new Grant(require('./config.json'))
+var grant = new Grant(require('./config.json'))
 
 var app = express()
 app.use(logger('dev'))
 // REQUIRED:
-app.use(session({secret:'very secret'}))
+app.use(session({secret: 'very secret'}))
 // mount grant
 app.use(grant)
 
@@ -18,7 +18,7 @@ app.use(grant)
 app.get('/authorize', function (req, res) {
   var qs = require('querystring')
   res.redirect('http://localhost:3000/connect/oauthbin/callback?'
-    + qs.stringify({oauth_token:'requestkey', oauth_verifier:'123'}))
+    + qs.stringify({oauth_token: 'requestkey', oauth_verifier: '123'}))
 })
 
 app.get('/handle_oauthbin_callback', function (req, res) {

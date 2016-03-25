@@ -1,9 +1,9 @@
 
 var Hapi = require('hapi')
-  , yar = require('yar')
+var yar = require('yar')
 
 var Grant = require('grant-hapi')
-  , grant = new Grant()
+var grant = new Grant()
 
 var server = new Hapi.Server()
 server.connection({host: 'localhost', port: 3000})
@@ -35,7 +35,9 @@ server.register([
     options: require('./config.json')
   }
 ], function (err) {
-  if (err) throw err
+  if (err) {
+    throw err
+  }
 
   server.start()
 })

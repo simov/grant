@@ -1,15 +1,15 @@
 
 var express = require('express')
-  , logger = require('morgan')
-  , session = require('express-session')
+var logger = require('morgan')
+var session = require('express-session')
 
 var Grant = require('grant-express')
-  , grant = new Grant(require('./config.json'))
+var grant = new Grant(require('./config.json'))
 
 var app = express()
 app.use(logger('dev'))
 // REQUIRED:
-app.use(session({secret:'very secret'}))
+app.use(session({secret: 'very secret'}))
 // mount grant
 app.use(grant)
 

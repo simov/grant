@@ -1,23 +1,23 @@
 
-process.env.NODE_TLS_REJECT_UNAUTHORIZED = '0';
+process.env.NODE_TLS_REJECT_UNAUTHORIZED = '0'
 
 var fs = require('fs')
 var express = require('express')
-  , logger = require('morgan')
-  , bodyParser = require('body-parser')
-  , session = require('express-session')
+var logger = require('morgan')
+var bodyParser = require('body-parser')
+var session = require('express-session')
 
 var Grant = require('grant-express')
-  , grant = new Grant(require('./config.json'))
+var grant = new Grant(require('./config.json'))
 
 var request = require('request')
 
 var app = express()
 app.use(logger('dev'))
 // REQUIRED:
-app.use(session({secret:'very secret'}))
+app.use(session({secret: 'very secret'}))
 // REQUIRED: (when making POST requests to /connect/:provider/:override?)
-app.use(bodyParser.urlencoded({extended:true}))
+app.use(bodyParser.urlencoded({extended: true}))
 // mount grant
 app.use(grant)
 

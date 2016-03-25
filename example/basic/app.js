@@ -1,22 +1,22 @@
 
 var express = require('express')
-  , session = require('express-session')
-  , Grant = require('grant-express')
+var session = require('express-session')
+var Grant = require('grant-express')
 
 var config = {
   server: {
-    protocol:'http',
-    host:'dummy.com:3000'
+    protocol: 'http',
+    host: 'dummy.com:3000'
   },
   facebook: {
-    key:'[APP_ID]',
-    secret:'[APP_SECRET]',
-    callback:'/handle_callback'
+    key: '[APP_ID]',
+    secret: '[APP_SECRET]',
+    callback: '/handle_callback'
   }
 }
 
 var app = express()
-app.use(session({secret:'very secret'}))
+app.use(session({secret: 'very secret'}))
 app.use(new Grant(config))
 
 app.get('/handle_callback', function (req, res) {

@@ -2,13 +2,13 @@
 var express = require('express')
 
 var Grant = require('grant-express')
-  , grant = new Grant(require('./config.json'))
+var grant = new Grant(require('./config.json'))
 
 var app = express()
 app.use(express.logger())
 // REQUIRED:
 app.use(express.cookieParser())
-app.use(express.cookieSession({secret:'very secret'}))
+app.use(express.cookieSession({secret: 'very secret'}))
 // mount grant
 app.use(grant)
 
