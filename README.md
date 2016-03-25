@@ -51,7 +51,7 @@ var Grant = require('grant-express')
 
 var app = express()
 // REQUIRED: (any session store - see ./example/express-session)
-app.use(session({secret:'grant'}))
+app.use(session({secret: 'grant'}))
 // mount grant
 app.use(grant)
 ```
@@ -96,7 +96,7 @@ server.register([
   // REQUIRED:
   {
     register: yar,
-    options: {cookieOptions: {password:'grant', isSecure:false}}
+    options: {cookieOptions: {password: 'grant', isSecure: false}}
   },
   // register grant
   {
@@ -236,7 +236,7 @@ Keep in mind that in this case you'll have to mount the `body-parser` middleware
 ```js
 // express
 var bodyParser = require('body-parser')
-app.use(bodyParser.urlencoded({extended:true}))
+app.use(bodyParser.urlencoded({extended: true}))
 app.use(grant)
 // koa
 var bodyParser = require('koa-bodyparser')
@@ -261,13 +261,13 @@ Some providers may employ custom authorization parameters outside of the ones sp
 
 ```js
 "google": {
-  "custom_params": {"access_type":"offline"}
+  "custom_params": {"access_type": "offline"}
 },
 "reddit": {
-  "custom_params": {"duration":"permanent"}
+  "custom_params": {"duration": "permanent"}
 },
 "trello": {
-  "custom_params": {"name":"my app", "expiration":"never"}
+  "custom_params": {"name": "my app", "expiration": "never"}
 }
 ```
 
@@ -345,7 +345,7 @@ And use it in your application:
 
 ```js
 var config = require('./config.json')
-var grant = new Grant(config[process.env.NODE_ENV||'development'])
+var grant = new Grant(config[process.env.NODE_ENV || 'development'])
 ```
 
 
@@ -495,12 +495,12 @@ For OAuth1 the `access_token` and the `access_secret` are accessible directly, `
 
 ```js
 {
-  access_token:'...',
-  access_secret:'...',
-  raw:{
-    oauth_token:'...',
-    oauth_token_secret:'...',
-    some:'other data'
+  access_token: '...',
+  access_secret: '...',
+  raw: {
+    oauth_token: '...',
+    oauth_token_secret: '...',
+    some: 'other data'
   }
 }
 ```
@@ -512,12 +512,12 @@ For OAuth2 the `access_token` and the `refresh_token` (if present) are accessibl
 
 ```js
 {
-  access_token:'...',
-  refresh_token:'...',
-  raw:{
-    access_token:'...',
-    refresh_token:'...',
-    some:'other data'
+  access_token: '...',
+  refresh_token: '...',
+  raw: {
+    access_token: '...',
+    refresh_token: '...',
+    some: 'other data'
   }
 }
 ```
@@ -529,8 +529,8 @@ In case of an error, the `error` key will be populated with the raw error data:
 
 ```js
 {
-  error:{
-    some:'error data'
+  error: {
+    some: 'error data'
   }
 }
 ```
@@ -587,9 +587,9 @@ For example, you may want to get the user's profile after the OAuth flow has com
 
 ```js
 var Purest = require('purest')
-  , facebook = new Purest({provider:'facebook'})
-  , twitter = new Purest({provider:'twitter',
-    key:'[CONSUMER_KEY]', secret:'[CONSUMER_SECRET]'})
+  , facebook = new Purest({provider: 'facebook'})
+  , twitter = new Purest({provider: 'twitter',
+    key: '[CONSUMER_KEY]', secret: '[CONSUMER_SECRET]'})
 
 facebook.query()
   .get('me')
@@ -601,7 +601,7 @@ facebook.query()
 
 twitter.query()
   .get('users/show')
-  .qs({screen_name:'nodejs'})
+  .qs({screen_name: 'nodejs'})
   .auth('[ACCESS_TOKEN]', '[ACCESS_SECRET]')
   .request(function (err, res, body) {
     // here body is a parsed JSON object containing
