@@ -2,8 +2,8 @@
 
 var should = require('should')
 var config = require('../lib/config')
-  , reserved = require('../config/reserved')
-  , Grant = require('../').express()
+var reserved = require('../config/reserved')
+var Grant = require('../').express()
 
 
 describe('config', function () {

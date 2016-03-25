@@ -1,12 +1,12 @@
 'use strict'
 
 var express = require('express')
-  , bodyParser = require('body-parser')
-  , should = require('should')
-  , qs = require('qs')
+var bodyParser = require('body-parser')
+var should = require('should')
+var qs = require('qs')
 var Grant = require('../../').express()
-  , oauth2 = require('../../lib/flow/oauth2')
-  , oauth = require('../../config/oauth')
+var oauth2 = require('../../lib/flow/oauth2')
+var oauth = require('../../config/oauth')
 
 
 describe('oauth2', function () {

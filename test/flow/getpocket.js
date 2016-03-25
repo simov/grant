@@ -1,10 +1,10 @@
 'use strict'
 
 var express = require('express')
-  , should = require('should')
-  , qs = require('qs')
+var should = require('should')
+var qs = require('qs')
 var Grant = require('../../').express()
-  , getpocket = require('../../lib/flow/getpocket')
+var getpocket = require('../../lib/flow/getpocket')
 
 
 describe('getpocket', function () {

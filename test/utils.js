@@ -1,9 +1,9 @@
 'use strict'
 
 var should = require('should')
-  , qs = require('qs')
+var qs = require('qs')
 var Grant = require('../').express()
-  , utils = require('../lib/utils')
+var utils = require('../lib/utils')
 
 
 describe('utils', function () {

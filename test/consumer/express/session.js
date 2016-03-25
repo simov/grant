@@ -1,11 +1,11 @@
 'use strict'
 
 var request = require('request')
-  , should = require('should')
-  , qs = require('qs')
+var should = require('should')
+var qs = require('qs')
 var express = require('express')
-  , bodyParser = require('body-parser')
-  , session = require('express-session')
+var bodyParser = require('body-parser')
+var session = require('express-session')
 var Grant = require('../../../').express()
 
 

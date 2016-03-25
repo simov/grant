@@ -1,9 +1,9 @@
 'use strict'
 
 var request = require('request')
-  , should = require('should')
+var should = require('should')
 var Hapi = require('hapi')
-  , yar = require('yar')
+var yar = require('yar')
 var Grant = require('../../../').hapi()
 
 

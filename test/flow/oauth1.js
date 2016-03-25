@@ -2,10 +2,10 @@
 
 var util = require('util')
 var express = require('express')
-  , should = require('should')
-  , qs = require('qs')
+var should = require('should')
+var qs = require('qs')
 var Grant = require('../../').express()
-  , oauth1 = require('../../lib/flow/oauth1')
+var oauth1 = require('../../lib/flow/oauth1')
 
 
 describe('oauth1', function () {

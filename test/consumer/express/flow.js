@@ -1,10 +1,10 @@
 'use strict'
 
 var request = require('request')
-  , should = require('should')
-  , qs = require('qs')
+var should = require('should')
+var qs = require('qs')
 var express = require('express')
-  , session = require('express-session')
+var session = require('express-session')
 var Grant = require('../../../').express()
 
 

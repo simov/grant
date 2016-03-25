@@ -1,13 +1,13 @@
 'use strict'
 
 var request = require('request')
-  , should = require('should')
-  , qs = require('qs')
+var should = require('should')
+var qs = require('qs')
 var koa = require('koa')
-  , session = require('koa-session')
-  , route = require('koa-route')
-  , mount = require('koa-mount')
-  , koaqs = require('koa-qs')
+var session = require('koa-session')
+var route = require('koa-route')
+var mount = require('koa-mount')
+var koaqs = require('koa-qs')
 var Grant = require('../../../').koa()
 
 
