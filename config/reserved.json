@@ -9,6 +9,7 @@
 
   "protocol",
   "host",
+  "path",
   "callback",
   "transport",
   "state",

@@ -2,6 +2,7 @@
 
 var request = require('request')
 var should = require('should')
+var qs = require('qs')
 var koa = require('koa')
 var session = require('koa-session')
 var route = require('koa-route')
@@ -227,7 +228,7 @@ describe('error - koa', function () {
         json: true
       }, function (err, res, body) {
         should.equal(res.headers['x-test'], undefined)
-        should.deepEqual(body, {
+        should.deepEqual(qs.parse(body), {
           error: 'Grant: missing or misconfigured provider'})
         done()
       })
@@ -252,7 +253,7 @@ describe('error - koa', function () {
         json: true
       }, function (err, res, body) {
         should.equal(res.headers['x-test'], undefined)
-        should.deepEqual(body, {
+        should.deepEqual(qs.parse(body), {
           error: 'Grant: missing session or misconfigured provider'})
         done()
       })

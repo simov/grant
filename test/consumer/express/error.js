@@ -2,6 +2,7 @@
 
 var request = require('request')
 var should = require('should')
+var qs = require('qs')
 var express = require('express')
 var session = require('express-session')
 var Grant = require('../../../').express()
@@ -210,7 +211,7 @@ describe('error - express', function () {
         json: true
       }, function (err, res, body) {
         should.equal(res.headers['x-test'], undefined)
-        should.deepEqual(body, {
+        should.deepEqual(qs.parse(body), {
           error: 'Grant: missing or misconfigured provider'})
         done()
       })
@@ -235,7 +236,7 @@ describe('error - express', function () {
         json: true
       }, function (err, res, body) {
         should.equal(res.headers['x-test'], undefined)
-        should.deepEqual(body, {
+        should.deepEqual(qs.parse(body), {
           error: 'Grant: missing session or misconfigured provider'})
         done()
       })
