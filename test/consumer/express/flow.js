@@ -35,7 +35,7 @@ describe('flow - express', function () {
         res.end(qs.stringify({oauth_token:'token', oauth_token_secret:'secret'}))
       })
       app.get('/authorize_url', function (req, res) {
-        res.redirect(url('/connect/twitter/callback?'+qs.stringify({
+        res.redirect(url('/connect/twitter/callback?' + qs.stringify({
           oauth_token:'token', oauth_verifier:'verifier'
         })))
       })
@@ -132,7 +132,7 @@ describe('flow - express', function () {
         res.end(qs.stringify({code:'code'}))
       })
       app.get('/authorize_url', function (req, res) {
-        res.redirect(url('/connect/getpocket/callback?'+qs.stringify({
+        res.redirect(url('/connect/getpocket/callback?' + qs.stringify({
           request_token:'token'
         })))
       })

@@ -82,7 +82,7 @@ describe('error - koa', function () {
         grant.config.facebook.authorize_url = url('/authorize_url')
 
         app.use(route.get('/authorize_url', function* (next) {
-          this.response.redirect(url('/connect/facebook/callback?'+
+          this.response.redirect(url('/connect/facebook/callback?' +
             'error%5Bmessage%5D=invalid&error%5Bcode%5D=500'))
         }))
         app.use(route.get('/', function* (next) {
@@ -122,7 +122,7 @@ describe('error - koa', function () {
         grant.config.facebook.state = 'Grant'
 
         app.use(route.get('/authorize_url', function* (next) {
-          this.response.redirect(url('/connect/facebook/callback?'+
+          this.response.redirect(url('/connect/facebook/callback?' +
             'code=code&state=Purest'))
         }))
         app.use(route.get('/', function* (next) {

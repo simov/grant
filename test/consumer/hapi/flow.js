@@ -31,7 +31,7 @@ describe('flow - hapi', function () {
         res(qs.stringify({oauth_token:'token', oauth_token_secret:'secret'}))
       }})
       server.route({method:'GET', path:'/authorize_url', handler: function (req, res) {
-        res.redirect(url('/connect/twitter/callback?'+qs.stringify({
+        res.redirect(url('/connect/twitter/callback?' + qs.stringify({
           oauth_token:'token', oauth_verifier:'verifier'
         })))
       }})
@@ -144,7 +144,7 @@ describe('flow - hapi', function () {
         res(qs.stringify({code:'code'}))
       }})
       server.route({method:'GET', path:'/authorize_url', handler: function (req, res) {
-        res.redirect(url('/connect/getpocket/callback?'+qs.stringify({
+        res.redirect(url('/connect/getpocket/callback?' + qs.stringify({
           request_token:'token'
         })))
       }})

@@ -70,7 +70,7 @@ describe('error - express', function () {
         grant.config.facebook.authorize_url = url('/authorize_url')
 
         app.get('/authorize_url', function (req, res) {
-          res.redirect(url('/connect/facebook/callback?'+
+          res.redirect(url('/connect/facebook/callback?' +
             'error%5Bmessage%5D=invalid&error%5Bcode%5D=500'))
         })
 
@@ -108,7 +108,7 @@ describe('error - express', function () {
         grant.config.facebook.state = 'Grant'
 
         app.get('/authorize_url', function (req, res) {
-          res.redirect(url('/connect/facebook/callback?'+
+          res.redirect(url('/connect/facebook/callback?' +
             'code=code&state=Purest'))
         })
 

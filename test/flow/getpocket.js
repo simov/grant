@@ -45,7 +45,7 @@ describe('getpocket', function () {
 
   it('step2', function () {
     var url = getpocket.step2(grant.config.getpocket, {code:'code'})
-    url.should.equal('/authorize_url?request_token=code'+
+    url.should.equal('/authorize_url?request_token=code' +
       '&redirect_uri=http%3A%2F%2Flocalhost%3A5000%2Fconnect%2Fgetpocket%2Fcallback')
   })
 

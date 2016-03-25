@@ -41,7 +41,7 @@ describe('flow - koa', function () {
         this.body = qs.stringify({oauth_token:'token', oauth_token_secret:'secret'})
       }))
       app.use(route.get('/authorize_url', function* (next) {
-        this.response.redirect(url('/connect/twitter/callback?'+qs.stringify({
+        this.response.redirect(url('/connect/twitter/callback?' + qs.stringify({
           oauth_token:'token', oauth_verifier:'verifier'
         })))
       }))
@@ -146,7 +146,7 @@ describe('flow - koa', function () {
         this.body = qs.stringify({code:'code'})
       }))
       app.use(route.get('/authorize_url', function* (next) {
-        this.response.redirect(url('/connect/getpocket/callback?'+qs.stringify({
+        this.response.redirect(url('/connect/getpocket/callback?' + qs.stringify({
           request_token:'token'
         })))
       }))

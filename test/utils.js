@@ -39,11 +39,11 @@ describe('utils', function () {
     })
     it('concur', function () {
       var body =
-        '<Access_Token>\r\n'+
-        '  <Instance_Url>https://www.concursolutions.com/</Instance_Url>\r\n'+
-        '  <Token>q962LLopjMgTOeTn3fRN+5uABCg=</Token>\r\n'+
-        '  <Expiration_date>9/25/2016 1:36:50 PM</Expiration_date>\r\n'+
-        '  <Refresh_Token>AXvRqWeb77Lq9F2WK6TXLCSTuxpwZO6</Refresh_Token>\r\n'+
+        '<Access_Token>\r\n' +
+        '  <Instance_Url>https://www.concursolutions.com/</Instance_Url>\r\n' +
+        '  <Token>q962LLopjMgTOeTn3fRN+5uABCg=</Token>\r\n' +
+        '  <Expiration_date>9/25/2016 1:36:50 PM</Expiration_date>\r\n' +
+        '  <Refresh_Token>AXvRqWeb77Lq9F2WK6TXLCSTuxpwZO6</Refresh_Token>\r\n' +
         '</Access_Token>'
       var str = utils.toQuerystring(grant.config.concur, body)
       should.deepEqual(qs.parse(str), {

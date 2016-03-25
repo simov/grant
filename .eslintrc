@@ -18,6 +18,9 @@
     // Enforce or Disallow Semicolons
     semi: [2, 'never'],
 
+    // Require Spaces Around Infix Operators
+    space-infix-ops: [2, {'int32Hint': true}],
+
     // Strict Mode Directives
     strict: [2, 'global']
   }

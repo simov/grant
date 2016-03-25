@@ -54,7 +54,7 @@ describe('error - hapi', function () {
         server.connection({host:'localhost', port:5000})
 
         server.route({method:'GET', path:'/authorize_url', handler: function (req, res) {
-          res.redirect(url('/connect/facebook/callback?'+
+          res.redirect(url('/connect/facebook/callback?' +
             'error%5Bmessage%5D=invalid&error%5Bcode%5D=500'))
         }})
         server.route({method:'GET', path:'/', handler: function (req, res) {
@@ -97,7 +97,7 @@ describe('error - hapi', function () {
         server.connection({host:'localhost', port:5000})
 
         server.route({method:'GET', path:'/authorize_url', handler: function (req, res) {
-          res.redirect(url('/connect/facebook/callback?'+
+          res.redirect(url('/connect/facebook/callback?' +
             'code=code&state=Purest'))
         }})
         server.route({method:'GET', path:'/', handler: function (req, res) {

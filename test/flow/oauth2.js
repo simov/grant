@@ -37,7 +37,7 @@ describe('oauth2', function () {
 
     it('step1', function () {
       var url = oauth2.step1(grant.config.facebook)
-      url.should.equal('/authorize_url?response_type=code'+
+      url.should.equal('/authorize_url?response_type=code' +
         '&redirect_uri=http%3A%2F%2Flocalhost%3A5000%2Fconnect%2Ffacebook%2Fcallback')
     })
 
