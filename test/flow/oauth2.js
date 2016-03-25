@@ -17,8 +17,8 @@ describe('oauth2', function () {
 
   var grant, app, server
   var config = {
-    server: {protocol:'http', host:'localhost:5000', callback:'/'},
-    facebook:{}
+    server: {protocol: 'http', host: 'localhost:5000', callback: '/'},
+    facebook: {}
   }
 
   describe('success', function () {
@@ -30,7 +30,7 @@ describe('oauth2', function () {
       grant.config.facebook.access_url = url('/access_url')
 
       app.post('/access_url', function (req, res) {
-        res.end(JSON.stringify({some:'data'}))
+        res.end(JSON.stringify({some: 'data'}))
       })
       server = app.listen(5000, done)
     })
@@ -42,14 +42,14 @@ describe('oauth2', function () {
     })
 
     it('step2', function (done) {
-      oauth2.step2(grant.config.facebook, {code:'code'}, {}, function (err, body) {
-        should.deepEqual(JSON.parse(body), {some:'data'})
+      oauth2.step2(grant.config.facebook, {code: 'code'}, {}, function (err, body) {
+        should.deepEqual(JSON.parse(body), {some: 'data'})
         done()
       })
     })
 
     it('step3', function () {
-      var url = oauth2.step3(grant.config.facebook, {some:'data'})
+      var url = oauth2.step3(grant.config.facebook, {some: 'data'})
       url.should.equal('raw%5Bsome%5D=data')
     })
 
@@ -67,34 +67,34 @@ describe('oauth2', function () {
       grant.config.facebook.access_url = url('/access_err')
 
       app.post('/access_url', function (req, res) {
-        res.status(500).end(JSON.stringify({error:'invalid'}))
+        res.status(500).end(JSON.stringify({error: 'invalid'}))
       })
       server = app.listen(5000, done)
     })
 
     it('step1 - missing code - error response', function (done) {
-      oauth2.step2(grant.config.facebook, {error:'invalid'}, {}, function (err, body) {
-        should.deepEqual(qs.parse(err), {error: {error:'invalid'}})
+      oauth2.step2(grant.config.facebook, {error: 'invalid'}, {}, function (err, body) {
+        should.deepEqual(qs.parse(err), {error: {error: 'invalid'}})
         done()
       })
     })
     it('step1 - missing code - empty response', function (done) {
       oauth2.step2(grant.config.facebook, {}, {}, function (err, body) {
         should.deepEqual(qs.parse(err),
-          {error: {error:'Grant: OAuth2 missing code parameter'}})
+          {error: {error: 'Grant: OAuth2 missing code parameter'}})
         done()
       })
     })
 
     it('step1 - state mismatch', function (done) {
-      oauth2.step2(grant.config.facebook, {code:'code',state:'Purest'}, {state:'Grant'}, function (err, body) {
-        should.deepEqual(qs.parse(err), {error: {error:'Grant: OAuth2 state mismatch'}})
+      oauth2.step2(grant.config.facebook, {code: 'code',state: 'Purest'}, {state: 'Grant'}, function (err, body) {
+        should.deepEqual(qs.parse(err), {error: {error: 'Grant: OAuth2 state mismatch'}})
         done()
       })
     })
 
     it('step2 - network error', function (done) {
-      oauth2.step2(grant.config.facebook, {code:'code'}, {}, function (err, body) {
+      oauth2.step2(grant.config.facebook, {code: 'code'}, {}, function (err, body) {
         should.deepEqual(qs.parse(err), {error: {'Cannot POST /access_err\n': ''}})
         done()
       })
@@ -102,8 +102,8 @@ describe('oauth2', function () {
 
     it('step2 - error response', function (done) {
       grant.config.facebook.access_url = url('/access_url')
-      oauth2.step2(grant.config.facebook, {code:'code'}, {}, function (err, body) {
-        should.deepEqual(qs.parse(err), {error: {error:'invalid'}})
+      oauth2.step2(grant.config.facebook, {code: 'code'}, {}, function (err, body) {
+        should.deepEqual(qs.parse(err), {error: {error: 'invalid'}})
         done()
       })
     })
@@ -150,7 +150,7 @@ describe('oauth2', function () {
         for (var key in oauth) {
           var provider = oauth[key]
           if (provider.oauth === 2 && provider.subdomain) {
-            config[key] = {subdomain:'grant'}
+            config[key] = {subdomain: 'grant'}
           }
         }
         var grant = new Grant(config)
@@ -167,7 +167,7 @@ describe('oauth2', function () {
       })
 
       describe('web_server', function () {
-        var config = {basecamp:{}}
+        var config = {basecamp: {}}
         var grant = new Grant(config)
         it('basecamp', function () {
           var url = oauth2.step1(grant.config.basecamp)
@@ -177,7 +177,7 @@ describe('oauth2', function () {
       })
 
       describe('scopes', function () {
-        var config = {optimizely:{scope:['all']}}
+        var config = {optimizely: {scope: ['all']}}
         var grant = new Grant(config)
         it('optimizely', function () {
           var url = oauth2.step1(grant.config.optimizely)
@@ -187,7 +187,7 @@ describe('oauth2', function () {
       })
 
       describe('response_type', function () {
-        var config = {visualstudio:{response_type:'Assertion'}}
+        var config = {visualstudio: {response_type: 'Assertion'}}
         var grant = new Grant(config)
         it('visualstudio', function () {
           var url = oauth2.step1(grant.config.visualstudio)
@@ -200,12 +200,12 @@ describe('oauth2', function () {
     describe('step2', function () {
       before(function (done) {
         var config = {
-          server: {protocol:'http', host:'localhost:5000', callback:'/'},
-          basecamp:{}, concur:{}, fitbit2:{}, reddit:{},
-          smartsheet:{}, surveymonkey:{}, shopify:{}, visualstudio:{}
+          server: {protocol: 'http', host: 'localhost:5000', callback: '/'},
+          basecamp: {}, concur: {}, fitbit2: {}, reddit: {},
+          smartsheet: {}, surveymonkey: {}, shopify: {}, visualstudio: {}
         }
         grant = new Grant(config)
-        app = express().use(grant).use(bodyParser.urlencoded({extended:true}))
+        app = express().use(grant).use(bodyParser.urlencoded({extended: true}))
 
         grant.config.basecamp.access_url = url('/access_url')
         grant.config.concur.access_url = url('/access_url')
@@ -231,7 +231,7 @@ describe('oauth2', function () {
 
       describe('web_server', function () {
         it('basecamp', function (done) {
-          oauth2.step2(grant.config.basecamp, {code:'code'}, {}, function (err, body) {
+          oauth2.step2(grant.config.basecamp, {code: 'code'}, {}, function (err, body) {
             var query = JSON.parse(body)
             query.type.should.equal('web_server')
             done()
@@ -243,10 +243,10 @@ describe('oauth2', function () {
         it('concur', function (done) {
           grant.config.concur.key = 'key'
           grant.config.concur.secret = 'secret'
-          oauth2.step2(grant.config.concur, {code:'code'}, {}, function (err, body) {
+          oauth2.step2(grant.config.concur, {code: 'code'}, {}, function (err, body) {
             var query = JSON.parse(body)
             query.should.deepEqual({
-              code:'code', client_id:'key', client_secret:'secret'
+              code: 'code', client_id: 'key', client_secret: 'secret'
             })
             done()
           })
@@ -257,7 +257,7 @@ describe('oauth2', function () {
         it('reddit', function (done) {
           grant.config.reddit.key = 'key'
           grant.config.reddit.secret = 'secret'
-          oauth2.step2(grant.config.reddit, {code:'code'}, {}, function (err, body) {
+          oauth2.step2(grant.config.reddit, {code: 'code'}, {}, function (err, body) {
             var query = JSON.parse(body)
             query.basic.should.equal(true)
             done()
@@ -266,7 +266,7 @@ describe('oauth2', function () {
         it('fitbit2', function (done) {
           grant.config.fitbit2.key = 'key'
           grant.config.fitbit2.secret = 'secret'
-          oauth2.step2(grant.config.fitbit2, {code:'code'}, {}, function (err, body) {
+          oauth2.step2(grant.config.fitbit2, {code: 'code'}, {}, function (err, body) {
             var query = JSON.parse(body)
             query.basic.should.equal(true)
             done()
@@ -276,7 +276,7 @@ describe('oauth2', function () {
 
       describe('hash', function () {
         it('smartsheet', function (done) {
-          oauth2.step2(grant.config.smartsheet, {code:'code'}, {}, function (err, body) {
+          oauth2.step2(grant.config.smartsheet, {code: 'code'}, {}, function (err, body) {
             var query = JSON.parse(body)
             query.hash.should.be.type('string')
             done()
@@ -286,8 +286,8 @@ describe('oauth2', function () {
 
       describe('api_key', function () {
         it('surveymonkey', function (done) {
-          grant.config.surveymonkey.custom_params = {api_key:'api_key'}
-          oauth2.step2(grant.config.surveymonkey, {code:'code'}, {}, function (err, body) {
+          grant.config.surveymonkey.custom_params = {api_key: 'api_key'}
+          oauth2.step2(grant.config.surveymonkey, {code: 'code'}, {}, function (err, body) {
             var query = JSON.parse(body)
             query.api_key.should.equal('api_key')
             done()
@@ -298,14 +298,14 @@ describe('oauth2', function () {
       describe('Assertion Framework for OAuth 2.0', function () {
         it('visualstudio', function (done) {
           grant.config.visualstudio.secret = 'secret'
-          oauth2.step2(grant.config.visualstudio, {code:'code'}, {}, function (err, body) {
+          oauth2.step2(grant.config.visualstudio, {code: 'code'}, {}, function (err, body) {
             var query = JSON.parse(body)
             should.deepEqual(query, {
-              client_assertion_type:'urn:ietf:params:oauth:client-assertion-type:jwt-bearer',
-              client_assertion:'secret',
-              grant_type:'urn:ietf:params:oauth:grant-type:jwt-bearer',
-              assertion:'code',
-              redirect_uri:'http://localhost:5000/connect/visualstudio/callback'
+              client_assertion_type: 'urn:ietf:params:oauth:client-assertion-type:jwt-bearer',
+              client_assertion: 'secret',
+              grant_type: 'urn:ietf:params:oauth:grant-type:jwt-bearer',
+              assertion: 'code',
+              redirect_uri: 'http://localhost:5000/connect/visualstudio/callback'
             })
             done()
           })
@@ -316,7 +316,7 @@ describe('oauth2', function () {
         it('shopify', function (done) {
           grant.config.shopify.access_url = url('/[subdomain]')
           grant.config.shopify.subdomain = 'access_url'
-          oauth2.step2(grant.config.shopify, {code:'code'}, {}, function (err, body) {
+          oauth2.step2(grant.config.shopify, {code: 'code'}, {}, function (err, body) {
             var query = JSON.parse(body)
             query.code.should.equal('code')
             done()

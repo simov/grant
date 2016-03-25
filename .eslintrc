@@ -12,6 +12,9 @@
     // Validate Indentation
     indent: [2, 2],
 
+    // Enforce Property Spacing
+    key-spacing: [2, {'beforeColon': false, 'afterColon': true}],
+
     // Enforce Quote Style
     quotes: [2, 'single'],
 

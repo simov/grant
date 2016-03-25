@@ -15,8 +15,8 @@ describe('flow - express', function () {
   }
 
   var config = {
-    server: {protocol:'http', host:'localhost:5000', callback:'/'},
-    facebook:{}, getpocket:{}, twitter:{}
+    server: {protocol: 'http', host: 'localhost:5000', callback: '/'},
+    facebook: {}, getpocket: {}, twitter: {}
   }
   var server, grant
 
@@ -24,7 +24,7 @@ describe('flow - express', function () {
     before(function (done) {
       grant = new Grant(config)
       var app = express()
-      app.use(session({secret:'grant', saveUninitialized:true, resave:true}))
+      app.use(session({secret: 'grant', saveUninitialized: true, resave: true}))
       app.use(grant)
 
       grant.config.twitter.request_url = url('/request_url')
@@ -32,16 +32,16 @@ describe('flow - express', function () {
       grant.config.twitter.access_url = url('/access_url')
 
       app.post('/request_url', function (req, res) {
-        res.end(qs.stringify({oauth_token:'token', oauth_token_secret:'secret'}))
+        res.end(qs.stringify({oauth_token: 'token', oauth_token_secret: 'secret'}))
       })
       app.get('/authorize_url', function (req, res) {
         res.redirect(url('/connect/twitter/callback?' + qs.stringify({
-          oauth_token:'token', oauth_verifier:'verifier'
+          oauth_token: 'token', oauth_verifier: 'verifier'
         })))
       })
       app.post('/access_url', function (req, res) {
         res.end(JSON.stringify({
-          oauth_token:'token', oauth_token_secret:'secret'
+          oauth_token: 'token', oauth_token_secret: 'secret'
         }))
       })
       app.get('/', function (req, res) {
@@ -53,12 +53,12 @@ describe('flow - express', function () {
     it('twitter', function (done) {
       function assert (done) {
         request.get(url('/connect/twitter'), {
-          jar:request.jar(),
-          json:true
+          jar: request.jar(),
+          json: true
         }, function (err, res, body) {
           should.deepEqual(body, {
-            access_token:'token', access_secret:'secret',
-            raw: {oauth_token:'token', oauth_token_secret:'secret'}
+            access_token: 'token', access_secret: 'secret',
+            raw: {oauth_token: 'token', oauth_token_secret: 'secret'}
           })
           done()
         })
@@ -79,7 +79,7 @@ describe('flow - express', function () {
     before(function (done) {
       var grant = new Grant(config)
       var app = express()
-      app.use(session({secret:'grant', saveUninitialized:true, resave:true}))
+      app.use(session({secret: 'grant', saveUninitialized: true, resave: true}))
       app.use(grant)
 
       grant.config.facebook.authorize_url = url('/authorize_url')
@@ -90,7 +90,7 @@ describe('flow - express', function () {
       })
       app.post('/access_url', function (req, res) {
         res.end(JSON.stringify({
-          access_token:'token', refresh_token:'refresh', expires_in:3600
+          access_token: 'token', refresh_token: 'refresh', expires_in: 3600
         }))
       })
       app.get('/', function (req, res) {
@@ -101,12 +101,12 @@ describe('flow - express', function () {
 
     it('facebook', function (done) {
       request.get(url('/connect/facebook'), {
-        jar:request.jar(),
-        json:true
+        jar: request.jar(),
+        json: true
       }, function (err, res, body) {
         should.deepEqual(body, {
-          access_token:'token', refresh_token:'refresh',
-          raw: {access_token:'token', refresh_token:'refresh', expires_in:'3600'}
+          access_token: 'token', refresh_token: 'refresh',
+          raw: {access_token: 'token', refresh_token: 'refresh', expires_in: '3600'}
         })
         done()
       })
@@ -121,7 +121,7 @@ describe('flow - express', function () {
     before(function (done) {
       var grant = new Grant(config)
       var app = express()
-      app.use(session({secret:'grant', saveUninitialized:true, resave:true}))
+      app.use(session({secret: 'grant', saveUninitialized: true, resave: true}))
       app.use(grant)
 
       grant.config.getpocket.request_url = url('/request_url')
@@ -129,16 +129,16 @@ describe('flow - express', function () {
       grant.config.getpocket.access_url = url('/access_url')
 
       app.post('/request_url', function (req, res) {
-        res.end(qs.stringify({code:'code'}))
+        res.end(qs.stringify({code: 'code'}))
       })
       app.get('/authorize_url', function (req, res) {
         res.redirect(url('/connect/getpocket/callback?' + qs.stringify({
-          request_token:'token'
+          request_token: 'token'
         })))
       })
       app.post('/access_url', function (req, res) {
         res.end(JSON.stringify({
-          access_token:'token', username:'grant'
+          access_token: 'token', username: 'grant'
         }))
       })
       app.get('/', function (req, res) {
@@ -149,12 +149,12 @@ describe('flow - express', function () {
 
     it('getpocket', function (done) {
       request.get(url('/connect/getpocket'), {
-        jar:request.jar(),
-        json:true
+        jar: request.jar(),
+        json: true
       }, function (err, res, body) {
         should.deepEqual(body, {
-          access_token:'token',
-          raw: {access_token:'token', username:'grant'}
+          access_token: 'token',
+          raw: {access_token: 'token', username: 'grant'}
         })
         done()
       })

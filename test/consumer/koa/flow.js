@@ -18,8 +18,8 @@ describe('flow - koa', function () {
   }
 
   var config = {
-    server: {protocol:'http', host:'localhost:5000', callback:'/'},
-    facebook:{}, getpocket:{}, twitter:{}
+    server: {protocol: 'http', host: 'localhost:5000', callback: '/'},
+    facebook: {}, getpocket: {}, twitter: {}
   }
   var server, grant
 
@@ -38,16 +38,16 @@ describe('flow - koa', function () {
       grant.config.twitter.access_url = url('/access_url')
 
       app.use(route.post('/request_url', function* (next) {
-        this.body = qs.stringify({oauth_token:'token', oauth_token_secret:'secret'})
+        this.body = qs.stringify({oauth_token: 'token', oauth_token_secret: 'secret'})
       }))
       app.use(route.get('/authorize_url', function* (next) {
         this.response.redirect(url('/connect/twitter/callback?' + qs.stringify({
-          oauth_token:'token', oauth_verifier:'verifier'
+          oauth_token: 'token', oauth_verifier: 'verifier'
         })))
       }))
       app.use(route.post('/access_url', function* (next) {
         this.body = JSON.stringify({
-          oauth_token:'token', oauth_token_secret:'secret'
+          oauth_token: 'token', oauth_token_secret: 'secret'
         })
       }))
       app.use(route.get('/', function* (next) {
@@ -60,12 +60,12 @@ describe('flow - koa', function () {
     it('twitter', function (done) {
       function assert (done) {
         request.get(url('/connect/twitter'), {
-          jar:request.jar(),
-          json:true
+          jar: request.jar(),
+          json: true
         }, function (err, res, body) {
           should.deepEqual(body, {
-            access_token:'token', access_secret:'secret',
-            raw: {oauth_token:'token', oauth_token_secret:'secret'}
+            access_token: 'token', access_secret: 'secret',
+            raw: {oauth_token: 'token', oauth_token_secret: 'secret'}
           })
           done()
         })
@@ -100,7 +100,7 @@ describe('flow - koa', function () {
       }))
       app.use(route.post('/access_url', function* (next) {
         this.body = JSON.stringify({
-          access_token:'token', refresh_token:'refresh', expires_in:3600
+          access_token: 'token', refresh_token: 'refresh', expires_in: 3600
         })
       }))
       app.use(route.get('/', function* (next) {
@@ -112,12 +112,12 @@ describe('flow - koa', function () {
 
     it('facebook', function (done) {
       request.get(url('/connect/facebook'), {
-        jar:request.jar(),
-        json:true
+        jar: request.jar(),
+        json: true
       }, function (err, res, body) {
         should.deepEqual(body, {
-          access_token:'token', refresh_token:'refresh',
-          raw: {access_token:'token', refresh_token:'refresh', expires_in:'3600'}
+          access_token: 'token', refresh_token: 'refresh',
+          raw: {access_token: 'token', refresh_token: 'refresh', expires_in: '3600'}
         })
         done()
       })
@@ -143,16 +143,16 @@ describe('flow - koa', function () {
       grant.config.getpocket.access_url = url('/access_url')
 
       app.use(route.post('/request_url', function* (next) {
-        this.body = qs.stringify({code:'code'})
+        this.body = qs.stringify({code: 'code'})
       }))
       app.use(route.get('/authorize_url', function* (next) {
         this.response.redirect(url('/connect/getpocket/callback?' + qs.stringify({
-          request_token:'token'
+          request_token: 'token'
         })))
       }))
       app.use(route.post('/access_url', function* (next) {
         this.body = JSON.stringify({
-          access_token:'token', username:'grant'
+          access_token: 'token', username: 'grant'
         })
       }))
       app.use(route.get('/', function* (next) {
@@ -164,12 +164,12 @@ describe('flow - koa', function () {
 
     it('getpocket', function (done) {
       request.get(url('/connect/getpocket'), {
-        jar:request.jar(),
-        json:true
+        jar: request.jar(),
+        json: true
       }, function (err, res, body) {
         should.deepEqual(body, {
-          access_token:'token',
-          raw: {access_token:'token', username:'grant'}
+          access_token: 'token',
+          raw: {access_token: 'token', username: 'grant'}
         })
         done()
       })

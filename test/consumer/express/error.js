@@ -14,8 +14,8 @@ describe('error - express', function () {
   }
 
   var config = {
-    server: {protocol:'http', host:'localhost:5000', callback:'/'},
-    facebook:{}
+    server: {protocol: 'http', host: 'localhost:5000', callback: '/'},
+    facebook: {}
   }
 
   describe('missing middleware', function () {
@@ -28,8 +28,8 @@ describe('error - express', function () {
       })
       var server = app.listen(5000, function () {
         request.get(url('/connect/facebook'), {
-          jar:request.jar(),
-          json:true
+          jar: request.jar(),
+          json: true
         }, function (err, res, body) {
           body.match(/Error: Grant: mount session middleware first/)
           server.close(done)
@@ -40,7 +40,7 @@ describe('error - express', function () {
     it('body-parser', function (done) {
       var grant = new Grant(config)
       var app = express()
-      app.use(session({secret:'grant', saveUninitialized:true, resave:true}))
+      app.use(session({secret: 'grant', saveUninitialized: true, resave: true}))
       app.use(grant)
       app.use(function (err, req, res, next) {
         err.message.should.equal('Grant: mount body parser middleware first')
@@ -48,8 +48,8 @@ describe('error - express', function () {
       })
       var server = app.listen(5000, function () {
         request.post(url('/connect/facebook'), {
-          jar:request.jar(),
-          json:true
+          jar: request.jar(),
+          json: true
         }, function (err, res, body) {
           body.match(/Error: Grant: mount body parser middleware first/)
           server.close(done)
@@ -64,7 +64,7 @@ describe('error - express', function () {
       before(function (done) {
         var grant = new Grant(config)
         var app = express()
-        app.use(session({secret:'grant', saveUninitialized:true, resave:true}))
+        app.use(session({secret: 'grant', saveUninitialized: true, resave: true}))
         app.use(grant)
 
         grant.config.facebook.authorize_url = url('/authorize_url')
@@ -83,10 +83,10 @@ describe('error - express', function () {
 
       it('authorize', function (done) {
         request.get(url('/connect/facebook'), {
-          jar:request.jar(),
-          json:true
+          jar: request.jar(),
+          json: true
         }, function (err, res, body) {
-          should.deepEqual(body, {error: {error:{message:'invalid', code:'500'}}})
+          should.deepEqual(body, {error: {error: {message: 'invalid', code: '500'}}})
           done()
         })
       })
@@ -101,7 +101,7 @@ describe('error - express', function () {
       before(function (done) {
         var grant = new Grant(config)
         var app = express()
-        app.use(session({secret:'grant', saveUninitialized:true, resave:true}))
+        app.use(session({secret: 'grant', saveUninitialized: true, resave: true}))
         app.use(grant)
 
         grant.config.facebook.authorize_url = url('/authorize_url')
@@ -121,10 +121,10 @@ describe('error - express', function () {
 
       it('authorize', function (done) {
         request.get(url('/connect/facebook'), {
-          jar:request.jar(),
-          json:true
+          jar: request.jar(),
+          json: true
         }, function (err, res, body) {
-          should.deepEqual(body, {error: {error:'Grant: OAuth2 state mismatch'}})
+          should.deepEqual(body, {error: {error: 'Grant: OAuth2 state mismatch'}})
           done()
         })
       })
@@ -139,7 +139,7 @@ describe('error - express', function () {
       before(function (done) {
         var grant = new Grant(config)
         var app = express()
-        app.use(session({secret:'grant', saveUninitialized:true, resave:true}))
+        app.use(session({secret: 'grant', saveUninitialized: true, resave: true}))
         app.use(grant)
 
         grant.config.facebook.authorize_url = url('/authorize_url')
@@ -162,10 +162,10 @@ describe('error - express', function () {
 
       it('access', function (done) {
         request.get(url('/connect/facebook'), {
-          jar:request.jar(),
-          json:true
+          jar: request.jar(),
+          json: true
         }, function (err, res, body) {
-          should.deepEqual(body, {error: {error:{message:'invalid', code:'500'}}})
+          should.deepEqual(body, {error: {error: {message: 'invalid', code: '500'}}})
           done()
         })
       })
@@ -181,11 +181,11 @@ describe('error - express', function () {
     before(function (done) {
       grant = new Grant(config)
       var app = express()
-      app.use(session({secret:'grant', saveUninitialized:true, resave:true}))
+      app.use(session({secret: 'grant', saveUninitialized: true, resave: true}))
       app.use(grant)
 
       app.get('/', function (req, res) {
-        res.writeHead(200, {'x-test':true})
+        res.writeHead(200, {'x-test': true})
         res.end(JSON.stringify(req.query))
       })
       server = app.listen(5000, done)
@@ -194,8 +194,8 @@ describe('error - express', function () {
     it('connect', function (done) {
       delete grant.config.facebook.oauth
       request.get(url('/connect/facebook'), {
-        jar:jar,
-        json:true
+        jar: jar,
+        json: true
       }, function (err, res, body) {
         res.headers['x-test'].should.equal('true')
         should.deepEqual(body, {
@@ -206,8 +206,8 @@ describe('error - express', function () {
     it('connect - no callback', function (done) {
       delete grant.config.facebook.callback
       request.get(url('/connect/facebook'), {
-        jar:jar,
-        json:true
+        jar: jar,
+        json: true
       }, function (err, res, body) {
         should.equal(res.headers['x-test'], undefined)
         should.deepEqual(body, {
@@ -219,8 +219,8 @@ describe('error - express', function () {
     it('callback', function (done) {
       grant.config.facebook.callback = '/'
       request.get(url('/connect/facebook/callback'), {
-        jar:jar,
-        json:true
+        jar: jar,
+        json: true
       }, function (err, res, body) {
         res.headers['x-test'].should.equal('true')
         should.deepEqual(body, {
@@ -231,8 +231,8 @@ describe('error - express', function () {
     it('callback - no callback', function (done) {
       delete grant.config.facebook.callback
       request.get(url('/connect/facebook/callback'), {
-        jar:jar,
-        json:true
+        jar: jar,
+        json: true
       }, function (err, res, body) {
         should.equal(res.headers['x-test'], undefined)
         should.deepEqual(body, {

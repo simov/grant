@@ -17,8 +17,8 @@ describe('error - koa', function () {
   }
 
   var config = {
-    server: {protocol:'http', host:'localhost:5000', callback:'/'},
-    facebook:{}
+    server: {protocol: 'http', host: 'localhost:5000', callback: '/'},
+    facebook: {}
   }
 
   describe('missing middleware', function () {
@@ -34,8 +34,8 @@ describe('error - koa', function () {
       app.use(mount(grant))
       var server = app.listen(5000, function () {
         request.get(url('/connect/facebook'), {
-          jar:request.jar(),
-          json:true
+          jar: request.jar(),
+          json: true
         }, function (err, res, body) {
           body.match(/Error: Grant: mount session middleware first/)
           server.close(done)
@@ -57,8 +57,8 @@ describe('error - koa', function () {
       app.use(mount(grant))
       var server = app.listen(5000, function () {
         request.post(url('/connect/facebook'), {
-          jar:request.jar(),
-          json:true
+          jar: request.jar(),
+          json: true
         }, function (err, res, body) {
           body.match(/Error: Grant: mount body parser middleware first/)
           server.close(done)
@@ -94,10 +94,10 @@ describe('error - koa', function () {
 
       it('authorize', function (done) {
         request.get(url('/connect/facebook'), {
-          jar:request.jar(),
-          json:true
+          jar: request.jar(),
+          json: true
         }, function (err, res, body) {
-          should.deepEqual(body, {error: {error:{message:'invalid', code:'500'}}})
+          should.deepEqual(body, {error: {error: {message: 'invalid', code: '500'}}})
           done()
         })
       })
@@ -134,10 +134,10 @@ describe('error - koa', function () {
 
       it('authorize', function (done) {
         request.get(url('/connect/facebook'), {
-          jar:request.jar(),
-          json:true
+          jar: request.jar(),
+          json: true
         }, function (err, res, body) {
-          should.deepEqual(body, {error: {error:'Grant: OAuth2 state mismatch'}})
+          should.deepEqual(body, {error: {error: 'Grant: OAuth2 state mismatch'}})
           done()
         })
       })
@@ -177,10 +177,10 @@ describe('error - koa', function () {
 
       it('access', function (done) {
         request.get(url('/connect/facebook'), {
-          jar:request.jar(),
-          json:true
+          jar: request.jar(),
+          json: true
         }, function (err, res, body) {
-          should.deepEqual(body, {error: {error:{message:'invalid', code:'500'}}})
+          should.deepEqual(body, {error: {error: {message: 'invalid', code: '500'}}})
           done()
         })
       })
@@ -211,8 +211,8 @@ describe('error - koa', function () {
     it('connect', function (done) {
       delete grant.config.facebook.oauth
       request.get(url('/connect/facebook'), {
-        jar:jar,
-        json:true
+        jar: jar,
+        json: true
       }, function (err, res, body) {
         res.headers['x-test'].should.equal('true')
         should.deepEqual(body, {
@@ -223,8 +223,8 @@ describe('error - koa', function () {
     it('connect - no callback', function (done) {
       delete grant.config.facebook.callback
       request.get(url('/connect/facebook'), {
-        jar:jar,
-        json:true
+        jar: jar,
+        json: true
       }, function (err, res, body) {
         should.equal(res.headers['x-test'], undefined)
         should.deepEqual(body, {
@@ -236,8 +236,8 @@ describe('error - koa', function () {
     it('callback', function (done) {
       grant.config.facebook.callback = '/'
       request.get(url('/connect/facebook/callback'), {
-        jar:jar,
-        json:true
+        jar: jar,
+        json: true
       }, function (err, res, body) {
         res.headers['x-test'].should.equal('true')
         should.deepEqual(body, {
@@ -248,8 +248,8 @@ describe('error - koa', function () {
     it('callback - no callback', function (done) {
       delete grant.config.facebook.callback
       request.get(url('/connect/facebook/callback'), {
-        jar:jar,
-        json:true
+        jar: jar,
+        json: true
       }, function (err, res, body) {
         should.equal(res.headers['x-test'], undefined)
         should.deepEqual(body, {

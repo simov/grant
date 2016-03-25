@@ -16,16 +16,16 @@ describe('session - express', function () {
   }
 
   var config = {
-    server: {protocol:'http', host:'localhost:5000'},
-    facebook:{}, twitter:{}
+    server: {protocol: 'http', host: 'localhost:5000'},
+    facebook: {}, twitter: {}
   }
   var server, grant
 
   before(function (done) {
     grant = new Grant(config)
     var app = express()
-    app.use(bodyParser.urlencoded({extended:true}))
-    app.use(session({secret:'grant', saveUninitialized:true, resave:true}))
+    app.use(bodyParser.urlencoded({extended: true}))
+    app.use(session({secret: 'grant', saveUninitialized: true, resave: true}))
     app.use(grant)
 
     grant.config.facebook.authorize_url = '/authorize_url'
@@ -33,7 +33,7 @@ describe('session - express', function () {
     grant.config.twitter.authorize_url = '/authorize_url'
 
     app.post('/request_url', function (req, res) {
-      res.end(qs.stringify({oauth_token:'token'}))
+      res.end(qs.stringify({oauth_token: 'token'}))
     })
     app.get('/authorize_url', function (req, res) {
       res.end(JSON.stringify(req.session.grant))
@@ -43,46 +43,46 @@ describe('session - express', function () {
 
   it('provider', function (done) {
     request.get(url('/connect/facebook'), {
-      jar:request.jar(),
-      json:true
+      jar: request.jar(),
+      json: true
     }, function (err, res, body) {
-      should.deepEqual(body, {provider:'facebook'})
+      should.deepEqual(body, {provider: 'facebook'})
       done()
     })
   })
 
   it('override', function (done) {
     request.get(url('/connect/facebook/contacts'), {
-      jar:request.jar(),
-      json:true
+      jar: request.jar(),
+      json: true
     }, function (err, res, body) {
-      should.deepEqual(body, {provider:'facebook', override:'contacts'})
+      should.deepEqual(body, {provider: 'facebook', override: 'contacts'})
       done()
     })
   })
 
   it('dynamic - POST', function (done) {
     request.post(url('/connect/facebook/contacts'), {
-      form:{scope:['scope1','scope2'], state:'Grant'},
-      jar:request.jar(),
-      followAllRedirects:true,
-      json:true
+      form: {scope: ['scope1','scope2'], state: 'Grant'},
+      jar: request.jar(),
+      followAllRedirects: true,
+      json: true
     }, function (err, res, body) {
-      should.deepEqual(body, {provider:'facebook', override:'contacts',
-        dynamic:{scope:['scope1','scope2'], state:'Grant'}, state:'Grant'})
+      should.deepEqual(body, {provider: 'facebook', override: 'contacts',
+        dynamic: {scope: ['scope1','scope2'], state: 'Grant'}, state: 'Grant'})
       done()
     })
   })
 
   it('dynamic - GET', function (done) {
     request.get(url('/connect/facebook/contacts'), {
-      qs:{scope:['scope1','scope2'], state:'Grant'},
-      jar:request.jar(),
-      followAllRedirects:true,
-      json:true
+      qs: {scope: ['scope1','scope2'], state: 'Grant'},
+      jar: request.jar(),
+      followAllRedirects: true,
+      json: true
     }, function (err, res, body) {
-      should.deepEqual(body, {provider:'facebook', override:'contacts',
-        dynamic:{scope:['scope1','scope2'], state:'Grant'}, state:'Grant'})
+      should.deepEqual(body, {provider: 'facebook', override: 'contacts',
+        dynamic: {scope: ['scope1','scope2'], state: 'Grant'}, state: 'Grant'})
       done()
     })
   })
@@ -93,13 +93,13 @@ describe('session - express', function () {
     should.equal(grant.config.google, undefined)
 
     request.get(url('/connect/google'), {
-      qs:{scope:['scope1','scope2'], state:'Grant'},
-      jar:request.jar(),
-      followAllRedirects:true,
-      json:true
+      qs: {scope: ['scope1','scope2'], state: 'Grant'},
+      jar: request.jar(),
+      followAllRedirects: true,
+      json: true
     }, function (err, res, body) {
-      should.deepEqual(body, {provider:'google',
-        dynamic:{scope:['scope1','scope2'], state:'Grant'}, state:'Grant'})
+      should.deepEqual(body, {provider: 'google',
+        dynamic: {scope: ['scope1','scope2'], state: 'Grant'}, state: 'Grant'})
       grant.config.google.should.be.type('object')
       grant._config.oauth.google.authorize_url = authorize_url
       done()
@@ -108,10 +108,10 @@ describe('session - express', function () {
 
   it('step1', function (done) {
     request.get(url('/connect/twitter'), {
-      jar:request.jar(),
-      json:true
+      jar: request.jar(),
+      json: true
     }, function (err, res, body) {
-      should.deepEqual(body, {provider:'twitter', step1:{oauth_token:'token'}})
+      should.deepEqual(body, {provider: 'twitter', step1: {oauth_token: 'token'}})
       done()
     })
   })
@@ -119,9 +119,9 @@ describe('session - express', function () {
   it('state auto generated', function (done) {
     grant.config.facebook.state = true
     request.get(url('/connect/facebook'), {
-      jar:request.jar(),
-      followAllRedirects:true,
-      json:true
+      jar: request.jar(),
+      followAllRedirects: true,
+      json: true
     }, function (err, res, body) {
       body.state.should.match(/\d+/)
       body.state.should.be.type('string')

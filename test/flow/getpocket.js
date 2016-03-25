@@ -15,8 +15,8 @@ describe('getpocket', function () {
 
   var grant, app, server
   var config = {
-    server: {protocol:'http', host:'localhost:5000', callback:'/'},
-    getpocket:{}
+    server: {protocol: 'http', host: 'localhost:5000', callback: '/'},
+    getpocket: {}
   }
 
   before(function (done) {
@@ -28,23 +28,23 @@ describe('getpocket', function () {
     grant.config.getpocket.access_url = url('/access_url')
 
     app.post('/request_url', function (req, res) {
-      res.end(qs.stringify({some:'data'}))
+      res.end(qs.stringify({some: 'data'}))
     })
     app.post('/access_url', function (req, res) {
-      res.end(JSON.stringify({some:'data'}))
+      res.end(JSON.stringify({some: 'data'}))
     })
     server = app.listen(5000, done)
   })
 
   it('step1', function (done) {
     getpocket.step1(grant.config.getpocket, function (err, data) {
-      should.deepEqual(data, {some:'data'})
+      should.deepEqual(data, {some: 'data'})
       done()
     })
   })
 
   it('step2', function () {
-    var url = getpocket.step2(grant.config.getpocket, {code:'code'})
+    var url = getpocket.step2(grant.config.getpocket, {code: 'code'})
     url.should.equal('/authorize_url?request_token=code' +
       '&redirect_uri=http%3A%2F%2Flocalhost%3A5000%2Fconnect%2Fgetpocket%2Fcallback')
   })

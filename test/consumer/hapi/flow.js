@@ -15,8 +15,8 @@ describe('flow - hapi', function () {
   }
 
   var config = {
-    server: {protocol:'http', host:'localhost:5000', callback:'/'},
-    facebook:{}, getpocket:{}, twitter:{}
+    server: {protocol: 'http', host: 'localhost:5000', callback: '/'},
+    facebook: {}, getpocket: {}, twitter: {}
   }
   var server, grant
 
@@ -25,28 +25,28 @@ describe('flow - hapi', function () {
       grant = new Grant()
 
       server = new Hapi.Server()
-      server.connection({host:'localhost', port:5000})
+      server.connection({host: 'localhost', port: 5000})
 
-      server.route({method:'POST', path:'/request_url', handler: function (req, res) {
-        res(qs.stringify({oauth_token:'token', oauth_token_secret:'secret'}))
+      server.route({method: 'POST', path: '/request_url', handler: function (req, res) {
+        res(qs.stringify({oauth_token: 'token', oauth_token_secret: 'secret'}))
       }})
-      server.route({method:'GET', path:'/authorize_url', handler: function (req, res) {
+      server.route({method: 'GET', path: '/authorize_url', handler: function (req, res) {
         res.redirect(url('/connect/twitter/callback?' + qs.stringify({
-          oauth_token:'token', oauth_verifier:'verifier'
+          oauth_token: 'token', oauth_verifier: 'verifier'
         })))
       }})
-      server.route({method:'POST', path:'/access_url', handler: function (req, res) {
+      server.route({method: 'POST', path: '/access_url', handler: function (req, res) {
         res(JSON.stringify({
-          oauth_token:'token', oauth_token_secret:'secret'
+          oauth_token: 'token', oauth_token_secret: 'secret'
         }))
       }})
-      server.route({method:'GET', path:'/', handler: function (req, res) {
+      server.route({method: 'GET', path: '/', handler: function (req, res) {
         res(JSON.stringify(req.session.get('grant').response || req.query))
       }})
 
       server.register([
-        {register:grant, options:config},
-        {register:yar, options:{cookieOptions:{password:'password', isSecure:false}}}
+        {register: grant, options: config},
+        {register: yar, options: {cookieOptions: {password: 'password', isSecure: false}}}
       ], function (err) {
         if (err) return done(err)
 
@@ -61,12 +61,12 @@ describe('flow - hapi', function () {
     it('twitter', function (done) {
       function assert (done) {
         request.get(url('/connect/twitter'), {
-          jar:request.jar(),
-          json:true
+          jar: request.jar(),
+          json: true
         }, function (err, res, body) {
           should.deepEqual(body, {
-            access_token:'token', access_secret:'secret',
-            raw: {oauth_token:'token', oauth_token_secret:'secret'}
+            access_token: 'token', access_secret: 'secret',
+            raw: {oauth_token: 'token', oauth_token_secret: 'secret'}
           })
           done()
         })
@@ -88,23 +88,23 @@ describe('flow - hapi', function () {
       var grant = new Grant()
 
       server = new Hapi.Server()
-      server.connection({host:'localhost', port:5000})
+      server.connection({host: 'localhost', port: 5000})
 
-      server.route({method:'GET', path:'/authorize_url', handler: function (req, res) {
+      server.route({method: 'GET', path: '/authorize_url', handler: function (req, res) {
         res.redirect(url('/connect/facebook/callback?code=code'))
       }})
-      server.route({method:'POST', path:'/access_url', handler: function (req, res) {
+      server.route({method: 'POST', path: '/access_url', handler: function (req, res) {
         res(JSON.stringify({
-          access_token:'token', refresh_token:'refresh', expires_in:3600
+          access_token: 'token', refresh_token: 'refresh', expires_in: 3600
         }))
       }})
-      server.route({method:'GET', path:'/', handler: function (req, res) {
+      server.route({method: 'GET', path: '/', handler: function (req, res) {
         res(JSON.stringify(req.query))
       }})
 
       server.register([
-        {register:grant, options:config},
-        {register:yar, options:{cookieOptions:{password:'password', isSecure:false}}}
+        {register: grant, options: config},
+        {register: yar, options: {cookieOptions: {password: 'password', isSecure: false}}}
       ], function (err) {
         if (err) return done(err)
 
@@ -117,12 +117,12 @@ describe('flow - hapi', function () {
 
     it('facebook', function (done) {
       request.get(url('/connect/facebook'), {
-        jar:request.jar(),
-        json:true
+        jar: request.jar(),
+        json: true
       }, function (err, res, body) {
         should.deepEqual(body, {
-          access_token:'token', refresh_token:'refresh',
-          raw: {access_token:'token', refresh_token:'refresh', expires_in:'3600'}
+          access_token: 'token', refresh_token: 'refresh',
+          raw: {access_token: 'token', refresh_token: 'refresh', expires_in: '3600'}
         })
         done()
       })
@@ -138,28 +138,28 @@ describe('flow - hapi', function () {
       var grant = new Grant()
 
       server = new Hapi.Server()
-      server.connection({host:'localhost', port:5000})
+      server.connection({host: 'localhost', port: 5000})
 
-      server.route({method:'POST', path:'/request_url', handler: function (req, res) {
-        res(qs.stringify({code:'code'}))
+      server.route({method: 'POST', path: '/request_url', handler: function (req, res) {
+        res(qs.stringify({code: 'code'}))
       }})
-      server.route({method:'GET', path:'/authorize_url', handler: function (req, res) {
+      server.route({method: 'GET', path: '/authorize_url', handler: function (req, res) {
         res.redirect(url('/connect/getpocket/callback?' + qs.stringify({
-          request_token:'token'
+          request_token: 'token'
         })))
       }})
-      server.route({method:'POST', path:'/access_url', handler: function (req, res) {
+      server.route({method: 'POST', path: '/access_url', handler: function (req, res) {
         res(JSON.stringify({
-          access_token:'token', username:'grant'
+          access_token: 'token', username: 'grant'
         }))
       }})
-      server.route({method:'GET', path:'/', handler: function (req, res) {
+      server.route({method: 'GET', path: '/', handler: function (req, res) {
         res(JSON.stringify(req.query))
       }})
 
       server.register([
-        {register:grant, options:config},
-        {register:yar, options:{cookieOptions:{password:'password', isSecure:false}}}
+        {register: grant, options: config},
+        {register: yar, options: {cookieOptions: {password: 'password', isSecure: false}}}
       ], function (err) {
         if (err) return done(err)
 
@@ -173,12 +173,12 @@ describe('flow - hapi', function () {
 
     it('getpocket', function (done) {
       request.get(url('/connect/getpocket'), {
-        jar:request.jar(),
-        json:true
+        jar: request.jar(),
+        json: true
       }, function (err, res, body) {
         should.deepEqual(body, {
-          access_token:'token',
-          raw: {access_token:'token', username:'grant'}
+          access_token: 'token',
+          raw: {access_token: 'token', username: 'grant'}
         })
         done()
       })
