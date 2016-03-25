@@ -18,6 +18,12 @@
     // Enforce or Disallow Semicolons
     semi: [2, 'never'],
 
+    // Require Or Disallow Space Before Blocks
+    space-before-blocks: [2, 'always'],
+
+    // Require or disallow a space before function parenthesis
+    space-before-function-paren: [2, 'always'],
+
     // Require Spaces Around Infix Operators
     space-infix-ops: [2, {'int32Hint': true}],
 
