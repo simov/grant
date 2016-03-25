@@ -1,21 +1,24 @@
 {
-  'env': {
-    'node': true
+  env: {
+    node: true
   },
-  'ecmaFeatures': {
-    'generators': true
+  parserOptions: {
+    ecmaVersion: 6
   },
-  'rules': {
+  rules: {
+    // Require === and !==
+    eqeqeq: [2, 'smart'],
+
     // Validate Indentation
-    'indent': [2, 2],
+    indent: [2, 2],
 
     // Enforce Quote Style
-    'quotes': [2, 'single'],
+    quotes: [2, 'single'],
 
-    // Enforce Semicolons
-    'semi': [2, 'never'],
+    // Enforce or Disallow Semicolons
+    semi: [2, 'never'],
 
-    // Strict Mode
-    'strict': [2, 'global']
+    // Strict Mode Directives
+    strict: [2, 'global']
   }
 }

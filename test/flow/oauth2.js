@@ -119,7 +119,7 @@ describe('oauth2', function () {
         var config = {}
         for (var key in oauth) {
           var provider = oauth[key]
-          if (provider.oauth == 2 && provider.custom_parameters) {
+          if (provider.oauth === 2 && provider.custom_parameters) {
             config[key] = {}
             provider.custom_parameters.forEach(function (param, index) {
               config[key][param] = index.toString()
@@ -135,7 +135,7 @@ describe('oauth2', function () {
             var query = qs.parse(url.split('?')[1])
             delete query.response_type
             delete query.redirect_uri
-            if (key != 'optimizely') {
+            if (key !== 'optimizely') {
               should.deepEqual(query, config[key])
             }
             else {
@@ -149,7 +149,7 @@ describe('oauth2', function () {
         var config = {}
         for (var key in oauth) {
           var provider = oauth[key]
-          if (provider.oauth == 2 && provider.subdomain) {
+          if (provider.oauth === 2 && provider.subdomain) {
             config[key] = {subdomain:'grant'}
           }
         }
@@ -159,7 +159,7 @@ describe('oauth2', function () {
         Object.keys(config).forEach(function (key) {
           it(key, function () {
             var url = oauth2.step1(grant.config[key])
-            if (key != 'vend') {
+            if (key !== 'vend') {
               url.should.match(/grant/)
             }
           })

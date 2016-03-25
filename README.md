@@ -384,9 +384,9 @@ In case you override the `redirect_uri` in your config, you'll have to redirect 
 var qs = require('querystring')
 
 app.get('/', function (req, res) {
-  if (process.env.NODE_ENV == 'development' &&
+  if (process.env.NODE_ENV === 'development' &&
       req.session.grant &&
-      req.session.grant.provider == 'feedly' &&
+      req.session.grant.provider === 'feedly' &&
       req.query.code
   ) {
     res.redirect('/connect/' + req.session.grant.provider + '/callback?'
