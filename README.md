@@ -51,7 +51,7 @@ var Grant = require('grant-express')
   , grant = new Grant({/*configuration - see below*/})
 
 var app = express()
-// REQUIRED: (any session store - see ./example/express-session)
+// REQUIRED: (any session store - see ./examples/express-session)
 app.use(session({secret: 'grant'}))
 // mount grant
 app.use(grant)
@@ -72,7 +72,7 @@ var Grant = require('grant-koa')
   , grant = new Grant({/*configuration - see below*/})
 
 var app = koa()
-// REQUIRED: (any session store - see ./example/koa-session)
+// REQUIRED: (any session store - see ./examples/koa-session)
 app.keys = ['grant']
 app.use(session(app))
 // mount grant
@@ -678,8 +678,8 @@ MIT
 
   [oauth-config]: https://github.com/simov/grant/blob/master/config/oauth.json
   [reserved-keys]: https://github.com/simov/grant/blob/master/config/reserved.json
-  [grant-examples]: https://github.com/simov/grant/tree/master/example
-  [session-transport-example]: https://github.com/simov/grant/blob/master/example/session-transport/app.js
+  [grant-examples]: https://github.com/simov/grant/tree/master/examples
+  [session-transport-example]: https://github.com/simov/grant/blob/master/examples/session-transport/app.js
 
   [grant]: #grant
   [table-of-contents]: #table-of-contents
