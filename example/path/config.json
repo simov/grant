@@ -1,0 +1,12 @@
+{
+  "server": {
+    "protocol": "http",
+    "host": "dummy.com:3000",
+    "path": "/path/prefix"
+  },
+  "twitter": {
+    "key": "[CONSUMER_KEY]",
+    "secret": "[CONSUMER_SECRET]",
+    "callback": "/handle_twitter_callback"
+  }
+}
