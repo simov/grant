@@ -16,8 +16,9 @@
   - [Express][express]
   - [Koa][koa]
   - [Hapi][hapi]
-  - [Reserved Routes][reserved-routes]
   - [Alternative Require][alternative-require]
+  - [Path Prefix][path-prefix]
+  - [Reserved Routes][reserved-routes]
 - **Configuration**
   - [Basics][configuration]
   - [Redirect URL][redirect-url]
@@ -109,14 +110,6 @@ server.register([
 ```
 
 
-## Reserved Routes
-
-```
-/connect/:provider/:override?
-/connect/:provider/callback
-```
-
-
 ## Alternative Require
 
 Alternatively you can require Grant directly *(each pair is identical)*:
@@ -134,6 +127,56 @@ var Grant = require('grant').hapi()
 ```
 
 > Koa requires two additional dependencies: `thunkify` and `koa-route`
+
+
+## Path Prefix
+
+You can mount Grant under specific path prefix:
+
+```js
+// Express
+app.use('/path/prefix', grant)
+// Koa
+app.use(mount('/path/prefix', grant))
+// Hapi
+{register: grant, options: options, routes: {prefix: '/path/prefix'}}
+```
+
+In this case it is required to set the path prefix using the `path` configuration option for the server key:
+
+```js
+{
+  "server": {
+    "protocol": "...",
+    "host": "...",
+    "path": "/path/prefix"
+  }
+}
+```
+
+Lastly that path prefix should be specified in your OAuth application's redirect URL as well:
+
+```
+[protocol]://[host][path]/connect/[provider]/callback
+```
+
+In case you want your callback routes prefixed, set them accordingly:
+
+```js
+{
+  "facebook": {
+    "callback": "/path/prefix/handle_facebook_callback"
+  }
+}
+```
+
+
+## Reserved Routes
+
+```
+/connect/:provider/:override?
+/connect/:provider/callback
+```
 
 
 ## Configuration
@@ -161,17 +204,18 @@ var Grant = require('grant').hapi()
 - **server** - configuration about your server
   - **protocol** - either `http` or `https`
   - **host** - your server's host name `localhost:3000` | `dummy.com:5000` | `mysite.com` ...
+  - **path** - path prefix to use for the Grant middleware *(defaults to empty string if omitted)*
   - **callback** - common callback for all providers in your config `/callback` | `/done` ...
-  - **transport** - transport to use to deliver the response data in your final callback `querystring` | `session` _(defaults to querystring if omitted)_
-  - **state** - generate random state string on each authorization attempt `true` | `false` _(OAuth2 only, defaults to false if omitted)_
+  - **transport** - transport to use to deliver the response data in your final callback `querystring` | `session` *(defaults to querystring if omitted)*
+  - **state** - generate random state string on each authorization attempt `true` | `false` *(OAuth2 only, defaults to false if omitted)*
 - **provider1** - any [supported provider][grant] `facebook` | `twitter` ...
   - **key** - `consumer_key` or `client_id` of your app
   - **secret** - `consumer_secret` or `client_secret` of your app
   - **scope** - array of OAuth scopes to request
-  - **callback** - specific callback to use for this provider _(overrides the global one specified under the `server` key)_
-  - **custom_params** - custom authorization parameters _(see the [Custom Parameters][custom-parameters] section)_
+  - **callback** - specific callback to use for this provider *(overrides the global one specified under the `server` key)*
+  - **custom_params** - custom authorization parameters *(see the [Custom Parameters][custom-parameters] section)*
 
-_(additionally any of the [reserved keys][reserved-keys] can be overriden for a provider)_
+*(additionally any of the [reserved keys][reserved-keys] can be overriden for a provider)*
 
 
 ## Redirect URL
@@ -184,12 +228,14 @@ For `redirect` URL of your OAuth application you should **always** use this form
 
 Where `protocol` and `host` should match the ones from which you initiate the OAuth flow, and `provider` is the provider's name from the list of [supported providers][grant].
 
-This `redirect` URL is used internally by Grant. You will receive the [response data][response-data] from the OAuth flow in the route specified in the `callback` key of your Grant configuration.
+This `redirect` URL is used internally by Grant. You will receive the [response data][response-data] from the OAuth flow inside the route specified in the `callback` key of your Grant configuration.
+
+> See the [Path Prefix][path-prefix] section on how to configure the redirect URL when using the `path` configuration option.
 
 
 ## Static Overrides
 
-You can add arbitrary `{object}` keys inside your provider's configuration to create sub configurations that override the _global_ settings for that provider:
+You can add arbitrary `{object}` keys inside your provider's configuration to create sub configurations that override the *global* settings for that provider:
 
 ```js
 // navigate to /connect/facebook
@@ -215,7 +261,7 @@ You can add arbitrary `{object}` keys inside your provider's configuration to cr
 }
 ```
 
-_(the custom key names cannot be one of the [reserved keys][reserved-keys])_
+*(the custom key names cannot be one of the [reserved keys][reserved-keys])*
 
 
 ## Dynamic Override
@@ -357,7 +403,7 @@ Once you initialize a new instance of Grant:
 var grant = new Grant(require('./config'))
 ```
 
-You get a special `config` _(`register.config` for Hapi)_ property attached to that instance. It contains the generated configuration data for all of the providers defined in your config file.
+You get a special `config` *(`register.config` for Hapi)* property attached to that instance. It contains the generated configuration data for all of the providers defined in your config file.
 
 > In case of dynamic access to a non pre-configured provider, it is automatically added to the `config` list on first access to the `/connect/:provider` route.
 
@@ -423,7 +469,7 @@ Then Grant will generate the correct OAuth URLs:
 
 ##### Sandbox URLs
 
-Some providers may have _sandbox_ URLs for testing. To use them just override the entire `request_url`, `authorize_url` and `access_url` in your configuration *(notice the `sandbox` bits)*:
+Some providers may have *sandbox* URLs for testing. To use them just override the entire `request_url`, `authorize_url` and `access_url` in your configuration *(notice the `sandbox` bits)*:
 
 ```js
 "paypal": {
@@ -576,7 +622,7 @@ In case of an error, the `error` key will be populated with the raw error data:
 5. Navigate to `/connect/facebook` to initiate the OAuth flow for Facebook, or navigate to `/connect/twitter` to initiate the OAuth flow for Twitter.
 6. Once the OAuth flow is completed you will receive the response data in the `/handle_facebook_response` route for Facebook, and in the `/handle_twitter_response` route for Twitter.
 
-_(also take a look at the [examples][grant-examples])_
+*(also take a look at the [examples][grant-examples])*
 
 
 ## Get User Profile
@@ -640,8 +686,9 @@ MIT
   [express]: #express
   [koa]: #koa
   [hapi]: #hapi
-  [reserved-routes]: #reserved-routes
   [alternative-require]: #alternative-require
+  [path-prefix]: #path-prefix
+  [reserved-routes]: #reserved-routes
   [configuration]: #configuration
   [redirect-url]: #redirect-url
   [static-overrides]: #static-overrides
