@@ -22,6 +22,12 @@ describe('utils', function () {
         utils.redirect_uri(grant.config.facebook),
         'http://localhost:5000/connect/facebook/callback')
     })
+    it('path prefix', function () {
+      grant.config.facebook.path = '/path/prefix'
+      t.equal(
+        utils.redirect_uri(grant.config.facebook),
+        'http://localhost:5000/path/prefix/connect/facebook/callback')
+    })
     it('override', function () {
       grant.config.facebook.redirect_uri = 'http://localhost:5000'
       t.equal(
