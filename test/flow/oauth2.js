@@ -1,9 +1,9 @@
 'use strict'
 
+var t = require('assert')
+var qs = require('qs')
 var express = require('express')
 var bodyParser = require('body-parser')
-var should = require('should')
-var qs = require('qs')
 var Grant = require('../../').express()
 var oauth2 = require('../../lib/flow/oauth2')
 var oauth = require('../../config/oauth')
@@ -37,20 +37,20 @@ describe('oauth2', function () {
 
     it('step1', function () {
       var url = oauth2.step1(grant.config.facebook)
-      url.should.equal('/authorize_url?response_type=code' +
+      t.equal(url, '/authorize_url?response_type=code' +
         '&redirect_uri=http%3A%2F%2Flocalhost%3A5000%2Fconnect%2Ffacebook%2Fcallback')
     })
 
     it('step2', function (done) {
       oauth2.step2(grant.config.facebook, {code: 'code'}, {}, function (err, body) {
-        should.deepEqual(JSON.parse(body), {some: 'data'})
+        t.deepEqual(JSON.parse(body), {some: 'data'})
         done()
       })
     })
 
     it('step3', function () {
       var url = oauth2.step3(grant.config.facebook, {some: 'data'})
-      url.should.equal('raw%5Bsome%5D=data')
+      t.equal(url, 'raw%5Bsome%5D=data')
     })
 
     after(function (done) {
@@ -74,13 +74,13 @@ describe('oauth2', function () {
 
     it('step1 - missing code - error response', function (done) {
       oauth2.step2(grant.config.facebook, {error: 'invalid'}, {}, function (err, body) {
-        should.deepEqual(qs.parse(err), {error: {error: 'invalid'}})
+        t.deepEqual(qs.parse(err), {error: {error: 'invalid'}})
         done()
       })
     })
     it('step1 - missing code - empty response', function (done) {
       oauth2.step2(grant.config.facebook, {}, {}, function (err, body) {
-        should.deepEqual(qs.parse(err),
+        t.deepEqual(qs.parse(err),
           {error: {error: 'Grant: OAuth2 missing code parameter'}})
         done()
       })
@@ -88,14 +88,14 @@ describe('oauth2', function () {
 
     it('step1 - state mismatch', function (done) {
       oauth2.step2(grant.config.facebook, {code: 'code',state: 'Purest'}, {state: 'Grant'}, function (err, body) {
-        should.deepEqual(qs.parse(err), {error: {error: 'Grant: OAuth2 state mismatch'}})
+        t.deepEqual(qs.parse(err), {error: {error: 'Grant: OAuth2 state mismatch'}})
         done()
       })
     })
 
     it('step2 - network error', function (done) {
       oauth2.step2(grant.config.facebook, {code: 'code'}, {}, function (err, body) {
-        should.deepEqual(qs.parse(err), {error: {'Cannot POST /access_err\n': ''}})
+        t.deepEqual(qs.parse(err), {error: {'Cannot POST /access_err\n': ''}})
         done()
       })
     })
@@ -103,7 +103,7 @@ describe('oauth2', function () {
     it('step2 - error response', function (done) {
       grant.config.facebook.access_url = url('/access_url')
       oauth2.step2(grant.config.facebook, {code: 'code'}, {}, function (err, body) {
-        should.deepEqual(qs.parse(err), {error: {error: 'invalid'}})
+        t.deepEqual(qs.parse(err), {error: {error: 'invalid'}})
         done()
       })
     })
@@ -136,10 +136,10 @@ describe('oauth2', function () {
             delete query.response_type
             delete query.redirect_uri
             if (key !== 'optimizely') {
-              should.deepEqual(query, config[key])
+              t.deepEqual(query, config[key])
             }
             else {
-              should.deepEqual(query, {})
+              t.deepEqual(query, {})
             }
           })
         })
@@ -160,7 +160,7 @@ describe('oauth2', function () {
           it(key, function () {
             var url = oauth2.step1(grant.config[key])
             if (key !== 'vend') {
-              url.should.match(/grant/)
+              t.ok(/grant/.test(url))
             }
           })
         })
@@ -172,7 +172,7 @@ describe('oauth2', function () {
         it('basecamp', function () {
           var url = oauth2.step1(grant.config.basecamp)
           var query = qs.parse(url.split('?')[1])
-          query.type.should.equal('web_server')
+          t.equal(query.type, 'web_server')
         })
       })
 
@@ -182,7 +182,7 @@ describe('oauth2', function () {
         it('optimizely', function () {
           var url = oauth2.step1(grant.config.optimizely)
           var query = qs.parse(url.split('?')[1])
-          query.scopes.should.equal('all')
+          t.equal(query.scopes, 'all')
         })
       })
 
@@ -192,7 +192,7 @@ describe('oauth2', function () {
         it('visualstudio', function () {
           var url = oauth2.step1(grant.config.visualstudio)
           var query = qs.parse(url.split('?')[1])
-          query.response_type.should.equal('Assertion')
+          t.equal(query.response_type, 'Assertion')
         })
       })
     })
@@ -233,7 +233,7 @@ describe('oauth2', function () {
         it('basecamp', function (done) {
           oauth2.step2(grant.config.basecamp, {code: 'code'}, {}, function (err, body) {
             var query = JSON.parse(body)
-            query.type.should.equal('web_server')
+            t.equal(query.type, 'web_server')
             done()
           })
         })
@@ -245,7 +245,7 @@ describe('oauth2', function () {
           grant.config.concur.secret = 'secret'
           oauth2.step2(grant.config.concur, {code: 'code'}, {}, function (err, body) {
             var query = JSON.parse(body)
-            query.should.deepEqual({
+            t.deepEqual(query, {
               code: 'code', client_id: 'key', client_secret: 'secret'
             })
             done()
@@ -259,7 +259,7 @@ describe('oauth2', function () {
           grant.config.reddit.secret = 'secret'
           oauth2.step2(grant.config.reddit, {code: 'code'}, {}, function (err, body) {
             var query = JSON.parse(body)
-            query.basic.should.equal(true)
+            t.equal(query.basic, true)
             done()
           })
         })
@@ -268,7 +268,7 @@ describe('oauth2', function () {
           grant.config.fitbit2.secret = 'secret'
           oauth2.step2(grant.config.fitbit2, {code: 'code'}, {}, function (err, body) {
             var query = JSON.parse(body)
-            query.basic.should.equal(true)
+            t.equal(query.basic, true)
             done()
           })
         })
@@ -278,7 +278,7 @@ describe('oauth2', function () {
         it('smartsheet', function (done) {
           oauth2.step2(grant.config.smartsheet, {code: 'code'}, {}, function (err, body) {
             var query = JSON.parse(body)
-            query.hash.should.be.type('string')
+            t.ok(typeof query.hash === 'string')
             done()
           })
         })
@@ -289,7 +289,7 @@ describe('oauth2', function () {
           grant.config.surveymonkey.custom_params = {api_key: 'api_key'}
           oauth2.step2(grant.config.surveymonkey, {code: 'code'}, {}, function (err, body) {
             var query = JSON.parse(body)
-            query.api_key.should.equal('api_key')
+            t.equal(query.api_key, 'api_key')
             done()
           })
         })
@@ -300,7 +300,7 @@ describe('oauth2', function () {
           grant.config.visualstudio.secret = 'secret'
           oauth2.step2(grant.config.visualstudio, {code: 'code'}, {}, function (err, body) {
             var query = JSON.parse(body)
-            should.deepEqual(query, {
+            t.deepEqual(query, {
               client_assertion_type: 'urn:ietf:params:oauth:client-assertion-type:jwt-bearer',
               client_assertion: 'secret',
               grant_type: 'urn:ietf:params:oauth:grant-type:jwt-bearer',
@@ -318,7 +318,7 @@ describe('oauth2', function () {
           grant.config.shopify.subdomain = 'access_url'
           oauth2.step2(grant.config.shopify, {code: 'code'}, {}, function (err, body) {
             var query = JSON.parse(body)
-            query.code.should.equal('code')
+            t.equal(query.code, 'code')
             done()
           })
         })

@@ -1,8 +1,8 @@
 'use strict'
 
-var request = require('request')
-var should = require('should')
+var t = require('assert')
 var qs = require('qs')
+var request = require('request')
 var koa = require('koa')
 var session = require('koa-session')
 var route = require('koa-route')
@@ -29,7 +29,7 @@ describe('error - koa', function () {
       app.use(function *(next) {
         try {yield next}
         catch (err) {
-          err.message.should.equal('Grant: mount session middleware first')
+          t.equal(err.message, 'Grant: mount session middleware first')
         }
       })
       app.use(mount(grant))
@@ -52,7 +52,7 @@ describe('error - koa', function () {
       app.use(function *(next) {
         try {yield next}
         catch (err) {
-          err.message.should.equal('Grant: mount body parser middleware first')
+          t.equal(err.message, 'Grant: mount body parser middleware first')
         }
       })
       app.use(mount(grant))
@@ -98,7 +98,7 @@ describe('error - koa', function () {
           jar: request.jar(),
           json: true
         }, function (err, res, body) {
-          should.deepEqual(body, {error: {error: {message: 'invalid', code: '500'}}})
+          t.deepEqual(body, {error: {error: {message: 'invalid', code: '500'}}})
           done()
         })
       })
@@ -138,7 +138,7 @@ describe('error - koa', function () {
           jar: request.jar(),
           json: true
         }, function (err, res, body) {
-          should.deepEqual(body, {error: {error: 'Grant: OAuth2 state mismatch'}})
+          t.deepEqual(body, {error: {error: 'Grant: OAuth2 state mismatch'}})
           done()
         })
       })
@@ -181,7 +181,7 @@ describe('error - koa', function () {
           jar: request.jar(),
           json: true
         }, function (err, res, body) {
-          should.deepEqual(body, {error: {error: {message: 'invalid', code: '500'}}})
+          t.deepEqual(body, {error: {error: {message: 'invalid', code: '500'}}})
           done()
         })
       })
@@ -215,8 +215,8 @@ describe('error - koa', function () {
         jar: jar,
         json: true
       }, function (err, res, body) {
-        res.headers['x-test'].should.equal('true')
-        should.deepEqual(body, {
+        t.equal(res.headers['x-test'], 'true')
+        t.deepEqual(body, {
           error: 'Grant: missing or misconfigured provider'})
         done()
       })
@@ -227,8 +227,8 @@ describe('error - koa', function () {
         jar: jar,
         json: true
       }, function (err, res, body) {
-        should.equal(res.headers['x-test'], undefined)
-        should.deepEqual(qs.parse(body), {
+        t.equal(res.headers['x-test'], undefined)
+        t.deepEqual(qs.parse(body), {
           error: 'Grant: missing or misconfigured provider'})
         done()
       })
@@ -240,8 +240,8 @@ describe('error - koa', function () {
         jar: jar,
         json: true
       }, function (err, res, body) {
-        res.headers['x-test'].should.equal('true')
-        should.deepEqual(body, {
+        t.equal(res.headers['x-test'], 'true')
+        t.deepEqual(body, {
           error: 'Grant: missing session or misconfigured provider'})
         done()
       })
@@ -252,8 +252,8 @@ describe('error - koa', function () {
         jar: jar,
         json: true
       }, function (err, res, body) {
-        should.equal(res.headers['x-test'], undefined)
-        should.deepEqual(qs.parse(body), {
+        t.equal(res.headers['x-test'], undefined)
+        t.deepEqual(qs.parse(body), {
           error: 'Grant: missing session or misconfigured provider'})
         done()
       })

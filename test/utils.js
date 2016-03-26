@@ -1,6 +1,6 @@
 'use strict'
 
-var should = require('should')
+var t = require('assert')
 var qs = require('qs')
 var Grant = require('../').express()
 var utils = require('../lib/utils')
@@ -18,24 +18,26 @@ describe('utils', function () {
 
   describe('redirect_uri', function () {
     it('default', function () {
-      utils.redirect_uri(grant.config.facebook)
-        .should.equal('http://localhost:5000/connect/facebook/callback')
+      t.equal(
+        utils.redirect_uri(grant.config.facebook),
+        'http://localhost:5000/connect/facebook/callback')
     })
     it('override', function () {
       grant.config.facebook.redirect_uri = 'http://localhost:5000'
-      utils.redirect_uri(grant.config.facebook)
-        .should.equal('http://localhost:5000')
+      t.equal(
+        utils.redirect_uri(grant.config.facebook),
+        'http://localhost:5000')
     })
   })
 
   describe('toQuerystring', function () {
     it('parse json', function () {
       var str = utils.toQuerystring({}, '{"some":"data"}')
-      should.deepEqual(qs.parse(str), {raw: {some: 'data'}})
+      t.deepEqual(qs.parse(str), {raw: {some: 'data'}})
     })
     it('parse querystring', function () {
       var str = utils.toQuerystring({}, 'some=data')
-      should.deepEqual(qs.parse(str), {raw: {some: 'data'}})
+      t.deepEqual(qs.parse(str), {raw: {some: 'data'}})
     })
     it('concur', function () {
       var body =
@@ -46,7 +48,7 @@ describe('utils', function () {
         '  <Refresh_Token>AXvRqWeb77Lq9F2WK6TXLCSTuxpwZO6</Refresh_Token>\r\n' +
         '</Access_Token>'
       var str = utils.toQuerystring(grant.config.concur, body)
-      should.deepEqual(qs.parse(str), {
+      t.deepEqual(qs.parse(str), {
         access_token: 'q962LLopjMgTOeTn3fRN+5uABCg=',
         refresh_token: 'AXvRqWeb77Lq9F2WK6TXLCSTuxpwZO6',
         raw: body
@@ -55,30 +57,30 @@ describe('utils', function () {
     it('elance', function () {
       var str = utils.toQuerystring(grant.config.elance,
         {data: {access_token: 'token', refresh_token: 'refresh'}})
-      should.deepEqual(qs.parse(str), {access_token: 'token', refresh_token: 'refresh',
+      t.deepEqual(qs.parse(str), {access_token: 'token', refresh_token: 'refresh',
         raw: {data: {access_token: 'token', refresh_token: 'refresh'}}})
     })
     it('getpocket', function () {
       var str = utils.toQuerystring(grant.config.getpocket, {access_token: 'token'})
-      should.deepEqual(qs.parse(str),
+      t.deepEqual(qs.parse(str),
         {access_token: 'token', raw: {access_token: 'token'}})
     })
     it('yammer', function () {
       var str = utils.toQuerystring(grant.config.yammer, {access_token: {token: 'token'}})
-      should.deepEqual(qs.parse(str),
+      t.deepEqual(qs.parse(str),
         {access_token: 'token', raw: {access_token: {token: 'token'}}})
     })
     it('oauth1', function () {
       var str = utils.toQuerystring(grant.config.twitter,
         {oauth_token: 'token', oauth_token_secret: 'secret'})
-      should.deepEqual(qs.parse(str),
+      t.deepEqual(qs.parse(str),
         {access_token: 'token', access_secret: 'secret',
         raw: {oauth_token: 'token', oauth_token_secret: 'secret'}})
     })
     it('oauth2', function () {
       var str = utils.toQuerystring(grant.config.facebook,
         {access_token: 'token', refresh_token: 'refresh'})
-      should.deepEqual(qs.parse(str),
+      t.deepEqual(qs.parse(str),
         {access_token: 'token', refresh_token: 'refresh',
         raw: {access_token: 'token', refresh_token: 'refresh'}})
     })
@@ -87,11 +89,11 @@ describe('utils', function () {
   describe('error', function () {
     it('http error', function () {
       var str = utils.error(new Error('HTTP error'))
-      should.deepEqual(qs.parse(str), {error: {error: 'HTTP error'}})
+      t.deepEqual(qs.parse(str), {error: {error: 'HTTP error'}})
     })
     it('response error', function () {
       var str = utils.error(null, {statusCode: 500}, {some: 'data'})
-      should.deepEqual(qs.parse(str), {error: {some: 'data'}})
+      t.deepEqual(qs.parse(str), {error: {some: 'data'}})
     })
   })
 })

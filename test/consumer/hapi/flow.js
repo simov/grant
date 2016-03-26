@@ -1,8 +1,8 @@
 'use strict'
 
-var request = require('request')
-var should = require('should')
+var t = require('assert')
 var qs = require('qs')
+var request = require('request')
 var Hapi = require('hapi')
 var yar = require('yar')
 var Grant = require('../../../').hapi()
@@ -67,7 +67,7 @@ describe('flow - hapi', function () {
           jar: request.jar(),
           json: true
         }, function (err, res, body) {
-          should.deepEqual(body, {
+          t.deepEqual(body, {
             access_token: 'token', access_secret: 'secret',
             raw: {oauth_token: 'token', oauth_token_secret: 'secret'}
           })
@@ -126,7 +126,7 @@ describe('flow - hapi', function () {
         jar: request.jar(),
         json: true
       }, function (err, res, body) {
-        should.deepEqual(body, {
+        t.deepEqual(body, {
           access_token: 'token', refresh_token: 'refresh',
           raw: {access_token: 'token', refresh_token: 'refresh', expires_in: '3600'}
         })
@@ -185,7 +185,7 @@ describe('flow - hapi', function () {
         jar: request.jar(),
         json: true
       }, function (err, res, body) {
-        should.deepEqual(body, {
+        t.deepEqual(body, {
           access_token: 'token',
           raw: {access_token: 'token', username: 'grant'}
         })

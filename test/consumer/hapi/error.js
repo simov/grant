@@ -1,8 +1,8 @@
 'use strict'
 
-var request = require('request')
-var should = require('should')
+var t = require('assert')
 var qs = require('qs')
+var request = require('request')
 var Hapi = require('hapi')
 var yar = require('yar')
 var Grant = require('../../../').hapi()
@@ -32,7 +32,7 @@ describe('error - hapi', function () {
         }
 
         server.on('request-error', function (req, err) {
-          err.message.should.equal('Uncaught error: Grant: register session plugin first')
+          t.equal(err.message, 'Uncaught error: Grant: register session plugin first')
         })
 
         server.start(function () {
@@ -40,7 +40,7 @@ describe('error - hapi', function () {
             jar: request.jar(),
             json: true
           }, function (err, res, body) {
-            body.statusCode.should.equal(500)
+            t.equal(body.statusCode, 500)
             server.stop(done)
           })
         })
@@ -85,7 +85,7 @@ describe('error - hapi', function () {
           jar: request.jar(),
           json: true
         }, function (err, res, body) {
-          should.deepEqual(body, {error: {error: {message: 'invalid', code: '500'}}})
+          t.deepEqual(body, {error: {error: {message: 'invalid', code: '500'}}})
           done()
         })
       })
@@ -132,7 +132,7 @@ describe('error - hapi', function () {
           jar: request.jar(),
           json: true
         }, function (err, res, body) {
-          should.deepEqual(body, {error: {error: 'Grant: OAuth2 state mismatch'}})
+          t.deepEqual(body, {error: {error: 'Grant: OAuth2 state mismatch'}})
           done()
         })
       })
@@ -181,7 +181,7 @@ describe('error - hapi', function () {
           jar: request.jar(),
           json: true
         }, function (err, res, body) {
-          should.deepEqual(body, {error: {error: {message: 'invalid', code: '500'}}})
+          t.deepEqual(body, {error: {error: {message: 'invalid', code: '500'}}})
           done()
         })
       })
@@ -223,8 +223,8 @@ describe('error - hapi', function () {
         jar: jar,
         json: true
       }, function (err, res, body) {
-        res.headers['x-test'].should.equal('true')
-        should.deepEqual(body, {
+        t.equal(res.headers['x-test'], 'true')
+        t.deepEqual(body, {
           error: 'Grant: missing or misconfigured provider'})
         done()
       })
@@ -235,8 +235,8 @@ describe('error - hapi', function () {
         jar: jar,
         json: true
       }, function (err, res, body) {
-        should.equal(res.headers['x-test'], undefined)
-        should.deepEqual(qs.parse(body), {
+        t.equal(res.headers['x-test'], undefined)
+        t.deepEqual(qs.parse(body), {
           error: 'Grant: missing or misconfigured provider'})
         done()
       })
@@ -248,8 +248,8 @@ describe('error - hapi', function () {
         jar: jar,
         json: true
       }, function (err, res, body) {
-        res.headers['x-test'].should.equal('true')
-        should.deepEqual(body, {
+        t.equal(res.headers['x-test'], 'true')
+        t.deepEqual(body, {
           error: 'Grant: missing session or misconfigured provider'})
         done()
       })
@@ -260,8 +260,8 @@ describe('error - hapi', function () {
         jar: jar,
         json: true
       }, function (err, res, body) {
-        should.equal(res.headers['x-test'], undefined)
-        should.deepEqual(qs.parse(body), {
+        t.equal(res.headers['x-test'], undefined)
+        t.deepEqual(qs.parse(body), {
           error: 'Grant: missing session or misconfigured provider'})
         done()
       })

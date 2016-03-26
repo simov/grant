@@ -1,8 +1,8 @@
 'use strict'
 
-var request = require('request')
-var should = require('should')
+var t = require('assert')
 var qs = require('qs')
+var request = require('request')
 var koa = require('koa')
 var session = require('koa-session')
 var route = require('koa-route')
@@ -63,7 +63,7 @@ describe('flow - koa', function () {
           jar: request.jar(),
           json: true
         }, function (err, res, body) {
-          should.deepEqual(body, {
+          t.deepEqual(body, {
             access_token: 'token', access_secret: 'secret',
             raw: {oauth_token: 'token', oauth_token_secret: 'secret'}
           })
@@ -115,7 +115,7 @@ describe('flow - koa', function () {
         jar: request.jar(),
         json: true
       }, function (err, res, body) {
-        should.deepEqual(body, {
+        t.deepEqual(body, {
           access_token: 'token', refresh_token: 'refresh',
           raw: {access_token: 'token', refresh_token: 'refresh', expires_in: '3600'}
         })
@@ -167,7 +167,7 @@ describe('flow - koa', function () {
         jar: request.jar(),
         json: true
       }, function (err, res, body) {
-        should.deepEqual(body, {
+        t.deepEqual(body, {
           access_token: 'token',
           raw: {access_token: 'token', username: 'grant'}
         })

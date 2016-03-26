@@ -1,8 +1,8 @@
 'use strict'
 
-var request = require('request')
-var should = require('should')
+var t = require('assert')
 var qs = require('qs')
+var request = require('request')
 var Hapi = require('hapi')
 var yar = require('yar')
 var Grant = require('../../../').hapi()
@@ -55,7 +55,7 @@ describe('session - hapi', function () {
       jar: request.jar(),
       json: true
     }, function (err, res, body) {
-      should.deepEqual(body, {provider: 'facebook'})
+      t.deepEqual(body, {provider: 'facebook'})
       done()
     })
   })
@@ -65,7 +65,7 @@ describe('session - hapi', function () {
       jar: request.jar(),
       json: true
     }, function (err, res, body) {
-      should.deepEqual(body, {provider: 'facebook', override: 'contacts'})
+      t.deepEqual(body, {provider: 'facebook', override: 'contacts'})
       done()
     })
   })
@@ -77,7 +77,7 @@ describe('session - hapi', function () {
       followAllRedirects: true,
       json: true
     }, function (err, res, body) {
-      should.deepEqual(body, {provider: 'facebook', override: 'contacts',
+      t.deepEqual(body, {provider: 'facebook', override: 'contacts',
         dynamic: {scope: ['scope1','scope2'], state: 'Grant'}, state: 'Grant'})
       done()
     })
@@ -90,7 +90,7 @@ describe('session - hapi', function () {
       followAllRedirects: true,
       json: true
     }, function (err, res, body) {
-      should.deepEqual(body, {provider: 'facebook', override: 'contacts',
+      t.deepEqual(body, {provider: 'facebook', override: 'contacts',
         dynamic: {scope: ['scope1','scope2'], state: 'Grant'}, state: 'Grant'})
       done()
     })
@@ -99,7 +99,7 @@ describe('session - hapi', function () {
   it('dynamic - non configured provider', function (done) {
     var authorize_url = grant.register._config.oauth.google.authorize_url
     grant.register._config.oauth.google.authorize_url = '/authorize_url'
-    should.equal(grant.register.config.google, undefined)
+    t.equal(grant.register.config.google, undefined)
 
     request.get(url('/connect/google'), {
       qs: {scope: ['scope1','scope2'], state: 'Grant'},
@@ -107,9 +107,9 @@ describe('session - hapi', function () {
       followAllRedirects: true,
       json: true
     }, function (err, res, body) {
-      should.deepEqual(body, {provider: 'google',
+      t.deepEqual(body, {provider: 'google',
         dynamic: {scope: ['scope1','scope2'], state: 'Grant'}, state: 'Grant'})
-      grant.register.config.google.should.be.type('object')
+      t.ok(typeof grant.register.config.google === 'object')
       grant.register._config.oauth.google.authorize_url = authorize_url
       done()
     })
@@ -120,7 +120,7 @@ describe('session - hapi', function () {
       jar: request.jar(),
       json: true
     }, function (err, res, body) {
-      should.deepEqual(body, {provider: 'twitter', step1: {oauth_token: 'token'}})
+      t.deepEqual(body, {provider: 'twitter', step1: {oauth_token: 'token'}})
       done()
     })
   })
@@ -132,8 +132,8 @@ describe('session - hapi', function () {
       followAllRedirects: true,
       json: true
     }, function (err, res, body) {
-      body.state.should.match(/\d+/)
-      body.state.should.be.type('string')
+      t.ok(/\d+/.test(body.state))
+      t.ok(typeof body.state === 'string')
       done()
     })
   })

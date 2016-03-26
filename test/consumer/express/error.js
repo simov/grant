@@ -1,8 +1,8 @@
 'use strict'
 
-var request = require('request')
-var should = require('should')
+var t = require('assert')
 var qs = require('qs')
+var request = require('request')
 var express = require('express')
 var session = require('express-session')
 var Grant = require('../../../').express()
@@ -24,7 +24,7 @@ describe('error - express', function () {
       var grant = new Grant(config)
       var app = express().use(grant)
       app.use(function (err, req, res, next) {
-        err.message.should.equal('Grant: mount session middleware first')
+        t.equal(err.message, 'Grant: mount session middleware first')
         next()
       })
       var server = app.listen(5000, function () {
@@ -44,7 +44,7 @@ describe('error - express', function () {
       app.use(session({secret: 'grant', saveUninitialized: true, resave: true}))
       app.use(grant)
       app.use(function (err, req, res, next) {
-        err.message.should.equal('Grant: mount body parser middleware first')
+        t.equal(err.message, 'Grant: mount body parser middleware first')
         next()
       })
       var server = app.listen(5000, function () {
@@ -87,7 +87,7 @@ describe('error - express', function () {
           jar: request.jar(),
           json: true
         }, function (err, res, body) {
-          should.deepEqual(body, {error: {error: {message: 'invalid', code: '500'}}})
+          t.deepEqual(body, {error: {error: {message: 'invalid', code: '500'}}})
           done()
         })
       })
@@ -125,7 +125,7 @@ describe('error - express', function () {
           jar: request.jar(),
           json: true
         }, function (err, res, body) {
-          should.deepEqual(body, {error: {error: 'Grant: OAuth2 state mismatch'}})
+          t.deepEqual(body, {error: {error: 'Grant: OAuth2 state mismatch'}})
           done()
         })
       })
@@ -166,7 +166,7 @@ describe('error - express', function () {
           jar: request.jar(),
           json: true
         }, function (err, res, body) {
-          should.deepEqual(body, {error: {error: {message: 'invalid', code: '500'}}})
+          t.deepEqual(body, {error: {error: {message: 'invalid', code: '500'}}})
           done()
         })
       })
@@ -198,8 +198,8 @@ describe('error - express', function () {
         jar: jar,
         json: true
       }, function (err, res, body) {
-        res.headers['x-test'].should.equal('true')
-        should.deepEqual(body, {
+        t.equal(res.headers['x-test'], 'true')
+        t.deepEqual(body, {
           error: 'Grant: missing or misconfigured provider'})
         done()
       })
@@ -210,8 +210,8 @@ describe('error - express', function () {
         jar: jar,
         json: true
       }, function (err, res, body) {
-        should.equal(res.headers['x-test'], undefined)
-        should.deepEqual(qs.parse(body), {
+        t.equal(res.headers['x-test'], undefined)
+        t.deepEqual(qs.parse(body), {
           error: 'Grant: missing or misconfigured provider'})
         done()
       })
@@ -223,8 +223,8 @@ describe('error - express', function () {
         jar: jar,
         json: true
       }, function (err, res, body) {
-        res.headers['x-test'].should.equal('true')
-        should.deepEqual(body, {
+        t.equal(res.headers['x-test'], 'true')
+        t.deepEqual(body, {
           error: 'Grant: missing session or misconfigured provider'})
         done()
       })
@@ -235,8 +235,8 @@ describe('error - express', function () {
         jar: jar,
         json: true
       }, function (err, res, body) {
-        should.equal(res.headers['x-test'], undefined)
-        should.deepEqual(qs.parse(body), {
+        t.equal(res.headers['x-test'], undefined)
+        t.deepEqual(qs.parse(body), {
           error: 'Grant: missing session or misconfigured provider'})
         done()
       })

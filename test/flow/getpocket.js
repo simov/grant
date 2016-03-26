@@ -1,8 +1,8 @@
 'use strict'
 
-var express = require('express')
-var should = require('should')
+var t = require('assert')
 var qs = require('qs')
+var express = require('express')
 var Grant = require('../../').express()
 var getpocket = require('../../lib/flow/getpocket')
 
@@ -38,20 +38,20 @@ describe('getpocket', function () {
 
   it('step1', function (done) {
     getpocket.step1(grant.config.getpocket, function (err, data) {
-      should.deepEqual(data, {some: 'data'})
+      t.deepEqual(data, {some: 'data'})
       done()
     })
   })
 
   it('step2', function () {
     var url = getpocket.step2(grant.config.getpocket, {code: 'code'})
-    url.should.equal('/authorize_url?request_token=code' +
+    t.equal(url, '/authorize_url?request_token=code' +
       '&redirect_uri=http%3A%2F%2Flocalhost%3A5000%2Fconnect%2Fgetpocket%2Fcallback')
   })
 
   it('step3', function (done) {
     getpocket.step3(grant.config.getpocket, {}, function (err, url) {
-      url.should.equal('raw%5Bsome%5D=data')
+      t.equal(url, 'raw%5Bsome%5D=data')
       done()
     })
   })

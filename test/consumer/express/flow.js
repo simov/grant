@@ -1,8 +1,8 @@
 'use strict'
 
-var request = require('request')
-var should = require('should')
+var t = require('assert')
 var qs = require('qs')
+var request = require('request')
 var express = require('express')
 var session = require('express-session')
 var Grant = require('../../../').express()
@@ -56,7 +56,7 @@ describe('flow - express', function () {
           jar: request.jar(),
           json: true
         }, function (err, res, body) {
-          should.deepEqual(body, {
+          t.deepEqual(body, {
             access_token: 'token', access_secret: 'secret',
             raw: {oauth_token: 'token', oauth_token_secret: 'secret'}
           })
@@ -104,7 +104,7 @@ describe('flow - express', function () {
         jar: request.jar(),
         json: true
       }, function (err, res, body) {
-        should.deepEqual(body, {
+        t.deepEqual(body, {
           access_token: 'token', refresh_token: 'refresh',
           raw: {access_token: 'token', refresh_token: 'refresh', expires_in: '3600'}
         })
@@ -152,7 +152,7 @@ describe('flow - express', function () {
         jar: request.jar(),
         json: true
       }, function (err, res, body) {
-        should.deepEqual(body, {
+        t.deepEqual(body, {
           access_token: 'token',
           raw: {access_token: 'token', username: 'grant'}
         })
