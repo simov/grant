@@ -94,12 +94,12 @@ describe('oauth1', function () {
 
     it('step2 - mising oauth_token - error response', function () {
       var url = oauth1.step2(grant.config.twitter, {error: 'invalid'})
-      t.deepEqual(qs.parse(url.replace('/?','')),
+      t.deepEqual(qs.parse(url.replace('/?', '')),
         {error: {error: 'invalid'}})
     })
     it('step2 - mising oauth_token - empty response', function () {
       var url = oauth1.step2(grant.config.twitter, {})
-      t.deepEqual(qs.parse(url.replace('/?','')),
+      t.deepEqual(qs.parse(url.replace('/?', '')),
         {error: {error: 'Grant: OAuth1 missing oauth_token parameter'}})
     })
 
@@ -208,28 +208,28 @@ describe('oauth1', function () {
 
       describe('scope', function () {
         it('flickr', function () {
-          grant.config.flickr.scope = ['read','write']
+          grant.config.flickr.scope = ['read', 'write']
           var url = oauth1.step2(grant.config.flickr, {oauth_token: 'token'})
           var query = qs.parse(url.split('?')[1])
           t.deepEqual(query,
-            {oauth_token: 'token', perms: ['read','write']})
+            {oauth_token: 'token', perms: ['read', 'write']})
         })
 
         it('ravelry', function () {
-          grant.config.ravelry.scope = ['read','write']
+          grant.config.ravelry.scope = ['read', 'write']
           var url = oauth1.step2(grant.config.ravelry, {oauth_token: 'token'})
           var query = qs.parse(url.split('?')[1])
           t.deepEqual(query,
-            {oauth_token: 'token', scope: ['read','write']})
+            {oauth_token: 'token', scope: ['read', 'write']})
         })
 
         it('trello', function () {
           grant.config.trello.custom_params = {expiration: 'never', name: 'Grant'}
-          grant.config.trello.scope = ['read','write']
+          grant.config.trello.scope = ['read', 'write']
           var url = oauth1.step2(grant.config.trello, {oauth_token: 'token'})
           var query = qs.parse(url.split('?')[1])
           t.deepEqual(query,
-            {oauth_token: 'token', scope: ['read','write'], expiration: 'never', name: 'Grant'})
+            {oauth_token: 'token', scope: ['read', 'write'], expiration: 'never', name: 'Grant'})
         })
       })
 

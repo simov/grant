@@ -38,7 +38,7 @@ describe('config', function () {
 
     describe('scope', function () {
       it('array with comma', function () {
-        var provider = {scope: ['scope1','scope2']}
+        var provider = {scope: ['scope1', 'scope2']}
           , options = {}, server = {}, name = 'grant'
         var result = config.initProvider(provider, options, server, name)
         t.deepEqual(result, {
@@ -46,7 +46,7 @@ describe('config', function () {
         })
       })
       it('array with delimiter', function () {
-        var provider = {scope: ['scope1','scope2'], scope_delimiter: ' '}
+        var provider = {scope: ['scope1', 'scope2'], scope_delimiter: ' '}
           , options = {}, server = {}, name = 'grant'
         var result = config.initProvider(provider, options, server, name)
         t.deepEqual(result, {

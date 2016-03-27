@@ -70,26 +70,26 @@ describe('session - koa', function () {
 
   it('dynamic - POST', function (done) {
     request.post(url('/connect/facebook/contacts'), {
-      form: {scope: ['scope1','scope2'], state: 'Grant'},
+      form: {scope: ['scope1', 'scope2'], state: 'Grant'},
       jar: request.jar(),
       followAllRedirects: true,
       json: true
     }, function (err, res, body) {
       t.deepEqual(body, {provider: 'facebook', override: 'contacts',
-        dynamic: {scope: ['scope1','scope2'], state: 'Grant'}, state: 'Grant'})
+        dynamic: {scope: ['scope1', 'scope2'], state: 'Grant'}, state: 'Grant'})
       done()
     })
   })
 
   it('dynamic - GET', function (done) {
     request.get(url('/connect/facebook/contacts'), {
-      qs: {scope: ['scope1','scope2'], state: 'Grant'},
+      qs: {scope: ['scope1', 'scope2'], state: 'Grant'},
       jar: request.jar(),
       followAllRedirects: true,
       json: true
     }, function (err, res, body) {
       t.deepEqual(body, {provider: 'facebook', override: 'contacts',
-        dynamic: {scope: ['scope1','scope2'], state: 'Grant'}, state: 'Grant'})
+        dynamic: {scope: ['scope1', 'scope2'], state: 'Grant'}, state: 'Grant'})
       done()
     })
   })
@@ -100,13 +100,13 @@ describe('session - koa', function () {
     t.equal(grant.config.google, undefined)
 
     request.get(url('/connect/google'), {
-      qs: {scope: ['scope1','scope2'], state: 'Grant'},
+      qs: {scope: ['scope1', 'scope2'], state: 'Grant'},
       jar: request.jar(),
       followAllRedirects: true,
       json: true
     }, function (err, res, body) {
       t.deepEqual(body, {provider: 'google',
-        dynamic: {scope: ['scope1','scope2'], state: 'Grant'}, state: 'Grant'})
+        dynamic: {scope: ['scope1', 'scope2'], state: 'Grant'}, state: 'Grant'})
       t.ok(typeof grant.config.google === 'object')
       grant._config.oauth.google.authorize_url = authorize_url
       done()

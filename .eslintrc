@@ -6,6 +6,9 @@
     ecmaVersion: 6
   },
   rules: {
+    // Enforces spacing around commas
+    comma-spacing: [2, {'before': false, 'after': true}],
+
     // Require Following Curly Brace Conventions
     curly: [2, 'all'],
 
