@@ -10,24 +10,16 @@ var oauth1 = require('../../lib/flow/oauth1')
 
 describe('oauth1', function () {
   function url (path) {
-    var c = config.server
-    return c.protocol + '://' + c.host + path
-  }
-
-  var grant, app, server
-  var config = {
-    server: {protocol: 'http', host: 'localhost:5000', callback: '/'},
-    twitter: {}
+    return 'http://localhost:5000' + path
   }
 
   describe('success', function () {
-    before(function (done) {
-      grant = new Grant(config)
-      app = express().use(grant)
+    var grant, server
 
-      grant.config.twitter.request_url = url('/request_url')
-      grant.config.twitter.authorize_url = '/authorize_url'
-      grant.config.twitter.access_url = url('/access_url')
+    before(function (done) {
+      var config = {twitter: {}}
+      grant = new Grant(config)
+      var app = express().use(grant)
 
       app.post('/request_url', function (req, res) {
         res.end(qs.stringify({some: 'data'}))
@@ -39,6 +31,7 @@ describe('oauth1', function () {
     })
 
     it('step1', function (done) {
+      grant.config.twitter.request_url = url('/request_url')
       oauth1.step1(grant.config.twitter, function (err, data) {
         t.deepEqual(data, {some: 'data'})
         done()
@@ -46,11 +39,13 @@ describe('oauth1', function () {
     })
 
     it('step2', function () {
+      grant.config.twitter.authorize_url = '/authorize_url'
       var url = oauth1.step2(grant.config.twitter, {oauth_token: 'token'})
       t.equal(url, '/authorize_url?oauth_token=token')
     })
 
     it('step3', function (done) {
+      grant.config.twitter.access_url = url('/access_url')
       oauth1.step3(grant.config.twitter, {}, {oauth_token: 'token'}, function (err, url) {
         t.equal(url, 'raw%5Bsome%5D=data')
         done()
@@ -63,15 +58,17 @@ describe('oauth1', function () {
   })
 
   describe('error', function () {
-    before(function (done) {
-      grant = new Grant(config)
-      app = express().use(grant)
+    var grant, server
 
-      grant.config.twitter.request_url = url('/request_err')
-      grant.config.twitter.authorize_url = '/authorize_url'
-      grant.config.twitter.access_url = url('/access_url')
+    before(function (done) {
+      var config = {twitter: {}}
+      grant = new Grant(config)
+      var app = express().use(grant)
 
       app.post('/request_url', function (req, res) {
+        res.status(500).end(JSON.stringify({error: 'invalid'}))
+      })
+      app.post('/access_url', function (req, res) {
         res.status(500).end(JSON.stringify({error: 'invalid'}))
       })
 
@@ -79,6 +76,7 @@ describe('oauth1', function () {
     })
 
     it('step1 - network error', function (done) {
+      grant.config.twitter.request_url = url('/request_err')
       oauth1.step1(grant.config.twitter, function (err, body) {
         t.deepEqual(qs.parse(err), {error: {'Cannot POST /request_err\n': ''}})
         done()
@@ -116,6 +114,20 @@ describe('oauth1', function () {
         done()
       })
     })
+    it('step3 - network error', function (done) {
+      grant.config.twitter.access_url = url('/access_err')
+      oauth1.step3(grant.config.twitter, {}, {oauth_token: 'token'}, function (err, body) {
+        t.deepEqual(qs.parse(err), {error: {'Cannot POST /access_err\n': ''}})
+        done()
+      })
+    })
+    it('step3 - error response', function (done) {
+      grant.config.twitter.access_url = url('/access_url')
+      oauth1.step3(grant.config.twitter, {}, {oauth_token: 'token'}, function (err, body) {
+        t.deepEqual(qs.parse(err), {error: {error: 'invalid'}})
+        done()
+      })
+    })
 
     after(function (done) {
       server.close(done)
@@ -124,16 +136,18 @@ describe('oauth1', function () {
 
   describe('custom', function () {
     describe('step1', function () {
+      var grant, server
+
       before(function (done) {
-        util._extend(config, {
-          copy: {}, etsy: {}, flickr: {}, freshbooks: {}, goodreads: {},
-          intuit: {}, linkedin: {}, ravelry: {}, trello: {}, tripit: {}
-        })
+        var config = {copy: {}, etsy: {}, freshbooks: {}, linkedin: {}}
         grant = new Grant(config)
-        app = express().use(grant)
+        var app = express().use(grant)
 
         app.post('/request_url', function (req, res) {
-          res.end(qs.stringify({oauth: req.headers.authorization, scope: req.query.scope}))
+          res.end(qs.stringify({
+            oauth: req.headers.authorization,
+            scope: req.query.scope
+          }))
         })
         server = app.listen(5000, done)
       })
@@ -192,7 +206,10 @@ describe('oauth1', function () {
     })
 
     describe('step2', function () {
+      var grant
+
       before(function () {
+        var config = {flickr: {}, freshbooks: {}, ravelry: {}, trello: {}, tripit: {}}
         grant = new Grant(config)
       })
 
@@ -235,6 +252,7 @@ describe('oauth1', function () {
 
       describe('oauth_callback', function () {
         it('tripit', function () {
+          grant.config.tripit.redirect_uri = url('/connect/tripit/callback')
           var uri = oauth1.step2(grant.config.tripit, {oauth_token: 'token'})
           var query = qs.parse(uri.split('?')[1])
           t.deepEqual(query,
@@ -252,9 +270,12 @@ describe('oauth1', function () {
     })
 
     describe('step3', function () {
+      var grant, server
+
       before(function (done) {
+        var config = {freshbooks: {}, goodreads: {}, intuit: {}, tripit: {}}
         grant = new Grant(config)
-        app = express().use(grant)
+        var app = express().use(grant)
 
         app.post('/access_url', function (req, res) {
           res.end(qs.stringify({oauth: req.headers.authorization}))
