@@ -1,6 +1,7 @@
 'use strict'
 
 var t = require('assert')
+var http = require('http')
 var util = require('util')
 var qs = require('qs')
 var express = require('express')
@@ -14,40 +15,54 @@ describe('oauth1', function () {
   }
 
   describe('success', function () {
-    var grant, server
+    var server
 
     before(function (done) {
-      var config = {twitter: {}}
-      grant = new Grant(config)
-      var app = express().use(grant)
-
-      app.post('/request_url', function (req, res) {
-        res.end(qs.stringify({some: 'data'}))
+      server = http.createServer()
+      server.on('request', function (req, res) {
+        if (req.url === '/request_url') {
+          var data = req.headers.authorization
+            .replace('OAuth ', '').replace(/"/g, '').replace(/,/g, '&')
+          res.end(data)
+        }
+        else if (req.url === '/access_url') {
+          res.end(qs.stringify({
+            oauth_token: 'token', oauth_token_secret: 'secret', some: 'data'
+          }))
+        }
       })
-      app.post('/access_url', function (req, res) {
-        res.end(JSON.stringify({some: 'data'}))
-      })
-      server = app.listen(5000, done)
+      server.listen(5000, done)
     })
 
     it('step1', function (done) {
-      grant.config.twitter.request_url = url('/request_url')
-      oauth1.step1(grant.config.twitter, function (err, data) {
-        t.deepEqual(data, {some: 'data'})
+      var provider = {
+        request_url: url('/request_url'),
+        redirect_uri: '/redirect_uri',
+        key: 'key'
+      }
+      oauth1.step1(provider, function (err, data) {
+        t.equal(data.oauth_callback, '/redirect_uri')
+        t.equal(data.oauth_consumer_key, 'key')
         done()
       })
     })
 
     it('step2', function () {
-      grant.config.twitter.authorize_url = '/authorize_url'
-      var url = oauth1.step2(grant.config.twitter, {oauth_token: 'token'})
-      t.equal(url, '/authorize_url?oauth_token=token')
+      var provider = {authorize_url: '/authorize_url'}
+      var url = oauth1.step2(provider, {oauth_token: 'token'})
+      t.deepEqual(qs.parse(url.replace('/authorize_url?', '')),
+        {oauth_token: 'token'})
     })
 
     it('step3', function (done) {
-      grant.config.twitter.access_url = url('/access_url')
-      oauth1.step3(grant.config.twitter, {}, {oauth_token: 'token'}, function (err, url) {
-        t.equal(url, 'raw%5Bsome%5D=data')
+      var provider = {access_url: url('/access_url'), oauth: 1}
+      var step2 = {oauth_token: 'token'}
+      oauth1.step3(provider, {}, step2, function (err, url) {
+        t.deepEqual(qs.parse(url), {
+          access_token: 'token',
+          access_secret: 'secret',
+          raw: {oauth_token: 'token', oauth_token_secret: 'secret', some: 'data'}
+        })
         done()
       })
     })
@@ -58,72 +73,76 @@ describe('oauth1', function () {
   })
 
   describe('error', function () {
-    var grant, server
+    var server
 
     before(function (done) {
-      var config = {twitter: {}}
-      grant = new Grant(config)
-      var app = express().use(grant)
-
-      app.post('/request_url', function (req, res) {
-        res.status(500).end(JSON.stringify({error: 'invalid'}))
+      server = http.createServer()
+      server.on('request', function (req, res) {
+        res.writeHead(500)
+        res.end(qs.stringify({error: 'invalid'}))
       })
-      app.post('/access_url', function (req, res) {
-        res.status(500).end(JSON.stringify({error: 'invalid'}))
-      })
-
-      server = app.listen(5000, done)
+      server.listen(5000, done)
     })
 
-    it('step1 - network error', function (done) {
-      grant.config.twitter.request_url = url('/request_err')
-      oauth1.step1(grant.config.twitter, function (err, body) {
-        t.deepEqual(qs.parse(err), {error: {'Cannot POST /request_err\n': ''}})
+    it('step1 - request error', function (done) {
+      var provider = {request_url: '/request_url'}
+      oauth1.step1(provider, function (err, body) {
+        t.deepEqual(qs.parse(err), {error: {error: 'Invalid URI "/request_url"'}})
         done()
       })
     })
-    it('step1 - error response', function (done) {
-      grant.config.twitter.request_url = url('/request_url')
-      oauth1.step1(grant.config.twitter, function (err, body) {
+    it('step1 - response error', function (done) {
+      var provider = {request_url: url('/request_url')}
+      oauth1.step1(provider, function (err, body) {
         t.deepEqual(qs.parse(err), {error: {error: 'invalid'}})
         done()
       })
     })
 
-    it('step2 - mising oauth_token - error response', function () {
-      var url = oauth1.step2(grant.config.twitter, {error: 'invalid'})
+    it('step2 - mising oauth_token - response error', function () {
+      var provider = {}
+      var step1 = {error: 'invalid'}
+      var url = oauth1.step2(provider, step1)
       t.deepEqual(qs.parse(url.replace('/?', '')),
         {error: {error: 'invalid'}})
     })
     it('step2 - mising oauth_token - empty response', function () {
-      var url = oauth1.step2(grant.config.twitter, {})
+      var provider = {}
+      var step1 = {}
+      var url = oauth1.step2(provider, step1)
       t.deepEqual(qs.parse(url.replace('/?', '')),
         {error: {error: 'Grant: OAuth1 missing oauth_token parameter'}})
     })
 
     it('step3 - mising oauth_token - response error', function (done) {
-      oauth1.step3(grant.config.twitter, {}, {error: 'invalid'}, function (err, body) {
+      var provider = {}
+      var step2 = {error: 'invalid'}
+      oauth1.step3(provider, {}, step2, function (err, body) {
         t.deepEqual(qs.parse(err), {error: {error: 'invalid'}})
         done()
       })
     })
     it('step3 - mising oauth_token - empty response', function (done) {
-      oauth1.step3(grant.config.twitter, {}, {}, function (err, body) {
+      var provider = {}
+      var step2 = {}
+      oauth1.step3(provider, {}, step2, function (err, body) {
         t.deepEqual(qs.parse(err),
           {error: {error: 'Grant: OAuth1 missing oauth_token parameter'}})
         done()
       })
     })
-    it('step3 - network error', function (done) {
-      grant.config.twitter.access_url = url('/access_err')
-      oauth1.step3(grant.config.twitter, {}, {oauth_token: 'token'}, function (err, body) {
-        t.deepEqual(qs.parse(err), {error: {'Cannot POST /access_err\n': ''}})
+    it('step3 - request error', function (done) {
+      var provider = {access_url: '/access_url'}
+      var step2 = {oauth_token: 'token'}
+      oauth1.step3(provider, {}, step2, function (err, body) {
+        t.deepEqual(qs.parse(err), {error: {error: 'Invalid URI "/access_url"'}})
         done()
       })
     })
-    it('step3 - error response', function (done) {
-      grant.config.twitter.access_url = url('/access_url')
-      oauth1.step3(grant.config.twitter, {}, {oauth_token: 'token'}, function (err, body) {
+    it('step3 - response error', function (done) {
+      var provider = {access_url: url('/access_url')}
+      var step2 = {oauth_token: 'token'}
+      oauth1.step3(provider, {}, step2, function (err, body) {
         t.deepEqual(qs.parse(err), {error: {error: 'invalid'}})
         done()
       })
