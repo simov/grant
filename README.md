@@ -597,12 +597,12 @@ In case of an error, the `error` key will be populated with the raw error data:
   "facebook": {
     "key": "[CLIENT_ID]",
     "secret": "[CLIENT_SECRET]",
-    "callback": "/handle_facebook_response"
+    "callback": "/handle_facebook_callback"
   },
   "twitter": {
     "key": "[CONSUMER_KEY]",
     "secret": "[CONSUMER_SECRET]",
-    "callback": "/handle_twitter_response"
+    "callback": "/handle_twitter_callback"
   }
   ```
 4. Initialize Grant and mount it:
@@ -620,14 +620,14 @@ In case of an error, the `error` key will be populated with the raw error data:
   // or Hapi
   ```
 5. Navigate to `/connect/facebook` to initiate the OAuth flow for Facebook, or navigate to `/connect/twitter` to initiate the OAuth flow for Twitter.
-6. Once the OAuth flow is completed you will receive the response data in the `/handle_facebook_response` route for Facebook, and in the `/handle_twitter_response` route for Twitter.
+6. Once the OAuth flow is completed you will receive the response data in the `/handle_facebook_callback` route for Facebook, or in the `/handle_twitter_callback` route for Twitter.
 
 *(also take a look at the [examples][grant-examples])*
 
 
 ## Get User Profile
 
-Once you have your access tokens secured, you can start making authorized requests on behalf of your users. **[Purest][purest]** is a generic REST API library that supports **hundreds** of REST API providers.
+Once you have your access tokens secured, you can start making authorized requests on behalf of your users. **[Purest][purest]** is a generic REST API client library that supports **hundreds** of REST API providers.
 
 For example, you may want to get the user's profile after the OAuth flow has completed:
 
