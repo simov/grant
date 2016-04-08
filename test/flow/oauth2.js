@@ -128,10 +128,10 @@ describe('oauth2', function () {
       })
     })
     it('step2 - request error', function (done) {
-      var provider = {access_url: '/access_err'}
+      var provider = {access_url: '/access_url'}
       var step1 = {code: 'code'}
       oauth2.step2(provider, step1, {}, function (err, body) {
-        t.deepEqual(qs.parse(err), {error: {error: 'Invalid URI "/access_err"'}})
+        t.deepEqual(qs.parse(err), {error: {error: 'Invalid URI "/access_url"'}})
         done()
       })
     })
