@@ -94,7 +94,7 @@ var Grant = require('grant-hapi')
 
 var server = new Hapi.Server()
 server.register([
-  // REQUIRED:
+  // REQUIRED: (any session store - see ./examples/hapi-session)
   {
     register: yar,
     options: {cookieOptions: {password: 'grant', isSecure: false}}
