@@ -421,6 +421,11 @@
     "access_url": "https://id.heroku.com/oauth/token",
     "oauth": 2
   },
+  "idonethis": {
+    "authorize_url": "https://idonethis.com/api/oauth2/authorize/",
+    "access_url": "https://idonethis.com/api/oauth2/token/",
+    "oauth": 2
+  },
   "imgur": {
     "authorize_url": "https://api.imgur.com/oauth2/authorize",
     "access_url": "https://api.imgur.com/oauth2/token",
@@ -659,6 +664,16 @@
     "access_url": "https://api.smartsheet.com/2.0/token",
     "oauth": 2,
     "scope_delimiter": " "
+  },
+  "smugmug": {
+    "request_url": "http://api.smugmug.com/services/oauth/1.0a/getRequestToken",
+    "authorize_url": "http://api.smugmug.com/services/oauth/1.0a/authorize",
+    "access_url": "http://api.smugmug.com/services/oauth/1.0a/getAccessToken",
+    "oauth": 1,
+    "custom_parameters": [
+      "Access", "Permissions", "allowThirdPartyLogin", "showSignUpButton",
+      "username", "viewportScale"
+    ]
   },
   "socialpilot": {
     "authorize_url": "https://panel.socialpilot.co/oauth",
