@@ -1,6 +1,9 @@
 
 ## Change Log
 
+### v3.6.1 (2016/04/25)
+- `Added` official support for 2 new providers
+
 ### v3.6.0 (2016/03/27)
 - `Added` [Path Prefix](https://github.com/simov/grant#path-prefix) configuration option
 - `Added` official support for 2 new providers
