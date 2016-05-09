@@ -804,6 +804,11 @@
     "access_url": "https://login.uber.com/oauth/token",
     "oauth": 2
   },
+  "uber-china": {
+    "authorize_url": "https://login.uber.com.cn/oauth/authorize",
+    "access_url": "https://login.uber.com.cn/oauth/token",
+    "oauth": 2
+  },
   "underarmour": {
     "authorize_url": "https://www.mapmyfitness.com/v7.1/oauth2/uacf/authorize",
     "access_url": "https://api.mapmyfitness.com/v7.1/oauth2/access_token",
