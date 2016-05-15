@@ -22,8 +22,8 @@ app.use(bodyParser.urlencoded({extended: true}))
 app.use(grant)
 
 app.get('/connect_facebook_post', function (req, res) {
-  var url = grant.config.facebook.protocol + '://'
-    + grant.config.facebook.host + '/connect/facebook'
+  var url = grant.config.facebook.protocol + '://' +
+    grant.config.facebook.host + '/connect/facebook'
   request.post(url, {
     form: {
       // generate 6 digit random state number on each authorization attempt

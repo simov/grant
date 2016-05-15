@@ -17,8 +17,8 @@ app.use(grant)
 // because http://oauthbin.com doesn't provide one
 app.get('/authorize', function (req, res) {
   var qs = require('querystring')
-  res.redirect('http://localhost:3000/connect/oauthbin/callback?'
-    + qs.stringify({oauth_token: 'requestkey', oauth_verifier: '123'}))
+  res.redirect('http://localhost:3000/connect/oauthbin/callback?' +
+    qs.stringify({oauth_token: 'requestkey', oauth_verifier: '123'}))
 })
 
 app.get('/handle_oauthbin_callback', function (req, res) {

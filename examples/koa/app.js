@@ -20,12 +20,12 @@ app.use(mount(grant))
 app.use(router(app))
 koaqs(app)
 
-app.get('/handle_facebook_callback', function *(next) {
+app.get('/handle_facebook_callback', function* (next) {
   console.log(this.query)
   this.body = JSON.stringify(this.query, null, 2)
 })
 
-app.get('/handle_twitter_callback', function *(next) {
+app.get('/handle_twitter_callback', function* (next) {
   console.log(this.query)
   this.body = JSON.stringify(this.query, null, 2)
 })
