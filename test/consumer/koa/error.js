@@ -26,8 +26,10 @@ describe('error - koa', function () {
     it('session', function (done) {
       var grant = new Grant(config)
       var app = koa()
-      app.use(function *(next) {
-        try {yield next}
+      app.use(function* (next) {
+        try {
+          yield next
+        }
         catch (err) {
           t.equal(err.message, 'Grant: mount session middleware first')
         }
@@ -49,8 +51,10 @@ describe('error - koa', function () {
       var app = koa()
       app.keys = ['grant']
       app.use(session(app))
-      app.use(function *(next) {
-        try {yield next}
+      app.use(function* (next) {
+        try {
+          yield next
+        }
         catch (err) {
           t.equal(err.message, 'Grant: mount body parser middleware first')
         }

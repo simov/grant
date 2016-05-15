@@ -2,7 +2,6 @@
 
 var t = require('assert')
 var config = require('../lib/config')
-var reserved = require('../config/reserved')
 var Grant = require('../').express()
 
 
@@ -19,7 +18,7 @@ describe('config', function () {
 
     it('consumer_key and consumer_secret', function () {
       var provider = {consumer_key: 'key', consumer_secret: 'secret', oauth: 1}
-        , options = {}, server = {}, name = 'grant'
+      var options = {}, server = {}, name = 'grant'
       var result = config.initProvider(provider, options, server, name)
       t.deepEqual(result, {
         consumer_key: 'key', consumer_secret: 'secret', oauth: 1,
@@ -28,7 +27,7 @@ describe('config', function () {
     })
     it('client_id and client_secret', function () {
       var provider = {client_id: 'key', client_secret: 'secret', oauth: 2}
-        , options = {}, server = {}, name = 'grant'
+      var options = {}, server = {}, name = 'grant'
       var result = config.initProvider(provider, options, server, name)
       t.deepEqual(result, {
         client_id: 'key', client_secret: 'secret', oauth: 2,
@@ -39,7 +38,7 @@ describe('config', function () {
     describe('scope', function () {
       it('array with comma', function () {
         var provider = {scope: ['scope1', 'scope2']}
-          , options = {}, server = {}, name = 'grant'
+        var options = {}, server = {}, name = 'grant'
         var result = config.initProvider(provider, options, server, name)
         t.deepEqual(result, {
           scope: 'scope1,scope2', grant: true, name: 'grant'
@@ -47,7 +46,7 @@ describe('config', function () {
       })
       it('array with delimiter', function () {
         var provider = {scope: ['scope1', 'scope2'], scope_delimiter: ' '}
-          , options = {}, server = {}, name = 'grant'
+        var options = {}, server = {}, name = 'grant'
         var result = config.initProvider(provider, options, server, name)
         t.deepEqual(result, {
           scope: 'scope1 scope2', scope_delimiter: ' ', grant: true, name: 'grant'
@@ -55,7 +54,7 @@ describe('config', function () {
       })
       it('stringify scope object', function () {
         var provider = {scope: {profile: {read: true}}}
-          , options = {}, server = {}, name = 'grant'
+        var options = {}, server = {}, name = 'grant'
         var result = config.initProvider(provider, options, server, name)
         t.deepEqual(result, {
           scope: '{"profile":{"read":true}}', grant: true, name: 'grant'
@@ -63,7 +62,7 @@ describe('config', function () {
       })
       it('string', function () {
         var provider = {scope: 'scope1,scope2'}
-          , options = {}, server = {}, name = 'grant'
+        var options = {}, server = {}, name = 'grant'
         var result = config.initProvider(provider, options, server, name)
         t.deepEqual(result, {
           scope: 'scope1,scope2', grant: true, name: 'grant'
@@ -74,7 +73,7 @@ describe('config', function () {
     describe('custom_params', function () {
       it('empty keys in options.custom_params are excluded', function () {
         var provider = {custom_params: {name: 'grant'}}
-          , options = {custom_params: {name: ''}}, server = {}, name = 'grant'
+        var options = {custom_params: {name: ''}}, server = {}, name = 'grant'
         var result = config.initProvider(provider, options, server, name)
         t.deepEqual(result, {
           custom_params: {name: 'grant'}, grant: true, name: 'grant'
@@ -82,7 +81,7 @@ describe('config', function () {
       })
       it('options.custom_params override provider.custom_params', function () {
         var provider = {custom_params: {name: 'grant'}}
-          , options = {custom_params: {name: 'purest'}}, server = {}, name = 'grant'
+        var options = {custom_params: {name: 'purest'}}, server = {}, name = 'grant'
         var result = config.initProvider(provider, options, server, name)
         t.deepEqual(result, {
           custom_params: {name: 'purest'}, grant: true, name: 'grant'
@@ -93,7 +92,7 @@ describe('config', function () {
     describe('custom_parameters', function () {
       it('skip params not defined in custom_parameters', function () {
         var provider = {custom_parameters: ['access_type']}
-          , options = {something: 'interesting'}, server = {}, name = 'grant'
+        var options = {something: 'interesting'}, server = {}, name = 'grant'
         var result = config.initProvider(provider, options, server, name)
         t.deepEqual(result, {
           custom_parameters: ['access_type'], grant: true, name: 'grant'
@@ -101,7 +100,7 @@ describe('config', function () {
       })
       it('skip params that are reserved keys', function () {
         var provider = {custom_parameters: ['name']}
-          , options = {name: 'purest'}, server = {}, name = 'grant'
+        var options = {name: 'purest'}, server = {}, name = 'grant'
         var result = config.initProvider(provider, options, server, name)
         t.deepEqual(result, {
           custom_parameters: ['name'], grant: true, name: 'grant'
@@ -110,7 +109,7 @@ describe('config', function () {
 
       it('set custom_parameters value', function () {
         var provider = {custom_parameters: ['expiration']}
-          , options = {expiration: 'never'}, server = {}, name = 'grant'
+        var options = {expiration: 'never'}, server = {}, name = 'grant'
         var result = config.initProvider(provider, options, server, name)
         t.deepEqual(result, {
           custom_parameters: ['expiration'], custom_params: {expiration: 'never'},
@@ -119,7 +118,7 @@ describe('config', function () {
       })
       it('set object as custom_parameters value', function () {
         var provider = {custom_parameters: ['meta']}
-          , options = {meta: {a: 'b'}}, server = {}, name = 'grant'
+        var options = {meta: {a: 'b'}}, server = {}, name = 'grant'
         var result = config.initProvider(provider, options, server, name)
         t.deepEqual(result, {
           custom_parameters: ['meta'], custom_params: {meta: {a: 'b'}},
@@ -129,7 +128,7 @@ describe('config', function () {
 
       it('custom_parameters extends provider.custom_params', function () {
         var provider = {custom_parameters: ['expiration'], custom_params: {name: 'grant'}}
-          , options = {expiration: 'never'}, server = {}, name = 'grant'
+        var options = {expiration: 'never'}, server = {}, name = 'grant'
         var result = config.initProvider(provider, options, server, name)
         t.deepEqual(result, {
           custom_parameters: ['expiration'],
@@ -142,8 +141,8 @@ describe('config', function () {
     describe('overrides', function () {
       it('set overrides', function () {
         var provider = {scope: ['scope'], callback: '/callback'}
-          , options = {sub1: {scope: ['scope1']}, sub2: {scope: ['scope2']}}
-          , server = {}, name = 'grant'
+        var options = {sub1: {scope: ['scope1']}, sub2: {scope: ['scope2']}}
+        var server = {}, name = 'grant'
         var result = config.initProvider(provider, options, server, name)
         t.deepEqual(result, {
           scope: 'scope', callback: '/callback', grant: true, name: 'grant',
@@ -204,23 +203,23 @@ describe('config', function () {
   describe('state', function () {
     it('string', function () {
       var provider = {state: '123'}
-        , result = config.state(provider)
+      var result = config.state(provider)
       t.equal(result, '123')
     })
     it('number', function () {
       var provider = {state: 123}
-        , result = config.state(provider)
+      var result = config.state(provider)
       t.equal(result, '123')
     })
     it('boolean true', function () {
       var provider = {state: true}
-        , result = config.state(provider)
+      var result = config.state(provider)
       t.ok(typeof result === 'string')
       t.ok(/^\w+$/.test(result))
     })
     it('boolean false', function () {
       var provider = {state: false}
-        , result = config.state(provider)
+      var result = config.state(provider)
       t.equal(result, undefined)
     })
   })
@@ -228,14 +227,14 @@ describe('config', function () {
   describe('provider', function () {
     it('pre configured', function () {
       var options = {grant: {name: 'grant'}}
-        , session = {provider: 'grant'}
+      var session = {provider: 'grant'}
       var result = config.provider(options, session)
       t.deepEqual(result, {name: 'grant'})
       t.deepEqual(options, {grant: {name: 'grant'}})
     })
     it('non configured, existing oauth provider', function () {
       var options = {}
-        , session = {provider: 'facebook'}
+      var session = {provider: 'facebook'}
       var result = config.provider(options, session)
       t.deepEqual(result, {
         authorize_url: 'https://www.facebook.com/dialog/oauth',
@@ -250,7 +249,7 @@ describe('config', function () {
     })
     it('non configured, non existing oauth provider', function () {
       var options = {}
-        , session = {provider: 'grant'}
+      var session = {provider: 'grant'}
       var result = config.provider(options, session)
       t.deepEqual(result, {})
       t.deepEqual(options, {})
@@ -259,7 +258,7 @@ describe('config', function () {
     describe('overrides', function () {
       it('no existing overrides - defaults to provider', function () {
         var options = {grant: {callback: '/'}}
-          , session = {provider: 'grant', override: 'purest'}
+        var session = {provider: 'grant', override: 'purest'}
         var result = config.provider(options, session)
         t.deepEqual(result, {callback: '/'})
       })
@@ -286,7 +285,7 @@ describe('config', function () {
     describe('dynamic', function () {
       it('override provider key', function () {
         var options = {grant: {callback: '/'}}
-          , session = {provider: 'grant', dynamic: {callback: '/callback'}}
+        var session = {provider: 'grant', dynamic: {callback: '/callback'}}
         var result = config.provider(options, session)
         t.deepEqual(result, {callback: '/callback'})
       })
@@ -317,7 +316,7 @@ describe('config', function () {
     describe('state', function () {
       it('state dcopy', function () {
         var options = {grant: {state: true}}
-          , session = {provider: 'grant'}
+        var session = {provider: 'grant'}
         var result = config.provider(options, session)
         t.ok(typeof result.state === 'string')
         t.ok(/\d+/.test(result.state))

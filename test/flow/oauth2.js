@@ -49,7 +49,7 @@ describe('oauth2', function () {
         access_url: url('/access_url'),
         redirect_uri: '/redirect_uri',
         key: 'key',
-        secret: 'secret',
+        secret: 'secret'
       }
       var step1 = {
         code: 'code'

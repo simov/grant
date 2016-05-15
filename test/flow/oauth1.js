@@ -2,7 +2,6 @@
 
 var t = require('assert')
 var http = require('http')
-var util = require('util')
 var qs = require('qs')
 var express = require('express')
 var Grant = require('../../').express()
