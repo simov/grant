@@ -31,7 +31,8 @@
     "authorize_url": "https://www.amazon.com/ap/oa",
     "access_url": "https://api.amazon.com/auth/o2/token",
     "oauth": 2,
-    "scope_delimiter": " "
+    "scope_delimiter": " ",
+    "custom_parameters" : ["scope_data"]
   },
   "angellist": {
     "authorize_url": "https://angel.co/api/oauth/authorize",
