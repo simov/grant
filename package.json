@@ -24,9 +24,9 @@
   },
 
   "dependencies": {
-    "request"         : "2.64.0",
-    "qs"              : "6.1.0",
-    "deep-copy"       : "1.1.0"
+    "request"         : "2.72.0",
+    "qs"              : "6.2.0",
+    "deep-copy"       : "^1.1.2"
   },
 
   "devDependencies": {
@@ -57,9 +57,6 @@
   "files": [
     "config/",
     "lib/",
-    "CHANGELOG.md",
-    "LICENSE",
-    "README.md",
     "index.js"
   ],
 
