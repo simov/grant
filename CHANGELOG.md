@@ -1,6 +1,9 @@
 
 ## Change Log
 
+### v3.6.2 (2016/05/17)
+- `Added` custom parameter for Amazon
+
 ### v3.6.1 (2016/04/25)
 - `Added` official support for 2 new providers
 
