@@ -1,6 +1,6 @@
 {
   "name": "grant",
-  "version": "3.6.1",
+  "version": "3.6.2",
   "description": "OAuth Middleware for Express, Koa and Hapi",
 
   "keywords": [
