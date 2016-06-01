@@ -97,20 +97,35 @@ describe('session - hapi', function () {
   })
 
   it('dynamic - non configured provider', function (done) {
-    var authorize_url = grant.register._config.oauth.google.authorize_url
-    grant.register._config.oauth.google.authorize_url = '/authorize_url'
     t.equal(grant.register.config.google, undefined)
 
     request.get(url('/connect/google'), {
-      qs: {scope: ['scope1', 'scope2'], state: 'Grant'},
+      qs: {scope: ['scope1', 'scope2'], state: 'Grant',
+        authorize_url: '/authorize_url'},
       jar: request.jar(),
       followAllRedirects: true,
       json: true
     }, function (err, res, body) {
-      t.deepEqual(body, {provider: 'google',
-        dynamic: {scope: ['scope1', 'scope2'], state: 'Grant'}, state: 'Grant'})
       t.ok(typeof grant.register.config.google === 'object')
-      grant.register._config.oauth.google.authorize_url = authorize_url
+      t.deepEqual(body, {provider: 'google',
+        dynamic: {scope: ['scope1', 'scope2'], state: 'Grant',
+          authorize_url: '/authorize_url'}, state: 'Grant'})
+      done()
+    })
+  })
+
+  it('dynamic - non existing provider', function (done) {
+    t.equal(grant.register.config.grant, undefined)
+
+    request.get(url('/connect/grant'), {
+      qs: {oauth: 2, authorize_url: '/authorize_url'},
+      jar: request.jar(),
+      followAllRedirects: true,
+      json: true
+    }, function (err, res, body) {
+      t.equal(grant.register.config.grant, undefined)
+      t.deepEqual(body, {provider: 'grant',
+        dynamic: {oauth: '2', authorize_url: '/authorize_url'}})
       done()
     })
   })
