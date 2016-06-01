@@ -60,6 +60,9 @@
   "files": [
     "config/",
     "lib/",
+    "CHANGELOG.md",
+    "LICENSE",
+    "README.md",
     "index.js"
   ],
 
