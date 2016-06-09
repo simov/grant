@@ -23,7 +23,7 @@ Edit the `config.json` file with your own OAuth application credentials
 
 ## Run the App
 
-You need at least NodeJS version 11 or higher!
+You need at least NodeJS version 0.11 or higher!
 
 ```bash
 $ node --harmony app.js
