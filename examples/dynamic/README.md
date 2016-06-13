@@ -13,7 +13,7 @@ $ npm install
 
 Create OAuth application for Facebook. Set the application domain to be `dummy.com`
 
-In your `hosts` file add this line `dummy.com 127.0.0.1`
+In your `hosts` file add this line `127.0.0.1 dummy.com`
 
 
 ## Configure

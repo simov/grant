@@ -13,7 +13,7 @@ $ npm install
 
 Create OAuth application for Twitter and set the callback url to be `http://dummy.com:3000/path/prefix/connect/twitter/callback`
 
-In your `hosts` file add this line `dummy.com 127.0.0.1`
+In your `hosts` file add this line `127.0.0.1 dummy.com`
 
 
 ## Configure

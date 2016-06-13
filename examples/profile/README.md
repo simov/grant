@@ -13,7 +13,7 @@ $ npm install
 
 Create OAuth application for Facebook and Twitter. For Twitter set the callback url to be `http://dummy.com:3000/connect/twitter/callback`, for Facebook set the application domain to be `dummy.com`
 
-In your `hosts` file add this line `dummy.com 127.0.0.1`
+In your `hosts` file add this line `127.0.0.1 dummy.com`
 
 
 ## Configure
