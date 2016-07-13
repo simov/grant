@@ -11,36 +11,33 @@
 
   // Almost Standard
   rules: {
-    // Closing curly brace does not appear on the same line as the subsequent block
-    // - It's much more readable to have `else if (condition)` on new line.
+    // Disable: Closing curly brace does not appear on the same line as the subsequent block
     'brace-style': [2, 'stroustrup'],
 
     // Enforce spacing around the * in generator functions
-    // - I like it that way.
+    // (I like it that way)
     'generator-star-spacing': [2, {'before': false, 'after': true}],
 
-    // More than 1 blank line not allowed
-    // - Why not?
+    // Disable: More than 1 blank line not allowed
     'no-multiple-empty-lines': 'off',
 
-    // Disallow Redeclaring Variables
-    // - A bunch of vars inside `else if` blocks.
+    // Disable: Disallow Redeclaring Variables
+    // (A bunch of vars inside `else if` blocks)
     'no-redeclare': 0,
 
-    // Block must not be padded by blank lines
-    // - Why not?
+    // Disable: Block must not be padded by blank lines
     'padded-blocks': 'off',
 
 
     // Unit Tests
 
-    // Require Camelcase
+    // Disable: Require Camelcase
     'camelcase': 0,
 
-    // Enforce Callback Error Handling
+    // Disable: Enforce Callback Error Handling
     'handle-callback-err': 0,
 
-    // Require or Disallow One Variable Declaration per Scope
+    // Disable: Require or Disallow One Variable Declaration per Scope
     'one-var': 0
   }
 }
