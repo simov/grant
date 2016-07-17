@@ -487,6 +487,12 @@
     "access_url": "https://login.live.com/oauth20_token.srf",
     "oauth": 2
   },
+  "lyft": {
+    "authorize_url": "https://api.lyft.com/oauth/authorize",
+    "access_url": "https://api.lyft.com/oauth/token",
+    "oauth": 2,
+    "scope_delimiter": " "
+  },
   "mailchimp": {
     "authorize_url": "https://login.mailchimp.com/oauth2/authorize",
     "access_url": "https://login.mailchimp.com/oauth2/token",
