@@ -1,6 +1,10 @@
 
 ## Change Log
 
+### v3.6.3 (2016/07/27)
+- `Fixed` expect oauth version to be string when passed as querystring
+- `Added` official support for 1 new providers
+
 ### v3.6.2 (2016/05/17)
 - `Added` custom parameter for Amazon
 
