@@ -3,7 +3,7 @@
 var t = require('assert')
 var qs = require('qs')
 var request = require('request')
-var koa = require('koa')
+var Koa = require('koa')
 var session = require('koa-session')
 var route = require('koa-route')
 var mount = require('koa-mount')
@@ -27,7 +27,7 @@ describe('flow - koa', function () {
     before(function (done) {
       grant = new Grant(config)
 
-      var app = koa()
+      var app = new Koa()
       app.keys = ['grant']
       app.use(session(app))
       app.use(mount(grant))
@@ -86,7 +86,7 @@ describe('flow - koa', function () {
     before(function (done) {
       var grant = new Grant(config)
 
-      var app = koa()
+      var app = new Koa()
       app.keys = ['grant']
       app.use(session(app))
       app.use(mount(grant))
@@ -132,7 +132,7 @@ describe('flow - koa', function () {
     before(function (done) {
       var grant = new Grant(config)
 
-      var app = koa()
+      var app = new Koa()
       app.keys = ['grant']
       app.use(session(app))
       app.use(mount(grant))

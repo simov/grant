@@ -3,7 +3,7 @@
 var t = require('assert')
 var qs = require('qs')
 var request = require('request')
-var koa = require('koa')
+var Koa = require('koa')
 var session = require('koa-session')
 var route = require('koa-route')
 var mount = require('koa-mount')
@@ -25,7 +25,7 @@ describe('error - koa', function () {
   describe('missing middleware', function () {
     it('session', function (done) {
       var grant = new Grant(config)
-      var app = koa()
+      var app = new Koa()
       app.use(function* (next) {
         try {
           yield next
@@ -48,7 +48,7 @@ describe('error - koa', function () {
 
     it('body-parser', function (done) {
       var grant = new Grant(config)
-      var app = koa()
+      var app = new Koa()
       app.keys = ['grant']
       app.use(session(app))
       app.use(function* (next) {
@@ -78,7 +78,7 @@ describe('error - koa', function () {
       before(function (done) {
         var grant = new Grant(config)
 
-        var app = koa()
+        var app = new Koa()
         app.keys = ['grant']
         app.use(session(app))
         app.use(mount(grant))
@@ -117,7 +117,7 @@ describe('error - koa', function () {
       before(function (done) {
         var grant = new Grant(config)
 
-        var app = koa()
+        var app = new Koa()
         app.keys = ['grant']
         app.use(session(app))
         app.use(mount(grant))
@@ -157,7 +157,7 @@ describe('error - koa', function () {
       before(function (done) {
         var grant = new Grant(config)
 
-        var app = koa()
+        var app = new Koa()
         app.keys = ['grant']
         app.use(session(app))
         app.use(mount(grant))
@@ -200,7 +200,7 @@ describe('error - koa', function () {
     var grant, server, jar = request.jar()
     before(function (done) {
       grant = new Grant(config)
-      var app = koa()
+      var app = new Koa()
       app.keys = ['grant']
       app.use(session(app))
       app.use(mount(grant))

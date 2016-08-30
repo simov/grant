@@ -3,7 +3,7 @@
 var t = require('assert')
 var qs = require('qs')
 var request = require('request')
-var koa = require('koa')
+var Koa = require('koa')
 var session = require('koa-session')
 var bodyParser = require('koa-bodyparser')
 var route = require('koa-route')
@@ -27,7 +27,7 @@ describe('session - koa', function () {
   before(function (done) {
     grant = new Grant(config)
 
-    var app = koa()
+    var app = new Koa()
     app.keys = ['grant']
     app.use(session(app))
     app.use(bodyParser())
