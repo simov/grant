@@ -41,12 +41,13 @@ describe('flow - hapi', function () {
         }))
       }})
       server.route({method: 'GET', path: '/', handler: function (req, res) {
-        res(JSON.stringify(req.session.get('grant').response || req.query))
+        res(JSON.stringify((req.session || req.yar).get('grant').response || req.query))
       }})
 
       server.register([
         {register: grant, options: config},
-        {register: yar, options: {cookieOptions: {password: 'password', isSecure: false}}}
+        {register: yar, options: {cookieOptions: {
+          password: '01234567890123456789012345678912', isSecure: false}}}
       ], function (err) {
         if (err) {
           done(err)
@@ -107,7 +108,7 @@ describe('flow - hapi', function () {
 
       server.register([
         {register: grant, options: config},
-        {register: yar, options: {cookieOptions: {password: 'password', isSecure: false}}}
+        {register: yar, options: {cookieOptions: {password: '01234567890123456789012345678912', isSecure: false}}}
       ], function (err) {
         if (err) {
           done(err)
@@ -165,7 +166,7 @@ describe('flow - hapi', function () {
 
       server.register([
         {register: grant, options: config},
-        {register: yar, options: {cookieOptions: {password: 'password', isSecure: false}}}
+        {register: yar, options: {cookieOptions: {password: '01234567890123456789012345678912', isSecure: false}}}
       ], function (err) {
         if (err) {
           done(err)

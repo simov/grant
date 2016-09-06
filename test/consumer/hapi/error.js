@@ -67,7 +67,7 @@ describe('error - hapi', function () {
 
         server.register([
           {register: grant, options: config},
-          {register: yar, options: {cookieOptions: {password: 'password', isSecure: false}}}
+          {register: yar, options: {cookieOptions: {password: '01234567890123456789012345678912', isSecure: false}}}
         ], function (err) {
           if (err) {
             done(err)
@@ -113,7 +113,7 @@ describe('error - hapi', function () {
 
         server.register([
           {register: grant, options: config},
-          {register: yar, options: {cookieOptions: {password: 'password', isSecure: false}}}
+          {register: yar, options: {cookieOptions: {password: '01234567890123456789012345678912', isSecure: false}}}
         ], function (err) {
           if (err) {
             done(err)
@@ -162,7 +162,7 @@ describe('error - hapi', function () {
 
         server.register([
           {register: grant, options: config},
-          {register: yar, options: {cookieOptions: {password: 'password', isSecure: false}}}
+          {register: yar, options: {cookieOptions: {password: '01234567890123456789012345678912', isSecure: false}}}
         ], function (err) {
           if (err) {
             done(err)
@@ -206,7 +206,7 @@ describe('error - hapi', function () {
 
       server.register([
         {register: grant, options: config},
-        {register: yar, options: {cookieOptions: {password: 'password', isSecure: false}}}
+        {register: yar, options: {cookieOptions: {password: '01234567890123456789012345678912', isSecure: false}}}
       ], function (err) {
         if (err) {
           done(err)

@@ -30,12 +30,12 @@ describe('session - hapi', function () {
       res(qs.stringify({oauth_token: 'token'}))
     }})
     server.route({method: 'GET', path: '/authorize_url', handler: function (req, res) {
-      res(JSON.stringify(req.session.get('grant')))
+      res(JSON.stringify((req.session || req.yar).get('grant')))
     }})
 
     server.register([
       {register: grant, options: config},
-      {register: yar, options: {cookieOptions: {password: 'password', isSecure: false}}}
+      {register: yar, options: {cookieOptions: {password: '01234567890123456789012345678912', isSecure: false}}}
     ], function (err) {
       if (err) {
         done(err)
