@@ -236,7 +236,7 @@ describe('oauth2', function () {
       before(function (done) {
         var config = {
           server: {protocol: 'http', host: 'localhost:5000', callback: '/'},
-          basecamp: {}, concur: {}, fitbit2: {}, reddit: {},
+          basecamp: {}, concur: {}, fitbit2: {}, homeaway: {}, reddit: {},
           shopify: {}, smartsheet: {}, surveymonkey: {}, visualstudio: {}
         }
         grant = new Grant(config)
@@ -245,6 +245,7 @@ describe('oauth2', function () {
         grant.config.basecamp.access_url = url('/access_url')
         grant.config.concur.access_url = url('/access_url')
         grant.config.fitbit2.access_url = url('/access_url')
+        grant.config.homeaway.access_url = url('/access_url')
         grant.config.reddit.access_url = url('/access_url')
         grant.config.smartsheet.access_url = url('/access_url')
         grant.config.surveymonkey.access_url = url('/access_url')
@@ -288,10 +289,10 @@ describe('oauth2', function () {
       })
 
       describe('basic auth', function () {
-        it('reddit', function (done) {
-          grant.config.reddit.key = 'key'
-          grant.config.reddit.secret = 'secret'
-          oauth2.step2(grant.config.reddit, {code: 'code'}, {}, function (err, body) {
+        it('fitbit2', function (done) {
+          grant.config.fitbit2.key = 'key'
+          grant.config.fitbit2.secret = 'secret'
+          oauth2.step2(grant.config.fitbit2, {code: 'code'}, {}, function (err, body) {
             t.deepEqual(
               Buffer(body.replace('Basic ', ''), 'base64').toString().split(':'),
               ['key', 'secret']
@@ -299,10 +300,21 @@ describe('oauth2', function () {
             done()
           })
         })
-        it('fitbit2', function (done) {
-          grant.config.fitbit2.key = 'key'
-          grant.config.fitbit2.secret = 'secret'
-          oauth2.step2(grant.config.fitbit2, {code: 'code'}, {}, function (err, body) {
+        it('homeaway', function (done) {
+          grant.config.homeaway.key = 'key'
+          grant.config.homeaway.secret = 'secret'
+          oauth2.step2(grant.config.homeaway, {code: 'code'}, {}, function (err, body) {
+            t.deepEqual(
+              Buffer(body.replace('Basic ', ''), 'base64').toString().split(':'),
+              ['key', 'secret']
+            )
+            done()
+          })
+        })
+        it('reddit', function (done) {
+          grant.config.reddit.key = 'key'
+          grant.config.reddit.secret = 'secret'
+          oauth2.step2(grant.config.reddit, {code: 'code'}, {}, function (err, body) {
             t.deepEqual(
               Buffer(body.replace('Basic ', ''), 'base64').toString().split(':'),
               ['key', 'secret']
