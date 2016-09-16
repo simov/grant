@@ -422,6 +422,11 @@
     "access_url": "https://id.heroku.com/oauth/token",
     "oauth": 2
   },
+  "homeaway": {
+    "authorize_url": "https://ws.homeaway.com/oauth/authorize",
+    "access_url": "https://ws.homeaway.com/oauth/token",
+    "oauth": 2
+  },
   "idonethis": {
     "authorize_url": "https://idonethis.com/api/oauth2/authorize/",
     "access_url": "https://idonethis.com/api/oauth2/token/",
