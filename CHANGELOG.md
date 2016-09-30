@@ -1,12 +1,16 @@
 
 ## Change Log
 
+### v3.6.5 (2016/09/30)
+- `Fixed` add user-agent header for discogs
+- `Added` official support for 1 new provider
+
 ### v3.6.4 (2016/08/30)
 - `Added` support for Koa 2.x
 
 ### v3.6.3 (2016/07/27)
 - `Fixed` expect oauth version to be string when passed as querystring
-- `Added` official support for 1 new providers
+- `Added` official support for 1 new provider
 
 ### v3.6.2 (2016/05/17)
 - `Added` custom parameter for Amazon
