@@ -157,12 +157,13 @@ describe('oauth1', function () {
       var grant, server
 
       before(function (done) {
-        var config = {copy: {}, etsy: {}, freshbooks: {}, linkedin: {}}
+        var config = {copy: {}, discogs: {}, etsy: {}, freshbooks: {}, linkedin: {}}
         grant = new Grant(config)
         var app = express().use(grant)
 
         app.post('/request_url', function (req, res) {
           res.end(qs.stringify({
+            agent: req.headers['user-agent'],
             oauth: req.headers.authorization,
             scope: req.query.scope
           }))
@@ -192,6 +193,16 @@ describe('oauth1', function () {
           grant.config.linkedin.scope = 'scope1,scope2'
           oauth1.step1(grant.config.linkedin, function (err, body) {
             t.equal(body.scope, 'scope1,scope2')
+            done()
+          })
+        })
+      })
+
+      describe('user-agent', function () {
+        it('discogs', function (done) {
+          grant.config.discogs.request_url = url('/request_url')
+          oauth1.step1(grant.config.discogs, function (err, body) {
+            t.equal(body.agent, 'Grant')
             done()
           })
         })
@@ -291,14 +302,28 @@ describe('oauth1', function () {
       var grant, server
 
       before(function (done) {
-        var config = {freshbooks: {}, goodreads: {}, intuit: {}, tripit: {}}
+        var config = {discogs: {}, freshbooks: {}, goodreads: {}, intuit: {}, tripit: {}}
         grant = new Grant(config)
         var app = express().use(grant)
 
         app.post('/access_url', function (req, res) {
-          res.end(qs.stringify({oauth: req.headers.authorization}))
+          res.end(qs.stringify({
+            agent: req.headers['user-agent'],
+            oauth: req.headers.authorization
+          }))
         })
         server = app.listen(5000, done)
+      })
+
+      describe('user-agent', function () {
+        it('discogs', function (done) {
+          grant.config.discogs.access_url = url('/access_url')
+          oauth1.step3(grant.config.discogs, {}, {oauth_token: 'token'}, function (err, response) {
+            var query = qs.parse(response)
+            t.equal(query.raw.agent, 'Grant')
+            done()
+          })
+        })
       })
 
       describe('signature_method', function () {
