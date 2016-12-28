@@ -443,6 +443,11 @@
     "access_url": "https://www.iconfinder.com/api/v2/oauth2/token",
     "oauth": 2
   },
+  "idme": {
+    "authorize_url": "https://api.id.me/oauth/authorize",
+    "access_url": "https://api.id.me/oauth/token",
+    "oauth": 2
+  },
   "idonethis": {
     "authorize_url": "https://idonethis.com/api/oauth2/authorize/",
     "access_url": "https://idonethis.com/api/oauth2/token/",
