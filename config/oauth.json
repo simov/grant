@@ -427,6 +427,11 @@
     "access_url": "https://ws.homeaway.com/oauth/token",
     "oauth": 2
   },
+  "iconfinder": {
+    "authorize_url": "https://www.iconfinder.com/api/v2/oauth2/authorize",
+    "access_url": "https://www.iconfinder.com/api/v2/oauth2/token",
+    "oauth": 2
+  },
   "idonethis": {
     "authorize_url": "https://idonethis.com/api/oauth2/authorize/",
     "access_url": "https://idonethis.com/api/oauth2/token/",
