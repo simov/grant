@@ -63,6 +63,12 @@
     "scope_delimiter": " ",
     "subdomain": true
   },
+  "baidu": {
+    "authorize_url": "https://openapi.baidu.com/oauth/2.0/authorize",
+    "access_url": "https://openapi.baidu.com/oauth/2.0/token",
+    "oauth": 2,
+    "custom_parameters": ["display", "force_login", "confirm_login", "login_type"]
+  },
   "basecamp": {
     "authorize_url": "https://launchpad.37signals.com/authorization/new",
     "access_url": "https://launchpad.37signals.com/authorization/token",
