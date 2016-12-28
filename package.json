@@ -71,5 +71,9 @@
     "test-ci"   : "major=$(node --version | cut -b 2-2) && minor=$(node --version | cut -b 4-5) && if [ $major -eq 0 ] && [ $minor -ge 12 ]; then mocha --harmony --recursive test/; elif [ $major -ge 1 ]; then mocha --recursive test/; else mocha test/ test/flow/ test/consumer/express/ test/consumer/hapi/; fi",
     "test-cov"  : "istanbul cover _mocha test/ test/flow/ test/consumer/express/ test/consumer/hapi/",
     "lint"      : "eslint lib/ test/ examples/ && echo Lint Passed"
+  },
+
+  "engines": {
+    "node": ">=4.0.0"
   }
 }
