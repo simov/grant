@@ -866,6 +866,12 @@
     "oauth": 2,
     "subdomain": true
   },
+  "venmo": {
+    "authorize_url": "https://api.venmo.com/v1/oauth/authorize",
+    "access_url": "https://api.venmo.com/v1/oauth/access_token",
+    "oauth": 2,
+    "scope_delimiter": " "
+  },
   "verticalresponse": {
     "authorize_url": "https://vrapi.verticalresponse.com/api/v1/oauth/authorize",
     "access_url": "https://vrapi.verticalresponse.com/api/v1/oauth/access_token",
