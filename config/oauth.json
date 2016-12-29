@@ -564,6 +564,12 @@
     "oauth": 2,
     "scope_delimiter": " "
   },
+  "mydigipass": {
+    "authorize_url": "https://www.mydigipass.com/oauth/authenticate",
+    "access_url": "https://www.mydigipass.com/oauth/token",
+    "oauth": 2,
+    "scope_delimiter": " "
+  },
   "myob": {
     "authorize_url": "https://secure.myob.com/oauth2/account/authorize",
     "access_url": "https://secure.myob.com/oauth2/v1/authorize",
