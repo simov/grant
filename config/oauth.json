@@ -199,6 +199,12 @@
     "access_url": "https://api.discogs.com/oauth/access_token",
     "oauth": 1
   },
+  "discord": {
+    "authorize_url": "https://discordapp.com/api/oauth2/authorize",
+    "access_url": "https://discordapp.com/api/oauth2/token",
+    "oauth": 2,
+    "scope_delimiter": " "
+  },
   "disqus": {
     "authorize_url": "https://disqus.com/api/oauth/2.0/authorize/",
     "access_url": "https://disqus.com/api/oauth/2.0/access_token/",
