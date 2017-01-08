@@ -1,12 +1,8 @@
 {
   extends: 'standard',
 
-  // Mocha
-  globals: {
-    describe: true,
-    before: true,
-    it: true,
-    after: true
+  env: {
+    mocha: true
   },
 
   // Almost Standard
@@ -14,8 +10,7 @@
     // Disable: Closing curly brace does not appear on the same line as the subsequent block
     'brace-style': [2, 'stroustrup'],
 
-    // Enforce spacing around the * in generator functions
-    // (I like it that way)
+    // Config: Enforce spacing around the * in generator functions
     'generator-star-spacing': [2, {'before': false, 'after': true}],
 
     // Disable: More than 1 blank line not allowed
