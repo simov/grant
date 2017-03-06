@@ -540,6 +540,11 @@
     "access_url": "https://api.mapmyfitness.com/v7.1/oauth2/access_token",
     "oauth": 2
   },
+  "medium": {
+    "authorize_url": "https://medium.com/m/oauth/authorize",
+    "access_url": "https://api.medium.com/v1/tokens",
+    "oauth": 2
+  },
   "meetup": {
     "authorize_url": "https://secure.meetup.com/oauth2/authorize",
     "access_url": "https://secure.meetup.com/oauth2/access",
