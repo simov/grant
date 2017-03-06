@@ -1,6 +1,9 @@
 
 ## Change Log
 
+### v3.7.1 (2017/03/06)
+- `Added` official support for 2 new providers
+
 ### v3.7.0 (2016/12/29)
 - `Changed` dropped node 0.10 and 0.12 as built targets in TravisCI
 - `Added` the advisory engines key in package.json for node >= 4.0.0
