@@ -80,12 +80,6 @@
     "access_url": "https://oauth-api.beatport.com/identity/1/oauth/access-token",
     "oauth": 1
   },
-  "beatsmusic": {
-    "authorize_url": "https://partner.api.beatsmusic.com/v1/oauth2/authorize",
-    "access_url": "https://partner.api.beatsmusic.com/v1/oauth2/token",
-    "oauth": 2,
-    "custom_parameters": ["as"]
-  },
   "bitbucket": {
     "request_url": "https://bitbucket.org/api/1.0/oauth/request_token",
     "authorize_url": "https://bitbucket.org/api/1.0/oauth/authenticate",
@@ -143,12 +137,6 @@
     "authorize_url": "https://oauth2.constantcontact.com/oauth2/oauth/siteowner/authorize",
     "access_url": "https://oauth2.constantcontact.com/oauth2/oauth/token",
     "oauth": 2
-  },
-  "copy": {
-    "request_url": "https://api.copy.com/oauth/request",
-    "authorize_url": "https://www.copy.com/applications/authorize",
-    "access_url": "https://api.copy.com/oauth/access",
-    "oauth": 1
   },
   "coursera": {
     "authorize_url": "https://accounts.coursera.org/oauth2/v1/auth",
