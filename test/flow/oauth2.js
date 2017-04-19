@@ -245,14 +245,15 @@ describe('oauth2', function () {
       before(function (done) {
         var config = {
           server: {protocol: 'http', host: 'localhost:5000', callback: '/'},
-          basecamp: {}, concur: {}, fitbit2: {}, homeaway: {}, reddit: {},
-          shopify: {}, smartsheet: {}, surveymonkey: {}, visualstudio: {}
+          basecamp: {}, concur: {}, ebay: {}, fitbit2: {}, homeaway: {},
+          reddit: {}, shopify: {}, smartsheet: {}, surveymonkey: {}, visualstudio: {}
         }
         grant = new Grant(config)
         var app = express().use(grant).use(bodyParser.urlencoded({extended: true}))
 
         grant.config.basecamp.access_url = url('/access_url')
         grant.config.concur.access_url = url('/access_url')
+        grant.config.ebay.access_url = url('/access_url')
         grant.config.fitbit2.access_url = url('/access_url')
         grant.config.homeaway.access_url = url('/access_url')
         grant.config.reddit.access_url = url('/access_url')
@@ -298,6 +299,17 @@ describe('oauth2', function () {
       })
 
       describe('basic auth', function () {
+        it('ebay', function (done) {
+          grant.config.ebay.key = 'key'
+          grant.config.ebay.secret = 'secret'
+          oauth2.step2(grant.config.ebay, {code: 'code'}, {}, function (err, body) {
+            t.deepEqual(
+              Buffer(body.replace('Basic ', ''), 'base64').toString().split(':'),
+              ['key', 'secret']
+            )
+            done()
+          })
+        })
         it('fitbit2', function (done) {
           grant.config.fitbit2.key = 'key'
           grant.config.fitbit2.secret = 'secret'

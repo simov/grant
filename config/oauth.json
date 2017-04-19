@@ -214,6 +214,12 @@
     "access_url": "https://api.dropbox.com/1/oauth2/token",
     "oauth": 2
   },
+  "ebay": {
+    "authorize_url": "https://signin.ebay.com/authorize",
+    "access_url": "https://api.ebay.com/identity/v1/oauth2/token",
+    "oauth": 2,
+    "scope_delimiter": " "
+  },
   "echosign": {
     "authorize_url": "https://secure.echosign.com/public/oauth",
     "access_url": "https://secure.echosign.com/oauth/token",
