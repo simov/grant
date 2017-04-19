@@ -615,6 +615,11 @@
     "oauth": 2,
     "scope_delimiter": " "
   },
+  "pinterest": {
+    "authorize_url": "https://api.pinterest.com/oauth/",
+    "access_url": "https://api.pinterest.com/v1/oauth/token",
+    "oauth": 2
+  },
   "plurk": {
     "request_url": "http://www.plurk.com/OAuth/request_token",
     "authorize_url": "http://www.plurk.com/OAuth/authorize",
