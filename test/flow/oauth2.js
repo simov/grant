@@ -228,6 +228,15 @@ describe('oauth2', function () {
           t.equal(query.response_type, 'Assertion')
         })
       })
+
+      describe('scopes separated by unencoded + sign', () => {
+        var config = {unsplash: {scope: ['public', 'read_photos']}}
+        var grant = new Grant(config)
+        it('unsplash', () => {
+          var url = oauth2.step1(grant.config.unsplash)
+          t.equal(url.replace(/.*scope=(.*)/g, '$1'), 'public+read_photos')
+        })
+      })
     })
 
     describe('step2', function () {

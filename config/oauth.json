@@ -353,6 +353,12 @@
     "access_url": "http://api.geekli.st/v1/oauth/access_token",
     "oauth": 1
   },
+  "genius": {
+    "authorize_url": "https://api.genius.com/oauth/authorize",
+    "access_url": "https://api.genius.com/oauth/token",
+    "oauth": 2,
+    "scope_delimiter": " "
+  },
   "getbase": {
     "authorize_url": "https://api.getbase.com/oauth2/authorize",
     "access_url": "https://api.getbase.com/oauth2/token",
@@ -468,6 +474,11 @@
     "authorize_url": "https://appcenter.intuit.com/Connect/Begin",
     "access_url": "https://oauth.intuit.com/oauth/v1/get_access_token",
     "oauth": 1
+  },
+  "jamendo": {
+    "authorize_url": "https://api.jamendo.com/v3.0/oauth/authorize",
+    "access_url": "https://api.jamendo.com/v3.0/oauth/grant",
+    "oauth": 2
   },
   "jawbone": {
     "authorize_url": "https://jawbone.com/auth/oauth2/auth",
@@ -846,6 +857,12 @@
     "authorize_url": "https://www.mapmyfitness.com/v7.1/oauth2/uacf/authorize",
     "access_url": "https://api.mapmyfitness.com/v7.1/oauth2/access_token",
     "oauth": 2
+  },
+  "unsplash": {
+    "authorize_url": "https://unsplash.com/oauth/authorize",
+    "access_url": "https://unsplash.com/oauth/token",
+    "oauth": 2,
+    "scope_delimiter": "+"
   },
   "upwork": {
     "request_url": "https://www.upwork.com/api/auth/v1/oauth/token/request",
