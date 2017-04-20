@@ -1,6 +1,6 @@
 {
   "name": "grant",
-  "version": "3.7.1",
+  "version": "3.7.2",
   "description": "OAuth Middleware for Express, Koa and Hapi",
 
   "keywords": [
@@ -16,7 +16,7 @@
   "license": "MIT",
   "homepage": "https://github.com/simov/grant",
 
-  "author": "Simeon Velichkov <simeonvelichkov@gmail.com> (http://simov.github.io)",
+  "author": "Simeon Velichkov <simeonvelichkov@gmail.com> (https://simov.github.io)",
 
   "repository": {
     "type": "git",
@@ -25,7 +25,7 @@
 
   "dependencies": {
     "request"         : "2.74.0",
-    "qs"              : "6.2.1",
+    "qs"              : "6.4.0",
     "deep-copy"       : "^1.1.2"
   },
 
