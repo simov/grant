@@ -539,6 +539,20 @@ Initially these providers supported only OAuth1, so the `fitbit` and `linkedin` 
 ```
 
 
+##### Fitbit
+
+To use the Fitbit's OAuth2 flow you should use `fitbit2` as provider name, instead of `fitbit` which is for OAuth1.
+Additionally set your client id as `client_id` in `custom_params` collection:
+
+```js
+"fitbit2": {
+    "key": "[CLIENT_KEY]",
+    "secret": "[CLIENT_SECRET]",
+    "custom_params": { "client_id": "[CLIENT_ID]" },
+}
+```
+
+
 ## Response Data
 
 The OAuth response data is returned as a querystring in your **final** callback - the one you specify in the `callback` key of your Grant configuration.
