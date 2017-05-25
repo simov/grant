@@ -615,6 +615,11 @@
     "oauth": 2,
     "scope_delimiter": " "
   },
+  "pingboard": {
+    "authorize_url": "https://app.pingboard.com/oauth",
+    "access_url": "https://app.pingboard.com/oauth/token",
+    "oauth": 2
+  },
   "pinterest": {
     "authorize_url": "https://api.pinterest.com/oauth/",
     "access_url": "https://api.pinterest.com/v1/oauth/token",
