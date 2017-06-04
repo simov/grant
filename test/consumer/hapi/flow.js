@@ -1,6 +1,7 @@
 'use strict'
 
 var t = require('assert')
+var urlib = require('url')
 var qs = require('qs')
 var request = require('request')
 var Hapi = require('hapi')
@@ -36,12 +37,12 @@ describe('flow - hapi', function () {
         })))
       }})
       server.route({method: 'POST', path: '/access_url', handler: function (req, res) {
-        res(JSON.stringify({
-          oauth_token: 'token', oauth_token_secret: 'secret'
-        }))
+        res({oauth_token: 'token', oauth_token_secret: 'secret'})
       }})
       server.route({method: 'GET', path: '/', handler: function (req, res) {
-        res(JSON.stringify((req.session || req.yar).get('grant').response || req.query))
+        var parsed = urlib.parse(req.url, false)
+        var query = qs.parse(parsed.query)
+        res((req.session || req.yar).get('grant').response || query)
       }})
 
       server.register([
@@ -54,9 +55,9 @@ describe('flow - hapi', function () {
           return
         }
 
-        grant.register.config.twitter.request_url = url('/request_url')
-        grant.register.config.twitter.authorize_url = url('/authorize_url')
-        grant.register.config.twitter.access_url = url('/access_url')
+        grant.config.twitter.request_url = url('/request_url')
+        grant.config.twitter.authorize_url = url('/authorize_url')
+        grant.config.twitter.access_url = url('/access_url')
 
         server.start(done)
       })
@@ -75,9 +76,9 @@ describe('flow - hapi', function () {
           done()
         })
       }
-      grant.register.config.twitter.transport = 'querystring'
+      grant.config.twitter.transport = 'querystring'
       assert(function () {
-        grant.register.config.twitter.transport = 'session'
+        grant.config.twitter.transport = 'session'
         assert(done)
       })
     })
@@ -103,7 +104,9 @@ describe('flow - hapi', function () {
         }))
       }})
       server.route({method: 'GET', path: '/', handler: function (req, res) {
-        res(JSON.stringify(req.query))
+        var parsed = urlib.parse(req.url, false)
+        var query = qs.parse(parsed.query)
+        res(query)
       }})
 
       server.register([
@@ -115,8 +118,8 @@ describe('flow - hapi', function () {
           return
         }
 
-        grant.register.config.facebook.authorize_url = url('/authorize_url')
-        grant.register.config.facebook.access_url = url('/access_url')
+        grant.config.facebook.authorize_url = url('/authorize_url')
+        grant.config.facebook.access_url = url('/access_url')
 
         server.start(done)
       })
@@ -161,7 +164,9 @@ describe('flow - hapi', function () {
         }))
       }})
       server.route({method: 'GET', path: '/', handler: function (req, res) {
-        res(JSON.stringify(req.query))
+        var parsed = urlib.parse(req.url, false)
+        var query = qs.parse(parsed.query)
+        res(query)
       }})
 
       server.register([
@@ -173,9 +178,9 @@ describe('flow - hapi', function () {
           return
         }
 
-        grant.register.config.getpocket.request_url = url('/request_url')
-        grant.register.config.getpocket.authorize_url = url('/authorize_url')
-        grant.register.config.getpocket.access_url = url('/access_url')
+        grant.config.getpocket.request_url = url('/request_url')
+        grant.config.getpocket.authorize_url = url('/authorize_url')
+        grant.config.getpocket.access_url = url('/access_url')
 
         server.start(done)
       })

@@ -403,7 +403,7 @@ Once you initialize a new instance of Grant:
 var grant = new Grant(require('./config'))
 ```
 
-You get a special `config` *(`register.config` for Hapi)* property attached to that instance. It contains the generated configuration data for all of the providers defined in your config file.
+You get a special `config` property attached to that instance. It contains the generated configuration data for all of the providers defined in your config file.
 
 > In case of dynamic access to a non pre-configured provider, it is automatically added to the `config` list on first access to the `/connect/:provider` route.
 

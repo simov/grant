@@ -42,9 +42,9 @@ describe('session - hapi', function () {
         return
       }
 
-      grant.register.config.facebook.authorize_url = '/authorize_url'
-      grant.register.config.twitter.request_url = url('/request_url')
-      grant.register.config.twitter.authorize_url = '/authorize_url'
+      grant.config.facebook.authorize_url = '/authorize_url'
+      grant.config.twitter.request_url = url('/request_url')
+      grant.config.twitter.authorize_url = '/authorize_url'
 
       server.start(done)
     })
@@ -97,7 +97,7 @@ describe('session - hapi', function () {
   })
 
   it('dynamic - non configured provider', function (done) {
-    t.equal(grant.register.config.google, undefined)
+    t.equal(grant.config.google, undefined)
 
     request.get(url('/connect/google'), {
       qs: {scope: ['scope1', 'scope2'], state: 'Grant',
@@ -106,7 +106,7 @@ describe('session - hapi', function () {
       followAllRedirects: true,
       json: true
     }, function (err, res, body) {
-      t.ok(typeof grant.register.config.google === 'object')
+      t.ok(typeof grant.config.google === 'object')
       t.deepEqual(body, {provider: 'google',
         dynamic: {scope: ['scope1', 'scope2'], state: 'Grant',
           authorize_url: '/authorize_url'}, state: 'Grant'})
@@ -115,7 +115,7 @@ describe('session - hapi', function () {
   })
 
   it('dynamic - non existing provider', function (done) {
-    t.equal(grant.register.config.grant, undefined)
+    t.equal(grant.config.grant, undefined)
 
     request.get(url('/connect/grant'), {
       qs: {oauth: 2, authorize_url: '/authorize_url'},
@@ -123,7 +123,7 @@ describe('session - hapi', function () {
       followAllRedirects: true,
       json: true
     }, function (err, res, body) {
-      t.equal(grant.register.config.grant, undefined)
+      t.equal(grant.config.grant, undefined)
       t.deepEqual(body, {provider: 'grant',
         dynamic: {oauth: '2', authorize_url: '/authorize_url'}})
       done()
@@ -141,7 +141,7 @@ describe('session - hapi', function () {
   })
 
   it('state auto generated', function (done) {
-    grant.register.config.facebook.state = true
+    grant.config.facebook.state = true
     request.get(url('/connect/facebook'), {
       jar: request.jar(),
       followAllRedirects: true,

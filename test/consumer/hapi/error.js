@@ -1,6 +1,7 @@
 'use strict'
 
 var t = require('assert')
+var urlib = require('url')
 var qs = require('qs')
 var request = require('request')
 var Hapi = require('hapi')
@@ -59,10 +60,12 @@ describe('error - hapi', function () {
 
         server.route({method: 'GET', path: '/authorize_url', handler: function (req, res) {
           res.redirect(url('/connect/facebook/callback?' +
-            'error%5Bmessage%5D=invalid&error%5Bcode%5D=500'))
+            qs.stringify({error: {message: 'invalid', code: '500'}})))
         }})
         server.route({method: 'GET', path: '/', handler: function (req, res) {
-          res(JSON.stringify(req.query))
+          var parsed = urlib.parse(req.url, false)
+          var query = qs.parse(parsed.query)
+          res(query)
         }})
 
         server.register([
@@ -74,7 +77,7 @@ describe('error - hapi', function () {
             return
           }
 
-          grant.register.config.facebook.authorize_url = url('/authorize_url')
+          grant.config.facebook.authorize_url = url('/authorize_url')
 
           server.start(done)
         })
@@ -105,10 +108,12 @@ describe('error - hapi', function () {
 
         server.route({method: 'GET', path: '/authorize_url', handler: function (req, res) {
           res.redirect(url('/connect/facebook/callback?' +
-            'code=code&state=Purest'))
+            qs.stringify({code: 'code', state: 'Purest'})))
         }})
         server.route({method: 'GET', path: '/', handler: function (req, res) {
-          res(JSON.stringify(req.query))
+          var parsed = urlib.parse(req.url, false)
+          var query = qs.parse(parsed.query)
+          res(query)
         }})
 
         server.register([
@@ -120,8 +125,8 @@ describe('error - hapi', function () {
             return
           }
 
-          grant.register.config.facebook.authorize_url = url('/authorize_url')
-          grant.register.config.facebook.state = 'Grant'
+          grant.config.facebook.authorize_url = url('/authorize_url')
+          grant.config.facebook.state = 'Grant'
 
           server.start(done)
         })
@@ -154,10 +159,12 @@ describe('error - hapi', function () {
           res.redirect(url('/connect/facebook/callback?code=code'))
         }})
         server.route({method: 'POST', path: '/access_url', handler: function (req, res) {
-          res('error%5Bmessage%5D=invalid&error%5Bcode%5D=500').code(500)
+          res(qs.stringify({error: {message: 'invalid', code: '500'}})).code(500)
         }})
         server.route({method: 'GET', path: '/', handler: function (req, res) {
-          res(JSON.stringify(req.query))
+          var parsed = urlib.parse(req.url, false)
+          var query = qs.parse(parsed.query)
+          res(query)
         }})
 
         server.register([
@@ -169,8 +176,8 @@ describe('error - hapi', function () {
             return
           }
 
-          grant.register.config.facebook.authorize_url = url('/authorize_url')
-          grant.register.config.facebook.access_url = url('/access_url')
+          grant.config.facebook.authorize_url = url('/authorize_url')
+          grant.config.facebook.access_url = url('/access_url')
 
           server.start(done)
         })
@@ -201,7 +208,9 @@ describe('error - hapi', function () {
       server.connection({host: 'localhost', port: 5000})
 
       server.route({method: 'GET', path: '/', handler: function (req, res) {
-        res(JSON.stringify(req.query)).header('x-test', true)
+        var parsed = urlib.parse(req.url, false)
+        var query = qs.parse(parsed.query)
+        res(query).header('x-test', true)
       }})
 
       server.register([
@@ -218,7 +227,7 @@ describe('error - hapi', function () {
     })
 
     it('connect', function (done) {
-      delete grant.register.config.facebook.oauth
+      delete grant.config.facebook.oauth
       request.get(url('/connect/facebook'), {
         jar: jar,
         json: true
@@ -230,7 +239,7 @@ describe('error - hapi', function () {
       })
     })
     it('connect - no callback', function (done) {
-      delete grant.register.config.facebook.callback
+      delete grant.config.facebook.callback
       request.get(url('/connect/facebook'), {
         jar: jar,
         json: true
@@ -243,7 +252,7 @@ describe('error - hapi', function () {
     })
 
     it('callback', function (done) {
-      grant.register.config.facebook.callback = '/'
+      grant.config.facebook.callback = '/'
       request.get(url('/connect/facebook/callback'), {
         jar: jar,
         json: true
@@ -255,7 +264,7 @@ describe('error - hapi', function () {
       })
     })
     it('callback - no callback', function (done) {
-      delete grant.register.config.facebook.callback
+      delete grant.config.facebook.callback
       request.get(url('/connect/facebook/callback'), {
         jar: jar,
         json: true
