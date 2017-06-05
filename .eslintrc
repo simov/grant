@@ -23,6 +23,9 @@
     // Disable: Block must not be padded by blank lines
     'padded-blocks': 'off',
 
+    // Disable: Enforce placing object properties on separate lines
+    'object-property-newline': 'off',
+
 
     // Unit Tests
 
@@ -33,6 +36,9 @@
     'handle-callback-err': 0,
 
     // Disable: Require or Disallow One Variable Declaration per Scope
-    'one-var': 0
+    'one-var': 0,
+
+    // Disable: Only used in one of the tests
+    'node/no-deprecated-api': 0
   }
 }

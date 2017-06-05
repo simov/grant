@@ -9,7 +9,7 @@ var grant = new Grant(require('./config.json'))
 var Purest = require('purest')
 var facebook = new Purest({provider: 'facebook'})
 var twitter = new Purest({provider: 'twitter',
-      key: grant.config.twitter.key, secret: grant.config.twitter.secret})
+  key: grant.config.twitter.key, secret: grant.config.twitter.secret})
 
 
 var app = express()

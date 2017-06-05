@@ -81,14 +81,14 @@ describe('utils', function () {
         {oauth_token: 'token', oauth_token_secret: 'secret'})
       t.deepEqual(qs.parse(str),
         {access_token: 'token', access_secret: 'secret',
-        raw: {oauth_token: 'token', oauth_token_secret: 'secret'}})
+          raw: {oauth_token: 'token', oauth_token_secret: 'secret'}})
     })
     it('oauth2', function () {
       var str = utils.toQuerystring(grant.config.facebook,
         {access_token: 'token', refresh_token: 'refresh'})
       t.deepEqual(qs.parse(str),
         {access_token: 'token', refresh_token: 'refresh',
-        raw: {access_token: 'token', refresh_token: 'refresh'}})
+          raw: {access_token: 'token', refresh_token: 'refresh'}})
     })
   })
 
