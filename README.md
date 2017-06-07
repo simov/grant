@@ -126,7 +126,7 @@ var Grant = require('grant-hapi')
 var Grant = require('grant').hapi()
 ```
 
-> Koa requires two additional dependencies: `thunkify` and `koa-route`
+> Koa requires one additional dependency: `thunkify`
 
 
 ## Path Prefix

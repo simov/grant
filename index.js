@@ -4,7 +4,8 @@ exports.express = function () {
 }
 
 exports.koa = function () {
-  return require('./lib/consumer/koa')
+  var version = parseInt(require('koa/package.json').version.split('.')[0])
+  return require('./lib/consumer/koa' + (version < 2 ? '' : '2'))
 }
 
 exports.hapi = function () {
