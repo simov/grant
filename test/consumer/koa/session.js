@@ -6,11 +6,25 @@ var request = require('request')
 var Koa = require('koa')
 var session = require('koa-session')
 var bodyParser = require('koa-bodyparser')
-var route = require('koa-route')
 var mount = require('koa-mount')
+var convert = require('koa-convert')
 var koaqs = require('koa-qs')
 var Grant = require('../../../').koa()
 
+
+var _Koa = Koa
+Koa = function () {
+  var version = parseInt(require('koa/package.json').version.split('.')[0])
+
+  var app = new _Koa()
+
+  if (version >= 2) {
+    var _use = app.use
+    app.use = (mw) => _use.call(app, convert(mw))
+  }
+
+  return app
+}
 
 describe('session - koa', function () {
   function url (path) {
@@ -38,12 +52,14 @@ describe('session - koa', function () {
     grant.config.twitter.request_url = url('/request_url')
     grant.config.twitter.authorize_url = '/authorize_url'
 
-    app.use(route.post('/request_url', function* (next) {
-      this.body = qs.stringify({oauth_token: 'token'})
-    }))
-    app.use(route.get('/authorize_url', function* (next) {
-      this.body = JSON.stringify(this.session.grant)
-    }))
+    app.use(function* () {
+      if (this.path === '/request_url') {
+        this.body = qs.stringify({oauth_token: 'token'})
+      }
+      else if (this.path === '/authorize_url') {
+        this.body = JSON.stringify(this.session.grant)
+      }
+    })
 
     server = app.listen(5000, done)
   })

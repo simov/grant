@@ -5,11 +5,25 @@ var qs = require('qs')
 var request = require('request')
 var Koa = require('koa')
 var session = require('koa-session')
-var route = require('koa-route')
 var mount = require('koa-mount')
+var convert = require('koa-convert')
 var koaqs = require('koa-qs')
 var Grant = require('../../../').koa()
 
+
+var _Koa = Koa
+Koa = function () {
+  var version = parseInt(require('koa/package.json').version.split('.')[0])
+
+  var app = new _Koa()
+
+  if (version >= 2) {
+    var _use = app.use
+    app.use = (mw) => _use.call(app, convert(mw))
+  }
+
+  return app
+}
 
 describe('error - koa', function () {
   function url (path) {
@@ -23,51 +37,69 @@ describe('error - koa', function () {
   }
 
   describe('missing middleware', function () {
-    it('session', function (done) {
-      var grant = new Grant(config)
-      var app = new Koa()
-      app.use(function* (next) {
-        try {
-          yield next
-        }
-        catch (err) {
-          t.equal(err.message, 'Grant: mount session middleware first')
-        }
+    describe('session', function (done) {
+      var server
+      before(function (done) {
+        var grant = new Grant(config)
+        var app = new Koa()
+        app.use(function* (next) {
+          try {
+            yield next
+          }
+          catch (err) {
+            t.equal(err.message, 'Grant: mount session middleware first')
+          }
+        })
+        app.use(mount(grant))
+        server = app.listen(5000, done)
       })
-      app.use(mount(grant))
-      var server = app.listen(5000, function () {
+
+      it('', function (done) {
         request.get(url('/connect/facebook'), {
           jar: request.jar(),
           json: true
         }, function (err, res, body) {
           body.match(/Error: Grant: mount session middleware first/)
-          server.close(done)
+          done()
         })
+      })
+
+      after(function (done) {
+        server.close(done)
       })
     })
 
-    it('body-parser', function (done) {
-      var grant = new Grant(config)
-      var app = new Koa()
-      app.keys = ['grant']
-      app.use(session(app))
-      app.use(function* (next) {
-        try {
-          yield next
-        }
-        catch (err) {
-          t.equal(err.message, 'Grant: mount body parser middleware first')
-        }
+    describe('body-parser', function () {
+      var server
+      before(function (done) {
+        var grant = new Grant(config)
+        var app = new Koa()
+        app.keys = ['grant']
+        app.use(session(app))
+        app.use(function* (next) {
+          try {
+            yield next
+          }
+          catch (err) {
+            t.equal(err.message, 'Grant: mount body parser middleware first')
+          }
+        })
+        app.use(mount(grant))
+        server = app.listen(5000, done)
       })
-      app.use(mount(grant))
-      var server = app.listen(5000, function () {
+
+      it('', function (done) {
         request.post(url('/connect/facebook'), {
           jar: request.jar(),
           json: true
         }, function (err, res, body) {
           body.match(/Error: Grant: mount body parser middleware first/)
-          server.close(done)
+          done()
         })
+      })
+
+      after(function (done) {
+        server.close(done)
       })
     })
   })
@@ -86,13 +118,15 @@ describe('error - koa', function () {
 
         grant.config.facebook.authorize_url = url('/authorize_url')
 
-        app.use(route.get('/authorize_url', function* (next) {
-          this.response.redirect(url('/connect/facebook/callback?' +
-            'error%5Bmessage%5D=invalid&error%5Bcode%5D=500'))
-        }))
-        app.use(route.get('/', function* (next) {
-          this.body = JSON.stringify(this.request.query)
-        }))
+        app.use(function* () {
+          if (this.path === '/authorize_url') {
+            this.response.redirect(url('/connect/facebook/callback?' +
+              qs.stringify({error: {message: 'invalid', code: 500}})))
+          }
+          else if (this.path === '/') {
+            this.body = JSON.stringify(this.request.query)
+          }
+        })
 
         server = app.listen(5000, done)
       })
@@ -126,13 +160,15 @@ describe('error - koa', function () {
         grant.config.facebook.authorize_url = url('/authorize_url')
         grant.config.facebook.state = 'Grant'
 
-        app.use(route.get('/authorize_url', function* (next) {
-          this.response.redirect(url('/connect/facebook/callback?' +
-            'code=code&state=Purest'))
-        }))
-        app.use(route.get('/', function* (next) {
-          this.body = JSON.stringify(this.request.query)
-        }))
+        app.use(function* () {
+          if (this.path === '/authorize_url') {
+            this.response.redirect(url('/connect/facebook/callback?' +
+              qs.stringify({code: 'code', state: 'Purest'})))
+          }
+          else if (this.path === '/') {
+            this.body = JSON.stringify(this.request.query)
+          }
+        })
 
         server = app.listen(5000, done)
       })
@@ -166,16 +202,18 @@ describe('error - koa', function () {
         grant.config.facebook.authorize_url = url('/authorize_url')
         grant.config.facebook.access_url = url('/access_url')
 
-        app.use(route.get('/authorize_url', function* (next) {
-          this.response.redirect(url('/connect/facebook/callback?code=code'))
-        }))
-        app.use(route.post('/access_url', function* (next) {
-          this.response.status = 500
-          this.body = 'error%5Bmessage%5D=invalid&error%5Bcode%5D=500'
-        }))
-        app.use(route.get('/', function* (next) {
-          this.body = JSON.stringify(this.request.query)
-        }))
+        app.use(function* () {
+          if (this.path === '/authorize_url') {
+            this.response.redirect(url('/connect/facebook/callback?code=code'))
+          }
+          else if (this.path === '/access_url') {
+            this.response.status = 500
+            this.body = qs.stringify({error: {message: 'invalid', code: 500}})
+          }
+          else if (this.path === '/') {
+            this.body = JSON.stringify(this.request.query)
+          }
+        })
 
         server = app.listen(5000, done)
       })
@@ -206,10 +244,13 @@ describe('error - koa', function () {
       app.use(mount(grant))
       koaqs(app)
 
-      app.use(route.get('/', function* (next) {
-        this.response.set('x-test', true)
-        this.body = JSON.stringify(this.request.query)
-      }))
+      app.use(function* () {
+        if (this.path === '/') {
+          this.response.set('x-test', true)
+          this.body = JSON.stringify(this.request.query)
+        }
+      })
+
       server = app.listen(5000, done)
     })
 

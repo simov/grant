@@ -5,11 +5,25 @@ var qs = require('qs')
 var request = require('request')
 var Koa = require('koa')
 var session = require('koa-session')
-var route = require('koa-route')
 var mount = require('koa-mount')
+var convert = require('koa-convert')
 var koaqs = require('koa-qs')
 var Grant = require('../../../').koa()
 
+
+var _Koa = Koa
+Koa = function () {
+  var version = parseInt(require('koa/package.json').version.split('.')[0])
+
+  var app = new _Koa()
+
+  if (version >= 2) {
+    var _use = app.use
+    app.use = (mw) => _use.call(app, convert(mw))
+  }
+
+  return app
+}
 
 describe('flow - koa', function () {
   function url (path) {
@@ -37,28 +51,29 @@ describe('flow - koa', function () {
       grant.config.twitter.authorize_url = url('/authorize_url')
       grant.config.twitter.access_url = url('/access_url')
 
-      app.use(route.post('/request_url', function* (next) {
-        this.body = qs.stringify({oauth_token: 'token', oauth_token_secret: 'secret'})
-      }))
-      app.use(route.get('/authorize_url', function* (next) {
-        this.response.redirect(url('/connect/twitter/callback?' + qs.stringify({
-          oauth_token: 'token', oauth_verifier: 'verifier'
-        })))
-      }))
-      app.use(route.post('/access_url', function* (next) {
-        this.body = JSON.stringify({
-          oauth_token: 'token', oauth_token_secret: 'secret'
-        })
-      }))
-      app.use(route.get('/', function* (next) {
-        this.body = JSON.stringify(this.session.grant.response || this.request.query)
-      }))
+      app.use(function* () {
+        if (this.path === '/request_url') {
+          this.body = qs.stringify({oauth_token: 'token', oauth_token_secret: 'secret'})
+        }
+        else if (this.path === '/authorize_url') {
+          this.response.redirect(url('/connect/twitter/callback?' +
+            qs.stringify({oauth_token: 'token', oauth_verifier: 'verifier'})))
+        }
+        else if (this.path === '/access_url') {
+          this.body = JSON.stringify({
+            oauth_token: 'token', oauth_token_secret: 'secret'
+          })
+        }
+        else if (this.path === '/') {
+          this.body = JSON.stringify(this.session.grant.response || this.request.query)
+        }
+      })
 
       server = app.listen(5000, done)
     })
 
     it('twitter', function (done) {
-      function assert (done) {
+      function test (done) {
         request.get(url('/connect/twitter'), {
           jar: request.jar(),
           json: true
@@ -71,9 +86,9 @@ describe('flow - koa', function () {
         })
       }
       grant.config.twitter.transport = 'querystring'
-      assert(function () {
+      test(function () {
         grant.config.twitter.transport = 'session'
-        assert(done)
+        test(done)
       })
     })
 
@@ -95,17 +110,19 @@ describe('flow - koa', function () {
       grant.config.facebook.authorize_url = url('/authorize_url')
       grant.config.facebook.access_url = url('/access_url')
 
-      app.use(route.get('/authorize_url', function* (next) {
-        this.response.redirect(url('/connect/facebook/callback?code=code'))
-      }))
-      app.use(route.post('/access_url', function* (next) {
-        this.body = JSON.stringify({
-          access_token: 'token', refresh_token: 'refresh', expires_in: 3600
-        })
-      }))
-      app.use(route.get('/', function* (next) {
-        this.body = JSON.stringify(this.request.query)
-      }))
+      app.use(function* () {
+        if (this.path === '/authorize_url') {
+          this.response.redirect(url('/connect/facebook/callback?code=code'))
+        }
+        else if (this.path === '/access_url') {
+          this.body = JSON.stringify({
+            access_token: 'token', refresh_token: 'refresh', expires_in: 3600
+          })
+        }
+        else if (this.path === '/') {
+          this.body = JSON.stringify(this.request.query)
+        }
+      })
 
       server = app.listen(5000, done)
     })
@@ -142,22 +159,23 @@ describe('flow - koa', function () {
       grant.config.getpocket.authorize_url = url('/authorize_url')
       grant.config.getpocket.access_url = url('/access_url')
 
-      app.use(route.post('/request_url', function* (next) {
-        this.body = qs.stringify({code: 'code'})
-      }))
-      app.use(route.get('/authorize_url', function* (next) {
-        this.response.redirect(url('/connect/getpocket/callback?' + qs.stringify({
-          request_token: 'token'
-        })))
-      }))
-      app.use(route.post('/access_url', function* (next) {
-        this.body = JSON.stringify({
-          access_token: 'token', username: 'grant'
-        })
-      }))
-      app.use(route.get('/', function* (next) {
-        this.body = JSON.stringify(this.request.query)
-      }))
+      app.use(function* () {
+        if (this.path === '/request_url') {
+          this.body = qs.stringify({code: 'code'})
+        }
+        else if (this.path === '/authorize_url') {
+          this.response.redirect(url('/connect/getpocket/callback?' +
+            qs.stringify({request_token: 'token'})))
+        }
+        else if (this.path === '/access_url') {
+          this.body = JSON.stringify({
+            access_token: 'token', username: 'grant'
+          })
+        }
+        else if (this.path === '/') {
+          this.body = JSON.stringify(this.request.query)
+        }
+      })
 
       server = app.listen(5000, done)
     })
