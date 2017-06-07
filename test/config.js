@@ -351,4 +351,33 @@ describe('config', function () {
         {grant2: {grant2: true, name: 'grant2'}, server: {}})
     })
   })
+
+  describe('hapi options', () => {
+    it('passed in server.register', (done) => {
+      var Hapi = require('hapi')
+      var Grant = require('../').hapi()
+      var config = {grant: {}}
+      var grant = new Grant()
+      var server = new Hapi.Server()
+      server.connection({host: 'localhost', port: 5000})
+      server.register([{register: grant, options: config}], function () {
+        t.deepEqual(grant.config,
+          {grant: {grant: true, name: 'grant'}, server: {}})
+        done()
+      })
+    })
+    it('passed in the constructor', (done) => {
+      var Hapi = require('hapi')
+      var Grant = require('../').hapi()
+      var config = {grant: {}}
+      var grant = new Grant(config)
+      var server = new Hapi.Server()
+      server.connection({host: 'localhost', port: 5000})
+      server.register([{register: grant}], function () {
+        t.deepEqual(grant.config,
+          {grant: {grant: true, name: 'grant'}, server: {}})
+        done()
+      })
+    })
+  })
 })
