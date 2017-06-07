@@ -37,7 +37,7 @@ describe('error - koa', function () {
   }
 
   describe('missing middleware', function () {
-    describe('session', function (done) {
+    describe('session', function () {
       var server
       before(function (done) {
         var grant = new Grant(config)

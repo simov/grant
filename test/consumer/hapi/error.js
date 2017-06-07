@@ -21,30 +21,39 @@ describe('error - hapi', function () {
   }
 
   describe('missing plugin', function () {
-    it('session', function (done) {
-      var grant = new Grant()
-      var server = new Hapi.Server({debug: {request: false}})
-      server.connection({host: 'localhost', port: 5000})
+    describe('session', function () {
+      var server
+      before(function (done) {
+        var grant = new Grant()
+        server = new Hapi.Server({debug: {request: false}})
+        server.connection({host: 'localhost', port: 5000})
 
-      server.register([{register: grant, options: config}], function (err) {
-        if (err) {
-          done(err)
-          return
-        }
+        server.register([{register: grant, options: config}], function (err) {
+          if (err) {
+            done(err)
+            return
+          }
 
-        server.on('request-error', function (req, err) {
-          t.equal(err.message, 'Uncaught error: Grant: register session plugin first')
-        })
-
-        server.start(function () {
-          request.get(url('/connect/facebook'), {
-            jar: request.jar(),
-            json: true
-          }, function (err, res, body) {
-            t.equal(body.statusCode, 500)
-            server.stop(done)
+          server.on('request-error', function (req, err) {
+            t.equal(err.message, 'Uncaught error: Grant: register session plugin first')
           })
+
+          server.start(done)
         })
+      })
+
+      it('', (done) => {
+        request.get(url('/connect/facebook'), {
+          jar: request.jar(),
+          json: true
+        }, function (err, res, body) {
+          t.equal(body.statusCode, 500)
+          done()
+        })
+      })
+
+      after(function (done) {
+        server.stop(done)
       })
     })
   })

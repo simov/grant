@@ -20,41 +20,59 @@ describe('error - express', function () {
   }
 
   describe('missing middleware', function () {
-    it('session', function (done) {
-      var grant = new Grant(config)
-      var app = express().use(grant)
-      app.use(function (err, req, res, next) {
-        t.equal(err.message, 'Grant: mount session middleware first')
-        next()
+    describe('session', function () {
+      var server
+      before(function (done) {
+        var grant = new Grant(config)
+        var app = express().use(grant)
+        app.use(function (err, req, res, next) {
+          t.equal(err.message, 'Grant: mount session middleware first')
+          next()
+        })
+        server = app.listen(5000, done)
       })
-      var server = app.listen(5000, function () {
+
+      it('', function (done) {
         request.get(url('/connect/facebook'), {
           jar: request.jar(),
           json: true
         }, function (err, res, body) {
           body.match(/Error: Grant: mount session middleware first/)
-          server.close(done)
+          done()
         })
+      })
+
+      after(function (done) {
+        server.close(done)
       })
     })
 
-    it('body-parser', function (done) {
-      var grant = new Grant(config)
-      var app = express()
-      app.use(session({secret: 'grant', saveUninitialized: true, resave: true}))
-      app.use(grant)
-      app.use(function (err, req, res, next) {
-        t.equal(err.message, 'Grant: mount body parser middleware first')
-        next()
+    describe('body-parser', function () {
+      var server
+      before(function (done) {
+        var grant = new Grant(config)
+        var app = express()
+        app.use(session({secret: 'grant', saveUninitialized: true, resave: true}))
+        app.use(grant)
+        app.use(function (err, req, res, next) {
+          t.equal(err.message, 'Grant: mount body parser middleware first')
+          next()
+        })
+        server = app.listen(5000, done)
       })
-      var server = app.listen(5000, function () {
+
+      it('', function (done) {
         request.post(url('/connect/facebook'), {
           jar: request.jar(),
           json: true
         }, function (err, res, body) {
           body.match(/Error: Grant: mount body parser middleware first/)
-          server.close(done)
+          done()
         })
+      })
+
+      after(function (done) {
+        server.close(done)
       })
     })
   })
