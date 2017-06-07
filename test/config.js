@@ -332,4 +332,23 @@ describe('config', function () {
       t.ok(typeof grant._config === 'object')
     })
   })
+
+  describe('constructor', () => {
+    it('using new', () => {
+      var grant1 = new Grant({grant1: {}})
+      var grant2 = new Grant({grant2: {}})
+      t.deepEqual(grant1.config,
+        {grant1: {grant1: true, name: 'grant1'}, server: {}})
+      t.deepEqual(grant2.config,
+        {grant2: {grant2: true, name: 'grant2'}, server: {}})
+    })
+    it('without using new', () => {
+      var grant1 = Grant({grant1: {}})
+      var grant2 = Grant({grant2: {}})
+      t.deepEqual(grant1.config,
+        {grant1: {grant1: true, name: 'grant1'}, server: {}})
+      t.deepEqual(grant2.config,
+        {grant2: {grant2: true, name: 'grant2'}, server: {}})
+    })
+  })
 })
