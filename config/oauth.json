@@ -56,6 +56,13 @@
     "access_url": "https://api.assembla.com/token",
     "oauth": 2
   },
+  "authentiq": {
+    "authorize_url": "https://connect.authentiq.io/sign-in",
+    "access_url": "https://connect.authentiq.io/token",
+    "oauth": 2,
+    "scope_delimiter": " ",
+    "custom_parameters": ["display", "response_mode", "prompt"]
+  },
   "axosoft": {
     "authorize_url": "https://[subdomain].axosoft.com/auth",
     "access_url": "https://[subdomain].axosoft.com/api/oauth2/token",
