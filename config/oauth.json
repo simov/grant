@@ -61,7 +61,9 @@
     "access_url": "https://connect.authentiq.io/token",
     "oauth": 2,
     "scope_delimiter": " ",
-    "custom_parameters": ["display", "response_mode", "prompt"]
+    "custom_parameters": [
+      "display", "response_mode", "prompt", "max_age", "nonce", "ui_locales"
+    ]
   },
   "axosoft": {
     "authorize_url": "https://[subdomain].axosoft.com/auth",
