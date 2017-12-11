@@ -618,6 +618,12 @@
     "oauth": 2,
     "custom_parameters": ["scopes"]
   },
+  "patreon": {
+    "authorize_url": "https://www.patreon.com/oauth2/authorize",
+    "access_url": "https://www.patreon.com/api/oauth2/token",
+    "oauth": 2,
+    "scope_delimiter": " "
+  },
   "paypal": {
     "authorize_url": "https://www.paypal.com/webapps/auth/protocol/openidconnect/v1/authorize",
     "access_url": "https://api.paypal.com/v1/identity/openidconnect/tokenservice",
