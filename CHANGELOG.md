@@ -1,11 +1,14 @@
 
 # Change Log
 
+## v3.8.1 (2017/12/13)
+- **New:** Official support for 2 new providers: `authentiq` and `patreon`
+
 ## v3.8.0 (2017/06/07)
 - **Change:** Hapi is now using the internal `config` object directly through the middleware instance
 - **Fix:** Dynamic overrides support for Hapi >= 12.x
 - **New:** Hapi middleware configuration can be passed in the constructor
-- **New:** First class support for Koa >= 2.x using `async`/`await` **Node 8.0.0 required!**
+- **New:** First class support for Koa >= 2.x using `async`/`await` **Node >= 8.0.0 required!**
   - Koa 1.x and 0.x are still supported for Node 4, 6 and 8
 
 ## v3.7.2 (2017/04/20)
