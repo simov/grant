@@ -857,9 +857,9 @@
     "oauth": 1
   },
   "tumblr": {
-    "request_url": "http://www.tumblr.com/oauth/request_token",
-    "authorize_url": "http://www.tumblr.com/oauth/authorize",
-    "access_url": "http://www.tumblr.com/oauth/access_token",
+    "request_url": "https://www.tumblr.com/oauth/request_token",
+    "authorize_url": "https://www.tumblr.com/oauth/authorize",
+    "access_url": "https://www.tumblr.com/oauth/access_token",
     "oauth": 1
   },
   "twitch": {
