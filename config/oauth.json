@@ -284,8 +284,8 @@
     "oauth": 2
   },
   "eyeem": {
-    "authorize_url": "http://www.eyeem.com/oauth/authorize",
-    "access_url": "http://api.eyeem.com/v2/oauth/token",
+    "authorize_url": "https://www.eyeem.com/oauth/authorize",
+    "access_url": "https://api.eyeem.com/v2/oauth/token",
     "oauth": 2
   },
   "facebook": {
@@ -300,7 +300,7 @@
   },
   "feedly": {
     "authorize_url": "https://cloud.feedly.com/v3/auth/auth",
-    "access_url": "http://cloud.feedly.com/v3/auth/token",
+    "access_url": "https://cloud.feedly.com/v3/auth/token",
     "oauth": 2
   },
   "fitbit": {
@@ -363,9 +363,9 @@
     "subdomain": true
   },
   "geeklist": {
-    "request_url": "http://api.geekli.st/v1/oauth/request_token",
+    "request_url": "https://api.geekli.st/v1/oauth/request_token",
     "authorize_url": "https://geekli.st/oauth/authorize",
-    "access_url": "http://api.geekli.st/v1/oauth/access_token",
+    "access_url": "https://api.geekli.st/v1/oauth/access_token",
     "oauth": 1
   },
   "genius": {
@@ -407,9 +407,9 @@
     "oauth": 2
   },
   "goodreads": {
-    "request_url": "http://www.goodreads.com/oauth/request_token",
-    "authorize_url": "http://www.goodreads.com/oauth/authorize",
-    "access_url": "http://www.goodreads.com/oauth/access_token",
+    "request_url": "https://www.goodreads.com/oauth/request_token",
+    "authorize_url": "https://www.goodreads.com/oauth/authorize",
+    "access_url": "https://www.goodreads.com/oauth/access_token",
     "oauth": 1
   },
   "google": {
@@ -607,9 +607,9 @@
     "oauth": 1
   },
   "openstreetmap": {
-    "request_url": "http://www.openstreetmap.org/oauth/request_token",
-    "authorize_url": "http://www.openstreetmap.org/oauth/authorize",
-    "access_url": "http://www.openstreetmap.org/oauth/access_token",
+    "request_url": "https://www.openstreetmap.org/oauth/request_token",
+    "authorize_url": "https://www.openstreetmap.org/oauth/authorize",
+    "access_url": "https://www.openstreetmap.org/oauth/access_token",
     "oauth": 1
   },
   "optimizely": {
@@ -636,9 +636,9 @@
     "oauth": 2
   },
   "plurk": {
-    "request_url": "http://www.plurk.com/OAuth/request_token",
-    "authorize_url": "http://www.plurk.com/OAuth/authorize",
-    "access_url": "http://www.plurk.com/OAuth/access_token",
+    "request_url": "https://www.plurk.com/OAuth/request_token",
+    "authorize_url": "https://www.plurk.com/OAuth/authorize",
+    "access_url": "https://www.plurk.com/OAuth/access_token",
     "oauth": 1
   },
   "podio": {
@@ -741,9 +741,9 @@
     "scope_delimiter": " "
   },
   "smugmug": {
-    "request_url": "http://api.smugmug.com/services/oauth/1.0a/getRequestToken",
-    "authorize_url": "http://api.smugmug.com/services/oauth/1.0a/authorize",
-    "access_url": "http://api.smugmug.com/services/oauth/1.0a/getAccessToken",
+    "request_url": "https://api.smugmug.com/services/oauth/1.0a/getRequestToken",
+    "authorize_url": "https://api.smugmug.com/services/oauth/1.0a/authorize",
+    "access_url": "https://api.smugmug.com/services/oauth/1.0a/getAccessToken",
     "oauth": 1,
     "custom_parameters": [
       "Access", "Permissions", "allowThirdPartyLogin", "showSignUpButton",
@@ -807,9 +807,9 @@
     "oauth": 2
   },
   "surveygizmo": {
-    "request_url": "http://restapi.surveygizmo.com/head/oauth/request_token",
-    "authorize_url": "http://restapi.surveygizmo.com/head/oauth/authenticate",
-    "access_url": "http://restapi.surveygizmo.com/head/oauth/access_token",
+    "request_url": "https://restapi.surveygizmo.com/head/oauth/request_token",
+    "authorize_url": "https://restapi.surveygizmo.com/head/oauth/authenticate",
+    "access_url": "https://restapi.surveygizmo.com/head/oauth/access_token",
     "oauth": 1
   },
   "surveymonkey": {
