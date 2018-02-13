@@ -1,6 +1,9 @@
 
 # Change Log
 
+## v3.8.2 (2018/02/13)
+- **Change:** Migrate all OAuth endpoints to HTTPS
+
 ## v3.8.1 (2017/12/13)
 - **New:** Official support for 2 new providers: `authentiq` and `patreon`
 
