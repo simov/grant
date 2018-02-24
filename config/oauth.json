@@ -83,6 +83,12 @@
     "access_url": "https://launchpad.37signals.com/authorization/token",
     "oauth": 2
   },
+  "battle.net": {
+    "authorize_url": "https://[subdomain].battle.net/oauth/authorize",
+    "access_url": "https://[subdomain].battle.net/oauth/token",
+    "oauth": 2,
+    "scope_delimiter": " "
+  },
   "beatport": {
     "request_url": "https://oauth-api.beatport.com/identity/1/oauth/request-token",
     "authorize_url": "https://oauth-api.beatport.com/identity/1/oauth/authorize",
