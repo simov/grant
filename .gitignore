@@ -1,7 +1,7 @@
+build/
+coverage/
+node_modules/
 .DS_Store
 .idea
 npm-debug.log
-
-coverage/
-node_modules/
 package-lock.json

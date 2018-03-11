@@ -21,10 +21,13 @@
   "dependencies": {
     "deep-copy": "^1.4.2",
     "qs": "^6.5.1",
-    "request-compose": "0.0.4",
-    "request-oauth": "0.0.1"
+    "request-compose": "0.0.5",
+    "request-oauth": "0.0.2"
   },
   "devDependencies": {
+    "babel-cli": "^6.26.0",
+    "babel-polyfill": "^6.26.0",
+    "babel-preset-env": "^1.6.1",
     "body-parser": "^1.17.2",
     "coveralls": "^2.13.1",
     "eslint": "^3.19.0",
@@ -36,7 +39,7 @@
     "express": "^4.15.3",
     "express-session": "^1.15.3",
     "hapi": "^16.3.0",
-    "istanbul": "1.1.0-alpha.1",
+    "istanbul": "^1.1.0-alpha.1",
     "koa": "1.4.0",
     "koa-bodyparser": "^2.5.0",
     "koa-convert": "^1.2.0",
@@ -45,24 +48,36 @@
     "koa-session": "^4.1.0",
     "mocha": "^3.4.2",
     "request": "2.81.0",
-    "request-logs": "0.0.4",
+    "request-logs": "0.0.5",
     "thunkify": "^2.1.2",
     "yar": "^8.1.2"
   },
-  "main": "index.js",
+  "main": "./build/index.js",
   "files": [
+    "build/",
     "config/",
     "lib/",
+    "index.js",
     "CHANGELOG.md",
     "LICENSE",
     "README.md",
-    "index.js"
+    "package.json"
   ],
   "scripts": {
     "test": "npm run lint && npm run test:ci",
-    "test:ci": "mocha --recursive test/",
-    "test:cov": "istanbul cover _mocha -- --recursive test/",
-    "lint": "eslint lib/ test/ examples/ && echo Lint Passed"
+    "test:ci": "v=$(node -v | cut -b 2-2) && if [ $v -ge 8 ]; then p=\"test\"; else p=\"build/test\"; fi && mocha $p --recursive",
+    "test:cov": "istanbul cover _mocha -- --recursive",
+    "lint": "eslint lib/ test/ examples/",
+    "copy:config": "mkdir build/config && cp config/*.json build/config/",
+    "build:consumer": "babel lib/consumer --out-dir build/lib/consumer",
+    "copy:koa": "cp lib/consumer/koa.js lib/consumer/koa2.js build/lib/consumer/",
+    "build:flow": "babel lib/flow --out-dir build/lib/flow",
+    "build:utils": "babel lib/*.js --out-dir build",
+    "build:test": "babel test --out-dir build/test",
+    "build:main": "babel *.js --out-dir build",
+    "copy:package": "cp package.json build/",
+    "build": "rm -rf build/ && mkdir -p build && npm run copy:config && npm run build:consumer && npm run copy:koa && npm run build:flow && npm run build:utils && npm run build:test && npm run build:main && npm run copy:package",
+    "prepublish": "npm run build"
   },
   "engines": {
     "node": ">=4.0.0"
