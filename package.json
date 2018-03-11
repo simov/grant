@@ -19,9 +19,10 @@
     "url": "https://github.com/simov/grant.git"
   },
   "dependencies": {
-    "deep-copy": "^1.2.0",
-    "qs": "6.4.0",
-    "request": "2.81.0"
+    "deep-copy": "^1.4.2",
+    "qs": "^6.5.1",
+    "request-compose": "0.0.4",
+    "request-oauth": "0.0.1"
   },
   "devDependencies": {
     "body-parser": "^1.17.2",
@@ -35,7 +36,7 @@
     "express": "^4.15.3",
     "express-session": "^1.15.3",
     "hapi": "^16.3.0",
-    "istanbul": "^0.4.5",
+    "istanbul": "1.1.0-alpha.1",
     "koa": "1.4.0",
     "koa-bodyparser": "^2.5.0",
     "koa-convert": "^1.2.0",
@@ -43,6 +44,8 @@
     "koa-qs": "^2.0.0",
     "koa-session": "^4.1.0",
     "mocha": "^3.4.2",
+    "request": "2.81.0",
+    "request-logs": "0.0.4",
     "thunkify": "^2.1.2",
     "yar": "^8.1.2"
   },
@@ -56,9 +59,9 @@
     "index.js"
   ],
   "scripts": {
-    "test": "npm run lint && npm run test-ci",
-    "test-ci": "mocha --recursive test/",
-    "test-cov": "istanbul cover _mocha -- --recursive test/",
+    "test": "npm run lint && npm run test:ci",
+    "test:ci": "mocha --recursive test/",
+    "test:cov": "istanbul cover _mocha -- --recursive test/",
     "lint": "eslint lib/ test/ examples/ && echo Lint Passed"
   },
   "engines": {

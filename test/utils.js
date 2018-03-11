@@ -98,7 +98,12 @@ describe('utils', function () {
       t.deepEqual(qs.parse(str), {error: {error: 'HTTP error'}})
     })
     it('response error', function () {
-      var str = utils.error(null, {statusCode: 500}, {some: 'data'})
+      var err = new Error()
+      err.res = {statusCode: 500}
+      err.body = {some: 'data'}
+      err.raw = JSON.stringify(err.body)
+
+      var str = utils.error(err)
       t.deepEqual(qs.parse(str), {error: {some: 'data'}})
     })
   })

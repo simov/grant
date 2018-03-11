@@ -131,7 +131,7 @@ describe('oauth2', function () {
       var provider = {access_url: '/access_url'}
       var step1 = {code: 'code'}
       oauth2.step2(provider, step1, {}, function (err, body) {
-        t.deepEqual(qs.parse(err), {error: {error: 'Invalid URI "/access_url"'}})
+        t.deepEqual(qs.parse(err), {error: {error: 'socket hang up'}})
         done()
       })
     })

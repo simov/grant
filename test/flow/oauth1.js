@@ -86,7 +86,7 @@ describe('oauth1', function () {
     it('step1 - request error', function (done) {
       var provider = {request_url: '/request_url'}
       oauth1.step1(provider, function (err, body) {
-        t.deepEqual(qs.parse(err), {error: {error: 'Invalid URI "/request_url"'}})
+        t.deepEqual(qs.parse(err), {error: {error: 'socket hang up'}})
         done()
       })
     })
@@ -134,7 +134,7 @@ describe('oauth1', function () {
       var provider = {access_url: '/access_url'}
       var step2 = {oauth_token: 'token'}
       oauth1.step3(provider, {}, step2, function (err, body) {
-        t.deepEqual(qs.parse(err), {error: {error: 'Invalid URI "/access_url"'}})
+        t.deepEqual(qs.parse(err), {error: {error: 'socket hang up'}})
         done()
       })
     })
