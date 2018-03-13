@@ -190,7 +190,7 @@ describe('consumer - error', () => {
   })
 
   ;['express', 'koa', 'hapi'].forEach((name) => {
-    describe(`oauth2 - step1 - missing code + response message - ${name}`, () => {
+    describe(`oauth2 - authorize - missing code + response message - ${name}`, () => {
       var server, grant, consumer = name
 
       var servers = {
@@ -303,7 +303,7 @@ describe('consumer - error', () => {
   })
 
   ;['express'/*, 'koa', 'hapi'*/].forEach((name) => {
-    describe(`oauth2 - step1 - missing code without response message - ${name}`, () => {
+    describe(`oauth2 - authorize - missing code without response message - ${name}`, () => {
       var server, grant, consumer = name
 
       var servers = {
@@ -368,7 +368,7 @@ describe('consumer - error', () => {
   })
 
   ;['express', 'koa', 'hapi'].forEach((name) => {
-    describe(`oauth2 - step1 - state mismatch - ${name}`, () => {
+    describe(`oauth2 - authorize - state mismatch - ${name}`, () => {
       var server, grant, consumer = name
 
       var servers = {
@@ -484,7 +484,7 @@ describe('consumer - error', () => {
   })
 
   ;['express', 'koa', 'hapi'].forEach((name) => {
-    describe(`oauth2 - step2 - error response - ${name}`, () => {
+    describe(`oauth2 - access - error response - ${name}`, () => {
       var server, grant, consumer = name
 
       var servers = {

@@ -26,7 +26,7 @@ describe('oauth2', function () {
       server.listen(5000, done)
     })
 
-    it('step1', function () {
+    it('authorize', function () {
       var provider = {
         authorize_url: '/authorize_url',
         redirect_uri: '/redirect_uri',
@@ -34,7 +34,7 @@ describe('oauth2', function () {
         scope: 'read,write',
         state: '123'
       }
-      var url = oauth2.step1(provider)
+      var url = oauth2.authorize(provider)
       t.deepEqual(qs.parse(url.replace('/authorize_url?', '')), {
         client_id: 'key',
         response_type: 'code',
@@ -44,17 +44,17 @@ describe('oauth2', function () {
       })
     })
 
-    it('step2', function (done) {
+    it('access', function (done) {
       var provider = {
         access_url: url('/access_url'),
         redirect_uri: '/redirect_uri',
         key: 'key',
         secret: 'secret'
       }
-      var step1 = {
+      var authorize = {
         code: 'code'
       }
-      oauth2.step2(provider, step1, {}, function (err, body) {
+      oauth2.access(provider, authorize, {}, function (err, body) {
         t.deepEqual(qs.parse(body), {
           grant_type: 'authorization_code',
           code: 'code',
@@ -66,17 +66,17 @@ describe('oauth2', function () {
       })
     })
 
-    it('step3', function () {
+    it('callback', function () {
       var provider = {
         access_url: '/access_url',
         oauth: 2
       }
-      var step2 = {
+      var access = {
         access_token: 'token',
         refresh_token: 'refresh',
         some: 'data'
       }
-      var url = oauth2.step3(provider, step2)
+      var url = oauth2.callback(provider, access)
       t.deepEqual(qs.parse(url), {
         access_token: 'token',
         refresh_token: 'refresh',
@@ -101,44 +101,44 @@ describe('oauth2', function () {
       server.listen(5000, done)
     })
 
-    it('step2 - missing code - response error', function (done) {
+    it('access - missing code - response error', function (done) {
       var provider = {}
-      var step1 = {error: 'invalid'}
-      oauth2.step2(provider, step1, {}, function (err, body) {
+      var authorize = {error: 'invalid'}
+      oauth2.access(provider, authorize, {}, function (err, body) {
         t.deepEqual(qs.parse(err), {error: {error: 'invalid'}})
         done()
       })
     })
-    it('step2 - missing code - empty response', function (done) {
+    it('access - missing code - empty response', function (done) {
       var provider = {}
-      var step1 = {}
-      oauth2.step2(provider, step1, {}, function (err, body) {
+      var authorize = {}
+      oauth2.access(provider, authorize, {}, function (err, body) {
         t.deepEqual(qs.parse(err),
           {error: {error: 'Grant: OAuth2 missing code parameter'}})
         done()
       })
     })
-    it('step2 - state mismatch', function (done) {
+    it('access - state mismatch', function (done) {
       var provider = {}
-      var step1 = {code: 'code', state: 'Purest'}
+      var authorize = {code: 'code', state: 'Purest'}
       var session = {state: 'Grant'}
-      oauth2.step2(provider, step1, session, function (err, body) {
+      oauth2.access(provider, authorize, session, function (err, body) {
         t.deepEqual(qs.parse(err), {error: {error: 'Grant: OAuth2 state mismatch'}})
         done()
       })
     })
-    it('step2 - request error', function (done) {
+    it('access - request error', function (done) {
       var provider = {access_url: '/access_url'}
-      var step1 = {code: 'code'}
-      oauth2.step2(provider, step1, {}, function (err, body) {
+      var authorize = {code: 'code'}
+      oauth2.access(provider, authorize, {}, function (err, body) {
         t.deepEqual(qs.parse(err), {error: {error: 'socket hang up'}})
         done()
       })
     })
-    it('step2 - response error', function (done) {
+    it('access - response error', function (done) {
       var provider = {access_url: url('/access_url')}
-      var step1 = {code: 'code'}
-      oauth2.step2(provider, step1, {}, function (err, body) {
+      var authorize = {code: 'code'}
+      oauth2.access(provider, authorize, {}, function (err, body) {
         t.deepEqual(qs.parse(err), {error: {error: 'invalid'}})
         done()
       })
@@ -150,7 +150,7 @@ describe('oauth2', function () {
   })
 
   describe('custom', function () {
-    describe('step1', function () {
+    describe('authorize', function () {
       describe('custom_parameters', function () {
         var config = {}
         for (var key in oauth) {
@@ -167,7 +167,7 @@ describe('oauth2', function () {
 
         Object.keys(config).forEach(function (key) {
           it(key, function () {
-            var url = oauth2.step1(grant.config[key])
+            var url = oauth2.authorize(grant.config[key])
             var query = qs.parse(url.split('?')[1])
             delete query.response_type
             delete query.redirect_uri
@@ -191,7 +191,7 @@ describe('oauth2', function () {
 
         Object.keys(config).forEach(function (key) {
           it(key, function () {
-            var url = oauth2.step1(grant.config[key])
+            var url = oauth2.authorize(grant.config[key])
             if (key !== 'vend') {
               t.ok(/grant/.test(url))
             }
@@ -203,7 +203,7 @@ describe('oauth2', function () {
         var config = {basecamp: {}}
         var grant = new Grant(config)
         it('basecamp', function () {
-          var url = oauth2.step1(grant.config.basecamp)
+          var url = oauth2.authorize(grant.config.basecamp)
           var query = qs.parse(url.split('?')[1])
           t.equal(query.type, 'web_server')
         })
@@ -213,7 +213,7 @@ describe('oauth2', function () {
         var config = {optimizely: {scope: ['all']}}
         var grant = new Grant(config)
         it('optimizely', function () {
-          var url = oauth2.step1(grant.config.optimizely)
+          var url = oauth2.authorize(grant.config.optimizely)
           var query = qs.parse(url.split('?')[1])
           t.equal(query.scopes, 'all')
         })
@@ -223,7 +223,7 @@ describe('oauth2', function () {
         var config = {visualstudio: {response_type: 'Assertion'}}
         var grant = new Grant(config)
         it('visualstudio', function () {
-          var url = oauth2.step1(grant.config.visualstudio)
+          var url = oauth2.authorize(grant.config.visualstudio)
           var query = qs.parse(url.split('?')[1])
           t.equal(query.response_type, 'Assertion')
         })
@@ -233,13 +233,13 @@ describe('oauth2', function () {
         var config = {unsplash: {scope: ['public', 'read_photos']}}
         var grant = new Grant(config)
         it('unsplash', () => {
-          var url = oauth2.step1(grant.config.unsplash)
+          var url = oauth2.authorize(grant.config.unsplash)
           t.equal(url.replace(/.*scope=(.*)/g, '$1'), 'public+read_photos')
         })
       })
     })
 
-    describe('step2', function () {
+    describe('access', function () {
       var grant, server
 
       before(function (done) {
@@ -277,7 +277,7 @@ describe('oauth2', function () {
 
       describe('web_server', function () {
         it('basecamp', function (done) {
-          oauth2.step2(grant.config.basecamp, {code: 'code'}, {}, function (err, body) {
+          oauth2.access(grant.config.basecamp, {code: 'code'}, {}, function (err, body) {
             var query = qs.parse(body)
             t.equal(query.type, 'web_server')
             done()
@@ -289,7 +289,7 @@ describe('oauth2', function () {
         it('concur', function (done) {
           grant.config.concur.key = 'key'
           grant.config.concur.secret = 'secret'
-          oauth2.step2(grant.config.concur, {code: 'code'}, {}, function (err, body) {
+          oauth2.access(grant.config.concur, {code: 'code'}, {}, function (err, body) {
             t.deepEqual(qs.parse(body), {
               code: 'code', client_id: 'key', client_secret: 'secret'
             })
@@ -302,7 +302,7 @@ describe('oauth2', function () {
         it('ebay', function (done) {
           grant.config.ebay.key = 'key'
           grant.config.ebay.secret = 'secret'
-          oauth2.step2(grant.config.ebay, {code: 'code'}, {}, function (err, body) {
+          oauth2.access(grant.config.ebay, {code: 'code'}, {}, function (err, body) {
             t.deepEqual(
               Buffer(body.replace('Basic ', ''), 'base64').toString().split(':'),
               ['key', 'secret']
@@ -313,7 +313,7 @@ describe('oauth2', function () {
         it('fitbit2', function (done) {
           grant.config.fitbit2.key = 'key'
           grant.config.fitbit2.secret = 'secret'
-          oauth2.step2(grant.config.fitbit2, {code: 'code'}, {}, function (err, body) {
+          oauth2.access(grant.config.fitbit2, {code: 'code'}, {}, function (err, body) {
             t.deepEqual(
               Buffer(body.replace('Basic ', ''), 'base64').toString().split(':'),
               ['key', 'secret']
@@ -324,7 +324,7 @@ describe('oauth2', function () {
         it('homeaway', function (done) {
           grant.config.homeaway.key = 'key'
           grant.config.homeaway.secret = 'secret'
-          oauth2.step2(grant.config.homeaway, {code: 'code'}, {}, function (err, body) {
+          oauth2.access(grant.config.homeaway, {code: 'code'}, {}, function (err, body) {
             t.deepEqual(
               Buffer(body.replace('Basic ', ''), 'base64').toString().split(':'),
               ['key', 'secret']
@@ -335,7 +335,7 @@ describe('oauth2', function () {
         it('reddit', function (done) {
           grant.config.reddit.key = 'key'
           grant.config.reddit.secret = 'secret'
-          oauth2.step2(grant.config.reddit, {code: 'code'}, {}, function (err, body) {
+          oauth2.access(grant.config.reddit, {code: 'code'}, {}, function (err, body) {
             t.deepEqual(
               Buffer(body.replace('Basic ', ''), 'base64').toString().split(':'),
               ['key', 'secret']
@@ -347,7 +347,7 @@ describe('oauth2', function () {
 
       describe('hash', function () {
         it('smartsheet', function (done) {
-          oauth2.step2(grant.config.smartsheet, {code: 'code'}, {}, function (err, body) {
+          oauth2.access(grant.config.smartsheet, {code: 'code'}, {}, function (err, body) {
             var query = qs.parse(body)
             t.ok(typeof query.hash === 'string')
             done()
@@ -358,7 +358,7 @@ describe('oauth2', function () {
       describe('api_key', function () {
         it('surveymonkey', function (done) {
           grant.config.surveymonkey.custom_params = {api_key: 'api_key'}
-          oauth2.step2(grant.config.surveymonkey, {code: 'code'}, {}, function (err, body) {
+          oauth2.access(grant.config.surveymonkey, {code: 'code'}, {}, function (err, body) {
             t.deepEqual(qs.parse(body), {api_key: 'api_key'})
             done()
           })
@@ -368,7 +368,7 @@ describe('oauth2', function () {
       describe('Assertion Framework for OAuth 2.0', function () {
         it('visualstudio', function (done) {
           grant.config.visualstudio.secret = 'secret'
-          oauth2.step2(grant.config.visualstudio, {code: 'code'}, {}, function (err, body) {
+          oauth2.access(grant.config.visualstudio, {code: 'code'}, {}, function (err, body) {
             t.deepEqual(qs.parse(body), {
               client_assertion_type: 'urn:ietf:params:oauth:client-assertion-type:jwt-bearer',
               client_assertion: 'secret',
@@ -385,7 +385,7 @@ describe('oauth2', function () {
         it('shopify', function (done) {
           grant.config.shopify.access_url = url('/[subdomain]')
           grant.config.shopify.subdomain = 'access_url'
-          oauth2.step2(grant.config.shopify, {code: 'code'}, {}, function (err, body) {
+          oauth2.access(grant.config.shopify, {code: 'code'}, {}, function (err, body) {
             t.deepEqual(qs.parse(body), {
               grant_type: 'authorization_code',
               code: 'code',

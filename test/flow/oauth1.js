@@ -34,36 +34,51 @@ describe('oauth1', function () {
       server.listen(5000, done)
     })
 
-    it('step1', function (done) {
+    it('request', function (done) {
       var provider = {
         request_url: url('/request_url'),
         redirect_uri: '/redirect_uri',
         key: 'key'
       }
-      oauth1.step1(provider, function (err, data) {
+      oauth1.request(provider, function (err, data) {
         t.equal(data.oauth_callback, '/redirect_uri')
         t.equal(data.oauth_consumer_key, 'key')
         done()
       })
     })
 
-    it('step2', function () {
+    it('authorize', function () {
       var provider = {authorize_url: '/authorize_url'}
-      var url = oauth1.step2(provider, {oauth_token: 'token'})
+      var url = oauth1.authorize(provider, {oauth_token: 'token'})
       t.deepEqual(qs.parse(url.replace('/authorize_url?', '')),
         {oauth_token: 'token'})
     })
 
-    it('step3', function (done) {
+    it('access', function (done) {
       var provider = {access_url: url('/access_url'), oauth: 1}
-      var step2 = {oauth_token: 'token'}
-      oauth1.step3(provider, {}, step2, function (err, url) {
-        t.deepEqual(qs.parse(url), {
-          access_token: 'token',
-          access_secret: 'secret',
-          raw: {oauth_token: 'token', oauth_token_secret: 'secret', some: 'data'}
+      var authorize = {oauth_token: 'token'}
+      oauth1.access(provider, {}, authorize, function (err, data) {
+        t.deepEqual(qs.parse(data), {
+          oauth_token: 'token',
+          oauth_token_secret: 'secret',
+          some: 'data'
         })
         done()
+      })
+    })
+
+    it('callback', () => {
+      var provider = {oauth: 1}
+      var authorize = {
+        oauth_token: 'token',
+        oauth_token_secret: 'secret',
+        some: 'data'
+      }
+      var url = oauth1.callback(provider, authorize)
+      t.deepEqual(qs.parse(url), {
+        access_token: 'token',
+        access_secret: 'secret',
+        raw: {oauth_token: 'token', oauth_token_secret: 'secret', some: 'data'}
       })
     })
 
@@ -84,65 +99,65 @@ describe('oauth1', function () {
       server.listen(5000, done)
     })
 
-    it('step1 - request error', function (done) {
+    it('request - request error', function (done) {
       var provider = {request_url: '/request_url'}
-      oauth1.step1(provider, function (err, body) {
+      oauth1.request(provider, function (err, body) {
         t.deepEqual(qs.parse(err), {error: {error: 'socket hang up'}})
         done()
       })
     })
-    it('step1 - response error', function (done) {
+    it('request - response error', function (done) {
       var provider = {request_url: url('/request_url')}
-      oauth1.step1(provider, function (err, body) {
+      oauth1.request(provider, function (err, body) {
         t.deepEqual(qs.parse(err), {error: {error: 'invalid'}})
         done()
       })
     })
 
-    it('step2 - mising oauth_token - response error', function () {
+    it('authorize - mising oauth_token - response error', function () {
       var provider = {}
-      var step1 = {error: 'invalid'}
-      var url = oauth1.step2(provider, step1)
+      var request = {error: 'invalid'}
+      var url = oauth1.authorize(provider, request)
       t.deepEqual(qs.parse(url.replace('/?', '')),
         {error: {error: 'invalid'}})
     })
-    it('step2 - mising oauth_token - empty response', function () {
+    it('authorize - mising oauth_token - empty response', function () {
       var provider = {}
-      var step1 = {}
-      var url = oauth1.step2(provider, step1)
+      var request = {}
+      var url = oauth1.authorize(provider, request)
       t.deepEqual(qs.parse(url.replace('/?', '')),
         {error: {error: 'Grant: OAuth1 missing oauth_token parameter'}})
     })
 
-    it('step3 - mising oauth_token - response error', function (done) {
+    it('access - mising oauth_token - response error', function (done) {
       var provider = {}
-      var step2 = {error: 'invalid'}
-      oauth1.step3(provider, {}, step2, function (err, body) {
+      var authorize = {error: 'invalid'}
+      oauth1.access(provider, {}, authorize, function (err, body) {
         t.deepEqual(qs.parse(err), {error: {error: 'invalid'}})
         done()
       })
     })
-    it('step3 - mising oauth_token - empty response', function (done) {
+    it('access - mising oauth_token - empty response', function (done) {
       var provider = {}
-      var step2 = {}
-      oauth1.step3(provider, {}, step2, function (err, body) {
+      var authorize = {}
+      oauth1.access(provider, {}, authorize, function (err, body) {
         t.deepEqual(qs.parse(err),
           {error: {error: 'Grant: OAuth1 missing oauth_token parameter'}})
         done()
       })
     })
-    it('step3 - request error', function (done) {
+    it('access - request error', function (done) {
       var provider = {access_url: '/access_url'}
-      var step2 = {oauth_token: 'token'}
-      oauth1.step3(provider, {}, step2, function (err, body) {
+      var authorize = {oauth_token: 'token'}
+      oauth1.access(provider, {}, authorize, function (err, body) {
         t.deepEqual(qs.parse(err), {error: {error: 'socket hang up'}})
         done()
       })
     })
-    it('step3 - response error', function (done) {
+    it('access - response error', function (done) {
       var provider = {access_url: url('/access_url')}
-      var step2 = {oauth_token: 'token'}
-      oauth1.step3(provider, {}, step2, function (err, body) {
+      var authorize = {oauth_token: 'token'}
+      oauth1.access(provider, {}, authorize, function (err, body) {
         t.deepEqual(qs.parse(err), {error: {error: 'invalid'}})
         done()
       })
@@ -154,7 +169,7 @@ describe('oauth1', function () {
   })
 
   describe('custom', function () {
-    describe('step1', function () {
+    describe('request', function () {
       var grant, server
 
       before(function (done) {
@@ -183,7 +198,7 @@ describe('oauth1', function () {
         it('copy', function (done) {
           grant.config.copy.request_url = url('/request_url')
           grant.config.copy.scope = '{"profile":{"read":true}}'
-          oauth1.step1(grant.config.copy, function (err, body) {
+          oauth1.request(grant.config.copy, function (err, body) {
             t.equal(body.scope, '{"profile":{"read":true}}')
             done()
           })
@@ -191,7 +206,7 @@ describe('oauth1', function () {
         it('etsy', function (done) {
           grant.config.etsy.request_url = url('/request_url')
           grant.config.etsy.scope = 'email_r profile_r'
-          oauth1.step1(grant.config.etsy, function (err, body) {
+          oauth1.request(grant.config.etsy, function (err, body) {
             t.equal(body.scope, 'email_r profile_r')
             done()
           })
@@ -199,7 +214,7 @@ describe('oauth1', function () {
         it('linkedin', function (done) {
           grant.config.linkedin.request_url = url('/request_url')
           grant.config.linkedin.scope = 'scope1,scope2'
-          oauth1.step1(grant.config.linkedin, function (err, body) {
+          oauth1.request(grant.config.linkedin, function (err, body) {
             t.equal(body.scope, 'scope1,scope2')
             done()
           })
@@ -209,7 +224,7 @@ describe('oauth1', function () {
       describe('user-agent', function () {
         it('discogs', function (done) {
           grant.config.discogs.request_url = url('/request_url')
-          oauth1.step1(grant.config.discogs, function (err, body) {
+          oauth1.request(grant.config.discogs, function (err, body) {
             t.equal(body.agent, 'Grant')
             done()
           })
@@ -219,7 +234,7 @@ describe('oauth1', function () {
       describe('signature_method', function () {
         it('freshbooks', function (done) {
           grant.config.freshbooks.request_url = url('/request_url')
-          oauth1.step1(grant.config.freshbooks, function (err, body) {
+          oauth1.request(grant.config.freshbooks, function (err, body) {
             t.ok(/oauth_signature_method="PLAINTEXT"/.test(body.oauth))
             done()
           })
@@ -231,7 +246,7 @@ describe('oauth1', function () {
           grant.config.getpocket.request_url = url('/request_url')
           grant.config.getpocket.key = 'key'
           grant.config.getpocket.state = 'state'
-          oauth1.step1(grant.config.getpocket, (err, body) => {
+          oauth1.request(grant.config.getpocket, (err, body) => {
             t.deepEqual(body, {
               accept: 'application/x-www-form-urlencoded',
               form: {
@@ -249,7 +264,7 @@ describe('oauth1', function () {
         it('freshbooks', function (done) {
           grant.config.freshbooks.request_url = url('/[subdomain]')
           grant.config.freshbooks.subdomain = 'request_url'
-          oauth1.step1(grant.config.freshbooks, function (err, body) {
+          oauth1.request(grant.config.freshbooks, function (err, body) {
             t.ok(/OAuth/.test(body.oauth))
             done()
           })
@@ -261,7 +276,7 @@ describe('oauth1', function () {
       })
     })
 
-    describe('step2', function () {
+    describe('authorize', function () {
       var grant
 
       before(function () {
@@ -275,7 +290,7 @@ describe('oauth1', function () {
       describe('custom_parameters', function () {
         it('trello', function () {
           grant.config.trello.custom_params = {expiration: 'never', name: 'Grant'}
-          var url = oauth1.step2(grant.config.trello, {oauth_token: 'token'})
+          var url = oauth1.authorize(grant.config.trello, {oauth_token: 'token'})
           var query = qs.parse(url.split('?')[1])
           t.deepEqual(query,
             {oauth_token: 'token', expiration: 'never', name: 'Grant'})
@@ -285,7 +300,7 @@ describe('oauth1', function () {
       describe('scope', function () {
         it('flickr', function () {
           grant.config.flickr.scope = ['read', 'write']
-          var url = oauth1.step2(grant.config.flickr, {oauth_token: 'token'})
+          var url = oauth1.authorize(grant.config.flickr, {oauth_token: 'token'})
           var query = qs.parse(url.split('?')[1])
           t.deepEqual(query,
             {oauth_token: 'token', perms: ['read', 'write']})
@@ -293,7 +308,7 @@ describe('oauth1', function () {
 
         it('ravelry', function () {
           grant.config.ravelry.scope = ['read', 'write']
-          var url = oauth1.step2(grant.config.ravelry, {oauth_token: 'token'})
+          var url = oauth1.authorize(grant.config.ravelry, {oauth_token: 'token'})
           var query = qs.parse(url.split('?')[1])
           t.deepEqual(query,
             {oauth_token: 'token', scope: ['read', 'write']})
@@ -302,7 +317,7 @@ describe('oauth1', function () {
         it('trello', function () {
           grant.config.trello.custom_params = {expiration: 'never', name: 'Grant'}
           grant.config.trello.scope = ['read', 'write']
-          var url = oauth1.step2(grant.config.trello, {oauth_token: 'token'})
+          var url = oauth1.authorize(grant.config.trello, {oauth_token: 'token'})
           var query = qs.parse(url.split('?')[1])
           t.deepEqual(query,
             {oauth_token: 'token', scope: ['read', 'write'], expiration: 'never', name: 'Grant'})
@@ -312,7 +327,7 @@ describe('oauth1', function () {
       describe('oauth_callback', function () {
         it('tripit', function () {
           grant.config.tripit.redirect_uri = url('/connect/tripit/callback')
-          var uri = oauth1.step2(grant.config.tripit, {oauth_token: 'token'})
+          var uri = oauth1.authorize(grant.config.tripit, {oauth_token: 'token'})
           var query = qs.parse(uri.split('?')[1])
           t.deepEqual(query,
             {oauth_token: 'token', oauth_callback: url('/connect/tripit/callback')})
@@ -321,7 +336,7 @@ describe('oauth1', function () {
 
       describe('getpocket', () => {
         it('authorize', () => {
-          var url = oauth1.step2(grant.config.getpocket, {code: 'code'})
+          var url = oauth1.authorize(grant.config.getpocket, {code: 'code'})
           var query = qs.parse(url.split('?')[1])
           t.deepEqual(query, {
             redirect_uri: ':///connect/getpocket/callback',
@@ -333,13 +348,13 @@ describe('oauth1', function () {
       describe('subdomain', function () {
         it('freshbooks', function () {
           grant.config.freshbooks.subdomain = 'grant'
-          var url = oauth1.step2(grant.config.freshbooks, {oauth_token: 'token'})
+          var url = oauth1.authorize(grant.config.freshbooks, {oauth_token: 'token'})
           t.equal(url.indexOf('https://grant.freshbooks.com'), 0)
         })
       })
     })
 
-    describe('step3', function () {
+    describe('access', function () {
       var grant, server
 
       before(function (done) {
@@ -366,9 +381,10 @@ describe('oauth1', function () {
       describe('user-agent', function () {
         it('discogs', function (done) {
           grant.config.discogs.access_url = url('/access_url')
-          oauth1.step3(grant.config.discogs, {}, {oauth_token: 'token'}, function (err, response) {
-            var query = qs.parse(response)
-            t.equal(query.raw.agent, 'Grant')
+          var authorize = {oauth_token: 'token'}
+          oauth1.access(grant.config.discogs, {}, authorize, (err, data) => {
+            var query = qs.parse(data)
+            t.equal(query.agent, 'Grant')
             done()
           })
         })
@@ -377,9 +393,10 @@ describe('oauth1', function () {
       describe('signature_method', function () {
         it('freshbooks', function (done) {
           grant.config.freshbooks.access_url = url('/access_url')
-          oauth1.step3(grant.config.freshbooks, {}, {oauth_token: 'token'}, function (err, response) {
-            var query = qs.parse(response)
-            t.ok(/oauth_signature_method="PLAINTEXT"/.test(query.raw.oauth))
+          var authorize = {oauth_token: 'token'}
+          oauth1.access(grant.config.freshbooks, {}, authorize, (err, data) => {
+            var query = qs.parse(data)
+            t.ok(/oauth_signature_method="PLAINTEXT"/.test(query.oauth))
             done()
           })
         })
@@ -388,17 +405,19 @@ describe('oauth1', function () {
       describe('oauth_verifier', function () {
         it('goodreads', function (done) {
           grant.config.goodreads.access_url = url('/access_url')
-          oauth1.step3(grant.config.goodreads, {}, {oauth_token: 'token'}, function (err, response) {
-            var query = qs.parse(response)
-            t.ok(!/verifier/.test(query.raw.oauth))
+          var authorize = {oauth_token: 'token'}
+          oauth1.access(grant.config.goodreads, {}, authorize, (err, data) => {
+            var query = qs.parse(data)
+            t.ok(!/verifier/.test(query.oauth))
             done()
           })
         })
         it('tripit', function (done) {
           grant.config.tripit.access_url = url('/access_url')
-          oauth1.step3(grant.config.tripit, {}, {oauth_token: 'token'}, function (err, response) {
-            var query = qs.parse(response)
-            t.ok(!/verifier/.test(query.raw.oauth))
+          var authorize = {oauth_token: 'token'}
+          oauth1.access(grant.config.tripit, {}, authorize, (err, data) => {
+            var query = qs.parse(data)
+            t.ok(!/verifier/.test(query.oauth))
             done()
           })
         })
@@ -408,9 +427,10 @@ describe('oauth1', function () {
         it('token', (done) => {
           grant.config.getpocket.access_url = url('/access_url')
           grant.config.getpocket.key = 'key'
-          oauth1.step3(grant.config.getpocket, {code: 'code'}, {}, (err, response) => {
+          var request = {code: 'code'}
+          oauth1.access(grant.config.getpocket, request, {}, (err, response) => {
             var query = qs.parse(response)
-            t.deepEqual(query.raw, {
+            t.deepEqual(query, {
               accept: 'application/x-www-form-urlencoded',
               form: {
                 consumer_key: 'key',
@@ -426,19 +446,20 @@ describe('oauth1', function () {
         it('freshbooks', function (done) {
           grant.config.freshbooks.access_url = url('/[subdomain]')
           grant.config.freshbooks.subdomain = 'access_url'
-          oauth1.step3(grant.config.freshbooks, {}, {oauth_token: 'token'}, function (err, url) {
+          oauth1.access(grant.config.freshbooks, {}, {oauth_token: 'token'}, function (err, url) {
             t.ok(typeof url === 'string')
             done()
           })
         })
       })
 
-      describe('realmId', function () {
-        it('intuit', function (done) {
+      describe('realmId', () => {
+        it('intuit', (done) => {
           grant.config.intuit.access_url = url('/access_url')
-          oauth1.step3(grant.config.intuit, {}, {oauth_token: 'token', realmId: '123'}, function (err, response) {
-            var query = qs.parse(response)
-            t.equal(query.raw.realmId, '123')
+          var authorize = {oauth_token: 'token', realmId: '123'}
+          oauth1.access(grant.config.intuit, {}, authorize, (err, data) => {
+            var query = qs.parse(data)
+            t.equal(query.realmId, '123')
             done()
           })
         })

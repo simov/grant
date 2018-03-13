@@ -208,12 +208,12 @@ describe('consumer - session', () => {
         })
       })
 
-      it('step1', (done) => {
+      it('request', (done) => {
         request.get(url('/connect/twitter'), {
           jar: request.jar(),
           json: true
         }, (err, res, body) => {
-          t.deepEqual(body, {provider: 'twitter', step1: {oauth_token: 'token'}})
+          t.deepEqual(body, {provider: 'twitter', request: {oauth_token: 'token'}})
           done()
         })
       })
