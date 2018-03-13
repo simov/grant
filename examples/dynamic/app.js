@@ -21,7 +21,7 @@ app.use(bodyParser.urlencoded({extended: true}))
 // mount grant
 app.use(grant)
 
-app.get('/connect_facebook_post', function (req, res) {
+app.get('/connect_facebook_post', (req, res) => {
   var url = grant.config.facebook.protocol + '://' +
     grant.config.facebook.host + '/connect/facebook'
   request.post(url, {
@@ -30,30 +30,30 @@ app.get('/connect_facebook_post', function (req, res) {
       state: (Math.floor(Math.random() * 999999) + 1)
     },
     followRedirect: false
-  }, function (err, _res, body) {
+  }, (err, _res, body) => {
     res.set('set-cookie', _res.headers['set-cookie'][0])
     res.redirect(_res.headers.location)
   })
 })
 
-app.get('/connect_facebook_get', function (req, res) {
+app.get('/connect_facebook_get', (req, res) => {
   // generate 6 digit random state number on each authorization attempt
   var state = (Math.floor(Math.random() * 999999) + 1)
 
   res.redirect('/connect/facebook?state=' + state)
 })
 
-app.get('/handle_facebook_callback', function (req, res) {
+app.get('/handle_facebook_callback', (req, res) => {
   console.log('The state was', req.session.grant.state)
   console.log(req.query)
   res.end(JSON.stringify(req.query, null, 2))
 })
 
-app.get('/form', function (req, res) {
+app.get('/form', (req, res) => {
   res.writeHead(200, {'content-type': 'text/html'})
   res.end(fs.readFileSync('./form.html', 'utf8'))
 })
 
-app.listen(3000, function () {
+app.listen(3000, () => {
   console.log('Express server listening on port ' + 3000)
 })

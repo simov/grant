@@ -6,29 +6,29 @@ var Grant = require('../').express()
 var utils = require('../lib/utils')
 
 
-describe('utils', function () {
+describe('utils', () => {
   var grant
 
-  before(function () {
+  before(() => {
     grant = new Grant({
       server: {protocol: 'http', host: 'localhost:5000', callback: '/'},
       concur: {}, elance: {}, facebook: {}, getpocket: {}, twitter: {}, yammer: {}
     })
   })
 
-  describe('redirect_uri', function () {
-    it('default', function () {
+  describe('redirect_uri', () => {
+    it('default', () => {
       t.equal(
         utils.redirect_uri(grant.config.facebook),
         'http://localhost:5000/connect/facebook/callback')
     })
-    it('path prefix', function () {
+    it('path prefix', () => {
       grant.config.facebook.path = '/path/prefix'
       t.equal(
         utils.redirect_uri(grant.config.facebook),
         'http://localhost:5000/path/prefix/connect/facebook/callback')
     })
-    it('override', function () {
+    it('override', () => {
       grant.config.facebook.redirect_uri = 'http://localhost:5000'
       t.equal(
         utils.redirect_uri(grant.config.facebook),
@@ -36,16 +36,16 @@ describe('utils', function () {
     })
   })
 
-  describe('toQuerystring', function () {
-    it('parse json', function () {
+  describe('toQuerystring', () => {
+    it('parse json', () => {
       var str = utils.toQuerystring({}, '{"some":"data"}')
       t.deepEqual(qs.parse(str), {raw: {some: 'data'}})
     })
-    it('parse querystring', function () {
+    it('parse querystring', () => {
       var str = utils.toQuerystring({}, 'some=data')
       t.deepEqual(qs.parse(str), {raw: {some: 'data'}})
     })
-    it('concur', function () {
+    it('concur', () => {
       var body =
         '<Access_Token>\r\n' +
         '  <Instance_Url>https://www.concursolutions.com/</Instance_Url>\r\n' +
@@ -60,30 +60,30 @@ describe('utils', function () {
         raw: body
       })
     })
-    it('elance', function () {
+    it('elance', () => {
       var str = utils.toQuerystring(grant.config.elance,
         {data: {access_token: 'token', refresh_token: 'refresh'}})
       t.deepEqual(qs.parse(str), {access_token: 'token', refresh_token: 'refresh',
         raw: {data: {access_token: 'token', refresh_token: 'refresh'}}})
     })
-    it('getpocket', function () {
+    it('getpocket', () => {
       var str = utils.toQuerystring(grant.config.getpocket, {access_token: 'token'})
       t.deepEqual(qs.parse(str),
         {access_token: 'token', raw: {access_token: 'token'}})
     })
-    it('yammer', function () {
+    it('yammer', () => {
       var str = utils.toQuerystring(grant.config.yammer, {access_token: {token: 'token'}})
       t.deepEqual(qs.parse(str),
         {access_token: 'token', raw: {access_token: {token: 'token'}}})
     })
-    it('oauth1', function () {
+    it('oauth1', () => {
       var str = utils.toQuerystring(grant.config.twitter,
         {oauth_token: 'token', oauth_token_secret: 'secret'})
       t.deepEqual(qs.parse(str),
         {access_token: 'token', access_secret: 'secret',
           raw: {oauth_token: 'token', oauth_token_secret: 'secret'}})
     })
-    it('oauth2', function () {
+    it('oauth2', () => {
       var str = utils.toQuerystring(grant.config.facebook,
         {access_token: 'token', refresh_token: 'refresh'})
       t.deepEqual(qs.parse(str),
@@ -92,12 +92,12 @@ describe('utils', function () {
     })
   })
 
-  describe('error', function () {
-    it('http error', function () {
+  describe('error', () => {
+    it('http error', () => {
       var str = utils.error(new Error('HTTP error'))
       t.deepEqual(qs.parse(str), {error: {error: 'HTTP error'}})
     })
-    it('response error', function () {
+    it('response error', () => {
       var err = new Error()
       err.res = {statusCode: 500}
       err.body = {some: 'data'}

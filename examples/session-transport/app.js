@@ -13,16 +13,16 @@ app.use(session({secret: 'very secret'}))
 // mount grant
 app.use(grant)
 
-app.get('/handle_facebook_callback', function (req, res) {
+app.get('/handle_facebook_callback', (req, res) => {
   console.log(req.session.grant.response)
   res.end(JSON.stringify(req.session.grant.response, null, 2))
 })
 
-app.get('/handle_twitter_callback', function (req, res) {
+app.get('/handle_twitter_callback', (req, res) => {
   console.log(req.session.grant.response)
   res.end(JSON.stringify(req.session.grant.response, null, 2))
 })
 
-app.listen(3000, function () {
+app.listen(3000, () => {
   console.log('Express server listening on port ' + 3000)
 })

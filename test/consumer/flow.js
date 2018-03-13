@@ -49,7 +49,7 @@ describe('consumer - flow', () => {
 
       var servers = {
         express: (done) => {
-          grant = new Grant.express()(config)
+          grant = Grant.express()(config)
           var app = express()
           app.use(session({secret: 'grant', saveUninitialized: true, resave: true}))
           app.use(grant)
@@ -77,7 +77,7 @@ describe('consumer - flow', () => {
           server = app.listen(5000, done)
         },
         koa: (done) => {
-          grant = new Grant.koa()(config)
+          grant = Grant.koa()(config)
 
           var app = new Koa()
           app.keys = ['grant']
@@ -110,23 +110,23 @@ describe('consumer - flow', () => {
           server = app.listen(5000, done)
         },
         hapi: (done) => {
-          grant = new Grant.hapi()()
+          grant = Grant.hapi()()
 
           server = new Hapi.Server()
           server.connection({host: 'localhost', port: 5000})
 
-          server.route({method: 'POST', path: '/request_url', handler: function (req, res) {
+          server.route({method: 'POST', path: '/request_url', handler: (req, res) => {
             res(qs.stringify({oauth_token: 'token', oauth_token_secret: 'secret'}))
           }})
-          server.route({method: 'GET', path: '/authorize_url', handler: function (req, res) {
+          server.route({method: 'GET', path: '/authorize_url', handler: (req, res) => {
             res.redirect(url('/connect/twitter/callback?' + qs.stringify({
               oauth_token: 'token', oauth_verifier: 'verifier'
             })))
           }})
-          server.route({method: 'POST', path: '/access_url', handler: function (req, res) {
+          server.route({method: 'POST', path: '/access_url', handler: (req, res) => {
             res({oauth_token: 'token', oauth_token_secret: 'secret'})
           }})
-          server.route({method: 'GET', path: '/', handler: function (req, res) {
+          server.route({method: 'GET', path: '/', handler: (req, res) => {
             var parsed = urlib.parse(req.url, false)
             var query = qs.parse(parsed.query)
             res((req.session || req.yar).get('grant').response || query)
@@ -136,7 +136,7 @@ describe('consumer - flow', () => {
             {register: grant, options: config},
             {register: yar, options: {cookieOptions: {
               password: '01234567890123456789012345678912', isSecure: false}}}
-          ], function (err) {
+          ], (err) => {
             if (err) {
               done(err)
               return
@@ -191,7 +191,7 @@ describe('consumer - flow', () => {
 
       var servers = {
         express: (done) => {
-          grant = new Grant.express()(config)
+          grant = Grant.express()(config)
           var app = express()
           app.use(session({secret: 'grant', saveUninitialized: true, resave: true}))
           app.use(grant)
@@ -199,21 +199,21 @@ describe('consumer - flow', () => {
           grant.config.facebook.authorize_url = url('/authorize_url')
           grant.config.facebook.access_url = url('/access_url')
 
-          app.get('/authorize_url', function (req, res) {
+          app.get('/authorize_url', (req, res) => {
             res.redirect(url('/connect/facebook/callback?code=code'))
           })
-          app.post('/access_url', function (req, res) {
+          app.post('/access_url', (req, res) => {
             res.end(JSON.stringify({
               access_token: 'token', refresh_token: 'refresh', expires_in: 3600
             }))
           })
-          app.get('/', function (req, res) {
+          app.get('/', (req, res) => {
             res.end(JSON.stringify(req.session.grant.response || req.query))
           })
           server = app.listen(5000, done)
         },
         koa: (done) => {
-          grant = new Grant.koa()(config)
+          grant = Grant.koa()(config)
 
           var app = new Koa()
           app.keys = ['grant']
@@ -241,20 +241,20 @@ describe('consumer - flow', () => {
           server = app.listen(5000, done)
         },
         hapi: (done) => {
-          grant = new Grant.hapi()()
+          grant = Grant.hapi()()
 
           server = new Hapi.Server()
           server.connection({host: 'localhost', port: 5000})
 
-          server.route({method: 'GET', path: '/authorize_url', handler: function (req, res) {
+          server.route({method: 'GET', path: '/authorize_url', handler: (req, res) => {
             res.redirect(url('/connect/facebook/callback?code=code'))
           }})
-          server.route({method: 'POST', path: '/access_url', handler: function (req, res) {
+          server.route({method: 'POST', path: '/access_url', handler: (req, res) => {
             res(JSON.stringify({
               access_token: 'token', refresh_token: 'refresh', expires_in: 3600
             }))
           }})
-          server.route({method: 'GET', path: '/', handler: function (req, res) {
+          server.route({method: 'GET', path: '/', handler: (req, res) => {
             var parsed = urlib.parse(req.url, false)
             var query = qs.parse(parsed.query)
             res((req.session || req.yar).get('grant').response || query)
@@ -263,7 +263,7 @@ describe('consumer - flow', () => {
           server.register([
             {register: grant, options: config},
             {register: yar, options: {cookieOptions: {password: '01234567890123456789012345678912', isSecure: false}}}
-          ], function (err) {
+          ], (err) => {
             if (err) {
               done(err)
               return

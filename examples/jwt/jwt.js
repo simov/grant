@@ -8,7 +8,7 @@ var key = {
 }
 
 
-exports.sign = function (user) {
+exports.sign = (user) => {
   var epoch = Math.floor(new Date().getTime() / 1000)
 
   var options = {
@@ -34,6 +34,6 @@ exports.sign = function (user) {
   return jws.sign(options)
 }
 
-exports.verify = function (signature) {
+exports.verify = (signature) => {
   return jws.verify(signature, 'RS256', key.public)
 }

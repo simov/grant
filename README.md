@@ -104,7 +104,7 @@ server.register([
     register: grant,
     options: {/*configuration - see below*/}
   }
-], function (err) {
+], (err) => {
   server.start()
 })
 ```
@@ -293,7 +293,7 @@ app.use(mount(grant))
 Alternatively you can make a `GET` request to the `/connect/:provider/:override?` route:
 
 ```js
-app.get('/connect_facebook', function (req, res) {
+app.get('/connect_facebook', (req, res) => {
   // generate random state parameter on each authorization attempt
   var state = (Math.floor(Math.random() * 999999) + 1)
   res.redirect('/connect/facebook?state=' + state)
@@ -429,7 +429,7 @@ In case you override the `redirect_uri` in your config, you'll have to redirect 
 ```js
 var qs = require('querystring')
 
-app.get('/', function (req, res) {
+app.get('/', (req, res) => {
   if (process.env.NODE_ENV === 'development' &&
       req.session.grant &&
       req.session.grant.provider === 'feedly' &&
@@ -663,7 +663,7 @@ var twitter = purest({provider: 'twitter', config,
 facebook
   .get('me')
   .auth('[ACCESS_TOKEN]')
-  .request(function (err, res, body) {
+  .request((err, res, body) => {
     // here body is a parsed JSON object containing
     // id, first_name, last_name, gender, username, ...
   })
@@ -672,7 +672,7 @@ twitter
   .get('users/show')
   .qs({screen_name: 'nodejs'})
   .auth('[ACCESS_TOKEN]', '[ACCESS_SECRET]')
-  .request(function (err, res, body) {
+  .request((err, res, body) => {
     // here body is a parsed JSON object containing
     // id, screen_name, ...
   })

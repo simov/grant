@@ -50,7 +50,7 @@ describe('consumer - session', () => {
 
       var servers = {
         express: (done) => {
-          grant = new Grant.express()(config)
+          grant = Grant.express()(config)
           var app = express()
           app.use(bodyParser.urlencoded({extended: true}))
           app.use(session({secret: 'grant', saveUninitialized: true, resave: true}))
@@ -69,7 +69,7 @@ describe('consumer - session', () => {
           server = app.listen(5000, done)
         },
         koa: (done) => {
-          grant = new Grant.koa()(config)
+          grant = Grant.koa()(config)
 
           var app = new Koa()
           app.keys = ['grant']
@@ -94,22 +94,22 @@ describe('consumer - session', () => {
           server = app.listen(5000, done)
         },
         hapi: (done) => {
-          grant = new Grant.hapi()()
+          grant = Grant.hapi()()
 
           server = new Hapi.Server()
           server.connection({host: 'localhost', port: 5000})
 
-          server.route({method: 'POST', path: '/request_url', handler: function (req, res) {
+          server.route({method: 'POST', path: '/request_url', handler: (req, res) => {
             res(qs.stringify({oauth_token: 'token'}))
           }})
-          server.route({method: 'GET', path: '/authorize_url', handler: function (req, res) {
+          server.route({method: 'GET', path: '/authorize_url', handler: (req, res) => {
             res(JSON.stringify((req.session || req.yar).get('grant')))
           }})
 
           server.register([
             {register: grant, options: config},
             {register: yar, options: {cookieOptions: {password: '01234567890123456789012345678912', isSecure: false}}}
-          ], function (err) {
+          ], (err) => {
             if (err) {
               done(err)
               return

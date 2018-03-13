@@ -19,11 +19,11 @@ app.use(session({secret: 'very secret'}))
 // mount grant
 app.use(grant)
 
-app.get('/handle_facebook_callback', function (req, res) {
+app.get('/handle_facebook_callback', (req, res) => {
   facebook.query()
     .get('me')
     .auth(req.query.access_token)
-    .request(function (err, _res, body) {
+    .request((err, _res, body) => {
       res.end(JSON.stringify({
         oauth: req.query,
         profile: body
@@ -31,12 +31,12 @@ app.get('/handle_facebook_callback', function (req, res) {
     })
 })
 
-app.get('/handle_twitter_callback', function (req, res) {
+app.get('/handle_twitter_callback', (req, res) => {
   twitter.query()
     .get('users/show')
     .qs({user_id: req.query.raw.user_id})
     .auth(req.query.access_token, req.query.access_secret)
-    .request(function (err, _res, body) {
+    .request((err, _res, body) => {
       res.end(JSON.stringify({
         oauth: req.query,
         profile: body
@@ -44,6 +44,6 @@ app.get('/handle_twitter_callback', function (req, res) {
     })
 })
 
-app.listen(3000, function () {
+app.listen(3000, () => {
   console.log('Express server listening on port ' + 3000)
 })

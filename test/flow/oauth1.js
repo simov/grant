@@ -9,17 +9,15 @@ var Grant = require('../../').express()
 var oauth1 = require('../../lib/flow/oauth1')
 
 
-describe('oauth1', function () {
-  function url (path) {
-    return 'http://localhost:5000' + path
-  }
+describe('oauth1', () => {
+  var url = (path) => `http://localhost:5000${path}`
 
-  describe('success', function () {
+  describe('success', () => {
     var server
 
-    before(function (done) {
+    before((done) => {
       server = http.createServer()
-      server.on('request', function (req, res) {
+      server.on('request', (req, res) => {
         if (req.url === '/request_url') {
           var data = req.headers.authorization
             .replace('OAuth ', '').replace(/"/g, '').replace(/,/g, '&')
@@ -34,30 +32,30 @@ describe('oauth1', function () {
       server.listen(5000, done)
     })
 
-    it('request', function (done) {
+    it('request', (done) => {
       var provider = {
         request_url: url('/request_url'),
         redirect_uri: '/redirect_uri',
         key: 'key'
       }
-      oauth1.request(provider, function (err, data) {
+      oauth1.request(provider, (err, data) => {
         t.equal(data.oauth_callback, '/redirect_uri')
         t.equal(data.oauth_consumer_key, 'key')
         done()
       })
     })
 
-    it('authorize', function () {
+    it('authorize', () => {
       var provider = {authorize_url: '/authorize_url'}
       var url = oauth1.authorize(provider, {oauth_token: 'token'})
       t.deepEqual(qs.parse(url.replace('/authorize_url?', '')),
         {oauth_token: 'token'})
     })
 
-    it('access', function (done) {
+    it('access', (done) => {
       var provider = {access_url: url('/access_url'), oauth: 1}
       var authorize = {oauth_token: 'token'}
-      oauth1.access(provider, {}, authorize, function (err, data) {
+      oauth1.access(provider, {}, authorize, (err, data) => {
         t.deepEqual(qs.parse(data), {
           oauth_token: 'token',
           oauth_token_secret: 'secret',
@@ -82,46 +80,46 @@ describe('oauth1', function () {
       })
     })
 
-    after(function (done) {
+    after((done) => {
       server.close(done)
     })
   })
 
-  describe('error', function () {
+  describe('error', () => {
     var server
 
-    before(function (done) {
+    before((done) => {
       server = http.createServer()
-      server.on('request', function (req, res) {
+      server.on('request', (req, res) => {
         res.writeHead(500)
         res.end(qs.stringify({error: 'invalid'}))
       })
       server.listen(5000, done)
     })
 
-    it('request - request error', function (done) {
+    it('request - request error', (done) => {
       var provider = {request_url: '/request_url'}
-      oauth1.request(provider, function (err, body) {
+      oauth1.request(provider, (err, body) => {
         t.deepEqual(qs.parse(err), {error: {error: 'socket hang up'}})
         done()
       })
     })
-    it('request - response error', function (done) {
+    it('request - response error', (done) => {
       var provider = {request_url: url('/request_url')}
-      oauth1.request(provider, function (err, body) {
+      oauth1.request(provider, (err, body) => {
         t.deepEqual(qs.parse(err), {error: {error: 'invalid'}})
         done()
       })
     })
 
-    it('authorize - mising oauth_token - response error', function () {
+    it('authorize - mising oauth_token - response error', () => {
       var provider = {}
       var request = {error: 'invalid'}
       var url = oauth1.authorize(provider, request)
       t.deepEqual(qs.parse(url.replace('/?', '')),
         {error: {error: 'invalid'}})
     })
-    it('authorize - mising oauth_token - empty response', function () {
+    it('authorize - mising oauth_token - empty response', () => {
       var provider = {}
       var request = {}
       var url = oauth1.authorize(provider, request)
@@ -129,50 +127,50 @@ describe('oauth1', function () {
         {error: {error: 'Grant: OAuth1 missing oauth_token parameter'}})
     })
 
-    it('access - mising oauth_token - response error', function (done) {
+    it('access - mising oauth_token - response error', (done) => {
       var provider = {}
       var authorize = {error: 'invalid'}
-      oauth1.access(provider, {}, authorize, function (err, body) {
+      oauth1.access(provider, {}, authorize, (err, body) => {
         t.deepEqual(qs.parse(err), {error: {error: 'invalid'}})
         done()
       })
     })
-    it('access - mising oauth_token - empty response', function (done) {
+    it('access - mising oauth_token - empty response', (done) => {
       var provider = {}
       var authorize = {}
-      oauth1.access(provider, {}, authorize, function (err, body) {
+      oauth1.access(provider, {}, authorize, (err, body) => {
         t.deepEqual(qs.parse(err),
           {error: {error: 'Grant: OAuth1 missing oauth_token parameter'}})
         done()
       })
     })
-    it('access - request error', function (done) {
+    it('access - request error', (done) => {
       var provider = {access_url: '/access_url'}
       var authorize = {oauth_token: 'token'}
-      oauth1.access(provider, {}, authorize, function (err, body) {
+      oauth1.access(provider, {}, authorize, (err, body) => {
         t.deepEqual(qs.parse(err), {error: {error: 'socket hang up'}})
         done()
       })
     })
-    it('access - response error', function (done) {
+    it('access - response error', (done) => {
       var provider = {access_url: url('/access_url')}
       var authorize = {oauth_token: 'token'}
-      oauth1.access(provider, {}, authorize, function (err, body) {
+      oauth1.access(provider, {}, authorize, (err, body) => {
         t.deepEqual(qs.parse(err), {error: {error: 'invalid'}})
         done()
       })
     })
 
-    after(function (done) {
+    after((done) => {
       server.close(done)
     })
   })
 
-  describe('custom', function () {
-    describe('request', function () {
+  describe('custom', () => {
+    describe('request', () => {
       var grant, server
 
-      before(function (done) {
+      before((done) => {
         var config = {
           copy: {}, discogs: {}, etsy: {}, freshbooks: {}, getpocket: {},
           linkedin: {}
@@ -182,7 +180,7 @@ describe('oauth1', function () {
         app.use(bodyParser.urlencoded({extended: true}))
         app.use(grant)
 
-        app.post('/request_url', function (req, res) {
+        app.post('/request_url', (req, res) => {
           res.end(qs.stringify({
             agent: req.headers['user-agent'],
             oauth: req.headers.authorization,
@@ -194,47 +192,47 @@ describe('oauth1', function () {
         server = app.listen(5000, done)
       })
 
-      describe('querystring scope', function () {
-        it('copy', function (done) {
+      describe('querystring scope', () => {
+        it('copy', (done) => {
           grant.config.copy.request_url = url('/request_url')
           grant.config.copy.scope = '{"profile":{"read":true}}'
-          oauth1.request(grant.config.copy, function (err, body) {
+          oauth1.request(grant.config.copy, (err, body) => {
             t.equal(body.scope, '{"profile":{"read":true}}')
             done()
           })
         })
-        it('etsy', function (done) {
+        it('etsy', (done) => {
           grant.config.etsy.request_url = url('/request_url')
           grant.config.etsy.scope = 'email_r profile_r'
-          oauth1.request(grant.config.etsy, function (err, body) {
+          oauth1.request(grant.config.etsy, (err, body) => {
             t.equal(body.scope, 'email_r profile_r')
             done()
           })
         })
-        it('linkedin', function (done) {
+        it('linkedin', (done) => {
           grant.config.linkedin.request_url = url('/request_url')
           grant.config.linkedin.scope = 'scope1,scope2'
-          oauth1.request(grant.config.linkedin, function (err, body) {
+          oauth1.request(grant.config.linkedin, (err, body) => {
             t.equal(body.scope, 'scope1,scope2')
             done()
           })
         })
       })
 
-      describe('user-agent', function () {
-        it('discogs', function (done) {
+      describe('user-agent', () => {
+        it('discogs', (done) => {
           grant.config.discogs.request_url = url('/request_url')
-          oauth1.request(grant.config.discogs, function (err, body) {
+          oauth1.request(grant.config.discogs, (err, body) => {
             t.equal(body.agent, 'Grant')
             done()
           })
         })
       })
 
-      describe('signature_method', function () {
-        it('freshbooks', function (done) {
+      describe('signature_method', () => {
+        it('freshbooks', (done) => {
           grant.config.freshbooks.request_url = url('/request_url')
-          oauth1.request(grant.config.freshbooks, function (err, body) {
+          oauth1.request(grant.config.freshbooks, (err, body) => {
             t.ok(/oauth_signature_method="PLAINTEXT"/.test(body.oauth))
             done()
           })
@@ -260,26 +258,26 @@ describe('oauth1', function () {
         })
       })
 
-      describe('subdomain', function () {
-        it('freshbooks', function (done) {
+      describe('subdomain', () => {
+        it('freshbooks', (done) => {
           grant.config.freshbooks.request_url = url('/[subdomain]')
           grant.config.freshbooks.subdomain = 'request_url'
-          oauth1.request(grant.config.freshbooks, function (err, body) {
+          oauth1.request(grant.config.freshbooks, (err, body) => {
             t.ok(/OAuth/.test(body.oauth))
             done()
           })
         })
       })
 
-      after(function (done) {
+      after((done) => {
         server.close(done)
       })
     })
 
-    describe('authorize', function () {
+    describe('authorize', () => {
       var grant
 
-      before(function () {
+      before(() => {
         var config = {
           flickr: {}, freshbooks: {}, getpocket: {}, ravelry: {}, trello: {},
           tripit: {}
@@ -287,8 +285,8 @@ describe('oauth1', function () {
         grant = new Grant(config)
       })
 
-      describe('custom_parameters', function () {
-        it('trello', function () {
+      describe('custom_parameters', () => {
+        it('trello', () => {
           grant.config.trello.custom_params = {expiration: 'never', name: 'Grant'}
           var url = oauth1.authorize(grant.config.trello, {oauth_token: 'token'})
           var query = qs.parse(url.split('?')[1])
@@ -297,8 +295,8 @@ describe('oauth1', function () {
         })
       })
 
-      describe('scope', function () {
-        it('flickr', function () {
+      describe('scope', () => {
+        it('flickr', () => {
           grant.config.flickr.scope = ['read', 'write']
           var url = oauth1.authorize(grant.config.flickr, {oauth_token: 'token'})
           var query = qs.parse(url.split('?')[1])
@@ -306,7 +304,7 @@ describe('oauth1', function () {
             {oauth_token: 'token', perms: ['read', 'write']})
         })
 
-        it('ravelry', function () {
+        it('ravelry', () => {
           grant.config.ravelry.scope = ['read', 'write']
           var url = oauth1.authorize(grant.config.ravelry, {oauth_token: 'token'})
           var query = qs.parse(url.split('?')[1])
@@ -314,7 +312,7 @@ describe('oauth1', function () {
             {oauth_token: 'token', scope: ['read', 'write']})
         })
 
-        it('trello', function () {
+        it('trello', () => {
           grant.config.trello.custom_params = {expiration: 'never', name: 'Grant'}
           grant.config.trello.scope = ['read', 'write']
           var url = oauth1.authorize(grant.config.trello, {oauth_token: 'token'})
@@ -324,8 +322,8 @@ describe('oauth1', function () {
         })
       })
 
-      describe('oauth_callback', function () {
-        it('tripit', function () {
+      describe('oauth_callback', () => {
+        it('tripit', () => {
           grant.config.tripit.redirect_uri = url('/connect/tripit/callback')
           var uri = oauth1.authorize(grant.config.tripit, {oauth_token: 'token'})
           var query = qs.parse(uri.split('?')[1])
@@ -345,8 +343,8 @@ describe('oauth1', function () {
         })
       })
 
-      describe('subdomain', function () {
-        it('freshbooks', function () {
+      describe('subdomain', () => {
+        it('freshbooks', () => {
           grant.config.freshbooks.subdomain = 'grant'
           var url = oauth1.authorize(grant.config.freshbooks, {oauth_token: 'token'})
           t.equal(url.indexOf('https://grant.freshbooks.com'), 0)
@@ -354,10 +352,10 @@ describe('oauth1', function () {
       })
     })
 
-    describe('access', function () {
+    describe('access', () => {
       var grant, server
 
-      before(function (done) {
+      before((done) => {
         var config = {
           discogs: {}, freshbooks: {}, getpocket: {}, goodreads: {}, intuit: {},
           tripit: {}
@@ -367,7 +365,7 @@ describe('oauth1', function () {
         app.use(bodyParser.urlencoded({extended: true}))
         app.use(grant)
 
-        app.post('/access_url', function (req, res) {
+        app.post('/access_url', (req, res) => {
           res.end(qs.stringify({
             agent: req.headers['user-agent'],
             oauth: req.headers.authorization,
@@ -378,8 +376,8 @@ describe('oauth1', function () {
         server = app.listen(5000, done)
       })
 
-      describe('user-agent', function () {
-        it('discogs', function (done) {
+      describe('user-agent', () => {
+        it('discogs', (done) => {
           grant.config.discogs.access_url = url('/access_url')
           var authorize = {oauth_token: 'token'}
           oauth1.access(grant.config.discogs, {}, authorize, (err, data) => {
@@ -390,8 +388,8 @@ describe('oauth1', function () {
         })
       })
 
-      describe('signature_method', function () {
-        it('freshbooks', function (done) {
+      describe('signature_method', () => {
+        it('freshbooks', (done) => {
           grant.config.freshbooks.access_url = url('/access_url')
           var authorize = {oauth_token: 'token'}
           oauth1.access(grant.config.freshbooks, {}, authorize, (err, data) => {
@@ -402,8 +400,8 @@ describe('oauth1', function () {
         })
       })
 
-      describe('oauth_verifier', function () {
-        it('goodreads', function (done) {
+      describe('oauth_verifier', () => {
+        it('goodreads', (done) => {
           grant.config.goodreads.access_url = url('/access_url')
           var authorize = {oauth_token: 'token'}
           oauth1.access(grant.config.goodreads, {}, authorize, (err, data) => {
@@ -412,7 +410,7 @@ describe('oauth1', function () {
             done()
           })
         })
-        it('tripit', function (done) {
+        it('tripit', (done) => {
           grant.config.tripit.access_url = url('/access_url')
           var authorize = {oauth_token: 'token'}
           oauth1.access(grant.config.tripit, {}, authorize, (err, data) => {
@@ -442,11 +440,11 @@ describe('oauth1', function () {
         })
       })
 
-      describe('subdomain', function () {
-        it('freshbooks', function (done) {
+      describe('subdomain', () => {
+        it('freshbooks', (done) => {
           grant.config.freshbooks.access_url = url('/[subdomain]')
           grant.config.freshbooks.subdomain = 'access_url'
-          oauth1.access(grant.config.freshbooks, {}, {oauth_token: 'token'}, function (err, url) {
+          oauth1.access(grant.config.freshbooks, {}, {oauth_token: 'token'}, (err, url) => {
             t.ok(typeof url === 'string')
             done()
           })
@@ -465,7 +463,7 @@ describe('oauth1', function () {
         })
       })
 
-      after(function (done) {
+      after((done) => {
         server.close(done)
       })
     })

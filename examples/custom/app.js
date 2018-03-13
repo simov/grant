@@ -15,13 +15,13 @@ app.use(grant)
 
 // dummy authorize url
 // because http://oauthbin.com doesn't provide one
-app.get('/authorize', function (req, res) {
+app.get('/authorize', (req, res) => {
   var qs = require('querystring')
   res.redirect('http://localhost:3000/connect/oauthbin/callback?' +
     qs.stringify({oauth_token: 'requestkey', oauth_verifier: '123'}))
 })
 
-app.get('/handle_oauthbin_callback', function (req, res) {
+app.get('/handle_oauthbin_callback', (req, res) => {
   console.log(req.query)
   // dummy response that we're expecting
   var assert = require('assert')
@@ -36,6 +36,6 @@ app.get('/handle_oauthbin_callback', function (req, res) {
   res.end(JSON.stringify(req.query, null, 2))
 })
 
-app.listen(3000, function () {
+app.listen(3000, () => {
   console.log('Express server listening on port ' + 3000)
 })

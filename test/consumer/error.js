@@ -49,7 +49,7 @@ describe('consumer - error', () => {
 
       var servers = {
         express: (done) => {
-          var grant = new Grant.express()(config)
+          var grant = Grant.express()(config)
           var app = express().use(grant)
           app.use((err, req, res, next) => {
             t.equal(err.message, 'Grant: mount session middleware first')
@@ -58,7 +58,7 @@ describe('consumer - error', () => {
           server = app.listen(5000, done)
         },
         koa: (done) => {
-          var grant = new Grant.koa()(config)
+          var grant = Grant.koa()(config)
           var app = new Koa()
           app.use(function* (next) {
             try {
@@ -72,17 +72,17 @@ describe('consumer - error', () => {
           server = app.listen(5000, done)
         },
         hapi: (done) => {
-          var grant = new Grant.hapi()()
+          var grant = Grant.hapi()()
           server = new Hapi.Server({debug: {request: false}})
           server.connection({host: 'localhost', port: 5000})
 
-          server.register([{register: grant, options: config}], function (err) {
+          server.register([{register: grant, options: config}], (err) => {
             if (err) {
               done(err)
               return
             }
 
-            server.on('request-error', function (req, err) {
+            server.on('request-error', (req, err) => {
               t.equal(err.message, 'Uncaught error: Grant: register session plugin first')
             })
 
@@ -114,7 +114,7 @@ describe('consumer - error', () => {
 
       var servers = {
         express: (done) => {
-          var grant = new Grant.express()(config)
+          var grant = Grant.express()(config)
           var app = express()
           app.use(session({secret: 'grant', saveUninitialized: true, resave: true}))
           app.use(grant)
@@ -125,7 +125,7 @@ describe('consumer - error', () => {
           server = app.listen(5000, done)
         },
         koa: (done) => {
-          var grant = new Grant.koa()(config)
+          var grant = Grant.koa()(config)
           var app = new Koa()
           app.keys = ['grant']
           app.use(koasession(app))
@@ -141,16 +141,16 @@ describe('consumer - error', () => {
           server = app.listen(5000, done)
         },
         hapi: (done) => {
-          var grant = new Grant.hapi()()
+          var grant = Grant.hapi()()
 
           server = new Hapi.Server()
           server.connection({host: 'localhost', port: 5000})
 
-          server.route({method: 'GET', path: '/authorize_url', handler: function (req, res) {
+          server.route({method: 'GET', path: '/authorize_url', handler: (req, res) => {
             res.redirect(url('/connect/facebook/callback?' +
               qs.stringify({error: {message: 'invalid', code: '500'}})))
           }})
-          server.route({method: 'GET', path: '/', handler: function (req, res) {
+          server.route({method: 'GET', path: '/', handler: (req, res) => {
             var parsed = urlib.parse(req.url, false)
             var query = qs.parse(parsed.query)
             res(query)
@@ -159,7 +159,7 @@ describe('consumer - error', () => {
           server.register([
             {register: grant, options: config},
             {register: yar, options: {cookieOptions: {password: '01234567890123456789012345678912', isSecure: false}}}
-          ], function (err) {
+          ], (err) => {
             if (err) {
               done(err)
               return
@@ -195,7 +195,7 @@ describe('consumer - error', () => {
 
       var servers = {
         express: (done) => {
-          grant = new Grant.express()(config)
+          grant = Grant.express()(config)
           var app = express()
           app.use(session({secret: 'grant', saveUninitialized: true, resave: true}))
           app.use(grant)
@@ -214,7 +214,7 @@ describe('consumer - error', () => {
           server = app.listen(5000, done)
         },
         koa: (done) => {
-          grant = new Grant.koa()(config)
+          grant = Grant.koa()(config)
 
           var app = new Koa()
           app.keys = ['grant']
@@ -237,16 +237,16 @@ describe('consumer - error', () => {
           server = app.listen(5000, done)
         },
         hapi: (done) => {
-          grant = new Grant.hapi()()
+          grant = Grant.hapi()()
 
           server = new Hapi.Server()
           server.connection({host: 'localhost', port: 5000})
 
-          server.route({method: 'GET', path: '/authorize_url', handler: function (req, res) {
+          server.route({method: 'GET', path: '/authorize_url', handler: (req, res) => {
             res.redirect(url('/connect/facebook/callback?' +
               qs.stringify({error: {message: 'invalid', code: '500'}})))
           }})
-          server.route({method: 'GET', path: '/', handler: function (req, res) {
+          server.route({method: 'GET', path: '/', handler: (req, res) => {
             var parsed = urlib.parse(req.url, false)
             var query = qs.parse(parsed.query)
             res((req.session || req.yar).get('grant').response || query)
@@ -255,7 +255,7 @@ describe('consumer - error', () => {
           server.register([
             {register: grant, options: config},
             {register: yar, options: {cookieOptions: {password: '01234567890123456789012345678912', isSecure: false}}}
-          ], function (err) {
+          ], (err) => {
             if (err) {
               done(err)
               return
@@ -302,13 +302,13 @@ describe('consumer - error', () => {
     })
   })
 
-  ;['express'/*, 'koa', 'hapi'*/].forEach((name) => {
+  ;['express', 'koa', 'hapi'].forEach((name) => {
     describe(`oauth2 - authorize - missing code without response message - ${name}`, () => {
       var server, grant, consumer = name
 
       var servers = {
         express: (done) => {
-          grant = new Grant.express()(config)
+          grant = Grant.express()(config)
           var app = express()
           app.use(session({secret: 'grant', saveUninitialized: true, resave: true}))
           app.use(grant)
@@ -326,10 +326,55 @@ describe('consumer - error', () => {
           server = app.listen(5000, done)
         },
         koa: (done) => {
+          grant = Grant.koa()(config)
 
+          var app = new Koa()
+          app.keys = ['grant']
+          app.use(koasession(app))
+          app.use(mount(grant))
+          koaqs(app)
+
+          grant.config.facebook.authorize_url = url('/authorize_url')
+
+          app.use(function* () {
+            if (this.path === '/authorize_url') {
+              this.response.redirect(url('/connect/facebook/callback'))
+            }
+            else if (this.path === '/') {
+              this.body = JSON.stringify(this.session.grant.response || this.request.query)
+            }
+          })
+
+          server = app.listen(5000, done)
         },
         hapi: (done) => {
+          grant = Grant.hapi()()
 
+          server = new Hapi.Server()
+          server.connection({host: 'localhost', port: 5000})
+
+          server.route({method: 'GET', path: '/authorize_url', handler: (req, res) => {
+            res.redirect(url('/connect/facebook/callback'))
+          }})
+          server.route({method: 'GET', path: '/', handler: (req, res) => {
+            var parsed = urlib.parse(req.url, false)
+            var query = qs.parse(parsed.query)
+            res((req.session || req.yar).get('grant').response || query)
+          }})
+
+          server.register([
+            {register: grant, options: config},
+            {register: yar, options: {cookieOptions: {password: '01234567890123456789012345678912', isSecure: false}}}
+          ], (err) => {
+            if (err) {
+              done(err)
+              return
+            }
+
+            grant.config.facebook.authorize_url = url('/authorize_url')
+
+            server.start(done)
+          })
         }
       }
 
@@ -373,7 +418,7 @@ describe('consumer - error', () => {
 
       var servers = {
         express: (done) => {
-          grant = new Grant.express()(config)
+          grant = Grant.express()(config)
           var app = express()
           app.use(session({secret: 'grant', saveUninitialized: true, resave: true}))
           app.use(grant)
@@ -393,7 +438,7 @@ describe('consumer - error', () => {
           server = app.listen(5000, done)
         },
         koa: (done) => {
-          grant = new Grant.koa()(config)
+          grant = Grant.koa()(config)
 
           var app = new Koa()
           app.keys = ['grant']
@@ -417,16 +462,16 @@ describe('consumer - error', () => {
           server = app.listen(5000, done)
         },
         hapi: (done) => {
-          grant = new Grant.hapi()()
+          grant = Grant.hapi()()
 
           server = new Hapi.Server()
           server.connection({host: 'localhost', port: 5000})
 
-          server.route({method: 'GET', path: '/authorize_url', handler: function (req, res) {
+          server.route({method: 'GET', path: '/authorize_url', handler: (req, res) => {
             res.redirect(url('/connect/facebook/callback?' +
               qs.stringify({code: 'code', state: 'Purest'})))
           }})
-          server.route({method: 'GET', path: '/', handler: function (req, res) {
+          server.route({method: 'GET', path: '/', handler: (req, res) => {
             var parsed = urlib.parse(req.url, false)
             var query = qs.parse(parsed.query)
             res((req.session || req.yar).get('grant').response || query)
@@ -435,7 +480,7 @@ describe('consumer - error', () => {
           server.register([
             {register: grant, options: config},
             {register: yar, options: {cookieOptions: {password: '01234567890123456789012345678912', isSecure: false}}}
-          ], function (err) {
+          ], (err) => {
             if (err) {
               done(err)
               return
@@ -489,7 +534,7 @@ describe('consumer - error', () => {
 
       var servers = {
         express: (done) => {
-          grant = new Grant.express()(config)
+          grant = Grant.express()(config)
           var app = express()
           app.use(session({secret: 'grant', saveUninitialized: true, resave: true}))
           app.use(grant)
@@ -512,7 +557,7 @@ describe('consumer - error', () => {
           server = app.listen(5000, done)
         },
         koa: (done) => {
-          grant = new Grant.koa()(config)
+          grant = Grant.koa()(config)
 
           var app = new Koa()
           app.keys = ['grant']
@@ -539,18 +584,18 @@ describe('consumer - error', () => {
           server = app.listen(5000, done)
         },
         hapi: (done) => {
-          grant = new Grant.hapi()()
+          grant = Grant.hapi()()
 
           server = new Hapi.Server()
           server.connection({host: 'localhost', port: 5000})
 
-          server.route({method: 'GET', path: '/authorize_url', handler: function (req, res) {
+          server.route({method: 'GET', path: '/authorize_url', handler: (req, res) => {
             res.redirect(url('/connect/facebook/callback?code=code'))
           }})
-          server.route({method: 'POST', path: '/access_url', handler: function (req, res) {
+          server.route({method: 'POST', path: '/access_url', handler: (req, res) => {
             res(qs.stringify({error: {message: 'invalid', code: '500'}})).code(500)
           }})
-          server.route({method: 'GET', path: '/', handler: function (req, res) {
+          server.route({method: 'GET', path: '/', handler: (req, res) => {
             var parsed = urlib.parse(req.url, false)
             var query = qs.parse(parsed.query)
             res((req.session || req.yar).get('grant').response || query)
@@ -559,7 +604,7 @@ describe('consumer - error', () => {
           server.register([
             {register: grant, options: config},
             {register: yar, options: {cookieOptions: {password: '01234567890123456789012345678912', isSecure: false}}}
-          ], function (err) {
+          ], (err) => {
             if (err) {
               done(err)
               return
@@ -613,7 +658,7 @@ describe('consumer - error', () => {
 
       var servers = {
         express: (done) => {
-          grant = new Grant.express()(config)
+          grant = Grant.express()(config)
           var app = express()
           app.use(session({secret: 'grant', saveUninitialized: true, resave: true}))
           app.use(grant)
@@ -625,7 +670,7 @@ describe('consumer - error', () => {
           server = app.listen(5000, done)
         },
         koa: (done) => {
-          grant = new Grant.koa()(config)
+          grant = Grant.koa()(config)
           var app = new Koa()
           app.keys = ['grant']
           app.use(koasession(app))
@@ -642,12 +687,12 @@ describe('consumer - error', () => {
           server = app.listen(5000, done)
         },
         hapi: (done) => {
-          grant = new Grant.hapi()()
+          grant = Grant.hapi()()
 
           server = new Hapi.Server()
           server.connection({host: 'localhost', port: 5000})
 
-          server.route({method: 'GET', path: '/', handler: function (req, res) {
+          server.route({method: 'GET', path: '/', handler: (req, res) => {
             var parsed = urlib.parse(req.url, false)
             var query = qs.parse(parsed.query)
             res((req.session || req.yar).get('grant').response || query).header('x-test', true)
@@ -656,7 +701,7 @@ describe('consumer - error', () => {
           server.register([
             {register: grant, options: config},
             {register: yar, options: {cookieOptions: {password: '01234567890123456789012345678912', isSecure: false}}}
-          ], function (err) {
+          ], (err) => {
             if (err) {
               done(err)
               return

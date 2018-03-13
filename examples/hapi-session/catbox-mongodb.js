@@ -12,13 +12,13 @@ var server = new Hapi.Server({
 })
 server.connection({host: 'localhost', port: 3000})
 
-server.route({method: 'GET', path: '/handle_facebook_callback', handler: function (req, res) {
+server.route({method: 'GET', path: '/handle_facebook_callback', handler: (req, res) => {
   var response = (req.session || req.yar).get('grant').response
   console.log(response)
   res(JSON.stringify(response, null, 2))
 }})
 
-server.route({method: 'GET', path: '/handle_twitter_callback', handler: function (req, res) {
+server.route({method: 'GET', path: '/handle_twitter_callback', handler: (req, res) => {
   var response = (req.session || req.yar).get('grant').response
   console.log(response)
   res(JSON.stringify(response, null, 2))
@@ -50,7 +50,7 @@ server.register([
     register: grant,
     options: require('./config.json')
   }
-], function (err) {
+], (err) => {
   if (err) {
     throw err
   }

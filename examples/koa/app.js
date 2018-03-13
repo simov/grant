@@ -30,6 +30,6 @@ app.get('/handle_twitter_callback', function* (next) {
   this.body = JSON.stringify(this.query, null, 2)
 })
 
-app.listen(3000, function () {
+app.listen(3000, () => {
   console.log('Koa server listening on port ' + 3000)
 })

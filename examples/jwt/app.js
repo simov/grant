@@ -20,7 +20,7 @@ app.use(session({
 // mount grant
 app.use(grant)
 
-app.get('/handle_facebook_callback', function (req, res) {
+app.get('/handle_facebook_callback', (req, res) => {
   if (req.query.error) {
     console.log(req.query.error)
     res.end(JSON.stringify(req.query.error))
@@ -32,9 +32,9 @@ app.get('/handle_facebook_callback', function (req, res) {
     facebook.query()
       .get('me')
       .auth(req.session.grant.response.access_token)
-      .request(function (err, _res, body) {
+      .request((err, _res, body) => {
         // remove the session data
-        req.session.destroy(function () {
+        req.session.destroy(() => {
           // remove the cookie
           res.clearCookie('grant')
           // generate JWT - encode the user's Facebook id and name in it
@@ -45,6 +45,6 @@ app.get('/handle_facebook_callback', function (req, res) {
   }
 })
 
-app.listen(3000, function () {
+app.listen(3000, () => {
   console.log('Express server listening on port ' + 3000)
 })
