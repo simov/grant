@@ -391,7 +391,7 @@
     "request_url": "https://getpocket.com/v3/oauth/request",
     "authorize_url": "https://getpocket.com/auth/authorize",
     "access_url": "https://getpocket.com/v3/oauth/authorize",
-    "oauth": "getpocket"
+    "oauth": 1
   },
   "gitbook": {
     "authorize_url": "https://api.gitbook.com/oauth/authorize",

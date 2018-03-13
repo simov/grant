@@ -4,6 +4,7 @@ var t = require('assert')
 var http = require('http')
 var qs = require('qs')
 var express = require('express')
+var bodyParser = require('body-parser')
 var Grant = require('../../').express()
 var oauth1 = require('../../lib/flow/oauth1')
 
@@ -157,15 +158,22 @@ describe('oauth1', function () {
       var grant, server
 
       before(function (done) {
-        var config = {copy: {}, discogs: {}, etsy: {}, freshbooks: {}, linkedin: {}}
+        var config = {
+          copy: {}, discogs: {}, etsy: {}, freshbooks: {}, getpocket: {},
+          linkedin: {}
+        }
         grant = new Grant(config)
-        var app = express().use(grant)
+        var app = express()
+        app.use(bodyParser.urlencoded({extended: true}))
+        app.use(grant)
 
         app.post('/request_url', function (req, res) {
           res.end(qs.stringify({
             agent: req.headers['user-agent'],
             oauth: req.headers.authorization,
-            scope: req.query.scope
+            scope: req.query.scope,
+            accept: req.headers['x-accept'],
+            form: req.body
           }))
         })
         server = app.listen(5000, done)
@@ -218,6 +226,25 @@ describe('oauth1', function () {
         })
       })
 
+      describe('getpocket', () => {
+        it('access', (done) => {
+          grant.config.getpocket.request_url = url('/request_url')
+          grant.config.getpocket.key = 'key'
+          grant.config.getpocket.state = 'state'
+          oauth1.step1(grant.config.getpocket, (err, body) => {
+            t.deepEqual(body, {
+              accept: 'application/x-www-form-urlencoded',
+              form: {
+                consumer_key: 'key',
+                redirect_uri: ':///connect/getpocket/callback',
+                state: 'state'
+              }
+            })
+            done()
+          })
+        })
+      })
+
       describe('subdomain', function () {
         it('freshbooks', function (done) {
           grant.config.freshbooks.request_url = url('/[subdomain]')
@@ -238,7 +265,10 @@ describe('oauth1', function () {
       var grant
 
       before(function () {
-        var config = {flickr: {}, freshbooks: {}, ravelry: {}, trello: {}, tripit: {}}
+        var config = {
+          flickr: {}, freshbooks: {}, getpocket: {}, ravelry: {}, trello: {},
+          tripit: {}
+        }
         grant = new Grant(config)
       })
 
@@ -289,6 +319,17 @@ describe('oauth1', function () {
         })
       })
 
+      describe('getpocket', () => {
+        it('authorize', () => {
+          var url = oauth1.step2(grant.config.getpocket, {code: 'code'})
+          var query = qs.parse(url.split('?')[1])
+          t.deepEqual(query, {
+            redirect_uri: ':///connect/getpocket/callback',
+            request_token: 'code'
+          })
+        })
+      })
+
       describe('subdomain', function () {
         it('freshbooks', function () {
           grant.config.freshbooks.subdomain = 'grant'
@@ -302,14 +343,21 @@ describe('oauth1', function () {
       var grant, server
 
       before(function (done) {
-        var config = {discogs: {}, freshbooks: {}, goodreads: {}, intuit: {}, tripit: {}}
+        var config = {
+          discogs: {}, freshbooks: {}, getpocket: {}, goodreads: {}, intuit: {},
+          tripit: {}
+        }
         grant = new Grant(config)
-        var app = express().use(grant)
+        var app = express()
+        app.use(bodyParser.urlencoded({extended: true}))
+        app.use(grant)
 
         app.post('/access_url', function (req, res) {
           res.end(qs.stringify({
             agent: req.headers['user-agent'],
-            oauth: req.headers.authorization
+            oauth: req.headers.authorization,
+            accept: req.headers['x-accept'],
+            form: req.body
           }))
         })
         server = app.listen(5000, done)
@@ -351,6 +399,24 @@ describe('oauth1', function () {
           oauth1.step3(grant.config.tripit, {}, {oauth_token: 'token'}, function (err, response) {
             var query = qs.parse(response)
             t.ok(!/verifier/.test(query.raw.oauth))
+            done()
+          })
+        })
+      })
+
+      describe('getpocket', () => {
+        it('token', (done) => {
+          grant.config.getpocket.access_url = url('/access_url')
+          grant.config.getpocket.key = 'key'
+          oauth1.step3(grant.config.getpocket, {code: 'code'}, {}, (err, response) => {
+            var query = qs.parse(response)
+            t.deepEqual(query.raw, {
+              accept: 'application/x-www-form-urlencoded',
+              form: {
+                consumer_key: 'key',
+                code: 'code'
+              }
+            })
             done()
           })
         })
