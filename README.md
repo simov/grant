@@ -407,10 +407,6 @@ You get a special `config` property attached to that instance. It contains the g
 
 > In case of dynamic access to a non pre-configured provider, it is automatically added to the `config` list on first access to the `/connect/:provider` route.
 
-There is a `_config` property attached as well, which contains the data from the [config/oauth.json][oauth-config] file as well as all of the configuration methods used internally by Grant.
-
-> Typically you don't want to use the `_config` property directly. Also note that changes made to the `config` property are per Grant instance, where changes to the `_config` property are global.
-
 
 ## Sandbox Redirect URI
 

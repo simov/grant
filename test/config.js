@@ -326,10 +326,9 @@ describe('config', () => {
   })
 
   describe('expose', () => {
-    it('config and _config', () => {
+    it('config', () => {
       var grant = new Grant()
       t.ok(typeof grant.config === 'object')
-      t.ok(typeof grant._config === 'object')
     })
   })
 
