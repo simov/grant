@@ -97,7 +97,7 @@ describe('oauth1', () => {
       server.listen(5000, done)
     })
 
-    it('request - request error', (done) => {
+    it.skip('request - request error', (done) => {
       var provider = {request_url: '/request_url'}
       oauth1.request(provider, (err, body) => {
         t.deepEqual(qs.parse(err), {error: {error: 'socket hang up'}})
@@ -144,7 +144,7 @@ describe('oauth1', () => {
         done()
       })
     })
-    it('access - request error', (done) => {
+    it.skip('access - request error', (done) => {
       var provider = {access_url: '/access_url'}
       var authorize = {oauth_token: 'token'}
       oauth1.access(provider, {}, authorize, (err, body) => {
