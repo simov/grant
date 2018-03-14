@@ -1,6 +1,21 @@
 
 # Change Log
 
+## v4.0.0 (2018/03/14)
+- **Change:** Officially **Node >= 4.0.0 required!**
+- **Change:** Dropped the `request` dependency in favor of `request-compose`
+- **Change:** Return errors more consistently based on the `transport` used (see below)
+- **Change:** The internal session variable `step1` was renamed to `request`
+- **Change:** The internal `_config` property is no longer exposed
+
+```js
+app.use(new Grant({server: {transport: 'session'}}))
+app.get('/final_callback', (req, res) => {
+  if (req.query.error) {} // v3.x
+  if (req.session.grant.response.error) {} // v4.x
+})
+```
+
 ## v3.8.2 (2018/02/13)
 - **Change:** Migrate all OAuth endpoints to HTTPS
 
