@@ -57,6 +57,7 @@
     "build/",
     "config/",
     "lib/",
+    "grant.js",
     "index.js",
     "CHANGELOG.md",
     "LICENSE",
