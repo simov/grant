@@ -21,7 +21,7 @@
   "dependencies": {
     "deep-copy": "^1.4.2",
     "qs": "^6.5.1",
-    "request-compose": "0.0.5",
+    "request-compose": "0.0.7",
     "request-oauth": "0.0.2"
   },
   "devDependencies": {
