@@ -1,6 +1,9 @@
 
 # Change Log
 
+## v4.0.1 (2018/03/15)
+- **Fix:** Minor fix in `request-compose`
+
 ## v4.0.0 (2018/03/14)
 - **Change:** Officially **Node >= 4.0.0 required!**
 - **Change:** Dropped the `request` dependency in favor of `request-compose`
