@@ -1,4 +1,3 @@
-'use strict'
 
 var t = require('assert')
 var qs = require('qs')
@@ -59,6 +58,7 @@ describe('consumer - flow', () => {
           grant.config.twitter.access_url = url('/access_url')
 
           app.post('/request_url', (req, res) => {
+            res.writeHead(200, {'content-type': 'application/x-www-form-urlencoded'})
             res.end(qs.stringify({oauth_token: 'token', oauth_token_secret: 'secret'}))
           })
           app.get('/authorize_url', (req, res) => {
@@ -67,6 +67,7 @@ describe('consumer - flow', () => {
             })))
           })
           app.post('/access_url', (req, res) => {
+            res.writeHead(200, {'content-type': 'application/json'})
             res.end(JSON.stringify({
               oauth_token: 'token', oauth_token_secret: 'secret'
             }))
@@ -91,6 +92,8 @@ describe('consumer - flow', () => {
 
           app.use(function* () {
             if (this.path === '/request_url') {
+              this.response.status = 200
+              this.set('content-type', 'application/x-www-form-urlencoded')
               this.body = qs.stringify({oauth_token: 'token', oauth_token_secret: 'secret'})
             }
             else if (this.path === '/authorize_url') {
@@ -98,6 +101,8 @@ describe('consumer - flow', () => {
                 qs.stringify({oauth_token: 'token', oauth_verifier: 'verifier'})))
             }
             else if (this.path === '/access_url') {
+              this.response.status = 200
+              this.set('content-type', 'application/json')
               this.body = JSON.stringify({
                 oauth_token: 'token', oauth_token_secret: 'secret'
               })
@@ -117,6 +122,8 @@ describe('consumer - flow', () => {
 
           server.route({method: 'POST', path: '/request_url', handler: (req, res) => {
             res(qs.stringify({oauth_token: 'token', oauth_token_secret: 'secret'}))
+              .code(200)
+              .header('content-type', 'application/x-www-form-urlencoded')
           }})
           server.route({method: 'GET', path: '/authorize_url', handler: (req, res) => {
             res.redirect(url('/connect/twitter/callback?' + qs.stringify({
@@ -203,6 +210,7 @@ describe('consumer - flow', () => {
             res.redirect(url('/connect/facebook/callback?code=code'))
           })
           app.post('/access_url', (req, res) => {
+            res.writeHead(200, {'content-type': 'application/json'})
             res.end(JSON.stringify({
               access_token: 'token', refresh_token: 'refresh', expires_in: 3600
             }))
@@ -229,6 +237,8 @@ describe('consumer - flow', () => {
               this.response.redirect(url('/connect/facebook/callback?code=code'))
             }
             else if (this.path === '/access_url') {
+              this.response.status = 200
+              this.set('content-type', 'application/json')
               this.body = JSON.stringify({
                 access_token: 'token', refresh_token: 'refresh', expires_in: 3600
               })
@@ -250,9 +260,9 @@ describe('consumer - flow', () => {
             res.redirect(url('/connect/facebook/callback?code=code'))
           }})
           server.route({method: 'POST', path: '/access_url', handler: (req, res) => {
-            res(JSON.stringify({
+            res({
               access_token: 'token', refresh_token: 'refresh', expires_in: 3600
-            }))
+            })
           }})
           server.route({method: 'GET', path: '/', handler: (req, res) => {
             var parsed = urlib.parse(req.url, false)

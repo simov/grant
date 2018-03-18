@@ -1,4 +1,3 @@
-'use strict'
 
 var t = require('assert')
 var qs = require('qs')
@@ -547,7 +546,8 @@ describe('consumer - error', () => {
           })
 
           app.post('/access_url', (req, res) => {
-            res.status(500).end(qs.stringify({error: {message: 'invalid', code: '500'}}))
+            res.writeHead(500, {'content-type': 'application/x-www-form-urlencoded'})
+            res.end(qs.stringify({error: {message: 'invalid', code: '500'}}))
           })
 
           app.get('/', (req, res) => {
@@ -574,6 +574,7 @@ describe('consumer - error', () => {
             }
             else if (this.path === '/access_url') {
               this.response.status = 500
+              this.set('content-type', 'application/x-www-form-urlencoded')
               this.body = qs.stringify({error: {message: 'invalid', code: 500}})
             }
             else if (this.path === '/') {
@@ -593,7 +594,9 @@ describe('consumer - error', () => {
             res.redirect(url('/connect/facebook/callback?code=code'))
           }})
           server.route({method: 'POST', path: '/access_url', handler: (req, res) => {
-            res(qs.stringify({error: {message: 'invalid', code: '500'}})).code(500)
+            res(qs.stringify({error: {message: 'invalid', code: '500'}}))
+              .code(500)
+              .header('content-type', 'application/x-www-form-urlencoded')
           }})
           server.route({method: 'GET', path: '/', handler: (req, res) => {
             var parsed = urlib.parse(req.url, false)

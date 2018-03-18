@@ -1,4 +1,3 @@
-'use strict'
 
 var t = require('assert')
 var qs = require('qs')
@@ -61,9 +60,11 @@ describe('consumer - session', () => {
           grant.config.twitter.authorize_url = '/authorize_url'
 
           app.post('/request_url', (req, res) => {
+            res.writeHead(200, {'content-type': 'application/x-www-form-urlencoded'})
             res.end(qs.stringify({oauth_token: 'token'}))
           })
           app.get('/authorize_url', (req, res) => {
+            res.writeHead(200, {'content-type': 'application/json'})
             res.end(JSON.stringify(req.session.grant))
           })
           server = app.listen(5000, done)
@@ -84,6 +85,8 @@ describe('consumer - session', () => {
 
           app.use(function* () {
             if (this.path === '/request_url') {
+              this.response.status = 200
+              this.set('content-type', 'application/x-www-form-urlencoded')
               this.body = qs.stringify({oauth_token: 'token'})
             }
             else if (this.path === '/authorize_url') {
@@ -101,6 +104,8 @@ describe('consumer - session', () => {
 
           server.route({method: 'POST', path: '/request_url', handler: (req, res) => {
             res(qs.stringify({oauth_token: 'token'}))
+              .code(200)
+              .header('content-type', 'application/x-www-form-urlencoded')
           }})
           server.route({method: 'GET', path: '/authorize_url', handler: (req, res) => {
             res(JSON.stringify((req.session || req.yar).get('grant')))
