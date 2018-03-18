@@ -1,6 +1,9 @@
 
 # Change Log
 
+## v4.1.0 (2018/03/18)
+- **New:** Support for **Hapi >= 17**
+
 ## v4.0.1 (2018/03/15)
 - **Fix:** Minor fix in `request-compose`
 
@@ -29,7 +32,7 @@ app.get('/final_callback', (req, res) => {
 - **Change:** Hapi is now using the internal `config` object directly through the middleware instance
 - **Fix:** Dynamic overrides support for Hapi >= 12.x
 - **New:** Hapi middleware configuration can be passed in the constructor
-- **New:** First class support for Koa >= 2.x using `async`/`await` **Node >= 8.0.0 required!**
+- **New:** First class support for **Koa >= 2.x** using `async`/`await` **Node >= 8.0.0 required!**
   - Koa 1.x and 0.x are still supported for Node 4, 6 and 8
 
 ## v3.7.2 (2017/04/20)
