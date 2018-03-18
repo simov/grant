@@ -258,15 +258,14 @@ describe('oauth2', () => {
         grant.config.visualstudio.access_url = url('/access_url')
 
         app.post('/access_url', (req, res) => {
+          res.writeHead(200, {'content-type': 'application/x-www-form-urlencoded'})
           if (req.headers.authorization) {
-            res.end(req.headers.authorization)
+            res.end(qs.stringify({basic: req.headers.authorization}))
           }
           else if (req.url.split('?')[1]) {
-            res.writeHead(200, {'content-type': 'application/x-www-form-urlencoded'})
             res.end(qs.stringify(req.query))
           }
           else if (req.body) {
-            res.writeHead(200, {'content-type': 'application/x-www-form-urlencoded'})
             res.end(qs.stringify(req.body))
           }
         })
@@ -302,7 +301,7 @@ describe('oauth2', () => {
             grant.config.ebay.secret = 'secret'
             oauth2.access(grant.config.ebay, {code: 'code'}, {}).then(({body}) => {
               t.deepEqual(
-                Buffer(body.replace('Basic ', ''), 'base64').toString().split(':'),
+                Buffer(body.basic.replace('Basic ', ''), 'base64').toString().split(':'),
                 ['key', 'secret']
               )
               done()
