@@ -352,31 +352,55 @@ describe('config', () => {
   })
 
   describe('hapi options', () => {
-    it('passed in server.register', (done) => {
-      var Hapi = require('hapi')
-      var Grant = require('../').hapi()
-      var config = {grant: {}}
-      var grant = new Grant()
-      var server = new Hapi.Server()
-      server.connection({host: 'localhost', port: 5000})
-      server.register([{register: grant, options: config}], () => {
-        t.deepEqual(grant.config,
-          {grant: {grant: true, name: 'grant'}, server: {}})
-        done()
+    var Hapi = require('hapi')
+    var Grant = require('../').hapi()
+    var hapi = parseInt(require('hapi/package.json').version.split('.')[0])
+
+    if (hapi < 17) {
+      it('passed in server.register', (done) => {
+        var config = {grant: {}}
+        var grant = new Grant()
+        var server = new Hapi.Server()
+        server.connection({host: 'localhost', port: 5000})
+        server.register([{register: grant, options: config}], () => {
+          t.deepEqual(grant.config,
+            {grant: {grant: true, name: 'grant'}, server: {}})
+          done()
+        })
       })
-    })
-    it('passed in the constructor', (done) => {
-      var Hapi = require('hapi')
-      var Grant = require('../').hapi()
-      var config = {grant: {}}
-      var grant = new Grant(config)
-      var server = new Hapi.Server()
-      server.connection({host: 'localhost', port: 5000})
-      server.register([{register: grant}], () => {
-        t.deepEqual(grant.config,
-          {grant: {grant: true, name: 'grant'}, server: {}})
-        done()
+      it('passed in the constructor', (done) => {
+        var config = {grant: {}}
+        var grant = new Grant(config)
+        var server = new Hapi.Server()
+        server.connection({host: 'localhost', port: 5000})
+        server.register([{register: grant}], () => {
+          t.deepEqual(grant.config,
+            {grant: {grant: true, name: 'grant'}, server: {}})
+          done()
+        })
       })
-    })
+    }
+    else {
+      it('passed in server.register', (done) => {
+        var config = {grant: {}}
+        var grant = new Grant()
+        var server = new Hapi.Server({host: 'localhost', port: 5000})
+        server.register([{plugin: grant, options: config}]).then(() => {
+          t.deepEqual(grant.config,
+            {grant: {grant: true, name: 'grant'}, server: {}})
+          done()
+        })
+      })
+      it('passed in the constructor', (done) => {
+        var config = {grant: {}}
+        var grant = new Grant(config)
+        var server = new Hapi.Server({host: 'localhost', port: 5000})
+        server.register([{plugin: grant}]).then(() => {
+          t.deepEqual(grant.config,
+            {grant: {grant: true, name: 'grant'}, server: {}})
+          done()
+        })
+      })
+    }
   })
 })

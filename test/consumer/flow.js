@@ -31,6 +31,7 @@ Koa = function () {
 
   return app
 }
+var hapi = parseInt(require('hapi/package.json').version.split('.')[0])
 
 
 describe('consumer - flow', () => {
@@ -155,11 +156,49 @@ describe('consumer - flow', () => {
 
             server.start(done)
           })
+        },
+        hapi17: (done) => {
+          grant = Grant.hapi()()
+          server = new Hapi.Server({host: 'localhost', port: 5000})
+
+          server.route({method: 'POST', path: '/request_url', handler: (req, res) => {
+            return res.response(qs.stringify({oauth_token: 'token', oauth_token_secret: 'secret'}))
+              .code(200)
+              .header('content-type', 'application/x-www-form-urlencoded')
+          }})
+          server.route({method: 'GET', path: '/authorize_url', handler: (req, res) => {
+            return res.redirect(url('/connect/twitter/callback?' + qs.stringify({
+              oauth_token: 'token', oauth_verifier: 'verifier'
+            })))
+          }})
+          server.route({method: 'POST', path: '/access_url', handler: (req, res) => {
+            return res.response({oauth_token: 'token', oauth_token_secret: 'secret'})
+          }})
+          server.route({method: 'GET', path: '/', handler: (req, res) => {
+            var parsed = urlib.parse(req.url, false)
+            var query = qs.parse(parsed.query)
+            return res.response((req.session || req.yar).get('grant').response || query)
+          }})
+
+          server.register([
+            {plugin: grant, options: config},
+            {plugin: yar, options: {cookieOptions: {
+              password: '01234567890123456789012345678912', isSecure: false}}}
+          ])
+            .then(() => {
+              grant.config.twitter.request_url = url('/request_url')
+              grant.config.twitter.authorize_url = url('/authorize_url')
+              grant.config.twitter.access_url = url('/access_url')
+              server.start().then(done).catch(done)
+            })
+            .catch(done)
         }
       }
 
       before((done) => {
-        servers[consumer](done)
+        servers[
+          consumer === 'hapi' ? `${consumer}${hapi < 17 ? '' : '17'}` : consumer
+        ](done)
       })
 
       it('twitter', (done) => {
@@ -186,7 +225,9 @@ describe('consumer - flow', () => {
       })
 
       after((done) => {
-        server[/express|koa/.test(consumer) ? 'close' : 'stop'](done)
+        consumer === 'hapi' && hapi >= 17
+          ? server.stop().then(done)
+          : server[/express|koa/.test(consumer) ? 'close' : 'stop'](done)
       })
 
     })
@@ -284,11 +325,43 @@ describe('consumer - flow', () => {
 
             server.start(done)
           })
+        },
+        hapi17: (done) => {
+          grant = Grant.hapi()()
+          server = new Hapi.Server({host: 'localhost', port: 5000})
+
+          server.route({method: 'GET', path: '/authorize_url', handler: (req, res) => {
+            return res.redirect(url('/connect/facebook/callback?code=code'))
+          }})
+          server.route({method: 'POST', path: '/access_url', handler: (req, res) => {
+            return res.response({
+              access_token: 'token', refresh_token: 'refresh', expires_in: 3600
+            })
+          }})
+          server.route({method: 'GET', path: '/', handler: (req, res) => {
+            var parsed = urlib.parse(req.url, false)
+            var query = qs.parse(parsed.query)
+            return res.response((req.session || req.yar).get('grant').response || query)
+          }})
+
+          server.register([
+            {plugin: grant, options: config},
+            {plugin: yar, options: {cookieOptions: {password: '01234567890123456789012345678912', isSecure: false}}}
+          ])
+            .then(() => {
+              grant.config.facebook.authorize_url = url('/authorize_url')
+              grant.config.facebook.access_url = url('/access_url')
+
+              server.start().then(done).catch(done)
+            })
+            .catch(done)
         }
       }
 
       before((done) => {
-        servers[consumer](done)
+        servers[
+          consumer === 'hapi' ? `${consumer}${hapi < 17 ? '' : '17'}` : consumer
+        ](done)
       })
 
       it('facebook', (done) => {
@@ -316,7 +389,9 @@ describe('consumer - flow', () => {
       })
 
       after((done) => {
-        server[/express|koa/.test(consumer) ? 'close' : 'stop'](done)
+        consumer === 'hapi' && hapi >= 17
+          ? server.stop().then(done)
+          : server[/express|koa/.test(consumer) ? 'close' : 'stop'](done)
       })
     })
   })

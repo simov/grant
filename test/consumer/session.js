@@ -32,6 +32,7 @@ Koa = function () {
 
   return app
 }
+var hapi = parseInt(require('hapi/package.json').version.split('.')[0])
 
 
 describe('consumer - session', () => {
@@ -126,11 +127,39 @@ describe('consumer - session', () => {
 
             server.start(done)
           })
+        },
+        hapi17: (done) => {
+          grant = Grant.hapi()()
+          server = new Hapi.Server({host: 'localhost', port: 5000})
+
+          server.route({method: 'POST', path: '/request_url', handler: (req, res) => {
+            return res.response(qs.stringify({oauth_token: 'token'}))
+              .code(200)
+              .header('content-type', 'application/x-www-form-urlencoded')
+          }})
+          server.route({method: 'GET', path: '/authorize_url', handler: (req, res) => {
+            return res.response(JSON.stringify((req.session || req.yar).get('grant')))
+          }})
+
+          server.register([
+            {plugin: grant, options: config},
+            {plugin: yar, options: {cookieOptions: {password: '01234567890123456789012345678912', isSecure: false}}}
+          ])
+            .then(() => {
+              grant.config.facebook.authorize_url = '/authorize_url'
+              grant.config.twitter.request_url = url('/request_url')
+              grant.config.twitter.authorize_url = '/authorize_url'
+
+              server.start().then(done).catch(done)
+            })
+            .catch(done)
         }
       }
 
       before((done) => {
-        servers[consumer](done)
+        servers[
+          consumer === 'hapi' ? `${consumer}${hapi < 17 ? '' : '17'}` : consumer
+        ](done)
       })
 
       it('provider', (done) => {
@@ -237,7 +266,9 @@ describe('consumer - session', () => {
       })
 
       after((done) => {
-        server[/express|koa/.test(consumer) ? 'close' : 'stop'](done)
+        consumer === 'hapi' && hapi >= 17
+          ? server.stop().then(done)
+          : server[/express|koa/.test(consumer) ? 'close' : 'stop'](done)
       })
     })
   })

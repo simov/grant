@@ -21,7 +21,7 @@
   "dependencies": {
     "deep-copy": "^1.4.2",
     "qs": "^6.5.1",
-    "request-compose": "0.0.7",
+    "request-compose": "0.0.8",
     "request-oauth": "0.0.2"
   },
   "devDependencies": {
@@ -30,13 +30,13 @@
     "babel-preset-env": "^1.6.1",
     "body-parser": "^1.17.2",
     "coveralls": "^3.0.0",
-    "eslint": "^4.18.2",
+    "eslint": "^4.19.0",
     "eslint-config-standard": "^11.0.0",
     "eslint-plugin-import": "^2.9.0",
     "eslint-plugin-node": "^6.0.1",
     "eslint-plugin-promise": "^3.7.0",
     "eslint-plugin-standard": "^3.0.1",
-    "express": "^4.15.3",
+    "express": "^4.16.3",
     "express-session": "^1.15.3",
     "hapi": "^16.6.3",
     "istanbul": "^1.1.0-alpha.1",
@@ -49,7 +49,6 @@
     "mocha": "^5.0.4",
     "request": "2.81.0",
     "request-logs": "0.0.5",
-    "thunkify": "^2.1.2",
     "yar": "^8.1.2"
   },
   "main": "./build/index.js",
@@ -72,12 +71,13 @@
     "copy:config": "mkdir build/config && cp config/*.json build/config/",
     "build:consumer": "babel lib/consumer --out-dir build/lib/consumer",
     "copy:koa": "cp lib/consumer/koa.js lib/consumer/koa2.js build/lib/consumer/",
+    "copy:hapi": "cp lib/consumer/hapi17.js build/lib/consumer/",
     "build:flow": "babel lib/flow --out-dir build/lib/flow",
     "build:utils": "babel lib/*.js --out-dir build",
     "build:test": "babel test --out-dir build/test",
     "build:main": "babel *.js --out-dir build",
     "copy:package": "cp package.json build/",
-    "build": "rm -rf build/ && mkdir -p build && npm run copy:config && npm run build:consumer && npm run copy:koa && npm run build:flow && npm run build:utils && npm run build:test && npm run build:main && npm run copy:package",
+    "build": "rm -rf build/ && mkdir -p build && npm run copy:config && npm run build:consumer && npm run copy:koa && npm run copy:hapi && npm run build:flow && npm run build:utils && npm run build:test && npm run build:main && npm run copy:package",
     "prepublish": "npm run build"
   },
   "engines": {

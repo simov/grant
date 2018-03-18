@@ -7,6 +7,9 @@
 
   // Almost Standard
   rules: {
+    // https://github.com/xjamundx/eslint-plugin-standard
+    'standard/computed-property-even-spacing': 'off',
+
     // Disable: Closing curly brace does not appear on the same line as the subsequent block
     'brace-style': [2, 'stroustrup'],
 
