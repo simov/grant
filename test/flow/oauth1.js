@@ -90,10 +90,10 @@ describe('oauth1', () => {
       server.listen(5000, done)
     })
 
-    it.skip('request - request error', (done) => {
-      var provider = {request_url: '/request_url'}
-      oauth1.request(provider, (err, body) => {
-        t.deepEqual(qs.parse(err), {error: {error: 'socket hang up'}})
+    it('request - request error', (done) => {
+      var provider = {request_url: 'compose:5000'}
+      oauth1.request(provider).catch((err) => {
+        t.ok(/^Protocol "compose:" not supported\. Expected "http:"/.test(err.message))
         done()
       })
     })
@@ -147,11 +147,11 @@ describe('oauth1', () => {
         done()
       })
     })
-    it.skip('access - request error', (done) => {
-      var provider = {access_url: '/access_url'}
+    it('access - request error', (done) => {
+      var provider = {access_url: 'compose:5000'}
       var authorize = {oauth_token: 'token'}
-      oauth1.access(provider, {}, authorize, (err, body) => {
-        t.deepEqual(qs.parse(err), {error: {error: 'socket hang up'}})
+      oauth1.access(provider, {}, authorize).catch((err) => {
+        t.ok(/^Protocol "compose:" not supported\. Expected "http:"/.test(err.message))
         done()
       })
     })

@@ -111,11 +111,11 @@ describe('oauth2', () => {
         done()
       })
     })
-    it.skip('access - request error', (done) => {
-      var provider = {access_url: '/access_url'}
+    it('access - request error', (done) => {
+      var provider = {access_url: 'compose:5000'}
       var authorize = {code: 'code'}
-      oauth2.access(provider, authorize, {}, (err, body) => {
-        t.deepEqual(qs.parse(err), {error: {error: 'socket hang up'}})
+      oauth2.access(provider, authorize, {}).catch((err) => {
+        t.ok(/^Protocol "compose:" not supported\. Expected "http:"/.test(err.message))
         done()
       })
     })
