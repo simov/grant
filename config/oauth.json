@@ -40,12 +40,6 @@
     "oauth": 2,
     "scope_delimiter": " "
   },
-  "appnet": {
-    "authorize_url": "https://account.app.net/oauth/authenticate",
-    "access_url": "https://account.app.net/oauth/access_token",
-    "oauth": 2,
-    "scope_delimiter": " "
-  },
   "asana": {
     "authorize_url": "https://app.asana.com/-/oauth_authorize",
     "access_url": "https://app.asana.com/-/oauth_token",
@@ -130,11 +124,6 @@
   "clio": {
     "authorize_url": "https://app.goclio.com/oauth/authorize",
     "access_url": "https://app.goclio.com/oauth/token",
-    "oauth": 2
-  },
-  "codeplex": {
-    "authorize_url": "https://www.codeplex.com/oauth/authorize",
-    "access_url": "https://www.codeplex.com/oauth/token",
     "oauth": 2
   },
   "coinbase": {
@@ -261,11 +250,6 @@
     "subdomain": true,
     "scope_delimiter": " ",
     "custom_parameters": ["mobile"]
-  },
-  "elance": {
-    "authorize_url": "https://api.elance.com/api2/oauth/authorize",
-    "access_url": "https://api.elance.com/api2/oauth/token",
-    "oauth": 2
   },
   "etsy": {
     "request_url": "https://openapi.etsy.com/v2/oauth/request_token",
@@ -607,12 +591,6 @@
     "access_url": "https://secure.myob.com/oauth2/v1/authorize",
     "oauth": 2
   },
-  "odesk": {
-    "request_url": "https://www.odesk.com/api/auth/v1/oauth/token/request",
-    "authorize_url": "https://www.odesk.com/services/api/auth",
-    "access_url": "https://www.odesk.com/api/auth/v1/oauth/token/access",
-    "oauth": 1
-  },
   "openstreetmap": {
     "request_url": "https://www.openstreetmap.org/oauth/request_token",
     "authorize_url": "https://www.openstreetmap.org/oauth/authorize",
@@ -686,11 +664,6 @@
     "access_url": "https://www.ravelry.com/oauth/access_token",
     "oauth": 1,
     "scope_delimiter": " "
-  },
-  "rdio": {
-    "authorize_url": "https://www.rdio.com/oauth2/authorize",
-    "access_url": "https://services.rdio.com/oauth2/token",
-    "oauth": 2
   },
   "redbooth": {
     "authorize_url": "https://redbooth.com/oauth2/authorize",
