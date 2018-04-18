@@ -50,6 +50,14 @@
     "access_url": "https://api.assembla.com/token",
     "oauth": 2
   },
+  "auth0": {
+    "authorize_url": "https://[subdomain].auth0.com/authorize",
+    "access_url": "https://[subdomain].auth0.com/oauth/token",
+    "oauth": 2,
+    "scope_delimiter": " ",
+    "subdomain": true,
+    "custom_parameters": ["audience", "prompt"]
+  },
   "authentiq": {
     "authorize_url": "https://connect.authentiq.io/sign-in",
     "access_url": "https://connect.authentiq.io/token",
@@ -568,6 +576,12 @@
     "access_url": "https://www.mixcloud.com/oauth/access_token",
     "oauth": 2
   },
+  "mixer": {
+    "authorize_url": "https://mixer.com/oauth/authorize",
+    "access_url": "https://mixer.com/api/v1/oauth/token",
+    "oauth": 2,
+    "scope_delimiter": " "
+  },
   "moves": {
     "authorize_url": "https://api.moves-app.com/oauth/v1/authorize",
     "access_url": "https://api.moves-app.com/oauth/v1/access_token",
@@ -590,6 +604,12 @@
     "authorize_url": "https://secure.myob.com/oauth2/account/authorize",
     "access_url": "https://secure.myob.com/oauth2/v1/authorize",
     "oauth": 2
+  },
+  "nylas": {
+    "authorize_url": "https://api.nylas.com/oauth/authorize",
+    "access_url": "https://api.nylas.com/oauth/token",
+    "oauth": 2,
+    "custom_parameters": ["login_hint"]
   },
   "openstreetmap": {
     "request_url": "https://www.openstreetmap.org/oauth/request_token",
@@ -808,6 +828,11 @@
     "access_url": "https://api.ticketbud.com/oauth/token",
     "oauth": 2
   },
+  "timelyapp": {
+    "authorize_url": "https://api.timelyapp.com/1.1/oauth/authorize",
+    "access_url": "https://api.timelyapp.com/1.1/oauth/token",
+    "oauth": 2
+  },
   "todoist": {
     "authorize_url": "https://todoist.com/oauth/authorize",
     "access_url": "https://todoist.com/oauth/access_token",
@@ -897,6 +922,11 @@
   "verticalresponse": {
     "authorize_url": "https://vrapi.verticalresponse.com/api/v1/oauth/authorize",
     "access_url": "https://vrapi.verticalresponse.com/api/v1/oauth/access_token",
+    "oauth": 2
+  },
+  "viadeo": {
+    "authorize_url": "https://partners.viadeo.com/oauth/authorize",
+    "access_url": "https://partners.viadeo.com/oauth/token",
     "oauth": 2
   },
   "vimeo": {
