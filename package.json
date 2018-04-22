@@ -21,7 +21,7 @@
   "dependencies": {
     "deep-copy": "^1.4.2",
     "qs": "^6.5.1",
-    "request-compose": "0.0.8",
+    "request-compose": "0.0.12",
     "request-oauth": "0.0.2"
   },
   "devDependencies": {
@@ -30,9 +30,9 @@
     "babel-preset-env": "^1.6.1",
     "body-parser": "^1.17.2",
     "coveralls": "^3.0.0",
-    "eslint": "^4.19.0",
+    "eslint": "^4.19.1",
     "eslint-config-standard": "^11.0.0",
-    "eslint-plugin-import": "^2.9.0",
+    "eslint-plugin-import": "^2.11.0",
     "eslint-plugin-node": "^6.0.1",
     "eslint-plugin-promise": "^3.7.0",
     "eslint-plugin-standard": "^3.0.1",
@@ -46,7 +46,7 @@
     "koa-mount": "^1.3.0",
     "koa-qs": "^2.0.0",
     "koa-session": "^4.8.0",
-    "mocha": "^5.0.4",
+    "mocha": "^5.1.1",
     "request": "2.81.0",
     "request-logs": "0.0.5",
     "yar": "^8.1.2"
