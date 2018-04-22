@@ -1,6 +1,10 @@
 
 # Change Log
 
+## v4.1.1 (2018/04/22)
+- **New:** Official support for 6 new providers: `auth0`, `bettlenet`, `mixer`, `nylas`, `timelyapp`, `viadeo`
+- **Change:** Removed 5 discontinued providers: `appnet`, `codeplex`, `elance`, `odesk`, `rdio`
+
 ## v4.1.0 (2018/03/18)
 - **New:** Support for **Hapi >= 17**
 
