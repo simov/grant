@@ -46,15 +46,14 @@ npm install grant-express
 
 ```js
 var express = require('express')
-  , session = require('express-session')
-var Grant = require('grant-express')
-  , grant = new Grant({/*configuration - see below*/})
+var session = require('express-session')
+var grant = require('grant-express')
 
 var app = express()
-// REQUIRED: (any session store - see ./examples/express-session)
+// REQUIRED: any session store - see /examples/express-session-stores
 app.use(session({secret: 'grant'}))
 // mount grant
-app.use(grant)
+app.use(grant({/*configuration - see below*/}))
 ```
 
 
@@ -65,18 +64,17 @@ npm install grant-koa
 ```
 
 ```js
-var koa = require('koa')
-  , session = require('koa-session')
-  , mount = require('koa-mount')
-var Grant = require('grant-koa')
-  , grant = new Grant({/*configuration - see below*/})
+var Koa = require('koa')
+var session = require('koa-session')
+var mount = require('koa-mount')
+var grant = require('grant-koa')
 
-var app = koa()
-// REQUIRED: (any session store - see ./examples/koa-session)
+var app = new Koa()
+// REQUIRED: any session store - see /examples/koa-session-stores
 app.keys = ['grant']
 app.use(session(app))
 // mount grant
-app.use(mount(grant))
+app.use(mount(grant({/*configuration - see below*/})))
 ```
 
 
@@ -88,26 +86,16 @@ npm install grant-hapi
 
 ```js
 var Hapi = require('hapi')
-  , yar = require('yar')
-var Grant = require('grant-hapi')
-  , grant = new Grant()
+var yar = require('yar')
+var grant = require('grant-hapi')
 
 var server = new Hapi.Server()
 server.register([
-  // REQUIRED: (any session store - see ./examples/hapi-session)
-  {register: yar, options: {cookieOptions: {password: 'grant', isSecure: false}}},
-  // mount grant
-  {register: grant, options: {/*configuration - see below*/}}
-], server.start)
-
-// Hapi >= 17
-server.register([
-  // REQUIRED: (any session store - see ./examples/hapi-session)
+  // REQUIRED: any session store - see /examples/hapi-session-stores
   {plugin: yar, options: {cookieOptions: {password: 'grant', isSecure: false}}},
   // mount grant
-  {plugin: grant, options: {/*configuration - see below*/}}
+  {plugin: grant(), options: {/*configuration - see below*/}}
 ])
-.then(server.start)
 ```
 
 
@@ -134,14 +122,14 @@ You can mount Grant under specific path prefix:
 
 ```js
 // Express
-app.use('/path/prefix', grant)
+app.use('/path/prefix', grant({config}))
 // Koa
-app.use(mount('/path/prefix', grant))
+app.use(mount('/path/prefix', grant({config})))
 // Hapi
-{register: grant, options: options, routes: {prefix: '/path/prefix'}}
+server.register([{plugin: grant({config}), routes: {prefix: '/path/prefix'}}])
 ```
 
-In this case it is required to set the path prefix using the `path` configuration option for the server key:
+In this case it is required to specify the path prefix using the `path` configuration option for the server key:
 
 ```js
 {
@@ -204,14 +192,14 @@ In case you want your callback routes prefixed, set them accordingly:
   - **protocol** - either `http` or `https`
   - **host** - your server's host name `localhost:3000` | `dummy.com:5000` | `mysite.com` ...
   - **path** - path prefix to use for the Grant middleware *(defaults to empty string if omitted)*
-  - **callback** - common callback for all providers in your config `/callback` | `/done` ...
-  - **transport** - transport to use to deliver the response data in your final callback `querystring` | `session` *(defaults to querystring if omitted)*
+  - **callback** - common callback route for all providers in your config `/callback` | `/done` ...
+  - **transport** - transport to use to deliver the response data in your final callback route `querystring` | `session` *(defaults to querystring if omitted)*
   - **state** - generate random state string on each authorization attempt `true` | `false` *(OAuth2 only, defaults to false if omitted)*
 - **provider1** - any [supported provider][grant] `facebook` | `twitter` ...
-  - **key** - `consumer_key` or `client_id` of your app
-  - **secret** - `consumer_secret` or `client_secret` of your app
+  - **key** - `consumer_key` or `client_id` of your OAuth app
+  - **secret** - `consumer_secret` or `client_secret` of your OAuth app
   - **scope** - array of OAuth scopes to request
-  - **callback** - specific callback to use for this provider *(overrides the global one specified under the `server` key)*
+  - **callback** - specific callback route to use for this provider *(overrides the global one specified under the `server` key)*
   - **custom_params** - custom authorization parameters *(see the [Custom Parameters][custom-parameters] section)*
 
 *(additionally any of the [reserved keys][reserved-keys] can be overriden for a provider)*
@@ -280,29 +268,25 @@ Keep in mind that in this case you'll have to mount the `body-parser` middleware
 
 ```js
 // express
-var bodyParser = require('body-parser')
-app.use(bodyParser.urlencoded({extended: true}))
-app.use(grant)
+var parser = require('body-parser')
+app.use(parser.urlencoded({extended: true}))
+app.use(grant({config}))
 // koa
-var bodyParser = require('koa-bodyparser')
-app.use(bodyParser())
-app.use(mount(grant))
+var parser = require('koa-bodyparser')
+app.use(parser())
+app.use(mount(grant({config})))
 ```
 
 Alternatively you can make a `GET` request to the `/connect/:provider/:override?` route:
 
 ```js
-app.get('/connect_facebook', (req, res) => {
-  // generate random state parameter on each authorization attempt
-  var state = (Math.floor(Math.random() * 999999) + 1)
-  res.redirect('/connect/facebook?state=' + state)
-})
+https://mywebsite.com/connect/facebook?scope=user_photos%2Cuser_videos
 ```
 
 
 ## Custom Parameters
 
-Some providers may employ custom authorization parameters outside of the ones specified in the [configuration][configuration] section. You can pass those custom parameters using the `custom_params` option:
+Some providers may employ custom authorization parameters outside of the specified ones in the [configuration][configuration] section. You can pass those custom parameters using the `custom_params` option:
 
 ```js
 "google": {
@@ -318,7 +302,7 @@ Some providers may employ custom authorization parameters outside of the ones sp
 
 > Additionally any custom parameter that is not a [reserved][reserved-keys] key, and is listed under the `custom_parameters` array for that provider, can be defined along with the rest of the options.
 
-Refer to the provider's OAuth documentation, and the Grant's [OAuth configuration][oauth-config] *(search for `custom_parameters`)*.
+> Refer to the provider's OAuth documentation, and the Grant's [OAuth configuration][oauth-config] *(search for `custom_parameters`)*.
 
 
 ## Custom Providers
@@ -344,7 +328,7 @@ In this case you have to specify all of the required provider keys by yourself:
 }
 ```
 
-Take a look at the [OAuth configuration][oauth-config] to see how various providers are configured.
+> Refer to the Grant's [OAuth configuration][oauth-config] to see how various providers are configured.
 
 
 ## Development Environments
@@ -436,7 +420,7 @@ app.get('/', (req, res) => {
 })
 ```
 
-After that you will receive the results from the OAuth flow inside the route specified in the `callback` key of your configuration.
+After that you will receive the [Response Data][response-data] from the OAuth flow inside the route specified in the `callback` key of your configuration.
 
 
 ## Quirks
@@ -444,7 +428,7 @@ After that you will receive the results from the OAuth flow inside the route spe
 
 #### Subdomain
 
-Some providers require you to set your company name or server region as a *subdomain* in the OAuth URLs. You can set that value through the `subdomain` option:
+Some providers require you to set your company name or server region as *subdomain* in the OAuth URLs. You can set that value through the `subdomain` option:
 
 ```js
 "shopify": {
@@ -557,9 +541,9 @@ Set your Client Secret as `secret` not the App Secret:
 
 ## Response Data
 
-The OAuth response data is returned as a querystring in your **final** callback - the one you specify in the `callback` key of your Grant configuration.
+The OAuth response data is returned as querystring in your **final** callback - the one you specify in the `callback` key of your Grant configuration.
 
-Alternatively the response data can be returned in the session, see the [configuration][configuration] section above and the [session transport][session-transport-example] example.
+Alternatively the response data can be returned inside the session, see the [configuration][configuration] section above and the [session transport][session-transport-example] example.
 
 
 #### OAuth1
@@ -614,7 +598,7 @@ In case of an error, the `error` key will be populated with the raw error data:
 1. Register OAuth application on your provider's web site.
 2. For `redirect` URL of your OAuth application **always** use this format:
   `[protocol]://[host]/connect/[provider]/callback`
-3. Create a `config.json` file containing:
+3. Create `config.json` file containing:
 
   ```js
   "server": {
@@ -637,17 +621,16 @@ In case of an error, the `error` key will be populated with the raw error data:
   ```js
   // Express
   var express = require('express')
-    , session = require('express-session')
-  var Grant = require('grant-express')
-    , grant = new Grant(require('./config.json'))
-  var app = express()
-  app.use(session({secret: 'grant'}))
-  app.use(grant)
+  var session = require('express-session')
+  var grant = require('grant-express')
+  express()
+    .use(session({secret: 'grant'}))
+    .use(grant(require('./config.json')))
   // or Koa
   // or Hapi
   ```
 5. Navigate to `/connect/facebook` to initiate the OAuth flow for Facebook, or navigate to `/connect/twitter` to initiate the OAuth flow for Twitter.
-6. Once the OAuth flow is completed you will receive the response data in the `/handle_facebook_callback` route for Facebook, or in the `/handle_twitter_callback` route for Twitter.
+6. Once the OAuth flow is completed you will receive the response data in the `/handle_facebook_callback` route for Facebook, and in the `/handle_twitter_callback` route for Twitter.
 
 *(also take a look at the [examples][grant-examples])*
 
@@ -684,8 +667,6 @@ twitter
     // id, screen_name, ...
   })
 ```
-
-> Full list of all providers and how to get their *user profile* endpoint can be found [here][purest-user].
 
 
   [npm-version]: https://img.shields.io/npm/v/grant.svg?style=flat-square (NPM Version)
