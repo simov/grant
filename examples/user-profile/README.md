@@ -1,11 +1,11 @@
 
-# Session Transport Example
+# User Profile Example
 
 
 ## Install
 
 ```bash
-$ cd examples/session-transport
+$ cd examples/user-profile
 $ npm install
 ```
 

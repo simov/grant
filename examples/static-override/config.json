@@ -1,0 +1,34 @@
+{
+  "server": {
+    "protocol": "http",
+    "host": "dummy.com:3000"
+  },
+  "facebook": {
+    "key": "[APP_ID]",
+    "secret": "[APP_SECRET]",
+    "callback": "/handle_facebook_callback",
+    "scope": [
+      "public_profile",
+      "email"
+    ],
+    "photos": {
+      "scope": [
+        "user_photos"
+      ]
+    },
+    "videos": {
+      "scope": [
+        "user_videos"
+      ]
+    }
+  },
+  "twitter": {
+    "key": "[APP1 - CONSUMER_KEY - READ-ONLY]",
+    "secret": "[APP1 - CONSUMER_SECRET - READ-ONLY]",
+    "callback": "/handle_twitter_callback",
+    "write": {
+      "key": "[APP2 - CONSUMER_KEY - WRITE]",
+      "secret": "[APP2 - CONSUMER_SECRET - WRITE]"
+    }
+  }
+}

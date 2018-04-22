@@ -2,6 +2,7 @@
 var fs = require('fs')
 var path = require('path')
 var jws = require('jws')
+
 var key = {
   public: fs.readFileSync(path.resolve(__dirname, './public.pem'), 'utf8'),
   private: fs.readFileSync(path.resolve(__dirname, './private.pem'), 'utf8')

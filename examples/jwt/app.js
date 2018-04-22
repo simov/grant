@@ -1,50 +1,28 @@
 
 var express = require('express')
-var logger = require('morgan')
 var session = require('express-session')
-var Purest = require('purest')
+var grant = require('grant-express')
+var request = require('request-compose').client
+
+var config = require('./config.json')
 var jwt = require('./jwt')
 
-var Grant = require('grant-express')
-var grant = new Grant(require('./config.json'))
 
-var app = express()
-app.use(logger('dev'))
-// REQUIRED:
-app.use(session({
-  name: 'grant',
-  secret: 'very secret',
-  saveUninitialized: false,
-  resave: false
-}))
-// mount grant
-app.use(grant)
-
-app.get('/handle_facebook_callback', (req, res) => {
-  if (req.query.error) {
-    console.log(req.query.error)
-    res.end(JSON.stringify(req.query.error))
-  }
-  else {
-    console.log(req.session.grant.response)
-    // get the user's profile
-    var facebook = new Purest({provider: 'facebook'})
-    facebook.query()
-      .get('me')
-      .auth(req.session.grant.response.access_token)
-      .request((err, _res, body) => {
-        // remove the session data
-        req.session.destroy(() => {
-          // remove the cookie
-          res.clearCookie('grant')
-          // generate JWT - encode the user's Facebook id and name in it
-          var token = jwt.sign({id: body.id, name: body.name})
-          res.end(JSON.stringify({jwt: token}, null, 2))
-        })
-      })
-  }
-})
-
-app.listen(3000, () => {
-  console.log('Express server listening on port ' + 3000)
-})
+express()
+  .use(session({name: 'grant', secret: 'grant', saveUninitialized: true, resave: true}))
+  .use(grant(config))
+  .get('/handle_facebook_callback', async (req, res) => {
+    var {body} = await request({
+      url: 'https://graph.facebook.com/v2.12/me',
+      headers: {authorization: `Bearer ${req.session.grant.response.access_token}`}
+    })
+    // remove the session data
+    req.session.destroy(() => {
+      // remove the cookie
+      res.clearCookie('grant')
+      // generate JWT - encode the user's Facebook id and name in it
+      var token = jwt.sign({id: body.id, name: body.name})
+      res.end(JSON.stringify({jwt: token}, null, 2))
+    })
+  })
+  .listen(3000, () => console.log(`Express server listening on port ${3000}`))

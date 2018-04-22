@@ -1,10 +1,11 @@
 
-# JWT Example
+# Basics Example
+
 
 ## Install
 
 ```bash
-$ cd examples/jwt
+$ cd examples/basics
 $ npm install
 ```
 
@@ -22,17 +23,8 @@ $ npm install
 
 ## Config
 
-Add your OAuth app credentials in `config.json`.
+Add your OAuth app credentials in `app.js`.
 
-
-## Create self-signed certificates
-
-```bash
-# generate private key
-openssl genrsa 2048 > private.pem
-# generate the self signed certificate
-openssl req -x509 -new -key private.pem -out public.pem
-```
 
 ## Start
 
@@ -40,6 +32,7 @@ openssl req -x509 -new -key private.pem -out public.pem
 $ node app.js
 ```
 
+
 ## Login
 
-- Navigate to `http://dummy.com:3000/connect/facebook` in your browser
+Navigate to `http://dummy.com:3000/connect/facebook` in your browser.

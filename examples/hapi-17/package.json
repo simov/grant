@@ -1,7 +1,7 @@
 {
-  "name": "grant-jwt",
+  "name": "grant-hapi-17",
   "version": "0.0.0",
-  "description": "JWT Example",
+  "description": "Hapi 17 Example",
   "private": true,
   "keywords": [],
   "license": "MIT",
@@ -12,11 +12,9 @@
     "url": "https://github.com/simov/grant.git"
   },
   "dependencies": {
-    "express": "^4.16.3",
-    "express-session": "^1.15.6",
-    "grant-express": "^4.1.1",
-    "jws": "^3.1.4",
-    "request-compose": "0.0.12"
+    "grant-hapi": "^4.1.1",
+    "hapi": "^17.3.1",
+    "yar": "^9.0.1"
   },
   "main": "app.js"
 }

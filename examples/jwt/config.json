@@ -10,8 +10,8 @@
     "secret": "[APP_SECRET]",
     "callback": "/handle_facebook_callback",
     "scope": [
-      "user_groups",
-      "user_likes"
+      "public_profile",
+      "email"
     ]
   }
 }

@@ -1,10 +1,11 @@
 
-# JWT Example
+# Koa Session Stores Example
+
 
 ## Install
 
 ```bash
-$ cd examples/jwt
+$ cd examples/koa-session-stores
 $ npm install
 ```
 
@@ -25,19 +26,12 @@ $ npm install
 Add your OAuth app credentials in `config.json`.
 
 
-## Create self-signed certificates
-
-```bash
-# generate private key
-openssl genrsa 2048 > private.pem
-# generate the self signed certificate
-openssl req -x509 -new -key private.pem -out public.pem
-```
-
 ## Start
 
 ```bash
-$ node app.js
+$ node koa-session.js
+$ node koa-redis.js
+$ node koa-mongo.js
 ```
 
 ## Login

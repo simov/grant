@@ -1,11 +1,11 @@
 
-# Session Transport Example
+# Express 4 Example
 
 
 ## Install
 
 ```bash
-$ cd examples/session-transport
+$ cd examples/express-4
 $ npm install
 ```
 

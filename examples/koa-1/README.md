@@ -1,11 +1,11 @@
 
-# Session Transport Example
+# Koa 1 Example
 
 
 ## Install
 
 ```bash
-$ cd examples/session-transport
+$ cd examples/koa-1
 $ npm install
 ```
 

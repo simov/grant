@@ -1,7 +1,7 @@
 {
-  "name": "grant-jwt",
+  "name": "grant-koa-1",
   "version": "0.0.0",
-  "description": "JWT Example",
+  "description": "Koa 1 Example",
   "private": true,
   "keywords": [],
   "license": "MIT",
@@ -12,11 +12,12 @@
     "url": "https://github.com/simov/grant.git"
   },
   "dependencies": {
-    "express": "^4.16.3",
-    "express-session": "^1.15.6",
-    "grant-express": "^4.1.1",
-    "jws": "^3.1.4",
-    "request-compose": "0.0.12"
+    "grant-koa": "^4.1.1",
+    "koa": "^1.6.0",
+    "koa-mount": "^1.3.0",
+    "koa-qs": "^2.0.0",
+    "koa-router": "^4.3.2",
+    "koa-session": "^4.8.0"
   },
   "main": "app.js"
 }

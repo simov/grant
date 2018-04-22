@@ -12,10 +12,5 @@
       "public_profile",
       "email"
     ]
-  },
-  "twitter": {
-    "key": "[CONSUMER_KEY]",
-    "secret": "[CONSUMER_SECRET]",
-    "callback": "/handle_twitter_callback"
   }
 }

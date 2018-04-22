@@ -1,11 +1,11 @@
 
-# Session Transport Example
+# Hapi 17 Example
 
 
 ## Install
 
 ```bash
-$ cd examples/session-transport
+$ cd examples/hapi-17
 $ npm install
 ```
 

@@ -1,10 +1,11 @@
 
-# JWT Example
+# Hapi Session Stores Example
+
 
 ## Install
 
 ```bash
-$ cd examples/jwt
+$ cd examples/hapi-session-stores
 $ npm install
 ```
 
@@ -25,19 +26,11 @@ $ npm install
 Add your OAuth app credentials in `config.json`.
 
 
-## Create self-signed certificates
-
-```bash
-# generate private key
-openssl genrsa 2048 > private.pem
-# generate the self signed certificate
-openssl req -x509 -new -key private.pem -out public.pem
-```
-
 ## Start
 
 ```bash
-$ node app.js
+$ node catbox-redis.js
+$ node catbox-mongodb.js
 ```
 
 ## Login

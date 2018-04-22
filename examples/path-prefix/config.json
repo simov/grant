@@ -2,7 +2,7 @@
   "server": {
     "protocol": "http",
     "host": "dummy.com:3000",
-    "transport": "session"
+    "path": "/path/prefix"
   },
   "facebook": {
     "key": "[APP_ID]",

@@ -1,11 +1,11 @@
 
-# Session Transport Example
+# Path Prefix Example
 
 
 ## Install
 
 ```bash
-$ cd examples/session-transport
+$ cd examples/path-prefix
 $ npm install
 ```
 
@@ -16,10 +16,10 @@ $ npm install
     - App Domains: `dummy.com`
     - Add Platform -> Website: `http://dummy.com`
   - Facebook Login -> Settings:
-    - Valid OAuth Redirect URIs: `http://dummy.com:3000/connect/facebook/callback`
+    - Valid OAuth Redirect URIs: `http://dummy.com:3000/path/prefix/connect/facebook/callback`
 
 2. Create OAuth application for Twitter:
-  - Callback URL: `http://dummy.com:3000/connect/twitter/callback`
+  - Callback URL: `http://dummy.com:3000/path/prefix/connect/twitter/callback`
 
 3. Edit your `hosts` file and add this line: `127.0.0.1 dummy.com`
 
