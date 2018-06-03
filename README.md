@@ -202,7 +202,7 @@ In case you want your callback routes prefixed, set them accordingly:
   - **callback** - specific callback route to use for this provider *(overrides the global one specified under the `server` key)*
   - **custom_params** - custom authorization parameters *(see the [Custom Parameters][custom-parameters] section)*
 
-*(additionally any of the [reserved keys][reserved-keys] can be overriden for a provider)*
+> Additionally any of the [reserved keys][reserved-keys] can be overriden for a provider.
 
 
 ## Redirect URL
@@ -248,7 +248,7 @@ You can add arbitrary `{object}` keys inside your provider's configuration to cr
 }
 ```
 
-*(the custom key names cannot be one of the [reserved keys][reserved-keys])*
+> The custom key names must be different from the [reserved ones][reserved-keys].
 
 
 ## Dynamic Override
@@ -257,9 +257,9 @@ Additionally you can make a `POST` request to the `/connect/:provider/:override?
 
 ```html
 <form action="/connect/facebook" method="post" accept-charset="utf-8">
-  <input name="state" type="text" value="" />
-  <input name="scope" type="checkbox" value="user_groups" />
-  <input name="scope" type="checkbox" value="manage_pages" />
+  <input type="checkbox" name="scope" value="user_birthday" /> user_birthday
+  <input type="checkbox" name="scope" value="user_hometown" /> user_hometown
+  <input type="checkbox" name="scope" value="user_location" /> user_location
   <button>submit</button>
 </form>
 ```
@@ -300,7 +300,7 @@ Some providers may employ custom authorization parameters outside of the specifi
 }
 ```
 
-> Additionally any custom parameter that is not a [reserved][reserved-keys] key, and is listed under the `custom_parameters` array for that provider, can be defined along with the rest of the options.
+> Additionally any custom parameter that is not a [reserved key][reserved-keys], and is listed under the `custom_parameters` array for that provider, can be defined along with the rest of the options.
 
 > Refer to the provider's OAuth documentation, and the Grant's [OAuth configuration][oauth-config] *(search for `custom_parameters`)*.
 
@@ -632,7 +632,7 @@ In case of an error, the `error` key will be populated with the raw error data:
 5. Navigate to `/connect/facebook` to initiate the OAuth flow for Facebook, or navigate to `/connect/twitter` to initiate the OAuth flow for Twitter.
 6. Once the OAuth flow is completed you will receive the response data in the `/handle_facebook_callback` route for Facebook, and in the `/handle_twitter_callback` route for Twitter.
 
-*(also take a look at the [examples][grant-examples])*
+> Take a look at the [examples][grant-examples].
 
 
 ## Get User Profile
