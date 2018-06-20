@@ -15,22 +15,24 @@ describe('config', () => {
       })
     })
 
-    it('consumer_key and consumer_secret', () => {
-      var provider = {consumer_key: 'key', consumer_secret: 'secret', oauth: 1}
-      var options = {}, server = {}, name = 'grant'
-      var result = config.merge({provider, options, server, name})
-      t.deepEqual(result, {
-        consumer_key: 'key', consumer_secret: 'secret', oauth: 1,
-        grant: true, name: 'grant', key: 'key', secret: 'secret'
+    describe('oauth app credentials', () => {
+      it('consumer_key, consumer_secret', () => {
+        var provider = {consumer_key: 'key', consumer_secret: 'secret', oauth: 1}
+        var options = {}, server = {}, name = 'grant'
+        var result = config.merge({provider, options, server, name})
+        t.deepEqual(result, {
+          consumer_key: 'key', consumer_secret: 'secret', oauth: 1,
+          grant: true, name: 'grant', key: 'key', secret: 'secret'
+        })
       })
-    })
-    it('client_id and client_secret', () => {
-      var provider = {client_id: 'key', client_secret: 'secret', oauth: 2}
-      var options = {}, server = {}, name = 'grant'
-      var result = config.merge({provider, options, server, name})
-      t.deepEqual(result, {
-        client_id: 'key', client_secret: 'secret', oauth: 2,
-        grant: true, name: 'grant', key: 'key', secret: 'secret'
+      it('client_id, client_secret', () => {
+        var provider = {client_id: 'key', client_secret: 'secret', oauth: 2}
+        var options = {}, server = {}, name = 'grant'
+        var result = config.merge({provider, options, server, name})
+        t.deepEqual(result, {
+          client_id: 'key', client_secret: 'secret', oauth: 2,
+          grant: true, name: 'grant', key: 'key', secret: 'secret'
+        })
       })
     })
 
@@ -145,11 +147,33 @@ describe('config', () => {
         var result = config.merge({provider, options, server, name})
         t.deepEqual(result, {
           scope: 'scope', callback: '/callback', grant: true, name: 'grant',
-          overrides: {sub1: {
-            scope: 'scope1', callback: '/callback', grant: true, name: 'grant'
-          }, sub2: {
-            scope: 'scope2', callback: '/callback', grant: true, name: 'grant'
-          }}
+          overrides: {
+            sub1: {
+              scope: 'scope1', callback: '/callback', grant: true, name: 'grant'
+            },
+            sub2: {
+              scope: 'scope2', callback: '/callback', grant: true, name: 'grant'
+            }
+          }
+        })
+      })
+      it('deep - not accessible through /connect/:provider/:override?', () => {
+        var provider = {scope: ['scope'], callback: '/callback'}
+        var options = {sub1: {scope: ['scope1'], sub2: {scope: ['scope2']}}}
+        var server = {}, name = 'grant'
+        var result = config.merge({provider, options, server, name})
+        t.deepEqual(result, {
+          scope: 'scope', callback: '/callback', grant: true, name: 'grant',
+          overrides: {
+            sub1: {
+              scope: 'scope1', callback: '/callback', grant: true, name: 'grant',
+              overrides: {
+                sub2: {
+                  scope: 'scope2', callback: '/callback', grant: true, name: 'grant'
+                }
+              }
+            }
+          }
         })
       })
     })
@@ -309,6 +333,14 @@ describe('config', () => {
           custom_parameters: ['meta'], custom_params: {meta: {a: 'b'}}
         })
       })
+      it('override static override', () => {
+        var options = {grant: {
+          callback: '/', overrides: {purest: {callback: '/callback'}}
+        }}
+        var session = {provider: 'grant', override: 'purest', dynamic: {state: 'purest'}}
+        var result = config.provider(options, session)
+        t.deepEqual(result, {callback: '/callback', state: 'purest'})
+      })
     })
 
     describe('state', () => {
@@ -334,18 +366,14 @@ describe('config', () => {
     it('using new', () => {
       var grant1 = new Grant({grant1: {}})
       var grant2 = new Grant({grant2: {}})
-      t.deepEqual(grant1.config,
-        {grant1: {grant1: true, name: 'grant1'}})
-      t.deepEqual(grant2.config,
-        {grant2: {grant2: true, name: 'grant2'}})
+      t.deepEqual(grant1.config, {grant1: {grant1: true, name: 'grant1'}})
+      t.deepEqual(grant2.config, {grant2: {grant2: true, name: 'grant2'}})
     })
     it('without using new', () => {
       var grant1 = Grant({grant1: {}})
       var grant2 = Grant({grant2: {}})
-      t.deepEqual(grant1.config,
-        {grant1: {grant1: true, name: 'grant1'}})
-      t.deepEqual(grant2.config,
-        {grant2: {grant2: true, name: 'grant2'}})
+      t.deepEqual(grant1.config, {grant1: {grant1: true, name: 'grant1'}})
+      t.deepEqual(grant2.config, {grant2: {grant2: true, name: 'grant2'}})
     })
   })
 
@@ -361,8 +389,7 @@ describe('config', () => {
         var server = new Hapi.Server()
         server.connection({host: 'localhost', port: 5000})
         server.register([{register: grant, options: config}], () => {
-          t.deepEqual(grant.config,
-            {grant: {grant: true, name: 'grant'}})
+          t.deepEqual(grant.config, {grant: {grant: true, name: 'grant'}})
           done()
         })
       })
@@ -372,8 +399,7 @@ describe('config', () => {
         var server = new Hapi.Server()
         server.connection({host: 'localhost', port: 5000})
         server.register([{register: grant}], () => {
-          t.deepEqual(grant.config,
-            {grant: {grant: true, name: 'grant'}})
+          t.deepEqual(grant.config, {grant: {grant: true, name: 'grant'}})
           done()
         })
       })
@@ -384,8 +410,7 @@ describe('config', () => {
         var grant = new Grant()
         var server = new Hapi.Server({host: 'localhost', port: 5000})
         server.register([{plugin: grant, options: config}]).then(() => {
-          t.deepEqual(grant.config,
-            {grant: {grant: true, name: 'grant'}})
+          t.deepEqual(grant.config, {grant: {grant: true, name: 'grant'}})
           done()
         })
       })
@@ -394,8 +419,7 @@ describe('config', () => {
         var grant = new Grant(config)
         var server = new Hapi.Server({host: 'localhost', port: 5000})
         server.register([{plugin: grant}]).then(() => {
-          t.deepEqual(grant.config,
-            {grant: {grant: true, name: 'grant'}})
+          t.deepEqual(grant.config, {grant: {grant: true, name: 'grant'}})
           done()
         })
       })
