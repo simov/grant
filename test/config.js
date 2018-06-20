@@ -1,4 +1,3 @@
-'use strict'
 
 var t = require('assert')
 var config = require('../lib/config')
@@ -7,10 +6,10 @@ var Grant = require('../').express()
 
 describe('config', () => {
 
-  describe('initProvider', () => {
+  describe('merge', () => {
     it('shortcuts', () => {
       var provider = {}, options = {}, server = {}, name = 'grant'
-      var result = config.initProvider(provider, options, server, name)
+      var result = config.merge({provider, options, server, name})
       t.deepEqual(result, {
         grant: true, name: 'grant'
       })
@@ -19,7 +18,7 @@ describe('config', () => {
     it('consumer_key and consumer_secret', () => {
       var provider = {consumer_key: 'key', consumer_secret: 'secret', oauth: 1}
       var options = {}, server = {}, name = 'grant'
-      var result = config.initProvider(provider, options, server, name)
+      var result = config.merge({provider, options, server, name})
       t.deepEqual(result, {
         consumer_key: 'key', consumer_secret: 'secret', oauth: 1,
         grant: true, name: 'grant', key: 'key', secret: 'secret'
@@ -28,7 +27,7 @@ describe('config', () => {
     it('client_id and client_secret', () => {
       var provider = {client_id: 'key', client_secret: 'secret', oauth: 2}
       var options = {}, server = {}, name = 'grant'
-      var result = config.initProvider(provider, options, server, name)
+      var result = config.merge({provider, options, server, name})
       t.deepEqual(result, {
         client_id: 'key', client_secret: 'secret', oauth: 2,
         grant: true, name: 'grant', key: 'key', secret: 'secret'
@@ -39,7 +38,7 @@ describe('config', () => {
       it('array with comma', () => {
         var provider = {scope: ['scope1', 'scope2']}
         var options = {}, server = {}, name = 'grant'
-        var result = config.initProvider(provider, options, server, name)
+        var result = config.merge({provider, options, server, name})
         t.deepEqual(result, {
           scope: 'scope1,scope2', grant: true, name: 'grant'
         })
@@ -47,7 +46,7 @@ describe('config', () => {
       it('array with delimiter', () => {
         var provider = {scope: ['scope1', 'scope2'], scope_delimiter: ' '}
         var options = {}, server = {}, name = 'grant'
-        var result = config.initProvider(provider, options, server, name)
+        var result = config.merge({provider, options, server, name})
         t.deepEqual(result, {
           scope: 'scope1 scope2', scope_delimiter: ' ', grant: true, name: 'grant'
         })
@@ -55,7 +54,7 @@ describe('config', () => {
       it('stringify scope object', () => {
         var provider = {scope: {profile: {read: true}}}
         var options = {}, server = {}, name = 'grant'
-        var result = config.initProvider(provider, options, server, name)
+        var result = config.merge({provider, options, server, name})
         t.deepEqual(result, {
           scope: '{"profile":{"read":true}}', grant: true, name: 'grant'
         })
@@ -63,7 +62,7 @@ describe('config', () => {
       it('string', () => {
         var provider = {scope: 'scope1,scope2'}
         var options = {}, server = {}, name = 'grant'
-        var result = config.initProvider(provider, options, server, name)
+        var result = config.merge({provider, options, server, name})
         t.deepEqual(result, {
           scope: 'scope1,scope2', grant: true, name: 'grant'
         })
@@ -74,7 +73,7 @@ describe('config', () => {
       it('empty keys in options.custom_params are excluded', () => {
         var provider = {custom_params: {name: 'grant'}}
         var options = {custom_params: {name: ''}}, server = {}, name = 'grant'
-        var result = config.initProvider(provider, options, server, name)
+        var result = config.merge({provider, options, server, name})
         t.deepEqual(result, {
           custom_params: {name: 'grant'}, grant: true, name: 'grant'
         })
@@ -82,7 +81,7 @@ describe('config', () => {
       it('options.custom_params override provider.custom_params', () => {
         var provider = {custom_params: {name: 'grant'}}
         var options = {custom_params: {name: 'purest'}}, server = {}, name = 'grant'
-        var result = config.initProvider(provider, options, server, name)
+        var result = config.merge({provider, options, server, name})
         t.deepEqual(result, {
           custom_params: {name: 'purest'}, grant: true, name: 'grant'
         })
@@ -93,7 +92,7 @@ describe('config', () => {
       it('skip params not defined in custom_parameters', () => {
         var provider = {custom_parameters: ['access_type']}
         var options = {something: 'interesting'}, server = {}, name = 'grant'
-        var result = config.initProvider(provider, options, server, name)
+        var result = config.merge({provider, options, server, name})
         t.deepEqual(result, {
           custom_parameters: ['access_type'], grant: true, name: 'grant'
         })
@@ -101,7 +100,7 @@ describe('config', () => {
       it('skip params that are reserved keys', () => {
         var provider = {custom_parameters: ['name']}
         var options = {name: 'purest'}, server = {}, name = 'grant'
-        var result = config.initProvider(provider, options, server, name)
+        var result = config.merge({provider, options, server, name})
         t.deepEqual(result, {
           custom_parameters: ['name'], grant: true, name: 'grant'
         })
@@ -110,7 +109,7 @@ describe('config', () => {
       it('set custom_parameters value', () => {
         var provider = {custom_parameters: ['expiration']}
         var options = {expiration: 'never'}, server = {}, name = 'grant'
-        var result = config.initProvider(provider, options, server, name)
+        var result = config.merge({provider, options, server, name})
         t.deepEqual(result, {
           custom_parameters: ['expiration'], custom_params: {expiration: 'never'},
           grant: true, name: 'grant'
@@ -119,7 +118,7 @@ describe('config', () => {
       it('set object as custom_parameters value', () => {
         var provider = {custom_parameters: ['meta']}
         var options = {meta: {a: 'b'}}, server = {}, name = 'grant'
-        var result = config.initProvider(provider, options, server, name)
+        var result = config.merge({provider, options, server, name})
         t.deepEqual(result, {
           custom_parameters: ['meta'], custom_params: {meta: {a: 'b'}},
           grant: true, name: 'grant'
@@ -129,7 +128,7 @@ describe('config', () => {
       it('custom_parameters extends provider.custom_params', () => {
         var provider = {custom_parameters: ['expiration'], custom_params: {name: 'grant'}}
         var options = {expiration: 'never'}, server = {}, name = 'grant'
-        var result = config.initProvider(provider, options, server, name)
+        var result = config.merge({provider, options, server, name})
         t.deepEqual(result, {
           custom_parameters: ['expiration'],
           custom_params: {name: 'grant', expiration: 'never'},
@@ -143,7 +142,7 @@ describe('config', () => {
         var provider = {scope: ['scope'], callback: '/callback'}
         var options = {sub1: {scope: ['scope1']}, sub2: {scope: ['scope2']}}
         var server = {}, name = 'grant'
-        var result = config.initProvider(provider, options, server, name)
+        var result = config.merge({provider, options, server, name})
         t.deepEqual(result, {
           scope: 'scope', callback: '/callback', grant: true, name: 'grant',
           overrides: {sub1: {
@@ -185,7 +184,6 @@ describe('config', () => {
       }
       var result = config.init(options)
       t.deepEqual(result, {
-        server: {},
         facebook: {
           authorize_url: 'https://www.facebook.com/dialog/oauth',
           access_url: 'https://graph.facebook.com/oauth/access_token',
@@ -337,17 +335,17 @@ describe('config', () => {
       var grant1 = new Grant({grant1: {}})
       var grant2 = new Grant({grant2: {}})
       t.deepEqual(grant1.config,
-        {grant1: {grant1: true, name: 'grant1'}, server: {}})
+        {grant1: {grant1: true, name: 'grant1'}})
       t.deepEqual(grant2.config,
-        {grant2: {grant2: true, name: 'grant2'}, server: {}})
+        {grant2: {grant2: true, name: 'grant2'}})
     })
     it('without using new', () => {
       var grant1 = Grant({grant1: {}})
       var grant2 = Grant({grant2: {}})
       t.deepEqual(grant1.config,
-        {grant1: {grant1: true, name: 'grant1'}, server: {}})
+        {grant1: {grant1: true, name: 'grant1'}})
       t.deepEqual(grant2.config,
-        {grant2: {grant2: true, name: 'grant2'}, server: {}})
+        {grant2: {grant2: true, name: 'grant2'}})
     })
   })
 
@@ -364,7 +362,7 @@ describe('config', () => {
         server.connection({host: 'localhost', port: 5000})
         server.register([{register: grant, options: config}], () => {
           t.deepEqual(grant.config,
-            {grant: {grant: true, name: 'grant'}, server: {}})
+            {grant: {grant: true, name: 'grant'}})
           done()
         })
       })
@@ -375,7 +373,7 @@ describe('config', () => {
         server.connection({host: 'localhost', port: 5000})
         server.register([{register: grant}], () => {
           t.deepEqual(grant.config,
-            {grant: {grant: true, name: 'grant'}, server: {}})
+            {grant: {grant: true, name: 'grant'}})
           done()
         })
       })
@@ -387,7 +385,7 @@ describe('config', () => {
         var server = new Hapi.Server({host: 'localhost', port: 5000})
         server.register([{plugin: grant, options: config}]).then(() => {
           t.deepEqual(grant.config,
-            {grant: {grant: true, name: 'grant'}, server: {}})
+            {grant: {grant: true, name: 'grant'}})
           done()
         })
       })
@@ -397,7 +395,7 @@ describe('config', () => {
         var server = new Hapi.Server({host: 'localhost', port: 5000})
         server.register([{plugin: grant}]).then(() => {
           t.deepEqual(grant.config,
-            {grant: {grant: true, name: 'grant'}, server: {}})
+            {grant: {grant: true, name: 'grant'}})
           done()
         })
       })
