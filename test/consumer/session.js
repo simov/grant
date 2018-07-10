@@ -1,7 +1,10 @@
 
 var t = require('assert')
 var qs = require('qs')
-var request = require('request')
+var request = require('request-compose').override({
+  Request: {cookie: require('request-cookie').Request},
+  Response: {cookie: require('request-cookie').Response},
+}).client
 
 var express = require('express')
 var session = require('express-session')
@@ -91,6 +94,8 @@ describe('consumer - session', () => {
               this.body = qs.stringify({oauth_token: 'token'})
             }
             else if (this.path === '/authorize_url') {
+              this.response.status = 200
+              this.set('content-type', 'application/json')
               this.body = JSON.stringify(this.session.grant)
             }
           })
@@ -109,7 +114,7 @@ describe('consumer - session', () => {
               .header('content-type', 'application/x-www-form-urlencoded')
           }})
           server.route({method: 'GET', path: '/authorize_url', handler: (req, res) => {
-            res(JSON.stringify((req.session || req.yar).get('grant')))
+            res((req.session || req.yar).get('grant'))
           }})
 
           server.register([
@@ -163,32 +168,36 @@ describe('consumer - session', () => {
       })
 
       it('provider', (done) => {
-        request.get(url('/connect/facebook'), {
-          jar: request.jar(),
-          json: true
-        }, (err, res, body) => {
+        request({
+          url: url('/connect/facebook'),
+          cookie: {},
+        })
+        .then(({body}) => {
           t.deepEqual(body, {provider: 'facebook'})
           done()
         })
       })
 
       it('override', (done) => {
-        request.get(url('/connect/facebook/contacts'), {
-          jar: request.jar(),
-          json: true
-        }, (err, res, body) => {
+        request({
+          url: url('/connect/facebook/contacts'),
+          cookie: {},
+        })
+        .then(({body}) => {
           t.deepEqual(body, {provider: 'facebook', override: 'contacts'})
           done()
         })
       })
 
       it('dynamic - POST', (done) => {
-        request.post(url('/connect/facebook/contacts'), {
+        request({
+          method: 'POST',
+          url: url('/connect/facebook/contacts'),
           form: {scope: ['scope1', 'scope2'], state: 'Grant'},
-          jar: request.jar(),
-          followAllRedirects: true,
-          json: true
-        }, (err, res, body) => {
+          cookie: {},
+          redirect: {all: true, method: false},
+        })
+        .then(({body}) => {
           t.deepEqual(body, {provider: 'facebook', override: 'contacts',
             dynamic: {scope: ['scope1', 'scope2'], state: 'Grant'}, state: 'Grant'})
           done()
@@ -196,12 +205,12 @@ describe('consumer - session', () => {
       })
 
       it('dynamic - GET', (done) => {
-        request.get(url('/connect/facebook/contacts'), {
+        request({
+          url: url('/connect/facebook/contacts'),
           qs: {scope: ['scope1', 'scope2'], state: 'Grant'},
-          jar: request.jar(),
-          followAllRedirects: true,
-          json: true
-        }, (err, res, body) => {
+          cookie: {},
+        })
+        .then(({body}) => {
           t.deepEqual(body, {provider: 'facebook', override: 'contacts',
             dynamic: {scope: ['scope1', 'scope2'], state: 'Grant'}, state: 'Grant'})
           done()
@@ -211,13 +220,15 @@ describe('consumer - session', () => {
       it('dynamic - non configured provider', (done) => {
         t.equal(grant.config.google, undefined)
 
-        request.get(url('/connect/google'), {
-          qs: {scope: ['scope1', 'scope2'], state: 'Grant',
-            authorize_url: '/authorize_url'},
-          jar: request.jar(),
-          followAllRedirects: true,
-          json: true
-        }, (err, res, body) => {
+        request({
+          url: url('/connect/google'),
+          qs: {
+            scope: ['scope1', 'scope2'], state: 'Grant',
+            authorize_url: '/authorize_url'
+          },
+          cookie: {},
+        })
+        .then(({body}) => {
           t.ok(typeof grant.config.google === 'object')
           t.deepEqual(body, {provider: 'google',
             dynamic: {scope: ['scope1', 'scope2'], state: 'Grant',
@@ -229,12 +240,12 @@ describe('consumer - session', () => {
       it('dynamic - non existing provider', (done) => {
         t.equal(grant.config.grant, undefined)
 
-        request.get(url('/connect/grant'), {
+        request({
+          url: url('/connect/grant'),
           qs: {oauth: 2, authorize_url: '/authorize_url'},
-          jar: request.jar(),
-          followAllRedirects: true,
-          json: true
-        }, (err, res, body) => {
+          cookie: {},
+        })
+        .then(({body}) => {
           t.equal(grant.config.grant, undefined)
           t.deepEqual(body, {provider: 'grant',
             dynamic: {oauth: '2', authorize_url: '/authorize_url'}})
@@ -243,10 +254,11 @@ describe('consumer - session', () => {
       })
 
       it('request', (done) => {
-        request.get(url('/connect/twitter'), {
-          jar: request.jar(),
-          json: true
-        }, (err, res, body) => {
+        request({
+          url: url('/connect/twitter'),
+          cookie: {},
+        })
+        .then(({body}) => {
           t.deepEqual(body, {provider: 'twitter', request: {oauth_token: 'token'}})
           done()
         })
@@ -254,11 +266,11 @@ describe('consumer - session', () => {
 
       it('state auto generated', (done) => {
         grant.config.facebook.state = true
-        request.get(url('/connect/facebook'), {
-          jar: request.jar(),
-          followAllRedirects: true,
-          json: true
-        }, (err, res, body) => {
+        request({
+          url: url('/connect/facebook'),
+          cookie: {},
+        })
+        .then(({body}) => {
           t.ok(/\d+/.test(body.state))
           t.ok(typeof body.state === 'string')
           done()

@@ -1,7 +1,10 @@
 
 var t = require('assert')
 var qs = require('qs')
-var request = require('request')
+var request = require('request-compose').override({
+  Request: {cookie: require('request-cookie').Request},
+  Response: {cookie: require('request-cookie').Response},
+}).client
 var urlib = require('url')
 
 var express = require('express')
@@ -114,10 +117,11 @@ describe('consumer - error', () => {
       })
 
       it('throw', (done) => {
-        request.get(url('/connect/facebook'), {
-          jar: request.jar(),
-          json: true
-        }, done)
+        request({
+          url: url('/connect/facebook'),
+          cookie: {},
+        })
+        .catch(() => done())
       })
 
       after((done) => {
@@ -128,7 +132,7 @@ describe('consumer - error', () => {
     })
   })
 
-  ;['express', 'koa', 'hapi'].forEach((name) => {
+  ;['express', 'koa'].forEach((name) => {
     describe(`missing middleware - body-parser - ${name}`, () => {
       var server, consumer = name
 
@@ -159,61 +163,6 @@ describe('consumer - error', () => {
           })
           app.use(mount(grant))
           server = app.listen(5000, done)
-        },
-        hapi: (done) => {
-          var grant = Grant.hapi()()
-
-          server = new Hapi.Server()
-          server.connection({host: 'localhost', port: 5000})
-
-          server.route({method: 'GET', path: '/authorize_url', handler: (req, res) => {
-            res.redirect(url('/connect/facebook/callback?' +
-              qs.stringify({error: {message: 'invalid', code: '500'}})))
-          }})
-          server.route({method: 'GET', path: '/', handler: (req, res) => {
-            var parsed = urlib.parse(req.url, false)
-            var query = qs.parse(parsed.query)
-            res(query)
-          }})
-
-          server.register([
-            {register: grant, options: config},
-            {register: yar, options: {cookieOptions: {password: '01234567890123456789012345678912', isSecure: false}}}
-          ], (err) => {
-            if (err) {
-              done(err)
-              return
-            }
-
-            grant.config.facebook.authorize_url = url('/authorize_url')
-
-            server.start(done)
-          })
-        },
-        hapi17: (done) => {
-          var grant = Grant.hapi()()
-          server = new Hapi.Server({host: 'localhost', port: 5000})
-
-          server.route({method: 'GET', path: '/authorize_url', handler: (req, res) => {
-            return res.redirect(url('/connect/facebook/callback?' +
-              qs.stringify({error: {message: 'invalid', code: '500'}})))
-          }})
-          server.route({method: 'GET', path: '/', handler: (req, res) => {
-            var parsed = urlib.parse(req.url, false)
-            var query = qs.parse(parsed.query)
-            return res.response(query)
-          }})
-
-          server.register([
-            {plugin: grant, options: config},
-            {plugin: yar, options: {cookieOptions: {password: '01234567890123456789012345678912', isSecure: false}}}
-          ])
-            .then(() => {
-              grant.config.facebook.authorize_url = url('/authorize_url')
-
-              server.start().then(done).catch(done)
-            })
-            .catch(done)
         }
       }
 
@@ -224,10 +173,12 @@ describe('consumer - error', () => {
       })
 
       it('throw', (done) => {
-        request.post(url('/connect/facebook'), {
-          jar: request.jar(),
-          json: true
-        }, done)
+        request({
+          method: 'POST',
+          url: url('/connect/facebook'),
+          cookie: {},
+        })
+        .catch(() => done())
       })
 
       after((done) => {
@@ -257,7 +208,7 @@ describe('consumer - error', () => {
           })
 
           app.get('/', (req, res) => {
-            res.end(JSON.stringify(req.session.grant.response || req.query))
+            res.json(req.session.grant.response || req.query)
           })
 
           server = app.listen(5000, done)
@@ -279,6 +230,8 @@ describe('consumer - error', () => {
                 qs.stringify({error: {message: 'invalid', code: 500}})))
             }
             else if (this.path === '/') {
+              this.response.status = 200
+              this.set('content-type', 'application/json')
               this.body = JSON.stringify(this.session.grant.response || this.request.query)
             }
           })
@@ -350,10 +303,11 @@ describe('consumer - error', () => {
 
       it('authorize', (done) => {
         var assert = (message, done) => {
-          request.get(url('/connect/facebook'), {
-            jar: request.jar(),
-            json: true
-          }, (err, res, body) => {
+          request({
+            url: url('/connect/facebook'),
+            cookie: {},
+          })
+          .then(({body}) => {
             t.deepEqual(
               body,
               {error: {error: {message: 'invalid', code: '500'}}},
@@ -398,7 +352,7 @@ describe('consumer - error', () => {
           })
 
           app.get('/', (req, res) => {
-            res.end(JSON.stringify(req.session.grant.response || req.query))
+            res.json(req.session.grant.response || req.query)
           })
 
           server = app.listen(5000, done)
@@ -419,6 +373,8 @@ describe('consumer - error', () => {
               this.response.redirect(url('/connect/facebook/callback'))
             }
             else if (this.path === '/') {
+              this.response.status = 200
+              this.set('content-type', 'application/json')
               this.body = JSON.stringify(this.session.grant.response || this.request.query)
             }
           })
@@ -488,10 +444,11 @@ describe('consumer - error', () => {
 
       it('authorize', (done) => {
         var assert = (message, done) => {
-          request.get(url('/connect/facebook'), {
-            jar: request.jar(),
-            json: true
-          }, (err, res, body) => {
+          request({
+            url: url('/connect/facebook'),
+            cookie: {},
+          })
+          .then(({body}) => {
             t.deepEqual(
               body,
               {error: {error: 'Grant: OAuth2 missing code parameter'}},
@@ -538,7 +495,7 @@ describe('consumer - error', () => {
           })
 
           app.get('/', (req, res) => {
-            res.end(JSON.stringify(req.session.grant.response || req.query))
+            res.json(req.session.grant.response || req.query)
           })
 
           server = app.listen(5000, done)
@@ -561,6 +518,8 @@ describe('consumer - error', () => {
                 qs.stringify({code: 'code', state: 'Purest'})))
             }
             else if (this.path === '/') {
+              this.response.status = 200
+              this.set('content-type', 'application/json')
               this.body = JSON.stringify(this.session.grant.response || this.request.query)
             }
           })
@@ -634,10 +593,11 @@ describe('consumer - error', () => {
 
       it('authorize', (done) => {
         var assert = (message, done) => {
-          request.get(url('/connect/facebook'), {
-            jar: request.jar(),
-            json: true
-          }, (err, res, body) => {
+          request({
+            url: url('/connect/facebook'),
+            cookie: {},
+          })
+          .then(({body}) => {
             t.deepEqual(
               body,
               {error: {error: 'Grant: OAuth2 state mismatch'}},
@@ -688,7 +648,7 @@ describe('consumer - error', () => {
           })
 
           app.get('/', (req, res) => {
-            res.end(JSON.stringify(req.session.grant.response || req.query))
+            res.json(req.session.grant.response || req.query)
           })
 
           server = app.listen(5000, done)
@@ -715,6 +675,8 @@ describe('consumer - error', () => {
               this.body = qs.stringify({error: {message: 'invalid', code: 500}})
             }
             else if (this.path === '/') {
+              this.response.status = 200
+              this.set('content-type', 'application/json')
               this.body = JSON.stringify(this.session.grant.response || this.request.query)
             }
           })
@@ -796,10 +758,11 @@ describe('consumer - error', () => {
 
       it('access', (done) => {
         var assert = (message, done) => {
-          request.get(url('/connect/facebook'), {
-            jar: request.jar(),
-            json: true
-          }, (err, res, body) => {
+          request({
+            url: url('/connect/facebook'),
+            cookie: {},
+          })
+          .then(({body}) => {
             t.deepEqual(
               body,
               {error: {error: {message: 'invalid', code: '500'}}},
@@ -828,7 +791,7 @@ describe('consumer - error', () => {
 
   ;['express', 'koa', 'hapi'].forEach((name) => {
     describe(`missing session or misconfigured provider - ${name}`, () => {
-      var server, grant, consumer = name, jar = request.jar()
+      var server, grant, consumer = name, cookie = {}
 
       var servers = {
         express: (done) => {
@@ -838,8 +801,9 @@ describe('consumer - error', () => {
           app.use(grant)
 
           app.get('/', (req, res) => {
-            res.writeHead(200, {'x-test': true})
-            res.end(JSON.stringify(req.session.grant.response || req.query))
+            // res.writeHead(200, {'x-test': true})
+            res.setHeader('x-test', true)
+            res.json(req.session.grant.response || req.query)
           })
           server = app.listen(5000, done)
         },
@@ -853,7 +817,9 @@ describe('consumer - error', () => {
 
           app.use(function* () {
             if (this.path === '/') {
+              this.response.status = 200
               this.response.set('x-test', true)
+              this.response.set('content-type', 'application/json')
               this.body = JSON.stringify(this.session.grant.response || this.request.query)
             }
           })
@@ -915,10 +881,11 @@ describe('consumer - error', () => {
       it('no flow - /connect + callback', (done) => {
         delete grant.config.facebook.oauth
         var assert = (message, done) => {
-          request.get(url('/connect/facebook'), {
-            jar,
-            json: true
-          }, (err, res, body) => {
+          request({
+            url: url('/connect/facebook'),
+            cookie,
+          })
+          .then(({res, body}) => {
             t.equal(res.headers['x-test'], 'true')
             t.deepEqual(
               body,
@@ -940,10 +907,11 @@ describe('consumer - error', () => {
 
       it('no flow - /connect without callback', (done) => {
         delete grant.config.facebook.callback
-        request.get(url('/connect/facebook'), {
-          jar,
-          json: true
-        }, (err, res, body) => {
+        request({
+          url: url('/connect/facebook'),
+          cookie,
+        })
+        .then(({res, body}) => {
           t.equal(res.headers['x-test'], undefined)
           t.deepEqual(qs.parse(body), {
             error: 'Grant: missing or misconfigured provider'})
@@ -954,10 +922,11 @@ describe('consumer - error', () => {
       it('no flow - /callback + callback', (done) => {
         grant.config.facebook.callback = '/'
         var assert = (message, done) => {
-          request.get(url('/connect/facebook/callback'), {
-            jar,
-            json: true
-          }, (err, res, body) => {
+          request({
+            url: url('/connect/facebook/callback'),
+            cookie,
+          })
+          .then(({res, body}) => {
             t.equal(res.headers['x-test'], 'true')
             t.deepEqual(body, {
               error: 'Grant: missing session or misconfigured provider'})
@@ -976,10 +945,11 @@ describe('consumer - error', () => {
 
       it('no flow - /callback without callback', (done) => {
         delete grant.config.facebook.callback
-        request.get(url('/connect/facebook/callback'), {
-          jar,
-          json: true
-        }, (err, res, body) => {
+        request({
+          url: url('/connect/facebook/callback'),
+          cookie,
+        })
+        .then(({res, body}) => {
           t.equal(res.headers['x-test'], undefined)
           t.deepEqual(qs.parse(body), {
             error: 'Grant: missing session or misconfigured provider'})

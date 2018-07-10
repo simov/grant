@@ -1,7 +1,10 @@
 
 var t = require('assert')
 var qs = require('qs')
-var request = require('request')
+var request = require('request-compose').override({
+  Request: {cookie: require('request-cookie').Request},
+  Response: {cookie: require('request-cookie').Response},
+}).client
 var urlib = require('url')
 
 var express = require('express')
@@ -74,6 +77,7 @@ describe('consumer - flow', () => {
             }))
           })
           app.get('/', (req, res) => {
+            res.writeHead(200, {'content-type': 'application/json'})
             res.end(JSON.stringify(req.session.grant.response || req.query))
           })
           server = app.listen(5000, done)
@@ -109,6 +113,8 @@ describe('consumer - flow', () => {
               })
             }
             else if (this.path === '/') {
+              this.response.status = 200
+              this.set('content-type', 'application/json')
               this.body = JSON.stringify(this.session.grant.response || this.request.query)
             }
           })
@@ -203,10 +209,11 @@ describe('consumer - flow', () => {
 
       it('twitter', (done) => {
         var assert = (message, done) => {
-          request.get(url('/connect/twitter'), {
-            jar: request.jar(),
-            json: true
-          }, (err, res, body) => {
+          request({
+            url: url('/connect/twitter'),
+            cookie: {},
+          })
+          .then(({body}) => {
             t.deepEqual(body, {
               access_token: 'token', access_secret: 'secret',
               raw: {oauth_token: 'token', oauth_token_secret: 'secret'}
@@ -257,6 +264,7 @@ describe('consumer - flow', () => {
             }))
           })
           app.get('/', (req, res) => {
+            res.writeHead(200, {'content-type': 'application/json'})
             res.end(JSON.stringify(req.session.grant.response || req.query))
           })
           server = app.listen(5000, done)
@@ -285,6 +293,8 @@ describe('consumer - flow', () => {
               })
             }
             else if (this.path === '/') {
+              this.response.status = 200
+              this.set('content-type', 'application/json')
               this.body = JSON.stringify(this.session.grant.response || this.request.query)
             }
           })
@@ -366,10 +376,11 @@ describe('consumer - flow', () => {
 
       it('facebook', (done) => {
         var assert = (message, done) => {
-          request.get(url('/connect/facebook'), {
-            jar: request.jar(),
-            json: true
-          }, (err, res, body) => {
+          request({
+            url: url('/connect/facebook'),
+            cookie: {},
+          })
+          .then(({body}) => {
             t.deepEqual(
               body, {
                 access_token: 'token', refresh_token: 'refresh',

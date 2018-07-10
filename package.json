@@ -21,8 +21,8 @@
   "dependencies": {
     "deep-copy": "^1.4.2",
     "qs": "^6.5.1",
-    "request-compose": "0.0.12",
-    "request-oauth": "0.0.2"
+    "request-compose": "0.0.19",
+    "request-oauth": "0.0.3"
   },
   "devDependencies": {
     "babel-cli": "^6.26.0",
@@ -47,8 +47,8 @@
     "koa-qs": "^2.0.0",
     "koa-session": "^4.8.0",
     "mocha": "^5.1.1",
-    "request": "2.81.0",
     "request-logs": "0.0.5",
+    "request-cookie": "0.0.2",
     "yar": "^8.1.2"
   },
   "main": "./build/index.js",
