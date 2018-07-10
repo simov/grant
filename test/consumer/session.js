@@ -167,60 +167,50 @@ describe('consumer - session', () => {
         ](done)
       })
 
-      it('provider', (done) => {
-        request({
+      it('provider', async () => {
+        var {body} = await request({
           url: url('/connect/facebook'),
           cookie: {},
         })
-        .then(({body}) => {
-          t.deepEqual(body, {provider: 'facebook'})
-          done()
-        })
+        t.deepEqual(body, {provider: 'facebook'})
       })
 
-      it('override', (done) => {
-        request({
+      it('override', async () => {
+        var {body} = await request({
           url: url('/connect/facebook/contacts'),
           cookie: {},
         })
-        .then(({body}) => {
-          t.deepEqual(body, {provider: 'facebook', override: 'contacts'})
-          done()
-        })
+        t.deepEqual(body, {provider: 'facebook', override: 'contacts'})
       })
 
-      it('dynamic - POST', (done) => {
-        request({
+      it('dynamic - POST', async () => {
+        var {body} = await request({
           method: 'POST',
           url: url('/connect/facebook/contacts'),
           form: {scope: ['scope1', 'scope2'], state: 'Grant'},
           cookie: {},
           redirect: {all: true, method: false},
         })
-        .then(({body}) => {
-          t.deepEqual(body, {provider: 'facebook', override: 'contacts',
-            dynamic: {scope: ['scope1', 'scope2'], state: 'Grant'}, state: 'Grant'})
-          done()
+        t.deepEqual(body, {provider: 'facebook', override: 'contacts',
+          dynamic: {scope: ['scope1', 'scope2'], state: 'Grant'}, state: 'Grant'
         })
       })
 
-      it('dynamic - GET', (done) => {
-        request({
+      it('dynamic - GET', async () => {
+        var {body} = await request({
           url: url('/connect/facebook/contacts'),
           qs: {scope: ['scope1', 'scope2'], state: 'Grant'},
           cookie: {},
         })
-        .then(({body}) => {
-          t.deepEqual(body, {provider: 'facebook', override: 'contacts',
-            dynamic: {scope: ['scope1', 'scope2'], state: 'Grant'}, state: 'Grant'})
-          done()
+        t.deepEqual(body, {provider: 'facebook', override: 'contacts',
+          dynamic: {scope: ['scope1', 'scope2'], state: 'Grant'}, state: 'Grant'
         })
       })
 
-      it('dynamic - non configured provider', (done) => {
+      it('dynamic - non configured provider', async () => {
         t.equal(grant.config.google, undefined)
 
-        request({
+        var {body} = await request({
           url: url('/connect/google'),
           qs: {
             scope: ['scope1', 'scope2'], state: 'Grant',
@@ -228,53 +218,41 @@ describe('consumer - session', () => {
           },
           cookie: {},
         })
-        .then(({body}) => {
-          t.ok(typeof grant.config.google === 'object')
-          t.deepEqual(body, {provider: 'google',
-            dynamic: {scope: ['scope1', 'scope2'], state: 'Grant',
-              authorize_url: '/authorize_url'}, state: 'Grant'})
-          done()
-        })
+        t.ok(typeof grant.config.google === 'object')
+        t.deepEqual(body, {provider: 'google',
+          dynamic: {scope: ['scope1', 'scope2'], state: 'Grant',
+            authorize_url: '/authorize_url'}, state: 'Grant'})
       })
 
-      it('dynamic - non existing provider', (done) => {
+      it('dynamic - non existing provider', async () => {
         t.equal(grant.config.grant, undefined)
 
-        request({
+        var {body} = await request({
           url: url('/connect/grant'),
           qs: {oauth: 2, authorize_url: '/authorize_url'},
           cookie: {},
         })
-        .then(({body}) => {
-          t.equal(grant.config.grant, undefined)
-          t.deepEqual(body, {provider: 'grant',
-            dynamic: {oauth: '2', authorize_url: '/authorize_url'}})
-          done()
-        })
+        t.equal(grant.config.grant, undefined)
+        t.deepEqual(body, {provider: 'grant',
+          dynamic: {oauth: '2', authorize_url: '/authorize_url'}})
       })
 
-      it('request', (done) => {
-        request({
+      it('request', async () => {
+        var {body} = await request({
           url: url('/connect/twitter'),
           cookie: {},
         })
-        .then(({body}) => {
-          t.deepEqual(body, {provider: 'twitter', request: {oauth_token: 'token'}})
-          done()
-        })
+        t.deepEqual(body, {provider: 'twitter', request: {oauth_token: 'token'}})
       })
 
-      it('state auto generated', (done) => {
+      it('state auto generated', async () => {
         grant.config.facebook.state = true
-        request({
+        var {body} = await request({
           url: url('/connect/facebook'),
           cookie: {},
         })
-        .then(({body}) => {
-          t.ok(/\d+/.test(body.state))
-          t.ok(typeof body.state === 'string')
-          done()
-        })
+        t.ok(/\d+/.test(body.state))
+        t.ok(typeof body.state === 'string')
       })
 
       after((done) => {

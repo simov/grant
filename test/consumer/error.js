@@ -116,12 +116,14 @@ describe('consumer - error', () => {
         ](done)
       })
 
-      it('throw', (done) => {
-        request({
-          url: url('/connect/facebook'),
-          cookie: {},
-        })
-        .catch(() => done())
+      it('throw', async () => {
+        try {
+          await request({
+            url: url('/connect/facebook'),
+            cookie: {},
+          })
+        }
+        catch (err) {}
       })
 
       after((done) => {
@@ -172,13 +174,15 @@ describe('consumer - error', () => {
         ](done)
       })
 
-      it('throw', (done) => {
-        request({
-          method: 'POST',
-          url: url('/connect/facebook'),
-          cookie: {},
-        })
-        .catch(() => done())
+      it('throw', async () => {
+        try {
+          await request({
+            method: 'POST',
+            url: url('/connect/facebook'),
+            cookie: {},
+          })
+        }
+        catch (err) {}
       })
 
       after((done) => {
@@ -301,29 +305,24 @@ describe('consumer - error', () => {
         ](done)
       })
 
-      it('authorize', (done) => {
-        var assert = (message, done) => {
-          request({
+      it('authorize', async () => {
+        var assert = async (message) => {
+          var {body} = await request({
             url: url('/connect/facebook'),
             cookie: {},
           })
-          .then(({body}) => {
-            t.deepEqual(
-              body,
-              {error: {error: {message: 'invalid', code: '500'}}},
-              message
-            )
-            done()
-          })
+          t.deepEqual(
+            body,
+            {error: {error: {message: 'invalid', code: '500'}}},
+            message
+          )
         }
         delete grant.config.facebook.transport
-        assert('no transport', () => {
-          grant.config.facebook.transport = 'querystring'
-          assert('querystring transport', () => {
-            grant.config.facebook.transport = 'session'
-            assert('session transport', done)
-          })
-        })
+        await assert('no transport')
+        grant.config.facebook.transport = 'querystring'
+        await assert('querystring transport')
+        grant.config.facebook.transport = 'session'
+        await assert('session transport')
       })
 
       after((done) => {
@@ -442,29 +441,24 @@ describe('consumer - error', () => {
         ](done)
       })
 
-      it('authorize', (done) => {
-        var assert = (message, done) => {
-          request({
+      it('authorize', async () => {
+        var assert = async (message) => {
+          var {body} = await request({
             url: url('/connect/facebook'),
             cookie: {},
           })
-          .then(({body}) => {
-            t.deepEqual(
-              body,
-              {error: {error: 'Grant: OAuth2 missing code parameter'}},
-              message
-            )
-            done()
-          })
+          t.deepEqual(
+            body,
+            {error: {error: 'Grant: OAuth2 missing code parameter'}},
+            message
+          )
         }
         delete grant.config.facebook.transport
-        assert('no transport', () => {
-          grant.config.facebook.transport = 'querystring'
-          assert('querystring transport', () => {
-            grant.config.facebook.transport = 'session'
-            assert('session transport', done)
-          })
-        })
+        await assert('no transport')
+        grant.config.facebook.transport = 'querystring'
+        await assert('querystring transport')
+        grant.config.facebook.transport = 'session'
+        await assert('session transport')
       })
 
       after((done) => {
@@ -591,29 +585,24 @@ describe('consumer - error', () => {
         ](done)
       })
 
-      it('authorize', (done) => {
-        var assert = (message, done) => {
-          request({
+      it('authorize', async () => {
+        var assert = async (message) => {
+          var {body} = await request({
             url: url('/connect/facebook'),
             cookie: {},
           })
-          .then(({body}) => {
-            t.deepEqual(
-              body,
-              {error: {error: 'Grant: OAuth2 state mismatch'}},
-              message
-            )
-            done()
-          })
+          t.deepEqual(
+            body,
+            {error: {error: 'Grant: OAuth2 state mismatch'}},
+            message
+          )
         }
         delete grant.config.facebook.transport
-        assert('no transport', () => {
-          grant.config.facebook.transport = 'querystring'
-          assert('querystring transport', () => {
-            grant.config.facebook.transport = 'session'
-            assert('session transport', done)
-          })
-        })
+        await assert('no transport')
+        grant.config.facebook.transport = 'querystring'
+        await assert('querystring transport')
+        grant.config.facebook.transport = 'session'
+        await assert('session transport')
       })
 
       after((done) => {
@@ -756,29 +745,24 @@ describe('consumer - error', () => {
         ](done)
       })
 
-      it('access', (done) => {
-        var assert = (message, done) => {
-          request({
+      it('access', async () => {
+        var assert = async (message) => {
+          var {body} = await request({
             url: url('/connect/facebook'),
             cookie: {},
           })
-          .then(({body}) => {
-            t.deepEqual(
-              body,
-              {error: {error: {message: 'invalid', code: '500'}}},
-              message
-            )
-            done()
-          })
+          t.deepEqual(
+            body,
+            {error: {error: {message: 'invalid', code: '500'}}},
+            message
+          )
         }
         delete grant.config.facebook.transport
-        assert('no transport', () => {
-          grant.config.facebook.transport = 'querystring'
-          assert('querystring transport', () => {
-            grant.config.facebook.transport = 'session'
-            assert('session transport', done)
-          })
-        })
+        await assert('no transport')
+        grant.config.facebook.transport = 'querystring'
+        await assert('querystring transport')
+        grant.config.facebook.transport = 'session'
+        await assert('session transport')
       })
 
       after((done) => {
@@ -878,82 +862,69 @@ describe('consumer - error', () => {
         ](done)
       })
 
-      it('no flow - /connect + callback', (done) => {
+      it('no flow - /connect + callback', async () => {
         delete grant.config.facebook.oauth
-        var assert = (message, done) => {
-          request({
+        var assert = async (message) => {
+          var {res, body} = await request({
             url: url('/connect/facebook'),
             cookie,
           })
-          .then(({res, body}) => {
-            t.equal(res.headers['x-test'], 'true')
-            t.deepEqual(
-              body,
-              {error: 'Grant: missing or misconfigured provider'},
-              message
-            )
-            done()
-          })
+          t.equal(res.headers['x-test'], 'true')
+          t.deepEqual(
+            body,
+            {error: 'Grant: missing or misconfigured provider'},
+            message
+          )
         }
         delete grant.config.facebook.transport
-        assert('no transport', () => {
-          grant.config.facebook.transport = 'querystring'
-          assert('querystring transport', () => {
-            grant.config.facebook.transport = 'session'
-            assert('session transport', done)
-          })
-        })
+        await assert('no transport')
+        grant.config.facebook.transport = 'querystring'
+        await assert('querystring transport')
+        grant.config.facebook.transport = 'session'
+        await assert('session transport')
       })
 
-      it('no flow - /connect without callback', (done) => {
+      it('no flow - /connect without callback', async () => {
         delete grant.config.facebook.callback
-        request({
+        var {res, body} = await request({
           url: url('/connect/facebook'),
           cookie,
         })
-        .then(({res, body}) => {
-          t.equal(res.headers['x-test'], undefined)
-          t.deepEqual(qs.parse(body), {
-            error: 'Grant: missing or misconfigured provider'})
-          done()
+        t.equal(res.headers['x-test'], undefined)
+        t.deepEqual(qs.parse(body), {
+          error: 'Grant: missing or misconfigured provider'
         })
       })
 
-      it('no flow - /callback + callback', (done) => {
+      it('no flow - /callback + callback', async () => {
         grant.config.facebook.callback = '/'
-        var assert = (message, done) => {
-          request({
+        var assert = async (message) => {
+          var {res, body} = await request({
             url: url('/connect/facebook/callback'),
             cookie,
           })
-          .then(({res, body}) => {
-            t.equal(res.headers['x-test'], 'true')
-            t.deepEqual(body, {
-              error: 'Grant: missing session or misconfigured provider'})
-            done()
+          t.equal(res.headers['x-test'], 'true')
+          t.deepEqual(body, {
+            error: 'Grant: missing session or misconfigured provider'
           })
         }
         delete grant.config.facebook.transport
-        assert('no transport', () => {
-          grant.config.facebook.transport = 'querystring'
-          assert('querystring transport', () => {
-            grant.config.facebook.transport = 'session'
-            assert('session transport', done)
-          })
-        })
+        await assert('no transport')
+        grant.config.facebook.transport = 'querystring'
+        await assert('querystring transport')
+        grant.config.facebook.transport = 'session'
+        await assert('session transport')
       })
 
-      it('no flow - /callback without callback', (done) => {
+      it('no flow - /callback without callback', async () => {
         delete grant.config.facebook.callback
-        request({
+        var {res, body} = await request({
           url: url('/connect/facebook/callback'),
           cookie,
         })
-        .then(({res, body}) => {
-          t.equal(res.headers['x-test'], undefined)
-          t.deepEqual(qs.parse(body), {
-            error: 'Grant: missing session or misconfigured provider'})
-          done()
+        t.equal(res.headers['x-test'], undefined)
+        t.deepEqual(qs.parse(body), {
+          error: 'Grant: missing session or misconfigured provider'
         })
       })
 

@@ -24,7 +24,7 @@ describe('oauth2', () => {
       server.listen(5000, done)
     })
 
-    it('authorize', (done) => {
+    it('authorize', async () => {
       var provider = {
         authorize_url: '/authorize_url',
         redirect_uri: '/redirect_uri',
@@ -32,19 +32,17 @@ describe('oauth2', () => {
         scope: 'read,write',
         state: '123'
       }
-      oauth2.authorize(provider).then((url) => {
-        t.deepEqual(qs.parse(url.replace('/authorize_url?', '')), {
-          client_id: 'key',
-          response_type: 'code',
-          redirect_uri: '/redirect_uri',
-          scope: 'read,write',
-          state: '123'
-        })
-        done()
+      var url = await oauth2.authorize(provider)
+      t.deepEqual(qs.parse(url.replace('/authorize_url?', '')), {
+        client_id: 'key',
+        response_type: 'code',
+        redirect_uri: '/redirect_uri',
+        scope: 'read,write',
+        state: '123'
       })
     })
 
-    it('access', (done) => {
+    it('access', async () => {
       var provider = {
         access_url: url('/access_url'),
         redirect_uri: '/redirect_uri',
@@ -54,15 +52,13 @@ describe('oauth2', () => {
       var authorize = {
         code: 'code'
       }
-      oauth2.access(provider, authorize, {}).then(({body}) => {
-        t.deepEqual(body, {
-          grant_type: 'authorization_code',
-          code: 'code',
-          client_id: 'key',
-          client_secret: 'secret',
-          redirect_uri: '/redirect_uri'
-        })
-        done()
+      var {body} = await oauth2.access(provider, authorize, {})
+      t.deepEqual(body, {
+        grant_type: 'authorization_code',
+        code: 'code',
+        client_id: 'key',
+        client_secret: 'secret',
+        redirect_uri: '/redirect_uri'
       })
     })
 
@@ -83,49 +79,59 @@ describe('oauth2', () => {
       server.listen(5000, done)
     })
 
-    it('access - missing code - response error', (done) => {
+    it('access - missing code - response error', async () => {
       var provider = {}
       var authorize = {error: 'invalid'}
-      oauth2.access(provider, authorize, {}).catch((err) => {
+      try {
+        await oauth2.access(provider, authorize, {})
+      }
+      catch (err) {
         t.deepEqual(err.body, {error: 'invalid'})
-        done()
-      })
+      }
     })
-    it('access - missing code - empty response', (done) => {
+    it('access - missing code - empty response', async () => {
       var provider = {}
       var authorize = {}
-      oauth2.access(provider, authorize, {}).catch((err) => {
+      try {
+        await oauth2.access(provider, authorize, {})
+      }
+      catch (err) {
         t.deepEqual(
           err.body,
           {error: 'Grant: OAuth2 missing code parameter'}
         )
-        done()
-      })
+      }
     })
-    it('access - state mismatch', (done) => {
+    it('access - state mismatch', async () => {
       var provider = {}
       var authorize = {code: 'code', state: 'Purest'}
       var session = {state: 'Grant'}
-      oauth2.access(provider, authorize, session).catch((err) => {
+      try {
+        await oauth2.access(provider, authorize, session)
+      }
+      catch (err) {
         t.deepEqual(err.body, {error: 'Grant: OAuth2 state mismatch'})
-        done()
-      })
+      }
     })
-    it('access - request error', (done) => {
+    it('access - request error', async () => {
       var provider = {access_url: 'compose:5000'}
       var authorize = {code: 'code'}
-      oauth2.access(provider, authorize, {}).catch((err) => {
+      try {
+        await oauth2.access(provider, authorize, {})
+      }
+      catch (err) {
         t.ok(/^Protocol "compose:" not supported\. Expected "http:"/.test(err.message))
-        done()
-      })
+      }
     })
-    it('access - response error', (done) => {
+    it('access - response error', async () => {
       var provider = {access_url: url('/access_url')}
       var authorize = {code: 'code'}
-      oauth2.access(provider, authorize, {}).catch((err) => {
+      try {
+        await oauth2.access(provider, authorize, {})
+      }
+      catch (err) {
         t.deepEqual(err.body, {error: 'invalid'})
-        done()
-      })
+      }
     })
 
     after((done) => {
@@ -150,16 +156,14 @@ describe('oauth2', () => {
         delete config.server
 
         Object.keys(config).forEach((key) => {
-          it(key, (done) => {
-            oauth2.authorize(grant.config[key]).then((url) => {
-              var query = qs.parse(url.split('?')[1])
-              delete query.response_type
-              delete query.redirect_uri
-              ;(key === 'optimizely')
-                ? t.deepEqual(query, {})
-                : t.deepEqual(query, config[key])
-              done()
-            })
+          it(key, async () => {
+            var url = await oauth2.authorize(grant.config[key])
+            var query = qs.parse(url.split('?')[1])
+            delete query.response_type
+            delete query.redirect_uri
+            ;(key === 'optimizely')
+              ? t.deepEqual(query, {})
+              : t.deepEqual(query, config[key])
           })
         })
       })
@@ -176,13 +180,11 @@ describe('oauth2', () => {
         delete config.server
 
         Object.keys(config).forEach((key) => {
-          it(key, (done) => {
-            oauth2.authorize(grant.config[key]).then((url) => {
-              if (key !== 'vend') {
-                t.ok(/grant/.test(url))
-              }
-              done()
-            })
+          it(key, async () => {
+            var url = await oauth2.authorize(grant.config[key])
+            if (key !== 'vend') {
+              t.ok(/grant/.test(url))
+            }
           })
         })
       })
@@ -190,47 +192,39 @@ describe('oauth2', () => {
       describe('web_server', () => {
         var config = {basecamp: {}}
         var grant = new Grant(config)
-        it('basecamp', (done) => {
-          oauth2.authorize(grant.config.basecamp).then((url) => {
-            var query = qs.parse(url.split('?')[1])
-            t.equal(query.type, 'web_server')
-            done()
-          })
+        it('basecamp', async () => {
+          var url = await oauth2.authorize(grant.config.basecamp)
+          var query = qs.parse(url.split('?')[1])
+          t.equal(query.type, 'web_server')
         })
       })
 
       describe('scopes', () => {
         var config = {optimizely: {scope: ['all']}}
         var grant = new Grant(config)
-        it('optimizely', (done) => {
-          oauth2.authorize(grant.config.optimizely).then((url) => {
-            var query = qs.parse(url.split('?')[1])
-            t.equal(query.scopes, 'all')
-            done()
-          })
+        it('optimizely', async () => {
+          var url = await oauth2.authorize(grant.config.optimizely)
+          var query = qs.parse(url.split('?')[1])
+          t.equal(query.scopes, 'all')
         })
       })
 
       describe('response_type', () => {
         var config = {visualstudio: {response_type: 'Assertion'}}
         var grant = new Grant(config)
-        it('visualstudio', (done) => {
-          oauth2.authorize(grant.config.visualstudio).then((url) => {
-            var query = qs.parse(url.split('?')[1])
-            t.equal(query.response_type, 'Assertion')
-            done()
-          })
+        it('visualstudio', async () => {
+          var url = await oauth2.authorize(grant.config.visualstudio)
+          var query = qs.parse(url.split('?')[1])
+          t.equal(query.response_type, 'Assertion')
         })
       })
 
       describe('scopes separated by unencoded + sign', () => {
         var config = {unsplash: {scope: ['public', 'read_photos']}}
         var grant = new Grant(config)
-        it('unsplash', (done) => {
-          oauth2.authorize(grant.config.unsplash).then((url) => {
-            t.equal(url.replace(/.*scope=(.*)/g, '$1'), 'public+read_photos')
-            done()
-          })
+        it('unsplash', async () => {
+          var url = await oauth2.authorize(grant.config.unsplash)
+          t.equal(url.replace(/.*scope=(.*)/g, '$1'), 'public+read_photos')
         })
       })
     })
@@ -273,89 +267,75 @@ describe('oauth2', () => {
       })
 
       describe('web_server', () => {
-        it('basecamp', (done) => {
-          oauth2.access(grant.config.basecamp, {code: 'code'}, {}).then(({body}) => {
-            t.equal(body.type, 'web_server')
-            done()
-          })
+        it('basecamp', async () => {
+          var {body} = await oauth2.access(grant.config.basecamp, {code: 'code'}, {})
+          t.equal(body.type, 'web_server')
         })
       })
 
       describe('qs', () => {
-        it('concur', (done) => {
+        it('concur', async () => {
           grant.config.concur.key = 'key'
           grant.config.concur.secret = 'secret'
-          oauth2.access(grant.config.concur, {code: 'code'}, {}).then(({body}) => {
-            t.deepEqual(body, {
-              code: 'code', client_id: 'key', client_secret: 'secret'
-            })
-            done()
+          var {body} = await oauth2.access(grant.config.concur, {code: 'code'}, {})
+          t.deepEqual(body, {
+            code: 'code', client_id: 'key', client_secret: 'secret'
           })
         })
       })
 
       describe('basic auth', () => {
         ;['ebay', 'fitbit2', 'homeaway', 'reddit'].forEach((provider) => {
-          it(provider, (done) => {
+          it(provider, async () => {
             grant.config.ebay.key = 'key'
             grant.config.ebay.secret = 'secret'
-            oauth2.access(grant.config.ebay, {code: 'code'}, {}).then(({body}) => {
-              t.deepEqual(
-                Buffer(body.basic.replace('Basic ', ''), 'base64').toString().split(':'),
-                ['key', 'secret']
-              )
-              done()
-            })
+            var {body} = await oauth2.access(grant.config.ebay, {code: 'code'}, {})
+            t.deepEqual(
+              Buffer(body.basic.replace('Basic ', ''), 'base64').toString().split(':'),
+              ['key', 'secret']
+            )
           })
         })
       })
 
       describe('hash', () => {
-        it('smartsheet', (done) => {
-          oauth2.access(grant.config.smartsheet, {code: 'code'}, {}).then(({body}) => {
-            t.ok(typeof body.hash === 'string')
-            done()
-          })
+        it('smartsheet', async () => {
+          var {body} = await oauth2.access(grant.config.smartsheet, {code: 'code'}, {})
+          t.ok(typeof body.hash === 'string')
         })
       })
 
       describe('api_key', () => {
-        it('surveymonkey', (done) => {
+        it('surveymonkey', async () => {
           grant.config.surveymonkey.custom_params = {api_key: 'api_key'}
-          oauth2.access(grant.config.surveymonkey, {code: 'code'}, {}).then(({body}) => {
-            t.deepEqual(body, {api_key: 'api_key'})
-            done()
-          })
+          var {body} = await oauth2.access(grant.config.surveymonkey, {code: 'code'}, {})
+          t.deepEqual(body, {api_key: 'api_key'})
         })
       })
 
       describe('Assertion Framework for OAuth 2.0', () => {
-        it('visualstudio', (done) => {
+        it('visualstudio', async () => {
           grant.config.visualstudio.secret = 'secret'
-          oauth2.access(grant.config.visualstudio, {code: 'code'}, {}).then(({body}) => {
-            t.deepEqual(body, {
-              client_assertion_type: 'urn:ietf:params:oauth:client-assertion-type:jwt-bearer',
-              client_assertion: 'secret',
-              grant_type: 'urn:ietf:params:oauth:grant-type:jwt-bearer',
-              assertion: 'code',
-              redirect_uri: url('/connect/visualstudio/callback')
-            })
-            done()
+          var {body} = await oauth2.access(grant.config.visualstudio, {code: 'code'}, {})
+          t.deepEqual(body, {
+            client_assertion_type: 'urn:ietf:params:oauth:client-assertion-type:jwt-bearer',
+            client_assertion: 'secret',
+            grant_type: 'urn:ietf:params:oauth:grant-type:jwt-bearer',
+            assertion: 'code',
+            redirect_uri: url('/connect/visualstudio/callback')
           })
         })
       })
 
       describe('subdomain', () => {
-        it('shopify', (done) => {
+        it('shopify', async () => {
           grant.config.shopify.access_url = url('/[subdomain]')
           grant.config.shopify.subdomain = 'access_url'
-          oauth2.access(grant.config.shopify, {code: 'code'}, {}).then(({body}) => {
-            t.deepEqual(body, {
-              grant_type: 'authorization_code',
-              code: 'code',
-              redirect_uri: url('/connect/shopify/callback')
-            })
-            done()
+          var {body} = await oauth2.access(grant.config.shopify, {code: 'code'}, {})
+          t.deepEqual(body, {
+            grant_type: 'authorization_code',
+            code: 'code',
+            redirect_uri: url('/connect/shopify/callback')
           })
         })
       })

@@ -207,28 +207,23 @@ describe('consumer - flow', () => {
         ](done)
       })
 
-      it('twitter', (done) => {
-        var assert = (message, done) => {
-          request({
+      it('twitter', async () => {
+        var assert = async (message) => {
+          var {body} = await request({
             url: url('/connect/twitter'),
             cookie: {},
           })
-          .then(({body}) => {
-            t.deepEqual(body, {
-              access_token: 'token', access_secret: 'secret',
-              raw: {oauth_token: 'token', oauth_token_secret: 'secret'}
-            }, message)
-            done()
-          })
+          t.deepEqual(body, {
+            access_token: 'token', access_secret: 'secret',
+            raw: {oauth_token: 'token', oauth_token_secret: 'secret'}
+          }, message)
         }
         delete grant.config.twitter.transport
-        assert('no transport', () => {
-          grant.config.twitter.transport = 'querystring'
-          assert('querystring transport', () => {
-            grant.config.twitter.transport = 'session'
-            assert('session transport', done)
-          })
-        })
+        await assert('no transport')
+        grant.config.twitter.transport = 'querystring'
+        await assert('querystring transport')
+        grant.config.twitter.transport = 'session'
+        await assert('session transport')
       })
 
       after((done) => {
@@ -374,29 +369,23 @@ describe('consumer - flow', () => {
         ](done)
       })
 
-      it('facebook', (done) => {
-        var assert = (message, done) => {
-          request({
+      it('facebook', async () => {
+        var assert = async (message) => {
+          var {body} = await request({
             url: url('/connect/facebook'),
             cookie: {},
           })
-          .then(({body}) => {
-            t.deepEqual(
-              body, {
-                access_token: 'token', refresh_token: 'refresh',
-                raw: {access_token: 'token', refresh_token: 'refresh', expires_in: '3600'}
-              }, message)
-            done()
-          })
+          t.deepEqual(body, {
+            access_token: 'token', refresh_token: 'refresh',
+            raw: {access_token: 'token', refresh_token: 'refresh', expires_in: '3600'}
+          }, message)
         }
         delete grant.config.facebook.transport
-        assert('no transport', () => {
-          grant.config.facebook.transport = 'querystring'
-          assert('querystring transport', () => {
-            grant.config.facebook.transport = 'session'
-            assert('session transport', done)
-          })
-        })
+        await assert('no transport')
+        grant.config.facebook.transport = 'querystring'
+        await assert('querystring transport')
+        grant.config.facebook.transport = 'session'
+        await assert('session transport')
       })
 
       after((done) => {

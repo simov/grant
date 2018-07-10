@@ -32,36 +32,24 @@ describe('client', () => {
       server.listen(5000, done)
     })
 
-    it('json', (done) => {
-      request({url: 'http://localhost:5000/json'})
-        .then(({body}) => {
-          t.deepStrictEqual(body, {json: true})
-          done()
-        })
+    it('json', async () => {
+      var {body} = await request({url: 'http://localhost:5000/json'})
+      t.deepStrictEqual(body, {json: true})
     })
 
-    it('querystring', (done) => {
-      request({url: 'http://localhost:5000/qs'})
-        .then(({body}) => {
-          t.deepStrictEqual(body, {nested: {querystring: 'true'}})
-          done()
-        })
+    it('querystring', async () => {
+      var {body} = await request({url: 'http://localhost:5000/qs'})
+      t.deepStrictEqual(body, {nested: {querystring: 'true'}})
     })
 
-    it('json as text', (done) => {
-      request({url: 'http://localhost:5000/jsontext'})
-        .then(({body}) => {
-          t.deepStrictEqual(body, {json: true})
-          done()
-        })
+    it('json as text', async () => {
+      var {body} = await request({url: 'http://localhost:5000/jsontext'})
+      t.deepStrictEqual(body, {json: true})
     })
 
-    it('querystring as text', (done) => {
-      request({url: 'http://localhost:5000/qstext'})
-        .then(({body}) => {
-          t.deepStrictEqual(body, {nested: {querystring: 'true'}})
-          done()
-        })
+    it('querystring as text', async () => {
+      var {body} = await request({url: 'http://localhost:5000/qstext'})
+      t.deepStrictEqual(body, {nested: {querystring: 'true'}})
     })
 
     after((done) => {
