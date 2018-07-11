@@ -40,6 +40,11 @@
     "oauth": 2,
     "scope_delimiter": " "
   },
+  "arcgis": {
+    "authorize_url": "https://www.arcgis.com/sharing/rest/oauth2/authorize",
+    "access_url": "https://www.arcgis.com/sharing/rest/oauth2/token",
+    "oauth": 2
+  },
   "asana": {
     "authorize_url": "https://app.asana.com/-/oauth_authorize",
     "access_url": "https://app.asana.com/-/oauth_token",
@@ -605,11 +610,28 @@
     "access_url": "https://secure.myob.com/oauth2/v1/authorize",
     "oauth": 2
   },
+  "nest": {
+    "authorize_url": "https://home.nest.com/login/oauth2",
+    "access_url": "https://api.home.nest.com/oauth2/access_token",
+    "oauth": 2
+  },
   "nylas": {
     "authorize_url": "https://api.nylas.com/oauth/authorize",
     "access_url": "https://api.nylas.com/oauth/token",
     "oauth": 2,
     "custom_parameters": ["login_hint"]
+  },
+  "okta": {
+    "authorize_url": "https://[subdomain].okta.com/oauth2/v1/authorize",
+    "access_url": "https://[subdomain].okta.com/oauth2/v1/token",
+    "oauth": 2,
+    "scope_delimiter": " ",
+    "subdomain": true,
+    "custom_parameters": [
+      "code_challenge", "code_challenge_method", "idp_scope", "idp",
+      "display", "login_hint", "max_age", "prompt", "response_mode",
+      "sessionToken"
+    ]
   },
   "openstreetmap": {
     "request_url": "https://www.openstreetmap.org/oauth/request_token",
@@ -878,6 +900,12 @@
     "authorize_url": "https://api.twitter.com/oauth/authenticate",
     "access_url": "https://api.twitter.com/oauth/access_token",
     "oauth": 1
+  },
+  "typeform": {
+    "authorize_url": "https://api.typeform.com/oauth/authorize",
+    "access_url": "https://api.typeform.com/oauth/token",
+    "oauth": 2,
+    "scope_delimiter": " "
   },
   "uber": {
     "authorize_url": "https://login.uber.com/oauth/authorize",
