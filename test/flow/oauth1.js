@@ -182,7 +182,7 @@ describe('oauth1', () => {
 
       before((done) => {
         var config = {
-          copy: {}, discogs: {}, etsy: {}, freshbooks: {}, getpocket: {},
+          discogs: {}, etsy: {}, freshbooks: {}, getpocket: {},
           linkedin: {}
         }
         grant = new Grant(config)
@@ -204,12 +204,6 @@ describe('oauth1', () => {
       })
 
       describe('querystring scope', () => {
-        it('copy', async () => {
-          grant.config.copy.request_url = url('/request_url')
-          grant.config.copy.scope = '{"profile":{"read":true}}'
-          var {body} = await oauth1.request(grant.config.copy)
-          t.equal(body.scope, '{"profile":{"read":true}}')
-        })
         it('etsy', async () => {
           grant.config.etsy.request_url = url('/request_url')
           grant.config.etsy.scope = 'email_r profile_r'

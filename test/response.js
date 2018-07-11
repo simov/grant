@@ -11,7 +11,7 @@ describe('response', () => {
   before(() => {
     grant = new Grant({
       server: {protocol: 'http', host: 'localhost:5000', callback: '/'},
-      concur: {}, elance: {}, facebook: {}, getpocket: {}, twitter: {}, yammer: {}
+      concur: {}, facebook: {}, getpocket: {}, twitter: {}, yammer: {}
     })
   })
 
@@ -29,18 +29,6 @@ describe('response', () => {
       refresh_token: 'AXvRqWeb77Lq9F2WK6TXLCSTuxpwZO6',
       raw: body
     })
-  })
-  it('elance', () => {
-    t.deepEqual(
-      response(
-        grant.config.elance,
-        {data: {access_token: 'token', refresh_token: 'refresh'}}
-      ),
-      {
-        access_token: 'token', refresh_token: 'refresh',
-        raw: {data: {access_token: 'token', refresh_token: 'refresh'}}
-      }
-    )
   })
   it('getpocket', () => {
     t.deepEqual(
