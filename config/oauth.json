@@ -228,9 +228,13 @@
     "scope_delimiter": " "
   },
   "dropbox": {
-    "authorize_url": "https://www.dropbox.com/1/oauth2/authorize",
-    "access_url": "https://api.dropbox.com/1/oauth2/token",
-    "oauth": 2
+    "authorize_url": "https://www.dropbox.com/oauth2/authorize",
+    "access_url": "https://api.dropboxapi.com/oauth2/token",
+    "oauth": 2,
+    "custom_parameters": [
+      "require_role", "force_reapprove", "disable_signup", "locale",
+      "force_reauthentication"
+    ]
   },
   "ebay": {
     "authorize_url": "https://signin.ebay.com/authorize",
@@ -398,7 +402,8 @@
   "github": {
     "authorize_url": "https://github.com/login/oauth/authorize",
     "access_url": "https://github.com/login/oauth/access_token",
-    "oauth": 2
+    "oauth": 2,
+    "custom_parameters": ["allow_signup"]
   },
   "gitlab": {
     "authorize_url": "https://gitlab.com/oauth/authorize",
@@ -985,10 +990,9 @@
     "oauth": 2
   },
   "withings": {
-    "request_url": "https://oauth.withings.com/account/request_token",
-    "authorize_url": "https://oauth.withings.com/account/authorize",
-    "access_url": "https://oauth.withings.com/account/access_token",
-    "oauth": 1
+    "authorize_url": "https://account.health.nokia.com/oauth2_user/authorize2",
+    "access_url": "https://account.health.nokia.com/oauth2/token",
+    "oauth": 2
   },
   "wordpress": {
     "authorize_url": "https://public-api.wordpress.com/oauth2/authorize",
