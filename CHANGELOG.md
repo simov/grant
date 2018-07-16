@@ -1,6 +1,10 @@
 
 # Change Log
 
+## v4.1.2 (2018/07/16)
+- **New:** Official support for 4 new providers: `arcgis`, `nest`, `okta`, `typeform`
+- **Change:** Updated 2 providers: `dropbox`, `withings`
+
 ## v4.1.1 (2018/04/22)
 - **New:** Official support for 6 new providers: `auth0`, `bettlenet`, `mixer`, `nylas`, `timelyapp`, `viadeo`
 - **Change:** Removed 5 discontinued providers: `appnet`, `codeplex`, `elance`, `odesk`, `rdio`
