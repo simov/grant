@@ -47,8 +47,8 @@
     "koa-qs": "^2.0.0",
     "koa-session": "^4.8.0",
     "mocha": "^5.2.0",
-    "request-logs": "0.0.5",
     "request-cookie": "0.0.2",
+    "request-logs": "0.0.5",
     "yar": "^8.1.2"
   },
   "main": "./build/index.js",
