@@ -1,7 +1,7 @@
 
 # Grant
 
-[![npm-version]][npm] [![travis-ci]][travis] [![coveralls-status]][coveralls]
+[![npm-version]][npm] [![travis-ci]][travis] [![coveralls-status]][coveralls]<a href="https://communityinviter.com/apps/koa-js/koajs" rel="KoaJs Slack Community">![KoaJs Slack](https://img.shields.io/badge/Koa.Js-Slack%20Channel-Slack.svg?longCache=true&style=for-the-badge)</a>
 
 
 ## 170+ Supported Providers / [OAuth Playground][grant-oauth]
