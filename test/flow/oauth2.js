@@ -291,7 +291,7 @@ describe('oauth2', () => {
             grant.config.ebay.secret = 'secret'
             var {body} = await oauth2.access(grant.config.ebay, {code: 'code'}, {})
             t.deepEqual(
-              Buffer(body.basic.replace('Basic ', ''), 'base64').toString().split(':'),
+              Buffer.from(body.basic.replace('Basic ', ''), 'base64').toString().split(':'),
               ['key', 'secret']
             )
           })

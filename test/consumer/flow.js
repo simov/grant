@@ -1,7 +1,7 @@
 
 var t = require('assert')
 var qs = require('qs')
-var request = require('request-compose').override({
+var request = require('request-compose').extend({
   Request: {cookie: require('request-cookie').Request},
   Response: {cookie: require('request-cookie').Response},
 }).client
