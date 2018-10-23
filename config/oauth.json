@@ -69,7 +69,7 @@
     "oauth": 2,
     "scope_delimiter": " ",
     "custom_parameters": [
-      "display", "response_mode", "prompt", "max_age", "nonce", "ui_locales"
+      "display", "response_mode", "prompt", "max_age", "ui_locales"
     ]
   },
   "axosoft": {
@@ -428,7 +428,7 @@
     "scope_delimiter": " ",
     "custom_parameters": [
       "access_type", "approval_prompt", "login_hint", "include_granted_scopes",
-      "prompt"
+      "prompt", "display", "hd"
     ]
   },
   "groove": {
@@ -637,6 +637,13 @@
       "display", "login_hint", "max_age", "prompt", "response_mode",
       "sessionToken"
     ]
+  },
+  "onelogin": {
+    "authorize_url": "https://[subdomain].onelogin.com/oidc/auth",
+    "access_url": "https://[subdomain].onelogin.com/oidc/token",
+    "oauth": 2,
+    "scope_delimiter": " ",
+    "subdomain": true
   },
   "openstreetmap": {
     "request_url": "https://www.openstreetmap.org/oauth/request_token",
@@ -895,10 +902,11 @@
     "oauth": 1
   },
   "twitch": {
-    "authorize_url": "https://api.twitch.tv/kraken/oauth2/authorize",
-    "access_url": "https://api.twitch.tv/kraken/oauth2/token",
+    "authorize_url": "https://id.twitch.tv/oauth2/authorize",
+    "access_url": "https://id.twitch.tv/oauth2/token",
     "oauth": 2,
-    "scope_delimiter": " "
+    "scope_delimiter": " ",
+    "custom_parameters": ["force_verify"]
   },
   "twitter": {
     "request_url": "https://api.twitter.com/oauth/request_token",
@@ -990,8 +998,8 @@
     "oauth": 2
   },
   "withings": {
-    "authorize_url": "https://account.health.nokia.com/oauth2_user/authorize2",
-    "access_url": "https://account.health.nokia.com/oauth2/token",
+    "authorize_url": "https://account.withings.com/oauth2_user/authorize2",
+    "access_url": "https://account.withings.com/oauth2/token",
     "oauth": 2
   },
   "wordpress": {
