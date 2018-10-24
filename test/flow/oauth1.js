@@ -56,13 +56,17 @@ describe('oauth1', () => {
     it('access', async () => {
       var provider = {access_url: url('/access_url'), oauth: 1}
       var authorize = {oauth_token: 'token'}
-      var {body} = await oauth1.access(provider, {}, authorize)
+      var data = await oauth1.access(provider, {}, authorize)
       t.deepEqual(
-        qs.parse(body),
+        data,
         {
-          oauth_token: 'token',
-          oauth_token_secret: 'secret',
-          some: 'data'
+          access_token: 'token',
+          access_secret: 'secret',
+          raw: {
+            oauth_token: 'token',
+            oauth_token_secret: 'secret',
+            some: 'data'
+          }
         }
       )
     })
@@ -382,8 +386,8 @@ describe('oauth1', () => {
         it('discogs', async () => {
           grant.config.discogs.access_url = url('/access_url')
           var authorize = {oauth_token: 'token'}
-          var {body} = await oauth1.access(grant.config.discogs, {}, authorize)
-          t.equal(body.agent, 'Grant')
+          var data = await oauth1.access(grant.config.discogs, {}, authorize)
+          t.equal(data.raw.agent, 'Grant')
         })
       })
 
@@ -391,8 +395,8 @@ describe('oauth1', () => {
         it('freshbooks', async () => {
           grant.config.freshbooks.access_url = url('/access_url')
           var authorize = {oauth_token: 'token'}
-          var {body} = await oauth1.access(grant.config.freshbooks, {}, authorize)
-          t.ok(/oauth_signature_method="PLAINTEXT"/.test(body.oauth))
+          var data = await oauth1.access(grant.config.freshbooks, {}, authorize)
+          t.ok(/oauth_signature_method="PLAINTEXT"/.test(data.raw.oauth))
         })
       })
 
@@ -400,14 +404,14 @@ describe('oauth1', () => {
         it('goodreads', async () => {
           grant.config.goodreads.access_url = url('/access_url')
           var authorize = {oauth_token: 'token'}
-          var {body} = await oauth1.access(grant.config.goodreads, {}, authorize)
-          t.ok(!/verifier/.test(body.oauth))
+          var data = await oauth1.access(grant.config.goodreads, {}, authorize)
+          t.ok(!/verifier/.test(data.raw.oauth))
         })
         it('tripit', async () => {
           grant.config.tripit.access_url = url('/access_url')
           var authorize = {oauth_token: 'token'}
-          var {body} = await oauth1.access(grant.config.tripit, {}, authorize)
-          t.ok(!/verifier/.test(body.oauth))
+          var data = await oauth1.access(grant.config.tripit, {}, authorize)
+          t.ok(!/verifier/.test(data.raw.oauth))
         })
       })
 
@@ -416,8 +420,8 @@ describe('oauth1', () => {
           grant.config.getpocket.access_url = url('/access_url')
           grant.config.getpocket.key = 'key'
           var request = {code: 'code'}
-          var {body} = await oauth1.access(grant.config.getpocket, request, {})
-          t.deepEqual(body, {
+          var data = await oauth1.access(grant.config.getpocket, request, {})
+          t.deepEqual(data.raw, {
             accept: 'application/x-www-form-urlencoded',
             form: {
               consumer_key: 'key',
@@ -431,8 +435,8 @@ describe('oauth1', () => {
         it('freshbooks', async () => {
           grant.config.freshbooks.access_url = url('/[subdomain]')
           grant.config.freshbooks.subdomain = 'access_url'
-          var {body} = await oauth1.access(grant.config.freshbooks, {}, {oauth_token: 'token'})
-          t.ok(/oauth_signature_method="PLAINTEXT"/.test(body.oauth))
+          var data = await oauth1.access(grant.config.freshbooks, {}, {oauth_token: 'token'})
+          t.ok(/oauth_signature_method="PLAINTEXT"/.test(data.raw.oauth))
         })
       })
 
@@ -440,8 +444,8 @@ describe('oauth1', () => {
         it('intuit', async () => {
           grant.config.intuit.access_url = url('/access_url')
           var authorize = {oauth_token: 'token', realmId: '123'}
-          var {body} = await oauth1.access(grant.config.intuit, {}, authorize)
-          t.equal(body.realmId, '123')
+          var data = await oauth1.access(grant.config.intuit, {}, authorize)
+          t.equal(data.raw.realmId, '123')
         })
       })
 

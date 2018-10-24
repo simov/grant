@@ -52,8 +52,8 @@ describe('oauth2', () => {
       var authorize = {
         code: 'code'
       }
-      var {body} = await oauth2.access(provider, authorize, {})
-      t.deepEqual(body, {
+      var data = await oauth2.access(provider, authorize, {})
+      t.deepEqual(data.raw, {
         grant_type: 'authorization_code',
         code: 'code',
         client_id: 'key',
@@ -252,14 +252,16 @@ describe('oauth2', () => {
         grant.config.visualstudio.access_url = url('/access_url')
 
         app.post('/access_url', (req, res) => {
-          res.writeHead(200, {'content-type': 'application/x-www-form-urlencoded'})
           if (req.headers.authorization) {
+            res.writeHead(200, {'content-type': 'application/x-www-form-urlencoded'})
             res.end(qs.stringify({basic: req.headers.authorization}))
           }
           else if (req.url.split('?')[1]) {
+            res.writeHead(200, {'content-type': 'application/json'})
             res.end(qs.stringify(req.query))
           }
           else if (req.body) {
+            res.writeHead(200, {'content-type': 'application/x-www-form-urlencoded'})
             res.end(qs.stringify(req.body))
           }
         })
@@ -268,8 +270,8 @@ describe('oauth2', () => {
 
       describe('web_server', () => {
         it('basecamp', async () => {
-          var {body} = await oauth2.access(grant.config.basecamp, {code: 'code'}, {})
-          t.equal(body.type, 'web_server')
+          var data = await oauth2.access(grant.config.basecamp, {code: 'code'}, {})
+          t.equal(data.raw.type, 'web_server')
         })
       })
 
@@ -277,10 +279,15 @@ describe('oauth2', () => {
         it('concur', async () => {
           grant.config.concur.key = 'key'
           grant.config.concur.secret = 'secret'
-          var {body} = await oauth2.access(grant.config.concur, {code: 'code'}, {})
-          t.deepEqual(body, {
+          var data = await oauth2.access(grant.config.concur, {code: 'code'}, {})
+          t.deepEqual(qs.parse(data.raw), {
             code: 'code', client_id: 'key', client_secret: 'secret'
           })
+        })
+        it('surveymonkey', async () => {
+          grant.config.surveymonkey.custom_params = {api_key: 'api_key'}
+          var data = await oauth2.access(grant.config.surveymonkey, {code: 'code'}, {})
+          t.deepEqual(qs.parse(data.raw), {api_key: 'api_key'})
         })
       })
 
@@ -289,9 +296,9 @@ describe('oauth2', () => {
           it(provider, async () => {
             grant.config.ebay.key = 'key'
             grant.config.ebay.secret = 'secret'
-            var {body} = await oauth2.access(grant.config.ebay, {code: 'code'}, {})
+            var data = await oauth2.access(grant.config.ebay, {code: 'code'}, {})
             t.deepEqual(
-              Buffer.from(body.basic.replace('Basic ', ''), 'base64').toString().split(':'),
+              Buffer.from(data.raw.basic.replace('Basic ', ''), 'base64').toString().split(':'),
               ['key', 'secret']
             )
           })
@@ -300,24 +307,16 @@ describe('oauth2', () => {
 
       describe('hash', () => {
         it('smartsheet', async () => {
-          var {body} = await oauth2.access(grant.config.smartsheet, {code: 'code'}, {})
-          t.ok(typeof body.hash === 'string')
-        })
-      })
-
-      describe('api_key', () => {
-        it('surveymonkey', async () => {
-          grant.config.surveymonkey.custom_params = {api_key: 'api_key'}
-          var {body} = await oauth2.access(grant.config.surveymonkey, {code: 'code'}, {})
-          t.deepEqual(body, {api_key: 'api_key'})
+          var data = await oauth2.access(grant.config.smartsheet, {code: 'code'}, {})
+          t.ok(typeof data.raw.hash === 'string')
         })
       })
 
       describe('Assertion Framework for OAuth 2.0', () => {
         it('visualstudio', async () => {
           grant.config.visualstudio.secret = 'secret'
-          var {body} = await oauth2.access(grant.config.visualstudio, {code: 'code'}, {})
-          t.deepEqual(body, {
+          var data = await oauth2.access(grant.config.visualstudio, {code: 'code'}, {})
+          t.deepEqual(data.raw, {
             client_assertion_type: 'urn:ietf:params:oauth:client-assertion-type:jwt-bearer',
             client_assertion: 'secret',
             grant_type: 'urn:ietf:params:oauth:grant-type:jwt-bearer',
@@ -331,8 +330,8 @@ describe('oauth2', () => {
         it('shopify', async () => {
           grant.config.shopify.access_url = url('/[subdomain]')
           grant.config.shopify.subdomain = 'access_url'
-          var {body} = await oauth2.access(grant.config.shopify, {code: 'code'}, {})
-          t.deepEqual(body, {
+          var data = await oauth2.access(grant.config.shopify, {code: 'code'}, {})
+          t.deepEqual(data.raw, {
             grant_type: 'authorization_code',
             code: 'code',
             redirect_uri: url('/connect/shopify/callback')
