@@ -86,7 +86,7 @@ describe('oauth2', () => {
         await oauth2.access(provider, authorize, {})
       }
       catch (err) {
-        t.deepEqual(err.body, {error: 'invalid'})
+        t.deepEqual(err.error, {error: 'invalid'})
       }
     })
     it('access - missing code - empty response', async () => {
@@ -97,7 +97,7 @@ describe('oauth2', () => {
       }
       catch (err) {
         t.deepEqual(
-          err.body,
+          err.error,
           {error: 'Grant: OAuth2 missing code parameter'}
         )
       }
@@ -110,7 +110,7 @@ describe('oauth2', () => {
         await oauth2.access(provider, authorize, session)
       }
       catch (err) {
-        t.deepEqual(err.body, {error: 'Grant: OAuth2 state mismatch'})
+        t.deepEqual(err.error, {error: 'Grant: OAuth2 state mismatch'})
       }
     })
     it('access - request error', async () => {
@@ -120,7 +120,7 @@ describe('oauth2', () => {
         await oauth2.access(provider, authorize, {})
       }
       catch (err) {
-        t.ok(/^Protocol "compose:" not supported\. Expected "http:"/.test(err.message))
+        t.ok(/^Protocol "compose:" not supported\. Expected "http:"/.test(err.error))
       }
     })
     it('access - response error', async () => {
@@ -130,7 +130,7 @@ describe('oauth2', () => {
         await oauth2.access(provider, authorize, {})
       }
       catch (err) {
-        t.deepEqual(err.body, {error: 'invalid'})
+        t.deepEqual(err.error, {error: 'invalid'})
       }
     })
 

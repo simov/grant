@@ -144,6 +144,8 @@ describe('consumer - session', () => {
           }})
           server.route({method: 'GET', path: '/authorize_url', handler: (req, res) => {
             return res.response(JSON.stringify((req.session || req.yar).get('grant')))
+              .code(200)
+              .header('content-type', 'application/json')
           }})
 
           server.register([

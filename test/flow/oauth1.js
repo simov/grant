@@ -90,13 +90,13 @@ describe('oauth1', () => {
         await oauth1.request(provider)
       }
       catch (err) {
-        t.ok(/^Protocol "compose:" not supported\. Expected "http:"/.test(err.message))
+        t.ok(/^Protocol "compose:" not supported\. Expected "http:"/.test(err.error))
       }
     })
     it('request - response error', async () => {
       var provider = {request_url: url('/request_url')}
       oauth1.request(provider).catch((err) => {
-        t.deepEqual(err.body, {error: 'invalid'})
+        t.deepEqual(err.error, {error: 'invalid'})
       })
     })
 
@@ -108,7 +108,7 @@ describe('oauth1', () => {
       }
       catch (err) {
         t.deepEqual(
-          err.body,
+          err.error,
           {error: 'invalid'}
         )
       }
@@ -121,7 +121,7 @@ describe('oauth1', () => {
       }
       catch (err) {
         t.deepEqual(
-          err.body,
+          err.error,
           {error: 'Grant: OAuth1 missing oauth_token parameter'}
         )
       }
@@ -134,7 +134,7 @@ describe('oauth1', () => {
         await oauth1.access(provider, {}, authorize)
       }
       catch (err) {
-        t.deepEqual(err.body, {error: 'invalid'})
+        t.deepEqual(err.error, {error: 'invalid'})
       }
     })
     it('access - mising oauth_token - empty response', async () => {
@@ -145,7 +145,7 @@ describe('oauth1', () => {
       }
       catch (err) {
         t.deepEqual(
-          err.body,
+          err,
           {error: 'Grant: OAuth1 missing oauth_token parameter'}
         )
       }
@@ -157,7 +157,7 @@ describe('oauth1', () => {
         await oauth1.access(provider, {}, authorize)
       }
       catch (err) {
-        t.ok(/^Protocol "compose:" not supported\. Expected "http:"/.test(err.message))
+        t.ok(/^Protocol "compose:" not supported\. Expected "http:"/.test(err.error))
       }
     })
     it('access - response error', async () => {
@@ -167,7 +167,7 @@ describe('oauth1', () => {
         await oauth1.access(provider, {}, authorize)
       }
       catch (err) {
-        t.deepEqual(err.body, {error: 'invalid'})
+        t.deepEqual(err.error, {error: 'invalid'})
       }
     })
 
