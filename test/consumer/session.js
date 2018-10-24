@@ -189,23 +189,25 @@ describe('consumer - session', () => {
         var {body} = await request({
           method: 'POST',
           url: url('/connect/facebook/contacts'),
-          form: {scope: ['scope1', 'scope2'], state: 'Grant'},
+          form: {scope: ['scope1', 'scope2'], state: 'Grant', nonce: 'simov'},
           cookie: {},
           redirect: {all: true, method: false},
         })
         t.deepEqual(body, {provider: 'facebook', override: 'contacts',
-          dynamic: {scope: ['scope1', 'scope2'], state: 'Grant'}, state: 'Grant'
+          dynamic: {scope: ['scope1', 'scope2'], state: 'Grant', nonce: 'simov'},
+          state: 'Grant', nonce: 'simov'
         })
       })
 
       it('dynamic - GET', async () => {
         var {body} = await request({
           url: url('/connect/facebook/contacts'),
-          qs: {scope: ['scope1', 'scope2'], state: 'Grant'},
+          qs: {scope: ['scope1', 'scope2'], state: 'Grant', nonce: 'simov'},
           cookie: {},
         })
         t.deepEqual(body, {provider: 'facebook', override: 'contacts',
-          dynamic: {scope: ['scope1', 'scope2'], state: 'Grant'}, state: 'Grant'
+          dynamic: {scope: ['scope1', 'scope2'], state: 'Grant', nonce: 'simov'},
+          state: 'Grant', nonce: 'simov'
         })
       })
 
@@ -215,15 +217,15 @@ describe('consumer - session', () => {
         var {body} = await request({
           url: url('/connect/google'),
           qs: {
-            scope: ['scope1', 'scope2'], state: 'Grant',
+            scope: ['scope1', 'scope2'], state: 'Grant', nonce: 'simov',
             authorize_url: '/authorize_url'
           },
           cookie: {},
         })
         t.ok(typeof grant.config.google === 'object')
         t.deepEqual(body, {provider: 'google',
-          dynamic: {scope: ['scope1', 'scope2'], state: 'Grant',
-            authorize_url: '/authorize_url'}, state: 'Grant'})
+          dynamic: {scope: ['scope1', 'scope2'], state: 'Grant', nonce: 'simov',
+            authorize_url: '/authorize_url'}, state: 'Grant', nonce: 'simov'})
       })
 
       it('dynamic - non existing provider', async () => {
@@ -247,14 +249,17 @@ describe('consumer - session', () => {
         t.deepEqual(body, {provider: 'twitter', request: {oauth_token: 'token'}})
       })
 
-      it('state auto generated', async () => {
+      it('auto generated state and nonce', async () => {
         grant.config.facebook.state = true
+        grant.config.facebook.nonce = true
         var {body} = await request({
           url: url('/connect/facebook'),
           cookie: {},
         })
         t.ok(/\d+/.test(body.state))
         t.ok(typeof body.state === 'string')
+        t.ok(/\d+/.test(body.nonce))
+        t.ok(typeof body.nonce === 'string')
       })
 
       after((done) => {

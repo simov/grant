@@ -8,6 +8,11 @@ var Grant = require('../../').express()
 var oauth2 = require('../../lib/flow/oauth2')
 var oauth = require('../../config/oauth')
 
+var sign = (...args) => args.map((arg, index) => index < 2
+  ? Buffer.from(JSON.stringify(arg)).toString('base64')
+    .replace(/=/g, '').replace(/\+/g, '-').replace(/\//g, '_')
+  : arg).join('.')
+
 
 describe('oauth2', () => {
   var url = (path) => `http://localhost:5000${path}`
@@ -30,7 +35,8 @@ describe('oauth2', () => {
         redirect_uri: '/redirect_uri',
         key: 'key',
         scope: 'read,write',
-        state: '123'
+        state: '123',
+        nonce: '456'
       }
       var url = await oauth2.authorize(provider)
       t.deepEqual(qs.parse(url.replace('/authorize_url?', '')), {
@@ -38,7 +44,8 @@ describe('oauth2', () => {
         response_type: 'code',
         redirect_uri: '/redirect_uri',
         scope: 'read,write',
-        state: '123'
+        state: '123',
+        nonce: '456'
       })
     })
 
@@ -73,8 +80,14 @@ describe('oauth2', () => {
     before((done) => {
       server = http.createServer()
       server.on('request', (req, res) => {
-        res.writeHead(500, {'content-type': 'application/x-www-form-urlencoded'})
-        res.end(qs.stringify({error: 'invalid'}))
+        if (/^\/access_url_nonce/.test(req.url)) {
+          res.writeHead(200, {'content-type': 'application/x-www-form-urlencoded'})
+          res.end(qs.stringify({id_token: sign({typ: 'JWT'}, {nonce: 'Purest'}, 'signature')}))
+        }
+        else if (/^\/access_url_error/.test(req.url)) {
+          res.writeHead(500, {'content-type': 'application/x-www-form-urlencoded'})
+          res.end(qs.stringify({error: 'invalid'}))
+        }
       })
       server.listen(5000, done)
     })
@@ -113,6 +126,17 @@ describe('oauth2', () => {
         t.deepEqual(err.error, {error: 'Grant: OAuth2 state mismatch'})
       }
     })
+    it('access - nonce mismatch', async () => {
+      var provider = {access_url: url('/access_url_nonce')}
+      var authorize = {code: 'code', nonce: 'Grant'}
+      var session = {}
+      try {
+        await oauth2.access(provider, authorize, session)
+      }
+      catch (err) {
+        t.deepEqual(err.error, {error: 'Grant: OpenID Connect nonce mismatch'})
+      }
+    })
     it('access - request error', async () => {
       var provider = {access_url: 'compose:5000'}
       var authorize = {code: 'code'}
@@ -124,7 +148,7 @@ describe('oauth2', () => {
       }
     })
     it('access - response error', async () => {
-      var provider = {access_url: url('/access_url')}
+      var provider = {access_url: url('/access_url_error')}
       var authorize = {code: 'code'}
       try {
         await oauth2.access(provider, authorize, {})

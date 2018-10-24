@@ -4,6 +4,11 @@ var qs = require('qs')
 var Grant = require('../').express()
 var response = require('../lib/response')
 
+var sign = (...args) => args.map((arg, index) => index < 2
+  ? Buffer.from(JSON.stringify(arg)).toString('base64')
+    .replace(/=/g, '').replace(/\+/g, '-').replace(/\//g, '_')
+  : arg).join('.')
+
 
 describe('response', () => {
   var grant
@@ -61,12 +66,21 @@ describe('response', () => {
   })
   it('oauth2', () => {
     t.deepEqual(
-      response(grant.config.facebook,
-        {access_token: 'token', refresh_token: 'refresh'}
-      ),
+      response(grant.config.facebook, {
+        id_token: sign({typ: 'JWT'}, {hey: 'hi'}, 'signature'),
+        access_token: 'token', refresh_token: 'refresh'
+      }),
       {
-        access_token: 'token', refresh_token: 'refresh',
-        raw: {access_token: 'token', refresh_token: 'refresh'}
+        id_token: {
+          header: {typ: 'JWT'}, payload: {hey: 'hi'}, signature: 'signature'
+        },
+        access_token: 'token',
+        refresh_token: 'refresh',
+        raw: {
+          id_token: 'eyJ0eXAiOiJKV1QifQ.eyJoZXkiOiJoaSJ9.signature',
+          access_token: 'token',
+          refresh_token: 'refresh'
+        }
       }
     )
   })

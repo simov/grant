@@ -222,27 +222,31 @@ describe('config', () => {
     })
   })
 
-  describe('state', () => {
+  describe('state/nonce', () => {
     it('string', () => {
-      var provider = {state: '123'}
-      var result = config.state(provider)
-      t.equal(result, '123')
+      var provider = {state: '123', nonce: '456'}
+      t.equal(config.state(provider), '123')
+      t.equal(config.state(provider, 'nonce'), '456')
     })
     it('number', () => {
-      var provider = {state: 123}
-      var result = config.state(provider)
-      t.equal(result, '123')
+      var provider = {state: 123, nonce: 456}
+      t.equal(config.state(provider), '123')
+      t.equal(config.state(provider, 'nonce'), '456')
     })
     it('boolean true', () => {
-      var provider = {state: true}
-      var result = config.state(provider)
-      t.ok(typeof result === 'string')
-      t.ok(/^\w+$/.test(result))
+      var provider = {state: true, nonce: true}
+      var state = config.state(provider)
+      t.ok(typeof state === 'string')
+      t.ok(/^\w+$/.test(state))
+      var nonce = config.state(provider, 'nonce')
+      t.ok(typeof nonce === 'string')
+      t.ok(/^\w+$/.test(nonce))
+      t.notEqual(state, nonce)
     })
     it('boolean false', () => {
-      var provider = {state: false}
-      var result = config.state(provider)
-      t.equal(result, undefined)
+      var provider = {state: false, nonce: false}
+      t.equal(config.state(provider), undefined)
+      t.equal(config.state(provider, 'nonce'), undefined)
     })
   })
 
@@ -343,7 +347,7 @@ describe('config', () => {
       })
     })
 
-    describe('state', () => {
+    describe('state/nonce', () => {
       it('state dcopy', () => {
         var options = {grant: {state: true}}
         var session = {provider: 'grant'}
@@ -351,6 +355,14 @@ describe('config', () => {
         t.ok(typeof result.state === 'string')
         t.ok(/\d+/.test(result.state))
         t.deepEqual(options, {grant: {state: true}})
+      })
+      it('nonce dcopy', () => {
+        var options = {grant: {nonce: true}}
+        var session = {provider: 'grant'}
+        var result = config.provider(options, session)
+        t.ok(typeof result.nonce === 'string')
+        t.ok(/\d+/.test(result.nonce))
+        t.deepEqual(options, {grant: {nonce: true}})
       })
     })
   })

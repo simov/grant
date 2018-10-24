@@ -36,6 +36,11 @@ Koa = function () {
 }
 var hapi = parseInt(require('hapi/package.json').version.split('.')[0])
 
+var sign = (...args) => args.map((arg, index) => index < 2
+  ? Buffer.from(JSON.stringify(arg)).toString('base64')
+    .replace(/=/g, '').replace(/\+/g, '-').replace(/\//g, '_')
+  : arg).join('.')
+
 
 describe('consumer - error', () => {
   var url = (path) =>
@@ -594,6 +599,173 @@ describe('consumer - error', () => {
           t.deepEqual(
             body,
             {error: {error: 'Grant: OAuth2 state mismatch'}},
+            message
+          )
+        }
+        delete grant.config.facebook.transport
+        await assert('no transport')
+        grant.config.facebook.transport = 'querystring'
+        await assert('querystring transport')
+        grant.config.facebook.transport = 'session'
+        await assert('session transport')
+      })
+
+      after((done) => {
+        consumer === 'hapi' && hapi >= 17
+          ? server.stop().then(done)
+          : server[/express|koa/.test(consumer) ? 'close' : 'stop'](done)
+      })
+    })
+  })
+
+  ;['express', 'koa', 'hapi'].forEach((name) => {
+    describe(`oauth2 - authorize - nonce mismatch - ${name}`, () => {
+      var server, grant, consumer = name
+
+      var servers = {
+        express: (done) => {
+          grant = Grant.express()(config)
+          var app = express()
+          app.use(session({secret: 'grant', saveUninitialized: true, resave: true}))
+          app.use(grant)
+
+          grant.config.facebook.authorize_url = url('/authorize_url')
+          grant.config.facebook.access_url = url('/access_url')
+          grant.config.facebook.nonce = 'Grant'
+
+          app.get('/authorize_url', (req, res) => {
+            res.redirect(url('/connect/facebook/callback?' +
+              qs.stringify({code: 'code'})))
+          })
+          app.post('/access_url', (req, res) => {
+            res.writeHead(200, {'content-type': 'application/x-www-form-urlencoded'})
+            res.end(qs.stringify({id_token: sign({typ: 'JWT'}, {nonce: 'Purest'}, 'signature')}))
+          })
+
+          app.get('/', (req, res) => {
+            res.json(req.session.grant.response || req.query)
+          })
+
+          server = app.listen(5000, done)
+        },
+        koa: (done) => {
+          grant = Grant.koa()(config)
+
+          var app = new Koa()
+          app.keys = ['grant']
+          app.use(koasession(app))
+          app.use(mount(grant))
+          koaqs(app)
+
+          grant.config.facebook.authorize_url = url('/authorize_url')
+          grant.config.facebook.access_url = url('/access_url')
+          grant.config.facebook.nonce = 'Grant'
+
+          app.use(function* () {
+            if (this.path === '/authorize_url') {
+              this.response.redirect(url('/connect/facebook/callback?' +
+                qs.stringify({code: 'code'})))
+            }
+            else if (this.path === '/access_url') {
+              this.response.status = 200
+              this.set('content-type', 'application/x-www-form-urlencoded')
+              this.body = qs.stringify({id_token: sign({typ: 'JWT'}, {nonce: 'Purest'}, 'signature')})
+            }
+            else if (this.path === '/') {
+              this.response.status = 200
+              this.set('content-type', 'application/json')
+              this.body = JSON.stringify(this.session.grant.response || this.request.query)
+            }
+          })
+
+          server = app.listen(5000, done)
+        },
+        hapi: (done) => {
+          grant = Grant.hapi()()
+
+          server = new Hapi.Server()
+          server.connection({host: 'localhost', port: 5000})
+
+          server.route({method: 'GET', path: '/authorize_url', handler: (req, res) => {
+            res.redirect(url('/connect/facebook/callback?' +
+              qs.stringify({code: 'code', state: 'Purest'})))
+          }})
+          server.route({method: 'POST', path: '/access_url', handler: (req, res) => {
+            res(qs.stringify({id_token: sign({typ: 'JWT'}, {nonce: 'Purest'}, 'signature')}))
+              .code(200)
+              .header('content-type', 'application/x-www-form-urlencoded')
+          }})
+          server.route({method: 'GET', path: '/', handler: (req, res) => {
+            var parsed = urlib.parse(req.url, false)
+            var query = qs.parse(parsed.query)
+            res((req.session || req.yar).get('grant').response || query)
+          }})
+
+          server.register([
+            {register: grant, options: config},
+            {register: yar, options: {cookieOptions: {password: '01234567890123456789012345678912', isSecure: false}}}
+          ], (err) => {
+            if (err) {
+              done(err)
+              return
+            }
+
+            grant.config.facebook.authorize_url = url('/authorize_url')
+            grant.config.facebook.access_url = url('/access_url')
+            grant.config.facebook.nonce = 'Grant'
+
+            server.start(done)
+          })
+        },
+        hapi17: (done) => {
+          grant = Grant.hapi()()
+          server = new Hapi.Server({host: 'localhost', port: 5000})
+
+          server.route({method: 'GET', path: '/authorize_url', handler: (req, res) => {
+            return res.redirect(url('/connect/facebook/callback?' +
+              qs.stringify({code: 'code', state: 'Purest'})))
+          }})
+          server.route({method: 'POST', path: '/access_url', handler: (req, res) => {
+            return res.response(qs.stringify({id_token: sign({typ: 'JWT'}, {nonce: 'Purest'}, 'signature')}))
+              .code(200)
+              .header('content-type', 'application/x-www-form-urlencoded')
+          }})
+          server.route({method: 'GET', path: '/', handler: (req, res) => {
+            var parsed = urlib.parse(req.url, false)
+            var query = qs.parse(parsed.query)
+            return res.response((req.session || req.yar).get('grant').response || query)
+          }})
+
+          server.register([
+            {plugin: grant, options: config},
+            {plugin: yar, options: {cookieOptions: {password: '01234567890123456789012345678912', isSecure: false}}}
+          ])
+            .then(() => {
+              grant.config.facebook.authorize_url = url('/authorize_url')
+              grant.config.facebook.access_url = url('/access_url')
+              grant.config.facebook.nonce = 'Grant'
+
+              server.start().then(done).catch(done)
+            })
+            .catch(done)
+        }
+      }
+
+      before((done) => {
+        servers[
+          consumer === 'hapi' ? `${consumer}${hapi < 17 ? '' : '17'}` : consumer
+        ](done)
+      })
+
+      it('authorize', async () => {
+        var assert = async (message) => {
+          var {body} = await request({
+            url: url('/connect/facebook'),
+            cookie: {},
+          })
+          t.deepEqual(
+            body,
+            {error: 'Grant: OpenID Connect nonce mismatch'},
             message
           )
         }

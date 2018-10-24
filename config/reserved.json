@@ -13,6 +13,7 @@
   "callback",
   "transport",
   "state",
+  "nonce",
 
   "key",
   "secret",
