@@ -246,11 +246,7 @@ describe('oauth1', () => {
           var {body} = await oauth1.request(grant.config.getpocket)
           t.deepEqual(body, {
             accept: 'application/x-www-form-urlencoded',
-            form: {
-              consumer_key: 'key',
-              redirect_uri: ':///connect/getpocket/callback',
-              state: 'state'
-            }
+            form: {consumer_key: 'key', state: 'state'}
           })
         })
       })
@@ -341,10 +337,7 @@ describe('oauth1', () => {
         it('authorize', async () => {
           var url = await oauth1.authorize(grant.config.getpocket, {code: 'code'})
           var query = qs.parse(url.split('?')[1])
-          t.deepEqual(query, {
-            redirect_uri: ':///connect/getpocket/callback',
-            request_token: 'code'
-          })
+          t.deepEqual(query, {request_token: 'code'})
         })
       })
 

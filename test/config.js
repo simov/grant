@@ -71,6 +71,42 @@ describe('config', () => {
       })
     })
 
+    describe('redirect_uri', () => {
+      it('default', () => {
+        var provider = {}
+        var options = {}
+        var server = {protocol: 'http', host: 'localhost:5000', callback: '/'}
+        var name = 'grant'
+        var result = config.merge({provider, options, server, name})
+        t.equal(
+          result.redirect_uri,
+          'http://localhost:5000/connect/grant/callback'
+        )
+      })
+      it('path prefix', () => {
+        var provider = {path: '/path/prefix'}
+        var options = {}
+        var server = {protocol: 'http', host: 'localhost:5000', callback: '/'}
+        var name = 'grant'
+        var result = config.merge({provider, options, server, name})
+        t.equal(
+          result.redirect_uri,
+          'http://localhost:5000/path/prefix/connect/grant/callback'
+        )
+      })
+      it('override', () => {
+        var provider = {redirect_uri: 'http://localhost:5000'}
+        var options = {}
+        var server = {protocol: 'http', host: 'localhost:5000', callback: '/'}
+        var name = 'grant'
+        var result = config.merge({provider, options, server, name})
+        t.equal(
+          result.redirect_uri,
+          'http://localhost:5000'
+        )
+      })
+    })
+
     describe('custom_params', () => {
       it('empty keys in options.custom_params are excluded', () => {
         var provider = {custom_params: {name: 'grant'}}
@@ -193,11 +229,13 @@ describe('config', () => {
           authorize_url: 'https://www.facebook.com/dialog/oauth',
           access_url: 'https://graph.facebook.com/oauth/access_token',
           oauth: 2, facebook: true, name: 'facebook',
-          protocol: 'http', host: 'localhost:3000'
+          protocol: 'http', host: 'localhost:3000',
+          redirect_uri: 'http://localhost:3000/connect/facebook/callback'
         },
         custom: {
           custom: true, name: 'custom',
-          protocol: 'http', host: 'localhost:3000'
+          protocol: 'http', host: 'localhost:3000',
+          redirect_uri: 'http://localhost:3000/connect/custom/callback'
         }
       })
     })
@@ -212,11 +250,13 @@ describe('config', () => {
           authorize_url: 'https://www.facebook.com/dialog/oauth',
           access_url: 'https://graph.facebook.com/oauth/access_token',
           oauth: 2, facebook: true, name: 'facebook',
-          protocol: 'http', host: 'localhost:3000'
+          protocol: 'http', host: 'localhost:3000',
+          redirect_uri: 'http://localhost:3000/connect/facebook/callback'
         },
         custom: {
           custom: true, name: 'custom',
-          protocol: 'http', host: 'localhost:3000'
+          protocol: 'http', host: 'localhost:3000',
+          redirect_uri: 'http://localhost:3000/connect/custom/callback'
         }
       })
     })
