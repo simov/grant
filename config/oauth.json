@@ -563,6 +563,13 @@
     "access_url": "https://api.mapmyfitness.com/v7.1/oauth2/access_token",
     "oauth": 2
   },
+  "mastodon": {
+    "authorize_url": "https://[subdomain]/oauth/authorize",
+    "access_url": "https://[subdomain]/oauth/token",
+    "oauth": 2,
+    "scope_delimiter": " ",
+    "subdomain": true
+  },
   "medium": {
     "authorize_url": "https://medium.com/m/oauth/authorize",
     "access_url": "https://api.medium.com/v1/tokens",
@@ -833,7 +840,8 @@
   "strava": {
     "authorize_url": "https://www.strava.com/oauth/authorize",
     "access_url": "https://www.strava.com/oauth/token",
-    "oauth": 2
+    "oauth": 2,
+    "custom_parameters": ["approval_prompt"]
   },
   "stripe": {
     "authorize_url": "https://connect.stripe.com/oauth/authorize",
