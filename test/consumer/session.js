@@ -37,19 +37,28 @@ Koa = function () {
 }
 var hapi = parseInt(require('hapi/package.json').version.split('.')[0])
 
+var port = {app: 5001}
+var url = {
+  app: (path) => `http://localhost:${port.app}${path}`,
+}
+
 
 describe('consumer - session', () => {
-  var url = (path) =>
-    `${config.server.protocol}://${config.server.host}${path}`
-
-  var config = {
-    server: {protocol: 'http', host: 'localhost:5000'},
-    facebook: {}, twitter: {}
-  }
 
   ;['express', 'koa', 'hapi'].forEach((name) => {
-    describe(`oauth2 - ${name}`, () => {
+    describe(name, () => {
       var server, grant, consumer = name
+      var config = {
+        oauth1: {
+          request_url: url.app('/request_url'),
+          authorize_url: url.app('/authorize_url'),
+          oauth: 1,
+        },
+        oauth2: {
+          authorize_url: url.app('/authorize_url'),
+          oauth: 2,
+        }
+      }
 
       var servers = {
         express: (done) => {
@@ -59,10 +68,6 @@ describe('consumer - session', () => {
           app.use(session({secret: 'grant', saveUninitialized: true, resave: true}))
           app.use(grant)
 
-          grant.config.facebook.authorize_url = '/authorize_url'
-          grant.config.twitter.request_url = url('/request_url')
-          grant.config.twitter.authorize_url = '/authorize_url'
-
           app.post('/request_url', (req, res) => {
             res.writeHead(200, {'content-type': 'application/x-www-form-urlencoded'})
             res.end(qs.stringify({oauth_token: 'token'}))
@@ -71,7 +76,7 @@ describe('consumer - session', () => {
             res.writeHead(200, {'content-type': 'application/json'})
             res.end(JSON.stringify(req.session.grant))
           })
-          server = app.listen(5000, done)
+          server = app.listen(port.app, done)
         },
         koa: (done) => {
           grant = Grant.koa()(config)
@@ -82,10 +87,6 @@ describe('consumer - session', () => {
           app.use(koabody())
           app.use(mount(grant))
           koaqs(app)
-
-          grant.config.facebook.authorize_url = '/authorize_url'
-          grant.config.twitter.request_url = url('/request_url')
-          grant.config.twitter.authorize_url = '/authorize_url'
 
           app.use(function* () {
             if (this.path === '/request_url') {
@@ -100,13 +101,13 @@ describe('consumer - session', () => {
             }
           })
 
-          server = app.listen(5000, done)
+          server = app.listen(port.app, done)
         },
         hapi: (done) => {
           grant = Grant.hapi()()
 
           server = new Hapi.Server()
-          server.connection({host: 'localhost', port: 5000})
+          server.connection({host: 'localhost', port: port.app})
 
           server.route({method: 'POST', path: '/request_url', handler: (req, res) => {
             res(qs.stringify({oauth_token: 'token'}))
@@ -126,16 +127,12 @@ describe('consumer - session', () => {
               return
             }
 
-            grant.config.facebook.authorize_url = '/authorize_url'
-            grant.config.twitter.request_url = url('/request_url')
-            grant.config.twitter.authorize_url = '/authorize_url'
-
             server.start(done)
           })
         },
         hapi17: (done) => {
           grant = Grant.hapi()()
-          server = new Hapi.Server({host: 'localhost', port: 5000})
+          server = new Hapi.Server({host: 'localhost', port: port.app})
 
           server.route({method: 'POST', path: '/request_url', handler: (req, res) => {
             return res.response(qs.stringify({oauth_token: 'token'}))
@@ -153,10 +150,6 @@ describe('consumer - session', () => {
             {plugin: yar, options: {cookieOptions: {password: '01234567890123456789012345678912', isSecure: false}}}
           ])
             .then(() => {
-              grant.config.facebook.authorize_url = '/authorize_url'
-              grant.config.twitter.request_url = url('/request_url')
-              grant.config.twitter.authorize_url = '/authorize_url'
-
               server.start().then(done).catch(done)
             })
             .catch(done)
@@ -171,29 +164,29 @@ describe('consumer - session', () => {
 
       it('provider', async () => {
         var {body} = await request({
-          url: url('/connect/facebook'),
+          url: url.app('/connect/oauth2'),
           cookie: {},
         })
-        t.deepEqual(body, {provider: 'facebook'})
+        t.deepEqual(body, {provider: 'oauth2'})
       })
 
       it('override', async () => {
         var {body} = await request({
-          url: url('/connect/facebook/contacts'),
+          url: url.app('/connect/oauth2/contacts'),
           cookie: {},
         })
-        t.deepEqual(body, {provider: 'facebook', override: 'contacts'})
+        t.deepEqual(body, {provider: 'oauth2', override: 'contacts'})
       })
 
       it('dynamic - POST', async () => {
         var {body} = await request({
           method: 'POST',
-          url: url('/connect/facebook/contacts'),
+          url: url.app('/connect/oauth2/contacts'),
           form: {scope: ['scope1', 'scope2'], state: 'Grant', nonce: 'simov'},
           cookie: {},
           redirect: {all: true, method: false},
         })
-        t.deepEqual(body, {provider: 'facebook', override: 'contacts',
+        t.deepEqual(body, {provider: 'oauth2', override: 'contacts',
           dynamic: {scope: ['scope1', 'scope2'], state: 'Grant', nonce: 'simov'},
           state: 'Grant', nonce: 'simov'
         })
@@ -201,11 +194,11 @@ describe('consumer - session', () => {
 
       it('dynamic - GET', async () => {
         var {body} = await request({
-          url: url('/connect/facebook/contacts'),
+          url: url.app('/connect/oauth2/contacts'),
           qs: {scope: ['scope1', 'scope2'], state: 'Grant', nonce: 'simov'},
           cookie: {},
         })
-        t.deepEqual(body, {provider: 'facebook', override: 'contacts',
+        t.deepEqual(body, {provider: 'oauth2', override: 'contacts',
           dynamic: {scope: ['scope1', 'scope2'], state: 'Grant', nonce: 'simov'},
           state: 'Grant', nonce: 'simov'
         })
@@ -215,7 +208,7 @@ describe('consumer - session', () => {
         t.equal(grant.config.google, undefined)
 
         var {body} = await request({
-          url: url('/connect/google'),
+          url: url.app('/connect/google'),
           qs: {
             scope: ['scope1', 'scope2'], state: 'Grant', nonce: 'simov',
             authorize_url: '/authorize_url'
@@ -232,7 +225,7 @@ describe('consumer - session', () => {
         t.equal(grant.config.grant, undefined)
 
         var {body} = await request({
-          url: url('/connect/grant'),
+          url: url.app('/connect/grant'),
           qs: {oauth: 2, authorize_url: '/authorize_url'},
           cookie: {},
         })
@@ -241,25 +234,25 @@ describe('consumer - session', () => {
           dynamic: {oauth: '2', authorize_url: '/authorize_url'}})
       })
 
-      it('request', async () => {
-        var {body} = await request({
-          url: url('/connect/twitter'),
-          cookie: {},
-        })
-        t.deepEqual(body, {provider: 'twitter', request: {oauth_token: 'token'}})
-      })
-
       it('auto generated state and nonce', async () => {
-        grant.config.facebook.state = true
-        grant.config.facebook.nonce = true
+        grant.config.oauth2.state = true
+        grant.config.oauth2.nonce = true
         var {body} = await request({
-          url: url('/connect/facebook'),
+          url: url.app('/connect/oauth2'),
           cookie: {},
         })
         t.ok(/\d+/.test(body.state))
         t.ok(typeof body.state === 'string')
         t.ok(/\d+/.test(body.nonce))
         t.ok(typeof body.nonce === 'string')
+      })
+
+      it('oauth1', async () => {
+        var {body} = await request({
+          url: url.app('/connect/oauth1'),
+          cookie: {},
+        })
+        t.deepEqual(body, {provider: 'oauth1', request: {oauth_token: 'token'}})
       })
 
       after((done) => {
@@ -269,4 +262,5 @@ describe('consumer - session', () => {
       })
     })
   })
+
 })
