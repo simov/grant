@@ -11,7 +11,7 @@ var jwt = require('./jwt')
 express()
   .use(session({name: 'grant', secret: 'grant', saveUninitialized: true, resave: true}))
   .use(grant(config))
-  .get('/handle_facebook_callback', async (req, res) => {
+  .get('/facebook_callback', async (req, res) => {
     var {body} = await request({
       url: 'https://graph.facebook.com/v2.12/me',
       headers: {authorization: `Bearer ${req.session.grant.response.access_token}`}

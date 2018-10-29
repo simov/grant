@@ -18,10 +18,10 @@ koaqs(app)
 
 var router = new Router()
 router
-  .get('/handle_facebook_callback', (ctx) => {
+  .get('/facebook_callback', (ctx) => {
     ctx.body = JSON.stringify(ctx.query, null, 2)
   })
-  .get('/handle_twitter_callback', (ctx) => {
+  .get('/twitter_callback', (ctx) => {
     ctx.body = JSON.stringify(ctx.query, null, 2)
   })
 

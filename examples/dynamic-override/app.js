@@ -14,7 +14,7 @@ express()
   .use(session({secret: 'grant', saveUninitialized: true, resave: true}))
   .use(parser.urlencoded({extended: true}))
   .use(grant(config))
-  .get('/handle_facebook_callback', (req, res) => {
+  .get('/facebook_callback', (req, res) => {
     res.end(JSON.stringify(req.query, null, 2))
   })
   .get('/form', (req, res) => {

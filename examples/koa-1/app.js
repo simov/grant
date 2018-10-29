@@ -17,10 +17,10 @@ app.use(router(app))
 koaqs(app)
 
 app
-  .get('/handle_facebook_callback', function* (next) {
+  .get('/facebook_callback', function* (next) {
     this.body = JSON.stringify(this.query, null, 2)
   })
-  .get('/handle_twitter_callback', function* (next) {
+  .get('/twitter_callback', function* (next) {
     this.body = JSON.stringify(this.query, null, 2)
   })
   .listen(3000, () => console.log(`Koa server listening on port ${3000}`))

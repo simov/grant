@@ -1,12 +1,17 @@
 {
   "server": {
     "protocol": "http",
-    "host": "dummy.com:3000",
+    "host": "localhost:3000",
     "transport": "session"
+  },
+  "facebook": {
+    "key": "[CLIENT_ID]",
+    "secret": "[CLIENT_SECRET]",
+    "callback": "/facebook_callback"
   },
   "twitter": {
     "key": "[CONSUMER_KEY]",
     "secret": "[CONSUMER_SECRET]",
-    "callback": "/handle_twitter_callback"
+    "callback": "/twitter_callback"
   }
 }

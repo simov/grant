@@ -1,13 +1,13 @@
 {
   "server": {
     "protocol": "http",
-    "host": "dummy.com:3000",
+    "host": "localhost:3000",
     "path": "/path/prefix"
   },
   "facebook": {
     "key": "[APP_ID]",
     "secret": "[APP_SECRET]",
-    "callback": "/handle_facebook_callback",
+    "callback": "/facebook_callback",
     "scope": [
       "public_profile",
       "email"
@@ -16,6 +16,6 @@
   "twitter": {
     "key": "[CONSUMER_KEY]",
     "secret": "[CONSUMER_SECRET]",
-    "callback": "/handle_twitter_callback"
+    "callback": "/twitter_callback"
   }
 }

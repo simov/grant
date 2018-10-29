@@ -1,9 +1,8 @@
 {
-  "name": "grant-koa-2",
+  "name": "grant-examples",
   "version": "0.0.0",
-  "description": "Koa 2 Example",
+  "description": "Grant Examples",
   "private": true,
-  "keywords": [],
   "license": "MIT",
   "homepage": "https://github.com/simov/grant",
   "author": "Simeon Velichkov <simeonvelichkov@gmail.com> (https://simov.github.io)",

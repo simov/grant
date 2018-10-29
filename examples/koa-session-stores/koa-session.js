@@ -19,7 +19,10 @@ app.use(router(app))
 koaqs(app)
 
 app
-  .get('/handle_facebook_callback', function* (next) {
+  .get('/facebook_callback', function* (next) {
+    this.body = JSON.stringify(this.session.grant.response, null, 2)
+  })
+  .get('/twitter_callback', function* (next) {
     this.body = JSON.stringify(this.session.grant.response, null, 2)
   })
   .listen(3000, () => console.log(`Koa server listening on port ${3000}`))

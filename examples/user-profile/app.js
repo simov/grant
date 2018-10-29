@@ -13,14 +13,14 @@ var config = require('./config.json')
 express()
   .use(session({secret: 'grant', saveUninitialized: true, resave: true}))
   .use(grant(config))
-  .get('/handle_facebook_callback', async (req, res) => {
+  .get('/facebook_callback', async (req, res) => {
     var {body} = await request({
-      url: 'https://graph.facebook.com/v2.12/me',
+      url: 'https://graph.facebook.com/me',
       headers: {authorization: `Bearer ${req.query.access_token}`}
     })
     res.end(JSON.stringify({oauth: req.query, profile: body}, null, 2))
   })
-  .get('/handle_twitter_callback', async (req, res) => {
+  .get('/twitter_callback', async (req, res) => {
     var {body} = await request({
       url: 'https://api.twitter.com/1.1/users/show.json',
       qs: {user_id: req.query.raw.user_id},

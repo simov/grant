@@ -9,15 +9,23 @@ express()
   .use(grant({
     server: {
       protocol: 'http',
-      host: 'dummy.com:3000'
+      host: 'localhost:3000'
     },
     facebook: {
       key: '[APP_ID]',
       secret: '[APP_SECRET]',
-      callback: '/handle_callback'
+      callback: '/facebook_callback'
+    },
+    twitter: {
+      key: '[CONSUMER_KEY]',
+      secret: '[CONSUMER_SECRET]',
+      callback: '/twitter_callback'
     }
   }))
-  .get('/handle_callback', (req, res) => {
+  .get('/facebook_callback', (req, res) => {
+    res.end(JSON.stringify(req.query, null, 2))
+  })
+  .get('/twitter_callback', (req, res) => {
     res.end(JSON.stringify(req.query, null, 2))
   })
   .listen(3000, () => console.log(`Express server listening on port ${3000}`))

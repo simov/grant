@@ -1,9 +1,8 @@
 {
-  "name": "grant-path-prefix",
+  "name": "grant-examples",
   "version": "0.0.0",
-  "description": "Path Prefix Example",
+  "description": "Grant Examples",
   "private": true,
-  "keywords": [],
   "license": "MIT",
   "homepage": "https://github.com/simov/grant",
   "author": "Simeon Velichkov <simeonvelichkov@gmail.com> (https://simov.github.io)",

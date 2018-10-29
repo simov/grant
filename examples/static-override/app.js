@@ -9,10 +9,10 @@ var config = require('./config.json')
 express()
   .use(session({secret: 'grant', saveUninitialized: true, resave: true}))
   .use(grant(config))
-  .get('/handle_facebook_callback', (req, res) => {
+  .get('/facebook_callback', (req, res) => {
     res.end(JSON.stringify(req.query, null, 2))
   })
-  .get('/handle_twitter_callback', (req, res) => {
+  .get('/twitter_callback', (req, res) => {
     res.end(JSON.stringify(req.query, null, 2))
   })
   .listen(3000, () => console.log(`Express server listening on port ${3000}`))

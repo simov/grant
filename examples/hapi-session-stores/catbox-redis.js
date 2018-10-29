@@ -10,8 +10,13 @@ var config = require('./config.json')
 var server = new Hapi.Server({cache: {engine: store}})
 server.connection({host: 'localhost', port: 3000})
 
-server.route({method: 'GET', path: '/handle_facebook_callback', handler: (req, res) => {
-  res(JSON.stringify((req.session || req.yar).get('grant').response, null, 2)).header('content-type', 'text/plain')
+server.route({method: 'GET', path: '/facebook_callback', handler: (req, res) => {
+  res(JSON.stringify((req.session || req.yar).get('grant').response, null, 2))
+    .header('content-type', 'text/plain')
+}})
+server.route({method: 'GET', path: '/twitter_callback', handler: (req, res) => {
+  res(JSON.stringify((req.session || req.yar).get('grant').response, null, 2))
+    .header('content-type', 'text/plain')
 }})
 
 server.register([
