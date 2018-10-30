@@ -7,7 +7,7 @@ var Grant = require('../').express()
 describe('config', () => {
 
   describe('merge', () => {
-    it('shortcuts', () => {
+    it('name', () => {
       var provider = {}, options = {}, server = {}, name = 'grant'
       var result = config.merge({provider, options, server, name})
       t.deepEqual(result, {
@@ -18,20 +18,18 @@ describe('config', () => {
     describe('oauth app credentials', () => {
       it('consumer_key, consumer_secret', () => {
         var provider = {consumer_key: 'key', consumer_secret: 'secret', oauth: 1}
-        var options = {}, server = {}, name = 'grant'
-        var result = config.merge({provider, options, server, name})
+        var result = config.merge({provider})
         t.deepEqual(result, {
           consumer_key: 'key', consumer_secret: 'secret', oauth: 1,
-          grant: true, name: 'grant', key: 'key', secret: 'secret'
+          key: 'key', secret: 'secret'
         })
       })
       it('client_id, client_secret', () => {
         var provider = {client_id: 'key', client_secret: 'secret', oauth: 2}
-        var options = {}, server = {}, name = 'grant'
-        var result = config.merge({provider, options, server, name})
+        var result = config.merge({provider})
         t.deepEqual(result, {
           client_id: 'key', client_secret: 'secret', oauth: 2,
-          grant: true, name: 'grant', key: 'key', secret: 'secret'
+          key: 'key', secret: 'secret'
         })
       })
     })
@@ -39,67 +37,57 @@ describe('config', () => {
     describe('scope', () => {
       it('array with comma', () => {
         var provider = {scope: ['scope1', 'scope2']}
-        var options = {}, server = {}, name = 'grant'
-        var result = config.merge({provider, options, server, name})
+        var result = config.merge({provider})
         t.deepEqual(result, {
-          scope: 'scope1,scope2', grant: true, name: 'grant'
+          scope: 'scope1,scope2'
         })
       })
       it('array with delimiter', () => {
         var provider = {scope: ['scope1', 'scope2'], scope_delimiter: ' '}
-        var options = {}, server = {}, name = 'grant'
-        var result = config.merge({provider, options, server, name})
+        var result = config.merge({provider})
         t.deepEqual(result, {
-          scope: 'scope1 scope2', scope_delimiter: ' ', grant: true, name: 'grant'
+          scope: 'scope1 scope2', scope_delimiter: ' '
         })
       })
       it('stringify scope object', () => {
         var provider = {scope: {profile: {read: true}}}
-        var options = {}, server = {}, name = 'grant'
-        var result = config.merge({provider, options, server, name})
+        var result = config.merge({provider})
         t.deepEqual(result, {
-          scope: '{"profile":{"read":true}}', grant: true, name: 'grant'
+          scope: '{"profile":{"read":true}}'
         })
       })
       it('string', () => {
         var provider = {scope: 'scope1,scope2'}
-        var options = {}, server = {}, name = 'grant'
-        var result = config.merge({provider, options, server, name})
+        var result = config.merge({provider})
         t.deepEqual(result, {
-          scope: 'scope1,scope2', grant: true, name: 'grant'
+          scope: 'scope1,scope2'
         })
       })
     })
 
     describe('redirect_uri', () => {
-      it('default', () => {
-        var provider = {}
-        var options = {}
-        var server = {protocol: 'http', host: 'localhost:5000', callback: '/'}
-        var name = 'grant'
-        var result = config.merge({provider, options, server, name})
+      it('protocol and host', () => {
+        var defaults = {protocol: 'http', host: 'localhost:5000'}
+        var provider = {name: 'grant'}
+        var result = config.merge({provider, defaults})
         t.equal(
           result.redirect_uri,
           'http://localhost:5000/connect/grant/callback'
         )
       })
       it('path prefix', () => {
-        var provider = {path: '/path/prefix'}
-        var options = {}
-        var server = {protocol: 'http', host: 'localhost:5000', callback: '/'}
-        var name = 'grant'
-        var result = config.merge({provider, options, server, name})
+        var defaults = {protocol: 'http', host: 'localhost:5000', path: '/path/prefix'}
+        var provider = {name: 'grant'}
+        var result = config.merge({provider, defaults})
         t.equal(
           result.redirect_uri,
           'http://localhost:5000/path/prefix/connect/grant/callback'
         )
       })
-      it('override', () => {
-        var provider = {redirect_uri: 'http://localhost:5000'}
-        var options = {}
-        var server = {protocol: 'http', host: 'localhost:5000', callback: '/'}
-        var name = 'grant'
-        var result = config.merge({provider, options, server, name})
+      it('redirect_uri overrides protocol and host', () => {
+        var defaults = {protocol: 'http', host: 'localhost:5000', callback: '/'}
+        var provider = {name: 'grant', redirect_uri: 'http://localhost:5000'}
+        var result = config.merge({provider, defaults})
         t.equal(
           result.redirect_uri,
           'http://localhost:5000'
@@ -110,16 +98,16 @@ describe('config', () => {
     describe('custom_params', () => {
       it('empty keys in options.custom_params are excluded', () => {
         var provider = {custom_params: {name: 'grant'}}
-        var options = {custom_params: {name: ''}}, server = {}, name = 'grant'
-        var result = config.merge({provider, options, server, name})
+        var options = {custom_params: {name: ''}}
+        var result = config.merge({provider, options, name: 'grant'})
         t.deepEqual(result, {
           custom_params: {name: 'grant'}, grant: true, name: 'grant'
         })
       })
       it('options.custom_params override provider.custom_params', () => {
         var provider = {custom_params: {name: 'grant'}}
-        var options = {custom_params: {name: 'purest'}}, server = {}, name = 'grant'
-        var result = config.merge({provider, options, server, name})
+        var options = {custom_params: {name: 'purest'}}
+        var result = config.merge({provider, options, name: 'grant'})
         t.deepEqual(result, {
           custom_params: {name: 'purest'}, grant: true, name: 'grant'
         })
@@ -129,48 +117,48 @@ describe('config', () => {
     describe('custom_parameters', () => {
       it('skip params not defined in custom_parameters', () => {
         var provider = {custom_parameters: ['access_type']}
-        var options = {something: 'interesting'}, server = {}, name = 'grant'
-        var result = config.merge({provider, options, server, name})
+        var options = {something: 'interesting'}
+        var result = config.merge({provider, options})
         t.deepEqual(result, {
-          custom_parameters: ['access_type'], grant: true, name: 'grant'
+          custom_parameters: ['access_type']
         })
       })
       it('skip params that are reserved keys', () => {
-        var provider = {custom_parameters: ['name']}
-        var options = {name: 'purest'}, server = {}, name = 'grant'
-        var result = config.merge({provider, options, server, name})
+        var provider = {custom_parameters: ['client_id']}
+        var options = {client_id: 'key'}
+        var result = config.merge({provider, options})
         t.deepEqual(result, {
-          custom_parameters: ['name'], grant: true, name: 'grant'
+          custom_parameters: ['client_id'],
+          client_id: 'key'
         })
       })
 
       it('set custom_parameters value', () => {
         var provider = {custom_parameters: ['expiration']}
-        var options = {expiration: 'never'}, server = {}, name = 'grant'
-        var result = config.merge({provider, options, server, name})
+        var options = {expiration: 'never'}
+        var result = config.merge({provider, options})
         t.deepEqual(result, {
-          custom_parameters: ['expiration'], custom_params: {expiration: 'never'},
-          grant: true, name: 'grant'
+          custom_parameters: ['expiration'],
+          custom_params: {expiration: 'never'}
         })
       })
       it('set object as custom_parameters value', () => {
         var provider = {custom_parameters: ['meta']}
-        var options = {meta: {a: 'b'}}, server = {}, name = 'grant'
-        var result = config.merge({provider, options, server, name})
+        var options = {meta: {a: 'b'}}
+        var result = config.merge({provider, options})
         t.deepEqual(result, {
-          custom_parameters: ['meta'], custom_params: {meta: {a: 'b'}},
-          grant: true, name: 'grant'
+          custom_parameters: ['meta'],
+          custom_params: {meta: {a: 'b'}}
         })
       })
 
       it('custom_parameters extends provider.custom_params', () => {
         var provider = {custom_parameters: ['expiration'], custom_params: {name: 'grant'}}
-        var options = {expiration: 'never'}, server = {}, name = 'grant'
-        var result = config.merge({provider, options, server, name})
+        var options = {expiration: 'never'}
+        var result = config.merge({provider, options})
         t.deepEqual(result, {
           custom_parameters: ['expiration'],
           custom_params: {name: 'grant', expiration: 'never'},
-          grant: true, name: 'grant'
         })
       })
     })
@@ -179,16 +167,16 @@ describe('config', () => {
       it('set overrides', () => {
         var provider = {scope: ['scope'], callback: '/callback'}
         var options = {sub1: {scope: ['scope1']}, sub2: {scope: ['scope2']}}
-        var server = {}, name = 'grant'
-        var result = config.merge({provider, options, server, name})
+        var defaults = {state: true}
+        var result = config.merge({provider, options, defaults})
         t.deepEqual(result, {
-          scope: 'scope', callback: '/callback', grant: true, name: 'grant',
+          scope: 'scope', callback: '/callback', state: true,
           overrides: {
             sub1: {
-              scope: 'scope1', callback: '/callback', grant: true, name: 'grant'
+              scope: 'scope1', callback: '/callback', state: true
             },
             sub2: {
-              scope: 'scope2', callback: '/callback', grant: true, name: 'grant'
+              scope: 'scope2', callback: '/callback', state: true
             }
           }
         })
@@ -196,16 +184,15 @@ describe('config', () => {
       it('deep - not accessible through /connect/:provider/:override?', () => {
         var provider = {scope: ['scope'], callback: '/callback'}
         var options = {sub1: {scope: ['scope1'], sub2: {scope: ['scope2']}}}
-        var server = {}, name = 'grant'
-        var result = config.merge({provider, options, server, name})
+        var result = config.merge({provider, options})
         t.deepEqual(result, {
-          scope: 'scope', callback: '/callback', grant: true, name: 'grant',
+          scope: 'scope', callback: '/callback',
           overrides: {
             sub1: {
-              scope: 'scope1', callback: '/callback', grant: true, name: 'grant',
+              scope: 'scope1', callback: '/callback',
               overrides: {
                 sub2: {
-                  scope: 'scope2', callback: '/callback', grant: true, name: 'grant'
+                  scope: 'scope2', callback: '/callback'
                 }
               }
             }
@@ -224,7 +211,7 @@ describe('config', () => {
       }
       var result = config.init(options)
       t.deepEqual(result, {
-        server: {protocol: 'http', host: 'localhost:3000'},
+        defaults: {protocol: 'http', host: 'localhost:3000'},
         facebook: {
           authorize_url: 'https://www.facebook.com/dialog/oauth',
           access_url: 'https://graph.facebook.com/oauth/access_token',
