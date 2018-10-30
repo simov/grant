@@ -14,6 +14,7 @@
   "transport",
   "state",
   "nonce",
+  "dynamic",
 
   "key",
   "secret",

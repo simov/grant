@@ -285,27 +285,31 @@ describe('config', () => {
       t.deepEqual(result, {name: 'grant'})
       t.deepEqual(options, {grant: {name: 'grant'}})
     })
-    it('non configured, existing oauth provider', () => {
+    it('non configured, not allowed dynamic', () => {
       var options = {}
-      var session = {provider: 'facebook'}
+      var session = {provider: 'grant', dynamic: {scope: 'scope1'}}
+      var result = config.provider(options, session)
+      t.deepEqual(result, {})
+      t.deepEqual(options, {})
+    })
+    it('non configured, existing oauth provider', () => {
+      var options = {defaults: {dynamic: true}}
+      var session = {provider: 'facebook', dynamic: {scope: 'scope1'}}
       var result = config.provider(options, session)
       t.deepEqual(result, {
         authorize_url: 'https://www.facebook.com/dialog/oauth',
         access_url: 'https://graph.facebook.com/oauth/access_token',
-        oauth: 2, facebook: true, name: 'facebook'
+        oauth: 2, facebook: true, name: 'facebook', dynamic: true,
+        scope: 'scope1'
       })
-      t.deepEqual(options, {facebook: {
-        authorize_url: 'https://www.facebook.com/dialog/oauth',
-        access_url: 'https://graph.facebook.com/oauth/access_token',
-        oauth: 2, facebook: true, name: 'facebook'
-      }})
+      t.deepEqual(options, {defaults: {dynamic: true}})
     })
     it('non configured, non existing oauth provider', () => {
-      var options = {}
-      var session = {provider: 'grant'}
+      var options = {defaults: {dynamic: true}}
+      var session = {provider: 'grant', dynamic: {scope: 'scope1'}}
       var result = config.provider(options, session)
-      t.deepEqual(result, {})
-      t.deepEqual(options, {})
+      t.deepEqual(result, {dynamic: true, scope: 'scope1'})
+      t.deepEqual(options, {defaults: {dynamic: true}})
     })
 
     describe('overrides', () => {
@@ -337,13 +341,13 @@ describe('config', () => {
 
     describe('dynamic', () => {
       it('override provider key', () => {
-        var options = {grant: {callback: '/'}}
+        var options = {defaults: {dynamic: true}, grant: {callback: '/'}}
         var session = {provider: 'grant', dynamic: {callback: '/callback'}}
         var result = config.provider(options, session)
-        t.deepEqual(result, {callback: '/callback'})
+        t.deepEqual(result, {callback: '/callback', dynamic: true})
       })
       it('override custom_parameters string value', () => {
-        var options = {grant: {custom_parameters: ['expiration']}}
+        var options = {defaults: {dynamic: true}, grant: {custom_parameters: ['expiration']}}
         var session = {
           provider: 'grant',
           dynamic: {expiration: 'never', custom_params: {name: 'grant'}}
@@ -351,26 +355,29 @@ describe('config', () => {
         var result = config.provider(options, session)
         t.deepEqual(result, {
           custom_parameters: ['expiration'],
-          custom_params: {name: 'grant', expiration: 'never'}
+          custom_params: {name: 'grant', expiration: 'never'},
+          dynamic: true
         })
       })
       it('override custom_parameters object value', () => {
-        var options = {grant: {custom_parameters: ['meta']}}
+        var options = {defaults: {dynamic: true}, grant: {custom_parameters: ['meta']}}
         var session = {
           provider: 'grant', dynamic: {meta: {a: 'b'}}
         }
         var result = config.provider(options, session)
         t.deepEqual(result, {
-          custom_parameters: ['meta'], custom_params: {meta: {a: 'b'}}
+          custom_parameters: ['meta'],
+          custom_params: {meta: {a: 'b'}},
+          dynamic: true
         })
       })
       it('override static override', () => {
-        var options = {grant: {
+        var options = {defaults: {dynamic: true}, grant: {
           callback: '/', overrides: {purest: {callback: '/callback'}}
         }}
         var session = {provider: 'grant', override: 'purest', dynamic: {state: 'purest'}}
         var result = config.provider(options, session)
-        t.deepEqual(result, {callback: '/callback', state: 'purest'})
+        t.deepEqual(result, {callback: '/callback', state: 'purest', dynamic: true})
       })
     })
 

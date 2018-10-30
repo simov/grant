@@ -49,6 +49,9 @@ describe('consumer - session', () => {
     describe(name, () => {
       var server, grant, consumer = name
       var config = {
+        defaults: {
+          dynamic: true
+        },
         oauth1: {
           request_url: url.app('/request_url'),
           authorize_url: url.app('/authorize_url'),
@@ -215,7 +218,6 @@ describe('consumer - session', () => {
           },
           cookie: {},
         })
-        t.ok(typeof grant.config.google === 'object')
         t.deepEqual(body, {provider: 'google',
           dynamic: {scope: ['scope1', 'scope2'], state: 'Grant', nonce: 'simov',
             authorize_url: '/authorize_url'}, state: 'Grant', nonce: 'simov'})
