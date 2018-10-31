@@ -279,37 +279,40 @@ describe('config', () => {
 
   describe('provider', () => {
     it('pre configured', () => {
-      var options = {grant: {name: 'grant'}}
+      var options = {grant: {scope: 'scope1'}}
       var session = {provider: 'grant'}
       var result = config.provider(options, session)
-      t.deepEqual(result, {name: 'grant'})
-      t.deepEqual(options, {grant: {name: 'grant'}})
+      t.deepEqual(result, {scope: 'scope1'})
+      t.deepEqual(options, {grant: {scope: 'scope1'} })
     })
-    it('non configured, not allowed dynamic', () => {
-      var options = {}
-      var session = {provider: 'grant', dynamic: {scope: 'scope1'}}
-      var result = config.provider(options, session)
-      t.deepEqual(result, {})
-      t.deepEqual(options, {})
-    })
-    it('non configured, existing oauth provider', () => {
-      var options = {defaults: {dynamic: true}}
-      var session = {provider: 'facebook', dynamic: {scope: 'scope1'}}
-      var result = config.provider(options, session)
-      t.deepEqual(result, {
-        authorize_url: 'https://www.facebook.com/dialog/oauth',
-        access_url: 'https://graph.facebook.com/oauth/access_token',
-        oauth: 2, facebook: true, name: 'facebook', dynamic: true,
-        scope: 'scope1'
+
+    describe('dynamic provider', () => {
+      it('defaults dynamic false', () => {
+        var options = {}
+        var session = {provider: 'grant', dynamic: {scope: 'scope1'}}
+        var result = config.provider(options, session)
+        t.deepEqual(result, {})
+        t.deepEqual(options, {})
       })
-      t.deepEqual(options, {defaults: {dynamic: true}})
-    })
-    it('non configured, non existing oauth provider', () => {
-      var options = {defaults: {dynamic: true}}
-      var session = {provider: 'grant', dynamic: {scope: 'scope1'}}
-      var result = config.provider(options, session)
-      t.deepEqual(result, {dynamic: true, scope: 'scope1'})
-      t.deepEqual(options, {defaults: {dynamic: true}})
+      it('non configured, existing oauth provider', () => {
+        var options = {defaults: {dynamic: true}}
+        var session = {provider: 'facebook', dynamic: {scope: 'scope1'}}
+        var result = config.provider(options, session)
+        t.deepEqual(result, {
+          authorize_url: 'https://www.facebook.com/dialog/oauth',
+          access_url: 'https://graph.facebook.com/oauth/access_token',
+          oauth: 2, facebook: true, name: 'facebook', dynamic: true,
+          scope: 'scope1'
+        })
+        t.deepEqual(options, {defaults: {dynamic: true}})
+      })
+      it('non configured, non existing oauth provider', () => {
+        var options = {defaults: {dynamic: true}}
+        var session = {provider: 'grant', dynamic: {scope: 'scope1'}}
+        var result = config.provider(options, session)
+        t.deepEqual(result, {name: 'grant', grant: true, dynamic: true, scope: 'scope1'})
+        t.deepEqual(options, {defaults: {dynamic: true}})
+      })
     })
 
     describe('overrides', () => {
@@ -339,57 +342,93 @@ describe('config', () => {
       })
     })
 
-    describe('dynamic', () => {
-      it('override provider key', () => {
-        var options = {defaults: {dynamic: true}, grant: {callback: '/'}}
-        var session = {provider: 'grant', dynamic: {callback: '/callback'}}
-        var result = config.provider(options, session)
-        t.deepEqual(result, {callback: '/callback', dynamic: true})
+    describe('dynamic params', () => {
+      it('defaults dynamic true + provider dynamic', () => {
+        var options = config.init({
+          defaults: {dynamic: true},
+          grant1: {scope: 'scope1', subdomain: 'subdomain1'},
+          grant2: {dynamic: ['subdomain'], scope: 'scope1', subdomain: 'subdomain1'},
+          grant3: {dynamic: false, scope: 'scope1', 'subdomain': 'subdomain1'},
+        })
+        var session = (provider) => ({provider, dynamic: {scope: 'scope2', subdomain: 'subdomain2'}})
+        var results = {
+          grant1: {name: 'grant1', grant1: true, dynamic: true, scope: 'scope2', subdomain: 'subdomain2'},
+          grant2: {name: 'grant2', grant2: true, dynamic: ['subdomain'], scope: 'scope1', subdomain: 'subdomain2'},
+          grant3: {name: 'grant3', grant3: true, dynamic: false, scope: 'scope1', subdomain: 'subdomain1'},
+        }
+        ;['grant1', 'grant2', 'grant3'].forEach((provider) => {
+          var result = config.provider(options, session(provider))
+          t.deepEqual(result, results[provider])
+        })
       })
+      it('defaults dynamic [] + provider dynamic', () => {
+        var options = config.init({
+          defaults: {dynamic: ['scope']},
+          grant1: {scope: 'scope1', subdomain: 'subdomain1'},
+          grant2: {dynamic: ['subdomain'], scope: 'scope1', subdomain: 'subdomain1'},
+          grant3: {dynamic: true, scope: 'scope1', 'subdomain': 'subdomain1'},
+          grant4: {dynamic: false, scope: 'scope1', 'subdomain': 'subdomain1'},
+        })
+        var session = (provider) => ({provider, dynamic: {scope: 'scope2', subdomain: 'subdomain2'}})
+        var results = {
+          grant1: {name: 'grant1', grant1: true, dynamic: ['scope'], scope: 'scope2', subdomain: 'subdomain1'},
+          grant2: {name: 'grant2', grant2: true, dynamic: ['subdomain'], scope: 'scope1', subdomain: 'subdomain2'},
+          grant3: {name: 'grant3', grant3: true, dynamic: true, scope: 'scope2', subdomain: 'subdomain2'},
+          grant4: {name: 'grant4', grant4: true, dynamic: false, scope: 'scope1', subdomain: 'subdomain1'},
+        }
+        ;['grant1', 'grant2', 'grant3', 'grant4'].forEach((provider) => {
+          var result = config.provider(options, session(provider))
+          t.deepEqual(result, results[provider])
+        })
+      })
+      it('provider dynamic without defaults dynamic', () => {
+        var options = config.init({
+          grant1: {scope: 'scope1', subdomain: 'subdomain1'},
+          grant2: {dynamic: ['subdomain'], scope: 'scope1', subdomain: 'subdomain1'},
+          grant3: {dynamic: true, scope: 'scope1', 'subdomain': 'subdomain1'},
+        })
+        var session = (provider) => ({provider, dynamic: {scope: 'scope2', subdomain: 'subdomain2'}})
+        var results = {
+          grant1: {name: 'grant1', grant1: true, scope: 'scope1', subdomain: 'subdomain1'},
+          grant2: {name: 'grant2', grant2: true, dynamic: ['subdomain'], scope: 'scope1', subdomain: 'subdomain2'},
+          grant3: {name: 'grant3', grant3: true, dynamic: true, scope: 'scope2', subdomain: 'subdomain2'},
+        }
+        ;['grant1', 'grant2', 'grant3'].forEach((provider) => {
+          var result = config.provider(options, session(provider))
+          t.deepEqual(result, results[provider])
+        })
+      })
+      it('provider dynamic + static override dynamic', () => {
+        var options = config.init({
+          defaults: {dynamic: true},
+          grant1: {dynamic: false, grant2: {dynamic: ['scope'], scope: 'scope1', subdomain: 'subdomain1'}}
+        })
+        var session = {provider: 'grant1', override: 'grant2', dynamic: {scope: 'scope2', subdomain: 'subdomain2'}}
+        var result = config.provider(options, session)
+        t.deepEqual(result, {name: 'grant1', grant1: true, dynamic: ['scope'], scope: 'scope2', subdomain: 'subdomain1'})
+      })
+
       it('override custom_parameters string value', () => {
-        var options = {defaults: {dynamic: true}, grant: {custom_parameters: ['expiration']}}
+        var options = {grant: {dynamic: true, custom_parameters: ['expiration']}}
         var session = {
           provider: 'grant',
           dynamic: {expiration: 'never', custom_params: {name: 'grant'}}
         }
         var result = config.provider(options, session)
         t.deepEqual(result, {
+          dynamic: true,
           custom_parameters: ['expiration'],
           custom_params: {name: 'grant', expiration: 'never'},
-          dynamic: true
         })
       })
       it('override custom_parameters object value', () => {
-        var options = {defaults: {dynamic: true}, grant: {custom_parameters: ['meta']}}
-        var session = {
-          provider: 'grant', dynamic: {meta: {a: 'b'}}
-        }
+        var options = {grant: {dynamic: true, custom_parameters: ['meta']}}
+        var session = {provider: 'grant', dynamic: {meta: {a: 'b'}}}
         var result = config.provider(options, session)
         t.deepEqual(result, {
+          dynamic: true,
           custom_parameters: ['meta'],
           custom_params: {meta: {a: 'b'}},
-          dynamic: true
-        })
-      })
-      it('override static override', () => {
-        var options = {defaults: {dynamic: true}, grant: {
-          callback: '/', overrides: {purest: {callback: '/callback'}}
-        }}
-        var session = {provider: 'grant', override: 'purest', dynamic: {state: 'purest'}}
-        var result = config.provider(options, session)
-        t.deepEqual(result, {callback: '/callback', state: 'purest', dynamic: true})
-      })
-      it('dynamic: []', () => {
-        var options = {grant: {key: 'key1', scope: 'scope1', dynamic: ['scope']}}
-        var session = {
-          provider: 'grant',
-          dynamic: {key: 'key2', scope: 'scope2'}
-        }
-        var result = config.provider(options, session)
-        t.deepEqual(result, {
-          key: 'key1',
-          scope: 'scope2',
-          dynamic: ['scope']
         })
       })
     })
