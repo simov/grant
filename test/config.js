@@ -379,6 +379,19 @@ describe('config', () => {
         var result = config.provider(options, session)
         t.deepEqual(result, {callback: '/callback', state: 'purest', dynamic: true})
       })
+      it('dynamic: []', () => {
+        var options = {grant: {key: 'key1', scope: 'scope1', dynamic: ['scope']}}
+        var session = {
+          provider: 'grant',
+          dynamic: {key: 'key2', scope: 'scope2'}
+        }
+        var result = config.provider(options, session)
+        t.deepEqual(result, {
+          key: 'key1',
+          scope: 'scope2',
+          dynamic: ['scope']
+        })
+      })
     })
 
     describe('state/nonce', () => {
