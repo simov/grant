@@ -65,7 +65,7 @@ describe('consumer - error', () => {
               t.equal(err.message, 'Grant: mount session middleware first')
               next()
             })
-            server = app.listen(5000, done)
+            server = app.listen(port.app, done)
           },
           koa: (done) => {
             var grant = Grant.koa()(config)
@@ -79,12 +79,12 @@ describe('consumer - error', () => {
               }
             })
             app.use(mount(grant))
-            server = app.listen(5000, done)
+            server = app.listen(port.app, done)
           },
           hapi: (done) => {
             var grant = Grant.hapi()()
             server = new Hapi.Server({debug: {request: false}})
-            server.connection({host: 'localhost', port: 5000})
+            server.connection({host: 'localhost', port: port.app})
 
             server.register([{register: grant, options: config}], (err) => {
               if (err) {
@@ -101,7 +101,7 @@ describe('consumer - error', () => {
           },
           hapi17: (done) => {
             var grant = Grant.hapi()()
-            server = new Hapi.Server({host: 'localhost', port: 5000})
+            server = new Hapi.Server({host: 'localhost', port: port.app})
 
             server.events.on('request', (event, tags) => {
               t.equal(tags.error.message, 'Grant: register session plugin first')
@@ -126,7 +126,7 @@ describe('consumer - error', () => {
         it('throw', async () => {
           try {
             await request({
-              url: url('/connect/grant'),
+              url: url.app('/connect/grant'),
               cookie: {},
             })
           }
@@ -157,7 +157,7 @@ describe('consumer - error', () => {
               t.equal(err.message, 'Grant: mount body parser middleware first')
               next()
             })
-            server = app.listen(5000, done)
+            server = app.listen(port.app, done)
           },
           koa: (done) => {
             var grant = Grant.koa()(config)
@@ -173,7 +173,7 @@ describe('consumer - error', () => {
               }
             })
             app.use(mount(grant))
-            server = app.listen(5000, done)
+            server = app.listen(port.app, done)
           }
         }
 
@@ -187,7 +187,7 @@ describe('consumer - error', () => {
           try {
             await request({
               method: 'POST',
-              url: url('/connect/grant'),
+              url: url.app('/connect/grant'),
               cookie: {},
             })
           }
