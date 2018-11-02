@@ -27,5 +27,8 @@
 
   "name",
   "overrides",
-  "custom_params"
+  "custom_params",
+
+  "defaults",
+  "server"
 ]
