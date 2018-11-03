@@ -241,7 +241,7 @@ describe('config', () => {
         facebook: {state: true, scope: ['openid']}
       })
       var server = config({
-        server: {protocol: 'http', host: 'localhost:3000'},
+        defaults: {protocol: 'http', host: 'localhost:3000'},
         facebook: {state: true, scope: ['openid']}
       })
       t.deepEqual(defaults, server)

@@ -258,7 +258,7 @@ describe('oauth2', () => {
 
       before((done) => {
         var config = {
-          server: {protocol: 'http', host: 'localhost:5000', callback: '/'},
+          defaults: {protocol: 'http', host: 'localhost:5000', callback: '/'},
           basecamp: {}, concur: {}, ebay: {}, fitbit2: {}, homeaway: {},
           reddit: {}, shopify: {}, smartsheet: {}, surveymonkey: {}, visualstudio: {}
         }

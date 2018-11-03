@@ -77,7 +77,7 @@ describe('consumer - flow', () => {
       describe(name, () => {
         var server, grant, consumer = name
         var config = {
-          server: {callback: '/'},
+          defaults: {callback: '/'},
           grant: {
             request_url: url.auth('/request_url'),
             authorize_url: url.auth('/authorize_url'),
@@ -195,7 +195,6 @@ describe('consumer - flow', () => {
             ? server.stop().then(done)
             : server[/express|koa/.test(consumer) ? 'close' : 'stop'](done)
         })
-
       })
     })
 
@@ -230,7 +229,7 @@ describe('consumer - flow', () => {
       describe(name, () => {
         var server, grant, consumer = name
         var config = {
-          server: {callback: '/'},
+          defaults: {callback: '/'},
           grant: {
             authorize_url: url.auth('/authorize_url'),
             access_url: url.auth('/access_url'),

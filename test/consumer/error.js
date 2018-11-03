@@ -223,7 +223,7 @@ describe('consumer - error', () => {
       describe(name, () => {
         var server, grant, consumer = name
         var config = {
-          server: {callback: '/'},
+          defaults: {callback: '/'},
           grant: {
             authorize_url: url.auth('/authorize_url'),
             oauth: 2,
@@ -365,7 +365,7 @@ describe('consumer - error', () => {
       describe(name, () => {
         var server, grant, consumer = name
         var config = {
-          server: {callback: '/'},
+          defaults: {callback: '/'},
           grant: {
             authorize_url: url.auth('/authorize_url'),
             oauth: 2,
@@ -508,7 +508,7 @@ describe('consumer - error', () => {
       describe(name, () => {
         var server, grant, consumer = name
         var config = {
-          server: {callback: '/'},
+          defaults: {callback: '/'},
           grant: {
             authorize_url: url.auth('/authorize_url'),
             oauth: 2,
@@ -656,7 +656,7 @@ describe('consumer - error', () => {
       describe(name, () => {
         var server, grant, consumer = name
         var config = {
-          server: {callback: '/'},
+          defaults: {callback: '/'},
           grant: {
             authorize_url: url.auth('/authorize_url'),
             access_url: url.auth('/access_url'),
@@ -805,7 +805,7 @@ describe('consumer - error', () => {
       describe(name, () => {
         var server, grant, consumer = name
         var config = {
-          server: {callback: '/'},
+          defaults: {callback: '/'},
           grant: {
             authorize_url: url.auth('/authorize_url'),
             access_url: url.auth('/access_url'),
@@ -934,7 +934,7 @@ describe('consumer - error', () => {
       describe(name, () => {
         var server, grant, consumer = name, cookie = {}
         var config = {
-          server: {callback: '/'},
+          defaults: {callback: '/'},
           grant: {
             oauth: 2,
           }
