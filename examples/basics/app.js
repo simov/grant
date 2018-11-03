@@ -7,7 +7,7 @@ var grant = require('grant-express')
 express()
   .use(session({secret: 'grant', saveUninitialized: true, resave: true}))
   .use(grant({
-    server: {
+    defaults: {
       protocol: 'http',
       host: 'localhost:3000'
     },

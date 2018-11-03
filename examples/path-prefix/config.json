@@ -1,5 +1,5 @@
 {
-  "server": {
+  "defaults": {
     "protocol": "http",
     "host": "localhost:3000",
     "path": "/path/prefix"
