@@ -123,30 +123,31 @@ describe('config', () => {
       t.equal(config.format.redirect_uri({}), undefined)
     })
     it('custom_params', () => {
-      t.deepEqual(config.format.custom_params({provider: {}}), undefined)
-      t.deepEqual(config.format.custom_params({provider: {custom_params: {a: 'b'}}}), {a: 'b'})
+      t.deepEqual(config.format.custom_params({}), undefined)
+      t.deepEqual(config.format.custom_params({custom_params: {a: 'b'}}), {a: 'b'})
       var provider = {name: 'grant', grant: true, custom_parameters: ['name']}
       t.deepEqual(
-        config.format.custom_params({provider}), undefined,
+        config.format.custom_params(provider), undefined,
         'filter reserved custom_parameters'
       )
       var provider = {custom_params: {a: 'b', c: 'd'}, custom_parameters: ['a'], a: 'e'}
       t.deepEqual(
-        config.format.custom_params({provider}), {a: 'e', c: 'd'},
+        config.format.custom_params(provider), {a: 'e', c: 'd'},
         'custom_parameters override custom_params'
       )
       var provider = {custom_params: {a: 'b', c: undefined, d: ''}}
       t.deepEqual(
-        config.format.custom_params({provider}), {a: 'b'},
+        config.format.custom_params(provider), {a: 'b'},
         'filter falsy values in custom_params'
       )
     })
     it('overrides', () => {
+      t.deepEqual(config.format.overrides({}), undefined)
       var provider = {
         scope: {}, state: {}, sub: {},
       }
       t.deepEqual(
-        config.format.overrides({provider}), {
+        config.format.overrides(provider), {
           sub: {scope: '{}', state: {}},
         },
         'filter reserved and custom_parameters'
@@ -156,7 +157,7 @@ describe('config', () => {
         sub1: {scope: 'scope1'},
         sub2: {scope: 'scope2'},
       }
-      t.deepEqual(config.format.overrides({provider}), {
+      t.deepEqual(config.format.overrides(provider), {
         sub1: {scope: 'scope1', state: true},
         sub2: {scope: 'scope2', state: true},
       })
@@ -165,7 +166,7 @@ describe('config', () => {
         sub1: {scope: 'scope1', sub2: {scope: 'scope2'}},
       }
       t.deepEqual(
-        config.format.overrides({provider}), {
+        config.format.overrides(provider), {
           sub1: {
             scope: 'scope1', state: true, overrides: {
               sub2: {scope: 'scope2', state: true}}}
