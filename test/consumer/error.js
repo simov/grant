@@ -1090,6 +1090,18 @@ describe('consumer - error', () => {
           })
         })
 
+        it('non preconfigured and no defaults dynamic', async () => {
+          var {res, body} = await request({
+            url: url.app('/connect/purest'),
+            cookie,
+          })
+          t.deepEqual(
+            qs.parse(body),
+            {error: 'Grant: missing or misconfigured provider'},
+            'message'
+          )
+        })
+
         after((done) => {
           consumer === 'hapi' && hapi >= 17
             ? server.stop().then(done)
