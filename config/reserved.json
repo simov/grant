@@ -5,16 +5,12 @@
   "oauth",
   "scope_delimiter",
   "custom_parameters",
-  "subdomain",
 
   "protocol",
   "host",
   "path",
-  "callback",
   "transport",
   "state",
-  "nonce",
-  "dynamic",
 
   "key",
   "secret",
@@ -23,12 +19,13 @@
   "client_id",
   "client_secret",
   "scope",
-  "redirect_uri",
+  "custom_params",
+  "subdomain",
+  "nonce",
+  "callback",
+  "dynamic",
 
   "name",
-  "overrides",
-  "custom_params",
-
-  "defaults",
-  "server"
+  "redirect_uri",
+  "overrides"
 ]
