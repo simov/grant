@@ -26,6 +26,7 @@
   - [Static Overrides][static-overrides]
   - [Dynamic Override][dynamic-override]
 - **Advanced Configuration**
+  - [Reserved Keys][reserved-keys]
   - [Custom Providers][custom-providers]
   - [Development Environments][development-environments]
   - [Subdomain][subdomain]
@@ -332,6 +333,35 @@ Alternatively you can make a `GET` request to the `/connect/:provider/:override?
 ```js
 https://mywebsite.com/connect/shopify?subdomain=usershop
 ```
+
+
+## Reserved Keys
+
+List of all [reserved keys][reserved-json] and their typical location:
+
+Key | Location | Description
+:---| :--- | :---
+request_url | [oauth.json][oauth-config] | OAuth1/step1
+authorize_url | [oauth.json][oauth-config] | OAuth1/step2 or OAuth2/step1
+access_url | [oauth.json][oauth-config] | OAuth1/step3 or OAuth2/step2
+oauth | [oauth.json][oauth-config] | OAuth version number
+scope_delimiter | [oauth.json][oauth-config] | string delimiter used for concatenating multiple scopes
+custom_parameters | [oauth.json][oauth-config] | list of known custom authorization parameters
+protocol, host, path | `defaults` | used to generate `redirect_uri`
+transport | `defaults` | [transport][session-vs-querystring] to use to deliver the response data in your final `callback` route
+state | `defaults` | toggle random `state` string generation for OAuth2
+key | `[provider]` | OAuth app key, reserved aliaes: `consumer_key` and `client_id`
+secret | `[provider]` | OAuth app secret, reserved aliases: `consumer_secret` and `client_secret`
+scope | `[provider]` | list of scopes to request
+custom_params | `[provider]` | custom authorization [parameters][custom-parameters] and their values
+subdomain | `[provider]` | string to be [embedded][subdomain] in `request_url`, `authorize_url` and `access_url`
+nonce | `[provider]` | toggle random `nonce` string generation for [OpenID Connect][openid-connect] providers
+callback | `[provider]` | final callback route on your server to receive the [response data][response-data]
+dynamic | `[provider]` | allow [dynamic override][dynamic-override] of configuration
+name | generated | provider's [name][grant], used to generate `redirect_uri`
+[provider] | generated | provider's [name][grant] as key
+redirect_uri | generated | OAuth app [redirect URI][redirect-uri], generated using `protocol`, `host`, `path` and `name`
+overrides | generated | all keys containing `{object}` value are extracted here as [static overrides][static-overrides]
 
 
 ## Custom Providers
@@ -735,7 +765,7 @@ And you will receive the response data inside the [session][session-transport-ex
 
 ## Redirect URI
 
-The `protocol`, the `host` (and optionally the `path`) options are used to generate the correct `redirect_uri` for each provider:
+The `protocol`, the `host` (and optionally the `path`) options are used to generate [the correct][redirect-url] `redirect_uri` for each provider:
 
 ```json
 {
@@ -831,7 +861,7 @@ express()
 
   [changelog]: https://github.com/simov/grant/blob/master/CHANGELOG.md
   [oauth-config]: https://github.com/simov/grant/blob/master/config/oauth.json
-  [reserved-keys]: https://github.com/simov/grant/blob/master/config/reserved.json
+  [reserved-json]: https://github.com/simov/grant/blob/master/config/reserved.json
   [grant-examples]: https://github.com/simov/grant/tree/master/examples
   [session-transport-example]: https://github.com/simov/grant/blob/master/examples/session-transport/app.js
   [oauth-proxy-example]: https://github.com/simov/grant/blob/master/examples/oauth-proxy/app.js
@@ -852,6 +882,7 @@ express()
   [static-overrides]: #static-overrides
   [dynamic-override]: #dynamic-override
 
+  [reserved-keys]: #reserved-keys
   [custom-providers]: #custom-providers
   [development-environments]: #development-environments
   [subdomain]: #subdomain
