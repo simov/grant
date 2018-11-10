@@ -34,7 +34,7 @@
     "coveralls": "^3.0.2",
     "express": "^4.16.4",
     "express-session": "^1.15.6",
-    "hapi": "16.6.5",
+    "hapi": "~16.3.0",
     "istanbul": "^1.1.0-alpha.1",
     "koa": "^1.6.2",
     "koa-bodyparser": "^2.5.0",
