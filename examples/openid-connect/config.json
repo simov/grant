@@ -10,6 +10,10 @@
     ],
     "callback": "/callback"
   },
+  "asana": {
+    "key": "[APP_ID]",
+    "secret": "[APP_SECRET]"
+  },
   "auth0": {
     "key": "[APP_ID]",
     "secret": "[APP_SECRET]"

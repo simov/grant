@@ -3,9 +3,9 @@ var express = require('express')
 var session = require('express-session')
 var grant = require('grant-express')
 
-var compose = require('request-compose')
-compose.Request.oauth = require('request-oauth')
-var request = compose.client
+var request = require('request-compose').extend({
+  Request: {oauth: require('request-oauth')}
+}).client
 
 var config = require('./config.json')
 

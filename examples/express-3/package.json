@@ -12,7 +12,7 @@
   },
   "dependencies": {
     "express": "^3.21.2",
-    "grant-express": "^4.1.1"
+    "grant-express": "^4.2.0"
   },
   "main": "app.js"
 }

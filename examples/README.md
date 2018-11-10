@@ -20,9 +20,11 @@
     [Hapi 16](https://github.com/simov/grant/tree/master/examples/hapi-session-stores)
 - **Configuration Overrides**
   - [Static Override](https://github.com/simov/grant/tree/master/examples/static-override) |
-    [Dynamic Override](https://github.com/simov/grant/tree/master/examples/dynamic-override)
+    [Dynamic Override](https://github.com/simov/grant/tree/master/examples/dynamic-override) |
+    [OAuth Proxy](https://github.com/simov/grant/tree/master/examples/oauth-proxy)
 - **Misc**
-  - [JWT](https://github.com/simov/grant/tree/master/examples/jwt) |
+  - [OpenID Connect](https://github.com/simov/grant/tree/master/examples/openid-connect) |
+    [JWT](https://github.com/simov/grant/tree/master/examples/jwt) |
     [Custom Provider](https://github.com/simov/grant/tree/master/examples/custom-provider)
 
 
@@ -32,19 +34,18 @@
 ## Install
 
 ```bash
-$ cd example-folder
+$ cd examples/[example-folder]
 $ npm install
 ```
 
 ## OAuth
 
-Create OAuth application for Facebook:
+Most of the examples are using Facebook and Twitter for showcasing the OAuth2 and OAuth1 flow respectively.
 
-> Facebook Login -> Settings: Valid OAuth Redirect URIs: `http://localhost:3000/connect/facebook/callback`
+Create OAuth apps for Facebook and Twitter and set their `redirect_uri` accordingly:
 
-Create OAuth application for Twitter:
-
-> Callback URL: `http://localhost:3000/connect/twitter/callback`
+- `http://localhost:3000/connect/facebook/callback`
+- `http://localhost:3000/connect/twitter/callback`
 
 
 ## Config
@@ -61,9 +62,10 @@ $ node app.js
 
 ## Login
 
-Navigate to `http://localhost:3000/connect/facebook` in your browser
+Navigate to the following URLs in your browser:
 
-Navigate to `http://localhost:3000/connect/twitter` in your browser
+- `http://localhost:3000/connect/facebook`
+- `http://localhost:3000/connect/twitter`
 
 
 # Specific Examples
@@ -71,35 +73,28 @@ Navigate to `http://localhost:3000/connect/twitter` in your browser
 
 ## Static Overrides - Login
 
-Navigate to `http://localhost:3000/connect/facebook` in your browser
+The static overrides example have a bunch of login URLs:
 
-Navigate to `http://localhost:3000/connect/facebook/photos` in your browser
-
-Navigate to `http://localhost:3000/connect/facebook/videos` in your browser
-
-Navigate to `http://localhost:3000/connect/twitter` in your browser
-
-Navigate to `http://localhost:3000/connect/twitter/write` in your browser
+- `http://localhost:3000/connect/facebook`
+- `http://localhost:3000/connect/facebook/photos`
+- `http://localhost:3000/connect/facebook/videos`
+- `http://localhost:3000/connect/twitter`
+- `http://localhost:3000/connect/twitter/write`
 
 
-## Dynamic Overrides Login
+## Dynamic Overrides - Login
 
-Navigate to `http://localhost:3000/connect/facebook` in your browser
+Navigate to `http://localhost:3000/form` in your browser and pick a few scopes to test dynamic override via `POST` request.
 
-Navigate to `http://localhost:3000/connect/facebook?scope=user_photos%2Cuser_videos` in your browser
-
-Navigate to `http://localhost:3000/form` in your browser and pick a few scopes to request access to
+Navigate to `http://localhost:3000/connect/facebook?scope=user_photos%2Cuser_videos` in your browser to test dynamic overrides via `GET` request.
 
 
 ## Path Prefix - OAuth
 
-Create OAuth application for Facebook:
+Create OAuth apps for Facebook and Twitter and set their `redirect_uri` accordingly:
 
-> Facebook Login -> Settings: Valid OAuth Redirect URIs: `http://localhost:3000/path/prefix/connect/facebook/callback`
-
-Create OAuth application for Twitter:
-
-> Callback URL: `http://localhost:3000/path/prefix/connect/twitter/callback`
+- `http://localhost:3000/path/prefix/connect/facebook/callback`
+- `http://localhost:3000/path/prefix/connect/twitter/callback`
 
 
 ## JWT - Create self-signed certificates
