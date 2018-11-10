@@ -1,6 +1,14 @@
 
 # Change Log
 
+## v4.2.0 (2018/11/10)
+- **New:** [OpenID Connect](https://github.com/simov/grant#openid-connect) `id_token` and `nonce` support
+- **New:** The `server` configuration option is now called `defaults` (`server` is still allowed)
+- **New:** `dynamic` option to control the Dynamic Override feature
+- **Change:** The Dynamic Override is now **disabled by default!** In case you rely on it you have to enable it explicitly. Use the [more granular](https://github.com/simov/grant#dynamic-override) configuration or the [proxy one](https://github.com/simov/grant#more-dynamic-overrides)
+- **New:** Official support for 2 new providers: `mastodon`, `onelogin`
+- **Change:** Updated 4 providers: `bitbucket`, `strava`, `twitch`, `yahoo`
+
 ## v4.1.2 (2018/07/16)
 - **New:** Official support for 4 new providers: `arcgis`, `nest`, `okta`, `typeform`
 - **Change:** Updated 2 providers: `dropbox`, `withings`
