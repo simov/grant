@@ -48,7 +48,8 @@
   "asana": {
     "authorize_url": "https://app.asana.com/-/oauth_authorize",
     "access_url": "https://app.asana.com/-/oauth_token",
-    "oauth": 2
+    "oauth": 2,
+    "scope_delimiter": " "
   },
   "assembla": {
     "authorize_url": "https://api.assembla.com/authorization",
@@ -104,10 +105,10 @@
     "oauth": 1
   },
   "bitbucket": {
-    "request_url": "https://bitbucket.org/api/1.0/oauth/request_token",
-    "authorize_url": "https://bitbucket.org/api/1.0/oauth/authenticate",
-    "access_url": "https://bitbucket.org/api/1.0/oauth/access_token",
-    "oauth": 1
+    "authorize_url": "https://bitbucket.org/site/oauth2/authorize",
+    "access_url": "https://bitbucket.org/site/oauth2/access_token",
+    "oauth": 2,
+    "scope_delimiter": " "
   },
   "bitly": {
     "authorize_url": "https://bitly.com/oauth/authorize",
@@ -117,7 +118,8 @@
   "box": {
     "authorize_url": "https://api.box.com/oauth2/authorize",
     "access_url": "https://api.box.com/oauth2/token",
-    "oauth": 2
+    "oauth": 2,
+    "scope_delimiter": " "
   },
   "buffer": {
     "authorize_url": "https://bufferapp.com/oauth2/authorize",
@@ -144,7 +146,7 @@
     "access_url": "https://www.coinbase.com/oauth/token",
     "oauth": 2,
     "scope_delimiter": " ",
-    "custom_parameters": ["meta"]
+    "custom_parameters": ["layout", "referral", "account", "meta"]
   },
   "concur": {
     "authorize_url": "https://www.concursolutions.com/net2/oauth2/Login.aspx",
@@ -170,7 +172,8 @@
   "dailymotion": {
     "authorize_url": "https://www.dailymotion.com/oauth/authorize",
     "access_url": "https://api.dailymotion.com/oauth/token",
-    "oauth": 2
+    "oauth": 2,
+    "custom_parameters": ["display"]
   },
   "deezer": {
     "authorize_url": "https://connect.deezer.com/oauth/auth.php",
@@ -240,7 +243,8 @@
     "authorize_url": "https://signin.ebay.com/authorize",
     "access_url": "https://api.ebay.com/identity/v1/oauth2/token",
     "oauth": 2,
-    "scope_delimiter": " "
+    "scope_delimiter": " ",
+    "custom_parameters": ["prompt"]
   },
   "echosign": {
     "authorize_url": "https://secure.echosign.com/public/oauth",
@@ -403,7 +407,7 @@
     "authorize_url": "https://github.com/login/oauth/authorize",
     "access_url": "https://github.com/login/oauth/access_token",
     "oauth": 2,
-    "custom_parameters": ["allow_signup"]
+    "custom_parameters": ["login", "allow_signup"]
   },
   "gitlab": {
     "authorize_url": "https://gitlab.com/oauth/authorize",
@@ -768,7 +772,8 @@
   "slack": {
     "authorize_url": "https://slack.com/oauth/authorize",
     "access_url": "https://slack.com/api/oauth.access",
-    "oauth": 2
+    "oauth": 2,
+    "custom_parameters": ["team"]
   },
   "slice": {
     "authorize_url": "https://api.slice.com/oauth/authorize",
@@ -805,7 +810,8 @@
   "soundcloud": {
     "authorize_url": "https://soundcloud.com/connect",
     "access_url": "https://api.soundcloud.com/oauth2/token",
-    "oauth": 2
+    "oauth": 2,
+    "custom_parameters": ["display"]
   },
   "spotify": {
     "authorize_url": "https://accounts.spotify.com/authorize",
@@ -1034,10 +1040,10 @@
     "oauth": 1
   },
   "yahoo": {
-    "request_url": "https://api.login.yahoo.com/oauth/v2/get_request_token",
-    "authorize_url": "https://api.login.yahoo.com/oauth/v2/request_auth",
-    "access_url": "https://api.login.yahoo.com/oauth/v2/get_token",
-    "oauth": 1
+    "authorize_url": "https://api.login.yahoo.com/oauth2/request_auth",
+    "access_url": "https://api.login.yahoo.com/oauth2/get_token",
+    "oauth": 2,
+    "custom_parameters": ["language", "prompt", "max_age"]
   },
   "yammer": {
     "authorize_url": "https://www.yammer.com/dialog/oauth",
