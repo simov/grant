@@ -864,9 +864,9 @@ express()
   [changelog]: https://github.com/simov/grant/blob/master/CHANGELOG.md
   [oauth-config]: https://github.com/simov/grant/blob/master/config/oauth.json
   [reserved-json]: https://github.com/simov/grant/blob/master/config/reserved.json
-  [grant-examples]: https://github.com/simov/grant/tree/master/examples
-  [session-transport-example]: https://github.com/simov/grant/blob/master/examples/session-transport/app.js
-  [oauth-proxy-example]: https://github.com/simov/grant/blob/master/examples/oauth-proxy/app.js
+  [grant-examples]: https://github.com/simov/grant/tree/master/examples#table-of-contents
+  [session-transport-example]: https://github.com/simov/grant/blob/master/examples/session-transport
+  [oauth-proxy-example]: https://github.com/simov/grant/blob/master/examples/oauth-proxy
   [openid-connect-example]: https://github.com/simov/grant/blob/master/examples/openid-connect
 
   [grant]: #grant
