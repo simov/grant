@@ -1,6 +1,9 @@
 
 # Change Log
 
+## v4.2.1 (2018/11/27)
+- **Fix:** Fixed regression regarding missing session in the callback route
+
 ## v4.2.0 (2018/11/10)
 - **New:** [OpenID Connect](https://github.com/simov/grant#openid-connect) `id_token` and `nonce` support
 - **New:** The `server` configuration option is now called `defaults` (`server` is still allowed)
