@@ -119,14 +119,18 @@ server.register([
     "transport": "session",
     "state": true
   },
-  "provider1": {
+  "google": {
     "key": "...",
     "secret": "...",
-    "scope": ["scope1", "scope2", ...],
-    "callback": "/provider1/callback"
+    "scope": ["scope1", "scope2"],
+    "nonce": true,
+    "custom_params": {"access_type": "offline"},
+    "callback": "/google/callback"
   },
-  "provider2": {...},
-  ...
+  "twitter": {
+    "key": "...",
+    "secret": "..."
+  }
 }
 ```
 
@@ -137,7 +141,7 @@ server.register([
   - **callback** - common callback route for all providers in your config `/callback` | `/done` ...
   - **transport** - transport to use to deliver the [response data][response-data] in your final callback route `querystring` | `session` *(defaults to querystring if omitted)*
   - **state** - generate random state string on each authorization attempt `true` | `false` *(OAuth2 only, defaults to false if omitted)*
-- **provider1** - any [supported provider][grant] `facebook` | `twitter` ...
+- **provider** - any [supported provider][grant] `facebook` | `twitter` ...
   - **key** - `consumer_key` or `client_id` of your OAuth app
   - **secret** - `consumer_secret` or `client_secret` of your OAuth app
   - **scope** - array of OAuth scopes to request
@@ -265,7 +269,7 @@ Some providers may employ custom authorization parameters, that you can pass usi
 
 You can add arbitrary `{object}` keys inside your provider's configuration to create sub configurations that override the *global* settings for that provider:
 
-```json
+```js
 // navigate to /connect/facebook
 "facebook": {
   "key": "...",
@@ -401,24 +405,21 @@ You can easily configure different development environments:
     "facebook": {
       "key": "development OAuth app credentials",
       "secret": "development OAuth app credentials"
-    },
-    "twitter": {...}, ...
+    }
   },
   "staging": {
     "defaults": {"protocol": "https", "host": "staging.mywebsite.com"},
     "facebook": {
       "key": "staging OAuth app credentials",
       "secret": "staging OAuth app credentials"
-    },
-    "twitter": {...}, ...
+    }
   },
   "production": {
     "defaults": {"protocol": "https", "host": "mywebsite.com"},
     "facebook": {
       "key": "production OAuth app credentials",
       "secret": "production OAuth app credentials"
-    },
-    "twitter": {...}, ...
+    }
   }
 }
 ```
@@ -597,15 +598,15 @@ Set your Mashery user name as `key` and your application key as `api_key`:
 
 Initially these were OAuth1 providers, so the `fitbit`, `linkedin` and `projectplace` names are used for that. To use their OAuth2 flow append `2` at the end of their names:
 
-```json
+```js
 "fitbit2": {
-  // then navigate to /connect/fitbit2
+  // navigate to /connect/fitbit2
 },
 "linkedin2": {
-  // then navigate to /connect/linkedin2
+  // navigate to /connect/linkedin2
 },
 "projectplace2": {
-  // then navigate to /connect/projectplace2
+  // navigate to /connect/projectplace2
 }
 ```
 
