@@ -932,12 +932,9 @@ describe('consumer - error', () => {
   describe('missing session or misconfigured provider', () => {
     ;['express', 'koa', 'hapi'].forEach((name) => {
       describe(name, () => {
-        var server, grant, consumer = name, cookie = {}
+        var server, grant, consumer = name
         var config = {
-          defaults: {callback: '/'},
-          grant: {
-            oauth: 2,
-          }
+          grant: {}
         }
 
         var servers = {
@@ -1024,12 +1021,12 @@ describe('consumer - error', () => {
           ](done)
         })
 
-        it('no flow - /connect + callback', async () => {
-          delete grant.config.grant.oauth
+        it('/connect - misconfigured provider - with callback', async () => {
+          grant.config.grant.callback = '/'
           var assert = async (message) => {
             var {res, body} = await request({
               url: url.app('/connect/grant'),
-              cookie,
+              cookie: {},
             })
             t.equal(res.headers['x-test'], 'true')
             t.deepEqual(
@@ -1046,11 +1043,11 @@ describe('consumer - error', () => {
           await assert('session transport')
         })
 
-        it('no flow - /connect without callback', async () => {
+        it('/connect - misconfigured provider - no callback', async () => {
           delete grant.config.grant.callback
           var {res, body} = await request({
             url: url.app('/connect/grant'),
-            cookie,
+            cookie: {},
           })
           t.equal(res.headers['x-test'], undefined)
           t.deepEqual(qs.parse(body), {
@@ -1058,48 +1055,27 @@ describe('consumer - error', () => {
           })
         })
 
-        it('no flow - /callback + callback', async () => {
-          grant.config.grant.callback = '/'
-          var assert = async (message) => {
-            var {res, body} = await request({
-              url: url.app('/connect/grant/callback'),
-              cookie,
-            })
-            t.equal(res.headers['x-test'], 'true')
-            t.deepEqual(body, {
-              error: 'Grant: missing session or misconfigured provider'
-            })
-          }
-          delete grant.config.grant.transport
-          await assert('no transport')
-          grant.config.grant.transport = 'querystring'
-          await assert('querystring transport')
-          grant.config.grant.transport = 'session'
-          await assert('session transport')
-        })
-
-        it('no flow - /callback without callback', async () => {
-          delete grant.config.grant.callback
-          var {res, body} = await request({
-            url: url.app('/connect/grant/callback'),
-            cookie,
-          })
-          t.equal(res.headers['x-test'], undefined)
-          t.deepEqual(qs.parse(body), {
-            error: 'Grant: missing session or misconfigured provider'
-          })
-        })
-
-        it('non preconfigured and no defaults dynamic', async () => {
+        it('/connect - missing provider - non preconfigured no dynamic', async () => {
           var {res, body} = await request({
             url: url.app('/connect/purest'),
-            cookie,
+            cookie: {},
           })
           t.deepEqual(
             qs.parse(body),
             {error: 'Grant: missing or misconfigured provider'},
             'message'
           )
+        })
+
+        it('/callback - missing session', async () => {
+          var {res, body} = await request({
+            url: url.app('/connect/grant/callback'),
+            cookie: {},
+          })
+          t.equal(res.headers['x-test'], undefined)
+          t.deepEqual(qs.parse(body), {
+            error: 'Grant: missing session or misconfigured provider'
+          })
         })
 
         after((done) => {
