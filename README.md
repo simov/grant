@@ -110,7 +110,7 @@ server.register([
 
 ## Configuration
 
-```js
+```json
 {
   "defaults": {
     "protocol": "http",
@@ -191,7 +191,7 @@ server.register([{routes: {prefix: '/path/prefix'}, plugin: grant(config)}])
 
 In this case it is required to specify the path prefix using the `path` configuration option for the `defaults` key:
 
-```js
+```json
 {
   "defaults": {
     "protocol": "...",
@@ -209,7 +209,7 @@ Lastly that path prefix should be specified in your OAuth application's redirect
 
 In case you want your callback routes prefixed, set them accordingly:
 
-```js
+```json
 {
   "facebook": {
     "callback": "/path/prefix/handle_facebook_callback"
@@ -246,7 +246,7 @@ For convenience the [response data][response-data] contains the decoded `id_toke
 
 Some providers may employ custom authorization parameters, that you can pass using the `custom_params` option:
 
-```js
+```json
 "google": {
   "custom_params": {"access_type": "offline"}
 },
@@ -265,7 +265,7 @@ Some providers may employ custom authorization parameters, that you can pass usi
 
 You can add arbitrary `{object}` keys inside your provider's configuration to create sub configurations that override the *global* settings for that provider:
 
-```js
+```json
 // navigate to /connect/facebook
 "facebook": {
   "key": "...",
@@ -330,7 +330,7 @@ app.use(mount(grant(config)))
 
 Alternatively you can make a `GET` request to the `/connect/:provider/:override?` route:
 
-```js
+```
 https://mywebsite.com/connect/shopify?subdomain=usershop
 ```
 
@@ -350,7 +350,7 @@ custom_parameters | [oauth.json][oauth-config] | list of known custom authorizat
 protocol, host, path | `defaults` | used to generate `redirect_uri`
 transport | `defaults` | [transport][session-vs-querystring] to use to deliver the response data in your final `callback` route
 state | `defaults` | toggle random `state` string generation for OAuth2
-key | `[provider]` | OAuth app key, reserved aliaes: `consumer_key` and `client_id`
+key | `[provider]` | OAuth app key, reserved aliases: `consumer_key` and `client_id`
 secret | `[provider]` | OAuth app secret, reserved aliases: `consumer_secret` and `client_secret`
 scope | `[provider]` | list of scopes to request
 custom_params | `[provider]` | custom authorization [parameters][custom-parameters] and their values
@@ -370,7 +370,7 @@ In case you have a private OAuth provider that you don't want to be part of the 
 
 In this case you have to specify all of the required provider keys by yourself:
 
-```js
+```json
 {
   "defaults": {
     "protocol": "https",
@@ -394,7 +394,7 @@ In this case you have to specify all of the required provider keys by yourself:
 
 You can easily configure different development environments:
 
-```js
+```json
 {
   "development": {
     "defaults": {"protocol": "http", "host": "dummy.com:3000"},
@@ -443,7 +443,7 @@ Some providers have dynamic URLs containing bits of user information embedded in
 
 The `subdomain` option can be used to specify your company name, server region or whatever else is required:
 
-```js
+```json
 "shopify": {
   "subdomain": "mycompany"
 },
@@ -454,7 +454,7 @@ The `subdomain` option can be used to specify your company name, server region o
 
 Then Grant will generate the correct OAuth URLs:
 
-```js
+```json
 "shopify": {
   "authorize_url": "https://mycompany.myshopify.com/admin/oauth/authorize",
   "access_url": "https://mycompany.myshopify.com/admin/oauth/access_token"
@@ -472,7 +472,7 @@ Then Grant will generate the correct OAuth URLs:
 
 Some providers may have *sandbox* URLs for testing. To use them just override the entire `request_url`, `authorize_url` and `access_url` in your configuration *(notice the `sandbox` bits)*:
 
-```js
+```json
 "paypal": {
   "authorize_url": "https://www.sandbox.paypal.com/webapps/auth/protocol/openidconnect/v1/authorize",
   "access_url": "https://api.sandbox.paypal.com/v1/identity/openidconnect/tokenservice"
@@ -548,7 +548,7 @@ And the most extreme case is allowing non preconfigured providers to be used dyn
 
 Set the redirect URL of your OAuth app as usual `[protocol]://[host]/connect/ebay/callback`. Then Ebay will generate a special string called *RuName (eBay Redirect URL name)* that you need to set as `redirect_uri` in Grant:
 
-```js
+```json
 "ebay": {
   "redirect_uri": "[RUNAME]"
 }
@@ -559,7 +559,7 @@ Set the redirect URL of your OAuth app as usual `[protocol]://[host]/connect/eba
 
 Flickr uses a custom authorization parameter to pass its scopes called `perms`, and Optimizely uses `scopes`. However you should use the regular `scope` option in your configuration:
 
-```js
+```json
 "flickr": {
   "scope": ["write"]
 }
@@ -573,7 +573,7 @@ Flickr uses a custom authorization parameter to pass its scopes called `perms`, 
 
 Mastodon requires the entire *domain* of your server to be embedded in the OAuth URLs. However you should use the `subdomain` option:
 
-```js
+```json
 "mastodon": {
   "subdomain": "mastodon.cloud"
 }
@@ -584,7 +584,7 @@ Mastodon requires the entire *domain* of your server to be embedded in the OAuth
 
 Set your Mashery user name as `key` and your application key as `api_key`:
 
-```js
+```json
 "surveymonkey": {
   "key": "[MASHERY_USER_NAME]",
   "secret": "[CLIENT_SECRET]",
@@ -597,7 +597,7 @@ Set your Mashery user name as `key` and your application key as `api_key`:
 
 Initially these were OAuth1 providers, so the `fitbit`, `linkedin` and `projectplace` names are used for that. To use their OAuth2 flow append `2` at the end of their names:
 
-```js
+```json
 "fitbit2": {
   // then navigate to /connect/fitbit2
 },
@@ -614,7 +614,7 @@ Initially these were OAuth1 providers, so the `fitbit`, `linkedin` and `projectp
 
 Set your Client Secret as `secret` not the App Secret:
 
-```js
+```json
 "visualstudio": {
   "key": "[APP_ID]",
   "secret": "[CLIENT_SECRET not APP_SECRET]"
@@ -800,7 +800,7 @@ The above configuration is identical to:
 
 You can document your configuration by adding custom keys to it:
 
-```js
+```json
 {
   "google": {
     "app": "My Awesome OAuth App",
