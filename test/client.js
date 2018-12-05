@@ -3,6 +3,7 @@ var t = require('assert')
 var http = require('http')
 var qs = require('qs')
 var request = require('../lib/client')
+var compose = require('request-compose')
 
 
 describe('client', () => {
@@ -50,6 +51,13 @@ describe('client', () => {
     it('querystring as text', async () => {
       var {body} = await request({url: 'http://localhost:5000/qstext'})
       t.deepStrictEqual(body, {nested: {querystring: 'true'}})
+    })
+
+    it('extend', async () => {
+      var {body} = await request({url: 'http://localhost:5000/qstext'})
+      t.deepStrictEqual(body, {nested: {querystring: 'true'}})
+      var {body} = await compose.client({url: 'http://localhost:5000/qstext'})
+      t.equal(body, 'nested%5Bquerystring%5D=true')
     })
 
     after((done) => {
