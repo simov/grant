@@ -67,16 +67,7 @@
     "test": "npm run test:ci",
     "test:ci": "v=$(node -e \"console.log(process.version.split('.')[0].slice(1))\") && if [ $v -ge 8 ]; then p=\"test\"; else p=\"build/test\"; fi && mocha $p --recursive",
     "test:cov": "istanbul cover _mocha -- --recursive",
-    "copy:config": "mkdir build/config && cp config/*.json build/config/",
-    "build:consumer": "babel lib/consumer --out-dir build/lib/consumer",
-    "copy:koa": "cp lib/consumer/koa.js lib/consumer/koa2.js build/lib/consumer/",
-    "copy:hapi": "cp lib/consumer/hapi17.js build/lib/consumer/",
-    "build:flow": "babel lib/flow --out-dir build/lib/flow",
-    "build:utils": "babel lib/*.js --out-dir build",
-    "build:test": "babel test --out-dir build/test",
-    "build:main": "babel *.js --out-dir build",
-    "copy:package": "cp package.json build/",
-    "build": "rm -rf build/ && mkdir -p build && npm run copy:config && npm run build:consumer && npm run copy:koa && npm run copy:hapi && npm run build:flow && npm run build:utils && npm run build:test && npm run build:main && npm run copy:package",
+    "build": "./build.sh",
     "prepublish": "npm run build"
   },
   "engines": {
