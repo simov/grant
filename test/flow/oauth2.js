@@ -177,7 +177,6 @@ describe('oauth2', () => {
           }
         }
         var grant = Grant(config)
-        delete config.server
 
         Object.keys(config).forEach((key) => {
           it(key, async () => {
@@ -185,9 +184,7 @@ describe('oauth2', () => {
             var query = qs.parse(url.split('?')[1])
             delete query.response_type
             delete query.redirect_uri
-            ;(key === 'optimizely')
-              ? t.deepEqual(query, {})
-              : t.deepEqual(query, config[key])
+            t.deepEqual(query, config[key])
           })
         })
       })
@@ -201,7 +198,6 @@ describe('oauth2', () => {
           }
         }
         var grant = Grant(config)
-        delete config.server
 
         Object.keys(config).forEach((key) => {
           it(key, async () => {
@@ -224,12 +220,19 @@ describe('oauth2', () => {
       })
 
       describe('scopes', () => {
-        var config = {optimizely: {scope: ['all']}}
-        var grant = Grant(config)
+        var grant = Grant({
+          freelancer: {scope: ['1', '2']},
+          optimizely: {scope: ['1', '2']}
+        })
+        it('freelancer', async () => {
+          var url = await oauth2.authorize(grant.config.freelancer)
+          var query = qs.parse(url.split('?')[1])
+          t.equal(query.advanced_scopes, '1 2')
+        })
         it('optimizely', async () => {
           var url = await oauth2.authorize(grant.config.optimizely)
           var query = qs.parse(url.split('?')[1])
-          t.equal(query.scopes, 'all')
+          t.equal(query.scopes, '1,2')
         })
       })
 

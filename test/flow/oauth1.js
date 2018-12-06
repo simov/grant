@@ -6,6 +6,8 @@ var express = require('express')
 var bodyParser = require('body-parser')
 var Grant = require('../../').express()
 var oauth1 = require('../../lib/flow/oauth1')
+var oauth = require('../../config/oauth')
+var reserved = require('../../config/reserved')
 
 
 describe('oauth1', () => {
@@ -266,75 +268,74 @@ describe('oauth1', () => {
     })
 
     describe('authorize', () => {
-      var grant
-
-      before(() => {
-        var config = {
-          flickr: {}, freshbooks: {}, getpocket: {}, ravelry: {}, trello: {},
-          tripit: {}
-        }
-        grant = Grant(config)
-      })
-
       describe('custom_parameters', () => {
-        it('trello', async () => {
-          grant.config.trello.custom_params = {expiration: 'never', name: 'Grant'}
-          var url = await oauth1.authorize(grant.config.trello, {oauth_token: 'token'})
-          var query = qs.parse(url.split('?')[1])
-          t.deepEqual(
-            query,
-            {oauth_token: 'token', expiration: 'never', name: 'Grant'}
-          )
+        var config = {}
+        for (var key in oauth) {
+          var provider = oauth[key]
+          if (provider.oauth === 1 && provider.custom_parameters) {
+            config[key] = {}
+            provider.custom_parameters.forEach((param, index) => {
+              if (reserved.includes(param)) {
+                config[key].custom_params = config[key].custom_params || {}
+                config[key].custom_params[param] = index.toString()
+              }
+              else {
+                config[key][param] = index.toString()
+              }
+            })
+          }
+        }
+        var grant = Grant(config)
+
+        Object.keys(config).forEach((key) => {
+          it(key, async () => {
+            var url = await oauth1.authorize(grant.config[key], {oauth_token: 'token'})
+            var query = qs.parse(url.split('?')[1])
+            delete query.oauth_token
+            if (config[key].custom_params) {
+              Object.assign(config[key], config[key].custom_params)
+              delete config[key].custom_params
+            }
+            t.deepEqual(query, config[key])
+          })
         })
       })
 
       describe('scope', () => {
+        var grant = Grant({
+          flickr: {scope: ['1', '2']},
+          ravelry: {scope: ['1', '2']},
+          trello: {scope: ['1', '2']},
+        })
         it('flickr', async () => {
-          grant.config.flickr.scope = ['read', 'write']
           var url = await oauth1.authorize(grant.config.flickr, {oauth_token: 'token'})
           var query = qs.parse(url.split('?')[1])
-          t.deepEqual(
-            query,
-            {oauth_token: 'token', perms: ['read', 'write']}
-          )
+          t.equal(query.perms, '1,2')
         })
-
         it('ravelry', async () => {
-          grant.config.ravelry.scope = ['read', 'write']
           var url = await oauth1.authorize(grant.config.ravelry, {oauth_token: 'token'})
           var query = qs.parse(url.split('?')[1])
-          t.deepEqual(
-            query,
-            {oauth_token: 'token', scope: ['read', 'write']}
-          )
+          t.equal(query.scope, '1 2')
         })
-
         it('trello', async () => {
-          grant.config.trello.custom_params = {expiration: 'never', name: 'Grant'}
-          grant.config.trello.scope = ['read', 'write']
           var url = await oauth1.authorize(grant.config.trello, {oauth_token: 'token'})
           var query = qs.parse(url.split('?')[1])
-          t.deepEqual(
-            query,
-            {oauth_token: 'token', scope: ['read', 'write'], expiration: 'never', name: 'Grant'}
-          )
+          t.equal(query.scope, '1,2')
         })
       })
 
       describe('oauth_callback', () => {
         it('tripit', async () => {
-          grant.config.tripit.redirect_uri = url('/connect/tripit/callback')
+          var grant = Grant({tripit: {redirect_uri: url('/connect/tripit/callback')}})
           var uri = await oauth1.authorize(grant.config.tripit, {oauth_token: 'token'})
           var query = qs.parse(uri.split('?')[1])
-          t.deepEqual(
-            query,
-            {oauth_token: 'token', oauth_callback: url('/connect/tripit/callback')}
-          )
+          t.equal(query.oauth_callback, url('/connect/tripit/callback'))
         })
       })
 
       describe('getpocket', () => {
         it('authorize', async () => {
+          var grant = Grant({getpocket: {}})
           var url = await oauth1.authorize(grant.config.getpocket, {code: 'code'})
           var query = qs.parse(url.split('?')[1])
           t.deepEqual(query, {request_token: 'code'})
@@ -343,7 +344,7 @@ describe('oauth1', () => {
 
       describe('subdomain', () => {
         it('freshbooks', async () => {
-          grant.config.freshbooks.subdomain = 'grant'
+          var grant = Grant({freshbooks: {subdomain: 'grant'}})
           var url = await oauth1.authorize(grant.config.freshbooks, {oauth_token: 'token'})
           t.equal(url.indexOf('https://grant.freshbooks.com'), 0)
         })
