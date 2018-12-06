@@ -14,7 +14,7 @@ describe('response', () => {
   var grant
 
   before(() => {
-    grant = new Grant({
+    grant = Grant({
       defaults: {protocol: 'http', host: 'localhost:5000', callback: '/'},
       concur: {}, facebook: {}, getpocket: {}, twitter: {}, yammer: {}
     })

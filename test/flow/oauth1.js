@@ -189,7 +189,7 @@ describe('oauth1', () => {
           discogs: {}, etsy: {}, freshbooks: {}, getpocket: {},
           linkedin: {}
         }
-        grant = new Grant(config)
+        grant = Grant(config)
         var app = express()
         app.use(bodyParser.urlencoded({extended: true}))
         app.use(grant)
@@ -273,7 +273,7 @@ describe('oauth1', () => {
           flickr: {}, freshbooks: {}, getpocket: {}, ravelry: {}, trello: {},
           tripit: {}
         }
-        grant = new Grant(config)
+        grant = Grant(config)
       })
 
       describe('custom_parameters', () => {
@@ -358,7 +358,7 @@ describe('oauth1', () => {
           discogs: {}, freshbooks: {}, getpocket: {}, goodreads: {}, intuit: {},
           tripit: {}
         }
-        grant = new Grant(config)
+        grant = Grant(config)
         var app = express()
         app.use(bodyParser.urlencoded({extended: true}))
         app.use(grant)

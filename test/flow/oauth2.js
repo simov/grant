@@ -176,7 +176,7 @@ describe('oauth2', () => {
             })
           }
         }
-        var grant = new Grant(config)
+        var grant = Grant(config)
         delete config.server
 
         Object.keys(config).forEach((key) => {
@@ -200,7 +200,7 @@ describe('oauth2', () => {
             config[key] = {subdomain: 'grant'}
           }
         }
-        var grant = new Grant(config)
+        var grant = Grant(config)
         delete config.server
 
         Object.keys(config).forEach((key) => {
@@ -215,7 +215,7 @@ describe('oauth2', () => {
 
       describe('web_server', () => {
         var config = {basecamp: {}}
-        var grant = new Grant(config)
+        var grant = Grant(config)
         it('basecamp', async () => {
           var url = await oauth2.authorize(grant.config.basecamp)
           var query = qs.parse(url.split('?')[1])
@@ -225,7 +225,7 @@ describe('oauth2', () => {
 
       describe('scopes', () => {
         var config = {optimizely: {scope: ['all']}}
-        var grant = new Grant(config)
+        var grant = Grant(config)
         it('optimizely', async () => {
           var url = await oauth2.authorize(grant.config.optimizely)
           var query = qs.parse(url.split('?')[1])
@@ -235,7 +235,7 @@ describe('oauth2', () => {
 
       describe('response_type', () => {
         var config = {visualstudio: {response_type: 'Assertion'}}
-        var grant = new Grant(config)
+        var grant = Grant(config)
         it('visualstudio', async () => {
           var url = await oauth2.authorize(grant.config.visualstudio)
           var query = qs.parse(url.split('?')[1])
@@ -245,7 +245,7 @@ describe('oauth2', () => {
 
       describe('scopes separated by unencoded + sign', () => {
         var config = {unsplash: {scope: ['public', 'read_photos']}}
-        var grant = new Grant(config)
+        var grant = Grant(config)
         it('unsplash', async () => {
           var url = await oauth2.authorize(grant.config.unsplash)
           t.equal(url.replace(/.*scope=(.*)/g, '$1'), 'public+read_photos')
@@ -262,7 +262,7 @@ describe('oauth2', () => {
           basecamp: {}, concur: {}, ebay: {}, fitbit2: {}, homeaway: {},
           reddit: {}, shopify: {}, smartsheet: {}, surveymonkey: {}, visualstudio: {}
         }
-        grant = new Grant(config)
+        grant = Grant(config)
         var app = express().use(grant).use(bodyParser.urlencoded({extended: true}))
 
         grant.config.basecamp.access_url = url('/access_url')
