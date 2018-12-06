@@ -367,6 +367,13 @@
     "access_url": "https://api.freeagent.com/v2/token_endpoint",
     "oauth": 2
   },
+  "freelancer": {
+    "authorize_url": "https://accounts.freelancer.com/oauth/authorize",
+    "access_url": "https://accounts.freelancer.com/oauth/token",
+    "oauth": 2,
+    "scope_delimiter": " ",
+    "custom_parameters": ["advanced_scopes", "prompt"]
+  },
   "freshbooks": {
     "request_url": "https://[subdomain].freshbooks.com/oauth/oauth_request.php",
     "authorize_url": "https://[subdomain].freshbooks.com/oauth/oauth_authorize.php",
@@ -466,6 +473,11 @@
     "access_url": "https://ws.homeaway.com/oauth/token",
     "oauth": 2
   },
+  "hootsuite": {
+    "authorize_url": "https://platform.hootsuite.com/oauth2/auth",
+    "access_url": "https://platform.hootsuite.com/oauth2/token",
+    "oauth": 2
+  },
   "iconfinder": {
     "authorize_url": "https://www.iconfinder.com/api/v2/oauth2/authorize",
     "access_url": "https://www.iconfinder.com/api/v2/oauth2/token",
@@ -507,12 +519,6 @@
     "authorize_url": "https://api.jamendo.com/v3.0/oauth/authorize",
     "access_url": "https://api.jamendo.com/v3.0/oauth/grant",
     "oauth": 2
-  },
-  "jawbone": {
-    "authorize_url": "https://jawbone.com/auth/oauth2/auth",
-    "access_url": "https://jawbone.com/auth/oauth2/token",
-    "oauth": 2,
-    "scope_delimiter": " "
   },
   "jumplead": {
     "authorize_url": "https://account.mooloop.com/oauth/authorize",
