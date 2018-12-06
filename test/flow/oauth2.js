@@ -262,37 +262,37 @@ describe('oauth2', () => {
       before((done) => {
         var config = {
           defaults: {protocol: 'http', host: 'localhost:5000', callback: '/'},
-          basecamp: {}, concur: {}, ebay: {}, fitbit2: {}, homeaway: {},
-          reddit: {}, shopify: {}, smartsheet: {}, surveymonkey: {}, visualstudio: {}
+          basecamp: {access_url: url('/access_url')},
+          concur: {access_url: url('/access_url')},
+          ebay: {access_url: url('/access_url')},
+          fitbit2: {access_url: url('/access_url')},
+          homeaway: {access_url: url('/access_url')},
+          hootsuite: {access_url: url('/access_url')},
+          reddit: {access_url: url('/access_url')},
+          shopify: {access_url: url('/access_url')},
+          smartsheet: {access_url: url('/access_url')},
+          surveymonkey: {access_url: url('/access_url')},
+          visualstudio: {access_url: url('/access_url')},
         }
         grant = Grant(config)
-        var app = express().use(grant).use(bodyParser.urlencoded({extended: true}))
-
-        grant.config.basecamp.access_url = url('/access_url')
-        grant.config.concur.access_url = url('/access_url')
-        grant.config.ebay.access_url = url('/access_url')
-        grant.config.fitbit2.access_url = url('/access_url')
-        grant.config.homeaway.access_url = url('/access_url')
-        grant.config.reddit.access_url = url('/access_url')
-        grant.config.smartsheet.access_url = url('/access_url')
-        grant.config.surveymonkey.access_url = url('/access_url')
-        grant.config.visualstudio.access_url = url('/access_url')
-
-        app.post('/access_url', (req, res) => {
-          if (req.headers.authorization) {
-            res.writeHead(200, {'content-type': 'application/x-www-form-urlencoded'})
-            res.end(qs.stringify({basic: req.headers.authorization}))
-          }
-          else if (req.url.split('?')[1]) {
-            res.writeHead(200, {'content-type': 'application/json'})
-            res.end(qs.stringify(req.query))
-          }
-          else if (req.body) {
-            res.writeHead(200, {'content-type': 'application/x-www-form-urlencoded'})
-            res.end(qs.stringify(req.body))
-          }
-        })
-        server = app.listen(5000, done)
+        server = express()
+          .use(grant)
+          .use(bodyParser.urlencoded({extended: true}))
+          .post('/access_url', (req, res) => {
+            if (req.headers.authorization) {
+              res.writeHead(200, {'content-type': 'application/x-www-form-urlencoded'})
+              res.end(qs.stringify({basic: req.headers.authorization}))
+            }
+            else if (req.url.split('?')[1]) {
+              res.writeHead(200, {'content-type': 'application/json'})
+              res.end(qs.stringify(req.query))
+            }
+            else if (req.body) {
+              res.writeHead(200, {'content-type': 'application/x-www-form-urlencoded'})
+              res.end(qs.stringify(req.body))
+            }
+          })
+          .listen(5000, done)
       })
 
       describe('web_server', () => {
@@ -319,7 +319,7 @@ describe('oauth2', () => {
       })
 
       describe('basic auth', () => {
-        ;['ebay', 'fitbit2', 'homeaway', 'reddit'].forEach((provider) => {
+        ;['ebay', 'fitbit2', 'homeaway', 'hootsuite', 'reddit'].forEach((provider) => {
           it(provider, async () => {
             grant.config.ebay.key = 'key'
             grant.config.ebay.secret = 'secret'
