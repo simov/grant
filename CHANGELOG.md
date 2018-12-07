@@ -1,6 +1,10 @@
 
 # Change Log
 
+## v4.2.2 (2018/12/07)
+- **New:** Official support for 2 new providers: `freelancer`, `hootsuite`
+- **Change:** Removed 1 discontinued provider: `jawbone`
+
 ## v4.2.1 (2018/11/27)
 - **Fix:** Fixed regression regarding missing session in the callback route
 
