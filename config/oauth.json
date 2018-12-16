@@ -478,6 +478,11 @@
     "access_url": "https://platform.hootsuite.com/oauth2/token",
     "oauth": 2
   },
+  "ibm": {
+    "authorize_url": "https://idaas.iam.ibm.com/idaas/oidc/endpoint/default/authorize",
+    "access_url": "https://idaas.iam.ibm.com/idaas/oidc/endpoint/default/token",
+    "oauth": 2
+  },
   "iconfinder": {
     "authorize_url": "https://www.iconfinder.com/api/v2/oauth2/authorize",
     "access_url": "https://www.iconfinder.com/api/v2/oauth2/token",
