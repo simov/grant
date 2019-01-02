@@ -596,6 +596,11 @@
     "oauth": 2,
     "scope_delimiter": " "
   },
+  "mention": {
+    "authorize_url": "https://web.mention.com/authorize",
+    "access_url": "https://web.mention.net/oauth/v2/token",
+    "oauth": 2
+  },
   "microsoft":{
     "authorize_url": "https://login.microsoftonline.com/common/oauth2/v2.0/authorize",
     "access_url": "https://login.microsoftonline.com/common/oauth2/v2.0/token",
