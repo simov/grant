@@ -24,8 +24,8 @@
   "nonce",
   "callback",
   "dynamic",
+  "overrides",
 
   "name",
-  "redirect_uri",
-  "overrides"
+  "redirect_uri"
 ]

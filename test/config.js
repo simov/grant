@@ -108,71 +108,108 @@ describe('config', () => {
       t.equal(config.format.nonce({}), undefined)
     })
     it('redirect_uri', () => {
-      var result = config.format.redirect_uri({
-        redirect_uri: 'http://localhost:3000/connect/grant/callback'
+      ;[
+        [
+          {},
+          undefined,
+        ],
+        [
+          {redirect_uri: 'http://localhost:3000/connect/grant/callback'},
+          'http://localhost:3000/connect/grant/callback',
+        ],
+        [
+          {protocol: 'https', host: 'outofindex.com', name: 'grant'},
+          'https://outofindex.com/connect/grant/callback',
+        ],
+        [
+          {protocol: 'https', host: 'outofindex.com', path: '/prefix', name: 'grant'},
+          'https://outofindex.com/prefix/connect/grant/callback',
+        ]
+      ].forEach(([provider, result, message]) => {
+        t.deepEqual(config.format.redirect_uri(provider), result, message)
       })
-      t.equal(result, 'http://localhost:3000/connect/grant/callback')
-      var result = config.format.redirect_uri({
-        protocol: 'https', host: 'outofindex.com', name: 'grant'
-      })
-      t.equal(result, 'https://outofindex.com/connect/grant/callback')
-      var result = config.format.redirect_uri({
-        protocol: 'https', host: 'outofindex.com', path: '/prefix', name: 'grant'
-      })
-      t.equal(result, 'https://outofindex.com/prefix/connect/grant/callback')
-      t.equal(config.format.redirect_uri({}), undefined)
     })
     it('custom_params', () => {
-      t.deepEqual(config.format.custom_params({}), undefined)
-      t.deepEqual(config.format.custom_params({custom_params: {a: 'b'}}), {a: 'b'})
-      var provider = {name: 'grant', grant: true, custom_parameters: ['name']}
-      t.deepEqual(
-        config.format.custom_params(provider), undefined,
-        'filter reserved custom_parameters'
-      )
-      var provider = {custom_params: {a: 'b', c: 'd'}, custom_parameters: ['a'], a: 'e'}
-      t.deepEqual(
-        config.format.custom_params(provider), {a: 'e', c: 'd'},
-        'custom_parameters override custom_params'
-      )
-      var provider = {custom_params: {a: 'b', c: undefined, d: ''}}
-      t.deepEqual(
-        config.format.custom_params(provider), {a: 'b'},
-        'filter falsy values in custom_params'
-      )
+      ;[
+        [
+          {},
+          undefined,
+          'return undefined by default'
+        ],
+        [
+          {custom_params: {}},
+          undefined,
+          'return undefined on empty custom_params'
+        ],
+        [
+          {custom_parameters: ['name'], name: 'grant'},
+          undefined,
+          'filter out reserved keys'
+        ],
+        [
+          {custom_parameters: ['grant'], name: 'grant', grant: true},
+          undefined,
+          'filter out provider name set as key'
+        ],
+        [
+          {custom_parameters: ['a'], a: {}},
+          undefined,
+          'filter out object keys'
+        ],
+        [
+          {custom_parameters: ['a'], a: '', custom_params: {b: ''}},
+          undefined,
+          'filter out falsy values'
+        ],
+        [
+          {custom_parameters: ['a', 'b'], a: 1, b: 2, custom_params: {b: 3, c: 4}},
+          {a: 1, b: 3, c: 4},
+          'custom_params override custom_parameters'
+        ],
+      ].forEach(([provider, result, message]) => {
+        t.deepEqual(config.format.custom_params(provider), result, message)
+      })
     })
     it('overrides', () => {
-      t.deepEqual(config.format.overrides({}), undefined)
-      var provider = {
-        scope: {}, state: {}, sub: {},
-      }
-      t.deepEqual(
-        config.format.overrides(provider), {
-          sub: {scope: '{}', state: {}},
-        },
-        'filter reserved and custom_parameters'
-      )
-      var provider = {
-        scope: 'scope', state: true,
-        sub1: {scope: 'scope1'},
-        sub2: {scope: 'scope2'},
-      }
-      t.deepEqual(config.format.overrides(provider), {
-        sub1: {scope: 'scope1', state: true},
-        sub2: {scope: 'scope2', state: true},
+      ;[
+        [
+          {},
+          undefined,
+          'return undefined by default'
+        ],
+        [
+          {overrides: {}},
+          undefined,
+          'return undefined on empty overrides'
+        ],
+        [
+          {name: {a: 1}},
+          undefined,
+          'filter out reserved keys'
+        ],
+        [
+          {name: 'grant', grant: {a: 1}},
+          undefined,
+          'filter out provider name set as key'
+        ],
+        [
+          {a: 1, b: 2},
+          undefined,
+          'filter out non object keys'
+        ],
+        [
+          {a: {scope: 1}, b: {scope: 2}, overrides: {b: {scope: 3}, c: {scope: 4}}},
+          {a: {scope: 1}, b: {scope: 3}, c: {scope: 4}},
+          'overrides override direct object keys'
+        ],
+        [
+          {a: {nested: {scope: 1}}, overrides: {c: {nested: {scope: 2}}}},
+          {a: {}, c: {}},
+          'filter out nested overrides'
+        ],
+      ].forEach(([provider, result, message]) => {
+        t.deepEqual(config.format.overrides(provider), result, message)
       })
-      var provider = {
-        scope: 'scope', state: true,
-        sub1: {scope: 'scope1', sub2: {scope: 'scope2'}},
-      }
-      t.deepEqual(
-        config.format.overrides(provider), {
-          sub1: {
-            scope: 'scope1', state: true, overrides: {
-              sub2: {scope: 'scope2', state: true}}}
-        },
-        'deep - not accessible through /connect/:provider/:override?'
-      )
     })
   })
 
@@ -211,7 +248,6 @@ describe('config', () => {
           client_secret: 'secret',
           state: true,
           custom_parameters: ['team'],
-          team: 'github',
           key: 'key',
           secret: 'secret',
           custom_params: {team: 'github'},
@@ -223,7 +259,6 @@ describe('config', () => {
               client_id: 'key',
               client_secret: 'secret',
               custom_parameters: ['team'],
-              team: 'github',
               key: 'key',
               secret: 'secret',
               custom_params: {team: 'github'}
