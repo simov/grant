@@ -6,7 +6,7 @@
 
 ## 180+ Supported Providers / [OAuth Playground][grant-oauth]
 
-[`23andme`](https://api.23andme.com) | [`500px`](https://github.com/500px/api-documentation) | [`acton`](https://developer.act-on.com) | [`acuityscheduling`](https://developers.acuityscheduling.com) | [`aha`](https://www.aha.io/api) | [`amazon`](https://login.amazon.com/documentation) | [`angellist`](https://angel.co/api) | [`arcgis`](https://developers.arcgis.com) | [`asana`](https://asana.com/developers) | [`assembla`](http://api-docs.assembla.cc/) | [`auth0`](https://auth0.com/docs) | [`authentiq`](https://www.authentiq.com/developers) | [`axosoft`](http://developer.axosoft.com) | [`baidu`](http://developer.baidu.com) | [`basecamp`](https://github.com/basecamp/bcx-api) | [`battlenet`](https://dev.battle.net) | [`beatport`](https://oauth-api.beatport.com) | [`bitbucket`](https://developer.atlassian.com/bitbucket/api/2/reference/) | [`bitly`](https://dev.bitly.com) | [`box`](https://developer.box.com) | [`buffer`](https://buffer.com/developers) | [`campaignmonitor`](https://www.campaignmonitor.com/api) | [`cheddar`](https://cheddarapp.com/developer) | [`clio`](http://api-docs.clio.com) | [`coinbase`](https://developers.coinbase.com) | [`concur`](https://developer.concur.com) | [`constantcontact`](https://developer.constantcontact.com) | [`coursera`](https://building.coursera.org) | [`dailymile`](https://www.dailymile.com/api/documentation) | [`dailymotion`](https://developer.dailymotion.com) | [`deezer`](https://developers.deezer.com) | [`delivery`](https://developers.delivery.com) | [`deputy`](https://www.deputy.com/api-doc/) | [`deviantart`](https://www.deviantart.com/developers/) | [`digitalocean`](https://developers.digitalocean.com) | [`discogs`](https://www.discogs.com/developers/) | [`discord`](https://discordapp.com/developers/docs/intro) | [`disqus`](https://disqus.com/api/docs) | [`docusign`](https://docs.docusign.com) | [`dribbble`](https://developer.dribbble.com) | [`dropbox`](https://www.dropbox.com/developers) | [`ebay`](https://developer.ebay.com) | [`echosign`](https://secure.echosign.com/public/docs/restapi/v3) | [`ecwid`](https://developers.ecwid.com) | [`edmodo`](https://partnerships.edmodo.com) | [`egnyte`](https://developers.egnyte.com) | [`etsy`](https://www.etsy.com/developers) | [`eventbrite`](https://www.eventbrite.com/developer/v3/) | [`evernote`](https://dev.evernote.com) | [`everyplay`](https://developers.everyplay.com) | [`eyeem`](https://github.com/eyeem/Public-API) | [`facebook`](https://developers.facebook.com) | [`familysearch`](https://www.familysearch.org/developers/) | [`feedly`](https://developer.feedly.com) | [`fitbit`](https://dev.fitbit.com) | [`flattr`](http://developers.flattr.net) | [`flickr`](https://www.flickr.com/services) | [`flowdock`](https://www.flowdock.com/api) | [`fluidsurveys`](http://docs.fluidsurveys.com) | [`formstack`](https://developers.formstack.com) | [`foursquare`](https://developer.foursquare.com) | [`freeagent`](https://dev.freeagent.com) | [`freelancer`](https://developers.freelancer.com) | [`freshbooks`](https://www.freshbooks.com/developers) | [`geeklist`](http://hackers.geekli.st) | [`genius`](https://docs.genius.com) | [`getbase`](https://developers.getbase.com) | [`getpocket`](https://getpocket.com/developer) | [`gitbook`](https://developer.gitbook.com) | [`github`](https://developer.github.com) | [`gitlab`](https://docs.gitlab.com/ce/api/) | [`gitter`](https://developer.gitter.im) | [`goodreads`](https://www.goodreads.com/api) | [`google`](https://developers.google.com) | [`groove`](https://www.groovehq.com/docs) | [`gumroad`](https://gumroad.com/api) | [`harvest`](https://help.getharvest.com/api-v2/) | [`hellosign`](https://www.hellosign.com/api) | [`heroku`](https://devcenter.heroku.com/categories/platform-api) | [`homeaway`](https://www.homeaway.com/platform) | [`hootsuite`](https://developer.hootsuite.com) | [`ibm`](https://www.ibm.com/support/knowledgecenter/SSAT72/com.ibm.help.ssm_adminguide.doc/t_RegisteringforblueID.html) | [`iconfinder`](https://developer.iconfinder.com) | [`idme`](https://developer.id.me) | [`idonethis`](https://i-done-this.readme.io/docs) | [`imgur`](https://apidocs.imgur.com) | [`infusionsoft`](https://developer.infusionsoft.com) | [`instagram`](https://instagram.com/developer) | [`intuit`](https://developer.intuit.com) | [`jamendo`](https://devportal.jamendo.com/) | [`jumplead`](https://developer.jumplead.com) | [`kakao`](https://developers.kakao.com) | [`letsfreckle`](https://developer.letsfreckle.com) | [`linkedin`](https://developer.linkedin.com) | [`live`](https://docs.microsoft.com/en-us/onedrive/developer/rest-api/getting-started/msa-oauth?view=odsp-graph-online) | [`lyft`](https://developer.lyft.com) | [`mailchimp`](https://developer.mailchimp.com) | [`mailup`](http://help.mailup.com/display/mailupapi/REST+API) | [`mapmyfitness`](https://developer.underarmour.com) | [`mastodon`](https://docs.joinmastodon.org/) | [`medium`](https://developers.medium.com) | [`meetup`](https://www.meetup.com/meetup_api/) | [`microsoft`](https://developer.microsoft.com/en-us/graph) | [`mixcloud`](https://www.mixcloud.com/developers) | [`mixer`](https://dev.mixer.com) | [`moves`](https://dev.moves-app.com) | [`moxtra`](https://developer.moxtra.com) | [`mydigipass`](https://developer.mydigipass.com) | [`myob`](http://developer.myob.com) | [`nest`](https://developers.nest.com) | [`nylas`](https://docs.nylas.com) | [`okta`](https://developer.okta.com/) | [`onelogin`](https://developers.onelogin.com) | [`openstreetmap`](https://wiki.openstreetmap.org/wiki/API_v0.6) | [`optimizely`](https://developers.optimizely.com) | [`patreon`](https://docs.patreon.com) | [`paypal`](https://developer.paypal.com) | [`pinterest`](https://developers.pinterest.com) | [`plurk`](https://www.plurk.com/API) | [`podio`](https://developers.podio.com) | [`producteev`](https://www.producteev.com/api/doc) | [`producthunt`](https://api.producthunt.com/v1/docs) | [`projectplace`](https://service.projectplace.com/apidocs) | [`pushbullet`](https://docs.pushbullet.com) | [`ravelry`](https://www.ravelry.com/api) | [`redbooth`](https://redbooth.com/api) | [`reddit`](https://www.reddit.com/dev/api) | [`runkeeper`](https://runkeeper.com/developer/healthgraph/) | [`salesforce`](https://developer.salesforce.com) | [`shoeboxed`](https://github.com/Shoeboxed/api) | [`shopify`](https://developers.shopify.com) | [`skyrock`](http://www.skyrock.com/developer) | [`slack`](https://api.slack.com) | [`slice`](https://developer.slice.com) | [`smartsheet`](https://smartsheet-platform.github.io/api-docs) | [`smugmug`](https://api.smugmug.com) | [`socialpilot`](https://developer.socialpilot.co) | [`socrata`](https://dev.socrata.com) | [`soundcloud`](https://developers.soundcloud.com) | [`spotify`](https://developer.spotify.com) | [`square`](https://squareup.com/developers) | [`stackexchange`](https://api.stackexchange.com) | [`stocktwits`](https://api.stocktwits.com/developers) | [`stormz`](https://developer.stormz.me) | [`strava`](https://developers.strava.com) | [`stripe`](https://stripe.com/docs) | [`surveygizmo`](https://apihelp.surveygizmo.com) | [`surveymonkey`](https://developer.surveymonkey.com) | [`thingiverse`](https://www.thingiverse.com/developers) | [`ticketbud`](https://api.ticketbud.com) | [`timelyapp`](https://dev.timelyapp.com) | [`todoist`](https://developer.todoist.com) | [`trakt`](https://docs.trakt.apiary.io) | [`traxo`](https://developer.traxo.com) | [`trello`](https://developers.trello.com) | [`tripit`](https://www.tripit.com/developer) | [`tumblr`](https://www.tumblr.com/docs/en/api/v2) | [`twitch`](https://dev.twitch.tv) | [`twitter`](https://developer.twitter.com) | [`typeform`](https://developer.typeform.com) | [`uber`](https://developer.uber.com) | [`underarmour`](https://developer.underarmour.com) | [`unsplash`](https://unsplash.com/documentation) | [`upwork`](https://developers.upwork.com) | [`uservoice`](https://developer.uservoice.com) | [`vend`](https://developers.vendhq.com) | [`venmo`](https://developers.braintreepayments.com/guides/venmo/overview/) | [`verticalresponse`](http://developers.verticalresponse.com) | [`viadeo`](https://partners.viadeo.com) | [`vimeo`](https://developer.vimeo.com) | [`visualstudio`](https://docs.microsoft.com/en-us/vsts/integrate/get-started/authentication/oauth?view=vsts) | [`vk`](https://vk.com/dev) | [`weekdone`](https://weekdone.com/developer) | [`weibo`](http://open.weibo.com) | [`withings`](http://developer.withings.com) | [`wordpress`](https://developer.wordpress.com) | [`wrike`](https://developers.wrike.com) | [`xero`](https://developer.xero.com) | [`xing`](https://dev.xing.com) | [`yahoo`](https://developer.yahoo.com) | [`yammer`](https://developer.yammer.com/docs) | [`yandex`](https://tech.yandex.com) | [`zendesk`](https://developer.zendesk.com)
+[`23andme`](https://api.23andme.com) | [`500px`](https://github.com/500px/api-documentation) | [`acton`](https://developer.act-on.com) | [`acuityscheduling`](https://developers.acuityscheduling.com) | [`aha`](https://www.aha.io/api) | [`amazon`](https://login.amazon.com/documentation) | [`angellist`](https://angel.co/api) | [`arcgis`](https://developers.arcgis.com) | [`asana`](https://asana.com/developers) | [`assembla`](http://api-docs.assembla.cc/) | [`auth0`](https://auth0.com/docs) | [`authentiq`](https://www.authentiq.com/developers) | [`axosoft`](http://developer.axosoft.com) | [`baidu`](http://developer.baidu.com) | [`basecamp`](https://github.com/basecamp/bcx-api) | [`battlenet`](https://dev.battle.net) | [`beatport`](https://oauth-api.beatport.com) | [`bitbucket`](https://developer.atlassian.com/bitbucket/api/2/reference/) | [`bitly`](https://dev.bitly.com) | [`box`](https://developer.box.com) | [`buffer`](https://buffer.com/developers) | [`campaignmonitor`](https://www.campaignmonitor.com/api) | [`cheddar`](https://cheddarapp.com/developer) | [`clio`](http://api-docs.clio.com) | [`coinbase`](https://developers.coinbase.com) | [`concur`](https://developer.concur.com) | [`constantcontact`](https://developer.constantcontact.com) | [`coursera`](https://building.coursera.org) | [`dailymile`](https://www.dailymile.com/api/documentation) | [`dailymotion`](https://developer.dailymotion.com) | [`deezer`](https://developers.deezer.com) | [`delivery`](https://developers.delivery.com) | [`deputy`](https://www.deputy.com/api-doc/) | [`deviantart`](https://www.deviantart.com/developers/) | [`digitalocean`](https://developers.digitalocean.com) | [`discogs`](https://www.discogs.com/developers/) | [`discord`](https://discordapp.com/developers/docs/intro) | [`disqus`](https://disqus.com/api/docs) | [`docusign`](https://docs.docusign.com) | [`dribbble`](https://developer.dribbble.com) | [`dropbox`](https://www.dropbox.com/developers) | [`ebay`](https://developer.ebay.com) | [`echosign`](https://secure.echosign.com/public/docs/restapi/v3) | [`ecwid`](https://developers.ecwid.com) | [`edmodo`](https://partnerships.edmodo.com) | [`egnyte`](https://developers.egnyte.com) | [`etsy`](https://www.etsy.com/developers) | [`eventbrite`](https://www.eventbrite.com/developer/v3/) | [`evernote`](https://dev.evernote.com) | [`everyplay`](https://developers.everyplay.com) | [`eyeem`](https://github.com/eyeem/Public-API) | [`facebook`](https://developers.facebook.com) | [`familysearch`](https://www.familysearch.org/developers/) | [`feedly`](https://developer.feedly.com) | [`fitbit`](https://dev.fitbit.com) | [`flattr`](http://developers.flattr.net) | [`flickr`](https://www.flickr.com/services) | [`flowdock`](https://www.flowdock.com/api) | [`fluidsurveys`](http://docs.fluidsurveys.com) | [`formstack`](https://developers.formstack.com) | [`foursquare`](https://developer.foursquare.com) | [`freeagent`](https://dev.freeagent.com) | [`freelancer`](https://developers.freelancer.com) | [`freshbooks`](https://www.freshbooks.com/developers) | [`geeklist`](http://hackers.geekli.st) | [`genius`](https://docs.genius.com) | [`getbase`](https://developers.getbase.com) | [`getpocket`](https://getpocket.com/developer) | [`gitbook`](https://developer.gitbook.com) | [`github`](https://developer.github.com) | [`gitlab`](https://docs.gitlab.com/ce/api/) | [`gitter`](https://developer.gitter.im) | [`goodreads`](https://www.goodreads.com/api) | [`google`](https://developers.google.com) | [`groove`](https://www.groovehq.com/docs) | [`gumroad`](https://gumroad.com/api) | [`harvest`](https://help.getharvest.com/api-v2/) | [`hellosign`](https://www.hellosign.com/api) | [`heroku`](https://devcenter.heroku.com/categories/platform-api) | [`homeaway`](https://www.homeaway.com/platform) | [`hootsuite`](https://developer.hootsuite.com) | [`ibm`](https://www.ibm.com/support/knowledgecenter/SSAT72/com.ibm.help.ssm_adminguide.doc/t_RegisteringforblueID.html) | [`iconfinder`](https://developer.iconfinder.com) | [`idme`](https://developer.id.me) | [`idonethis`](https://i-done-this.readme.io/docs) | [`imgur`](https://apidocs.imgur.com) | [`infusionsoft`](https://developer.infusionsoft.com) | [`instagram`](https://instagram.com/developer) | [`intuit`](https://developer.intuit.com) | [`jamendo`](https://devportal.jamendo.com/) | [`jumplead`](https://developer.jumplead.com) | [`kakao`](https://developers.kakao.com) | [`letsfreckle`](https://developer.letsfreckle.com) | [`linkedin`](https://developer.linkedin.com) | [`live`](https://docs.microsoft.com/en-us/onedrive/developer/rest-api/getting-started/msa-oauth?view=odsp-graph-online) | [`lyft`](https://developer.lyft.com) | [`mailchimp`](https://developer.mailchimp.com) | [`mailup`](http://help.mailup.com/display/mailupapi/REST+API) | [`mapmyfitness`](https://developer.underarmour.com) | [`mastodon`](https://docs.joinmastodon.org/) | [`medium`](https://developers.medium.com) | [`meetup`](https://www.meetup.com/meetup_api/) | [`mention`](https://dev.mention.com) | [`microsoft`](https://developer.microsoft.com/en-us/graph) | [`mixcloud`](https://www.mixcloud.com/developers) | [`mixer`](https://dev.mixer.com) | [`moves`](https://dev.moves-app.com) | [`moxtra`](https://developer.moxtra.com) | [`mydigipass`](https://developer.mydigipass.com) | [`myob`](http://developer.myob.com) | [`nest`](https://developers.nest.com) | [`nylas`](https://docs.nylas.com) | [`okta`](https://developer.okta.com/) | [`onelogin`](https://developers.onelogin.com) | [`openstreetmap`](https://wiki.openstreetmap.org/wiki/API_v0.6) | [`optimizely`](https://developers.optimizely.com) | [`patreon`](https://docs.patreon.com) | [`paypal`](https://developer.paypal.com) | [`pinterest`](https://developers.pinterest.com) | [`plurk`](https://www.plurk.com/API) | [`podio`](https://developers.podio.com) | [`producteev`](https://www.producteev.com/api/doc) | [`producthunt`](https://api.producthunt.com/v1/docs) | [`projectplace`](https://service.projectplace.com/apidocs) | [`pushbullet`](https://docs.pushbullet.com) | [`ravelry`](https://www.ravelry.com/api) | [`redbooth`](https://redbooth.com/api) | [`reddit`](https://www.reddit.com/dev/api) | [`runkeeper`](https://runkeeper.com/developer/healthgraph/) | [`salesforce`](https://developer.salesforce.com) | [`shoeboxed`](https://github.com/Shoeboxed/api) | [`shopify`](https://developers.shopify.com) | [`skyrock`](http://www.skyrock.com/developer) | [`slack`](https://api.slack.com) | [`slice`](https://developer.slice.com) | [`smartsheet`](https://smartsheet-platform.github.io/api-docs) | [`smugmug`](https://api.smugmug.com) | [`socialpilot`](https://developer.socialpilot.co) | [`socrata`](https://dev.socrata.com) | [`soundcloud`](https://developers.soundcloud.com) | [`spotify`](https://developer.spotify.com) | [`square`](https://squareup.com/developers) | [`stackexchange`](https://api.stackexchange.com) | [`stocktwits`](https://api.stocktwits.com/developers) | [`stormz`](https://developer.stormz.me) | [`strava`](https://developers.strava.com) | [`stripe`](https://stripe.com/docs) | [`surveygizmo`](https://apihelp.surveygizmo.com) | [`surveymonkey`](https://developer.surveymonkey.com) | [`thingiverse`](https://www.thingiverse.com/developers) | [`ticketbud`](https://api.ticketbud.com) | [`timelyapp`](https://dev.timelyapp.com) | [`todoist`](https://developer.todoist.com) | [`trakt`](https://docs.trakt.apiary.io) | [`traxo`](https://developer.traxo.com) | [`trello`](https://developers.trello.com) | [`tripit`](https://www.tripit.com/developer) | [`tumblr`](https://www.tumblr.com/docs/en/api/v2) | [`twitch`](https://dev.twitch.tv) | [`twitter`](https://developer.twitter.com) | [`typeform`](https://developer.typeform.com) | [`uber`](https://developer.uber.com) | [`underarmour`](https://developer.underarmour.com) | [`unsplash`](https://unsplash.com/documentation) | [`upwork`](https://developers.upwork.com) | [`uservoice`](https://developer.uservoice.com) | [`vend`](https://developers.vendhq.com) | [`venmo`](https://developers.braintreepayments.com/guides/venmo/overview/) | [`verticalresponse`](http://developers.verticalresponse.com) | [`viadeo`](https://partners.viadeo.com) | [`vimeo`](https://developer.vimeo.com) | [`visualstudio`](https://docs.microsoft.com/en-us/vsts/integrate/get-started/authentication/oauth?view=vsts) | [`vk`](https://vk.com/dev) | [`weekdone`](https://weekdone.com/developer) | [`weibo`](http://open.weibo.com) | [`withings`](http://developer.withings.com) | [`wordpress`](https://developer.wordpress.com) | [`wrike`](https://developers.wrike.com) | [`xero`](https://developer.xero.com) | [`xing`](https://dev.xing.com) | [`yahoo`](https://developer.yahoo.com) | [`yammer`](https://developer.yammer.com/docs) | [`yandex`](https://tech.yandex.com) | [`zendesk`](https://developer.zendesk.com)
 
 
 ## Table of Contents
@@ -122,7 +122,7 @@ server.register([
   "google": {
     "key": "...",
     "secret": "...",
-    "scope": ["scope1", "scope2"],
+    "scope": ["openid"],
     "nonce": true,
     "custom_params": {"access_type": "offline"},
     "callback": "/google/callback"
@@ -262,12 +262,10 @@ Some providers may employ custom authorization parameters, that you can pass usi
 }
 ```
 
-> Alternatively any custom parameter that is not a [reserved key][reserved-keys], and is listed under the `custom_parameters` array for that [provider][oauth-config], can be defined along with the rest of the options.
-
 
 ## Static Overrides
 
-You can add arbitrary `{object}` keys inside your provider's configuration to create sub configurations that override the *global* settings for that provider:
+You can specify provider sub configurations using the `overrides` key:
 
 ```js
 // navigate to /connect/facebook
@@ -278,29 +276,29 @@ You can add arbitrary `{object}` keys inside your provider's configuration to cr
   "scope": ["publish_actions", "publish_stream"],
   // set specific callback route on your server for this provider
   "callback": "/facebook/callback",
-  // navigate to /connect/facebook/groups
-  "groups": {
-    // request only group permissions
-    "scope": ["user_groups", "friends_groups"]
-  },
-  // navigate to /connect/facebook/pages
-  "pages": {
-    // request only page permissions
-    "scope": ["manage_pages"],
-    // additionally use specific callback route on your server for this override
-    "callback": "/facebook_pages/callback"
+  "overrides": {
+    // navigate to /connect/facebook/groups
+    "groups": {
+      // request only group permissions
+      "scope": ["user_groups", "friends_groups"]
+    },
+    // navigate to /connect/facebook/pages
+    "pages": {
+      // request only page permissions
+      "scope": ["manage_pages"],
+      // additionally use specific callback route on your server for this override
+      "callback": "/facebook_pages/callback"
+    }
   }
 }
 ```
 
-> The custom key names cannot be one of the [reserved keys][reserved-keys].
-
 
 ## Dynamic Override
 
-In some cases you may want to allow the user to override certain parts of your configuration dynamically.
+In some cases you may want certain parts of your configuration to be set dynamically.
 
-For example for `shopify` you have to embed the user's shop name into the OAuth URLs, so it makes sense to allow the [`subdomain` option][subdomain] to be overridden dynamically:
+For example for `shopify` you have to embed the user's shop name into the OAuth URLs, so it makes sense to allow the [`subdomain` option][subdomain] to be set dynamically:
 
 ```json
 {
@@ -310,16 +308,16 @@ For example for `shopify` you have to embed the user's shop name into the OAuth 
 }
 ```
 
-Then you can have a form on your website to allow the user to specify the shop name:
+Then you can have a form on your website allowing the user to specify the shop name:
 
 ```html
-<form action="/connect/shopify" method="post" accept-charset="utf-8">
+<form action="/connect/shopify" method="POST" accept-charset="utf-8">
   <input type="text" name="subdomain" value="" />
   <button>submit</button>
 </form>
 ```
 
-Keep in mind that when making `POST` request to the `/connect/:provider/:override?` route you have to mount the `body-parser` middleware for Express and Koa before mounting Grant:
+Keep in mind that when making a `POST` request to the `/connect/:provider/:override?` route you have to mount the `body-parser` middleware for Express and Koa before mounting Grant:
 
 ```js
 // express
@@ -362,10 +360,10 @@ subdomain | `[provider]` | string to be [embedded][subdomain] in `request_url`, 
 nonce | `[provider]` | toggle random `nonce` string generation for [OpenID Connect][openid-connect] providers
 callback | `[provider]` | final callback route on your server to receive the [response data][response-data]
 dynamic | `[provider]` | allow [dynamic override][dynamic-override] of configuration
+overrides | `[provider]` | user defined [static overrides][static-overrides]
 name | generated | provider's [name][grant], used to generate `redirect_uri`
 [provider] | generated | provider's [name][grant] as key
 redirect_uri | generated | OAuth app [redirect URI][redirect-uri], generated using `protocol`, `host`, `path` and `name`
-overrides | generated | all keys containing `{object}` value are extracted here as [static overrides][static-overrides]
 
 
 ## Custom Providers
@@ -814,7 +812,7 @@ You can document your configuration by adding custom keys to it:
 }
 ```
 
-> These custom keys cannot be [reserved ones][reserved-keys], and cannot contain `{object}` value.
+> These custom keys cannot be [reserved ones][reserved-keys].
 
 ## Get User Profile
 
