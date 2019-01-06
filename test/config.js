@@ -198,13 +198,13 @@ describe('config', () => {
           'filter out non object keys'
         ],
         [
-          {a: {scope: 1}, b: {scope: 2}, overrides: {b: {scope: 3}, c: {scope: 4}}},
-          {a: {scope: 1}, b: {scope: 3}, c: {scope: 4}},
+          {a: {dynamic: [1]}, b: {dynamic: [2]}, overrides: {b: {dynamic: [3]}, c: {dynamic: [4]}}},
+          {a: {dynamic: [1]}, b: {dynamic: [3]}, c: {dynamic: [4]}},
           'overrides override direct object keys'
         ],
         [
-          {a: {nested: {scope: 1}}, overrides: {c: {nested: {scope: 2}}}},
-          {a: {}, c: {}},
+          {a: {nested: {scope: 1}}, overrides: {b: {nested: {scope: 2}, overrides: {c: {scope: 3}}}}},
+          {a: {}, b: {}},
           'filter out nested overrides'
         ],
       ].forEach(([provider, result, message]) => {
