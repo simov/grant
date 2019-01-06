@@ -1,6 +1,9 @@
 
 # Change Log
 
+## v4.3.1 (2019/01/06)
+- **Fix:** Nested static overrides filtering
+
 ## v4.3.0 (2019/01/02)
 - **New:** Explicit `overrides` option for defining static overrides
 - **New:** Official support for 2 new providers: `ibm`, `mention`
@@ -10,7 +13,7 @@
 - **Change:** Removed 1 discontinued provider: `jawbone`
 
 ## v4.2.1 (2018/11/27)
-- **Fix:** Fixed regression regarding missing session in the callback route
+- **Fix:** Regression regarding missing session in the callback route
 
 ## v4.2.0 (2018/11/10)
 - **New:** [OpenID Connect](https://github.com/simov/grant#openid-connect) `id_token` and `nonce` support
