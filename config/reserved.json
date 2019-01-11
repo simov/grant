@@ -25,6 +25,7 @@
   "callback",
   "dynamic",
   "overrides",
+  "response",
 
   "name",
   "redirect_uri"
