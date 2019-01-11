@@ -1,6 +1,9 @@
 
 # Change Log
 
+## v4.4.0 (2019/01/11)
+- **New:** Added `response` option for limiting the response data
+
 ## v4.3.1 (2019/01/06)
 - **Fix:** Nested static overrides filtering
 
