@@ -11,40 +11,49 @@
 
 ## Table of Contents
 
-- **[Providers][grant]**
-- **Middleware**
-  - [Express][express]
-  - [Koa][koa]
-  - [Hapi][hapi]
-- **Configuration**
-  - [Basics][configuration]
-  - [Redirect URL][redirect-url]
-  - [Reserved Routes][reserved-routes]
-  - [Path Prefix][path-prefix]
-  - [OpenID Connect][openid-connect]
-  - [Custom Parameters][custom-parameters]
-  - [Static Overrides][static-overrides]
-  - [Dynamic Override][dynamic-override]
-- **Advanced Configuration**
-  - [Reserved Keys][reserved-keys]
-  - [Custom Providers][custom-providers]
-  - [Development Environments][development-environments]
-  - [Subdomain][subdomain]
-  - [Sandbox OAuth URLs][sandbox-oauth-urls]
-  - [Sandbox Redirect URI][sandbox-redirect-uri]
-  - [More Dynamic Overrides][more-dynamic-overrides]
-  - [Quirks][quirks]
-- **[Response Data][response-data]**
+- **[Providers](#grant)**
+- **Middlewares**
+  - [Express](#express)
+  - [Koa](#koa)
+  - [Hapi](#hapi)
+- **Basics**
+  - [Configuration](#configuration)
+  - [Reserved Routes](#reserved-routes)
+  - [Redirect URL](#redirect-url)
+  - [Path Prefix](#path-prefix)
+  - [OpenID Connect](#openid-connect)
+  - [Custom Parameters](#custom-parameters)
+  - [Static Overrides](#static-overrides)
+  - [Dynamic Override](#dynamic-override)
+- **Response Data**
+  - [Response Data Format](#response-data)
+  - [Response Data Transport](#response-data-transport)
+  - [Limit Response Data](#limit-response-data)
+  - [Session](#session)
+- **Advanced**
+  - [All Available Options](#all-available-options)
+  - [Configuration Scopes](#configuration-scopes)
+  - [Custom Providers](#custom-providers)
+  - [Development Environments](#development-environments)
+  - [OAuth Proxy](#oauth-proxy)
+  - [Redirect URI](#redirect-uri)
+  - [Meta Configuration](#meta-configuration)
+- **OAuth Quirks**
+  - [Subdomain URLs](#subdomain-urls)
+  - [Sandbox OAuth URLs](#sandbox-oauth-urls)
+  - [Sandbox Redirect URI](#sandbox-redirect-uri)
+  - [Provider Quirks](#provider-quirks)
 - **Misc**
-  - [Alternative Require][alternative-require]
-  - [Alternative Instantiation][alternative-instantiation]
-  - [Programmatic Access][programmatic-access]
-  - [Session vs Querystring][session-vs-querystring]
-  - [Redirect URI][redirect-uri]
-  - [Meta Configuration][meta-configuration]
-  - [Get User Profile][get-user-profile]
-- **[Examples][grant-examples]**
+  - [Alternative Require](#alternative-require)
+  - [Alternative Instantiation](#alternative-instantiation)
+  - [Programmatic Access](#programmatic-access)
+  - [Get User Profile](#get-user-profile)
+- **[Examples][examples]**
 - **[Changelog][changelog]**
+
+----
+
+# Middlewares
 
 
 ## Express
@@ -107,6 +116,10 @@ server.register([
 ])
 ```
 
+---
+
+# Basics
+
 
 ## Configuration
 
@@ -115,7 +128,6 @@ server.register([
   "defaults": {
     "protocol": "http",
     "host": "localhost:3000",
-    "callback": "/callback",
     "transport": "session",
     "state": true
   },
@@ -125,59 +137,54 @@ server.register([
     "scope": ["openid"],
     "nonce": true,
     "custom_params": {"access_type": "offline"},
-    "callback": "/google/callback"
+    "callback": "/hello"
   },
   "twitter": {
     "key": "...",
-    "secret": "..."
+    "secret": "...",
+    "callback": "/hi"
   }
 }
 ```
 
 - **defaults** - default configuration for all providers *(previously this option was called `server`)*
   - **protocol** - either `http` or `https`
-  - **host** - your server's host name `localhost:3000` | `dummy.com:5000` | `mysite.com` ...
-  - **path** - [path prefix][path-prefix] to use for the Grant middleware *(defaults to empty string if omitted)*
-  - **callback** - common callback route for all providers in your config `/callback` | `/done` ...
-  - **transport** - transport to use to deliver the [response data][response-data] in your final callback route `querystring` | `session` *(defaults to querystring if omitted)*
+  - **host** - your server's host name `localhost:3000` | `dummy.com:5000` | `awesome.com` ...
+  - **transport** - transport to use to deliver the [response data](#response-data) in your final callback route `querystring` | `session` *(defaults to querystring if omitted)*
   - **state** - generate random state string on each authorization attempt `true` | `false` *(OAuth2 only, defaults to false if omitted)*
-- **provider** - any [supported provider][grant] `facebook` | `twitter` ...
+- **provider** - any [supported provider](#grant) `google` | `twitter` ...
   - **key** - `consumer_key` or `client_id` of your OAuth app
   - **secret** - `consumer_secret` or `client_secret` of your OAuth app
   - **scope** - array of OAuth scopes to request
+  - **nonce** - generate random nonce string on each authorization attempt `true` | `false` *([OpenID Connect](#openid-connect) only, defaults to false if omitted)*
+  - **custom_params** - custom [authorization parameters](#custom-parameters)
   - **callback** - specific callback route to use for this provider only `/callback` | `/done` ...
-  - **custom_params** - custom [authorization parameters][custom-parameters]
-  - **nonce** - generate random nonce string on each authorization attempt `true` | `false` *([OpenID Connect][openid-connect] only, defaults to false if omitted)*
-  - **dynamic** - list of options that can be [overridden dynamically][dynamic-override] `['subdomain', 'scope']`
 
-> Each provider can override any of the default options. The `defaults` key is completely optional.
-
-> Additionally every provider can override any of the [reserved keys][reserved-keys], some of which are [predefined internally][oauth-config].
-
-
-## Redirect URL
-
-For `redirect` URL of your OAuth application you should **always** use this format:
-
-```
-[protocol]://[host]/connect/[provider]/callback
-```
-
-Where `protocol` and `host` should match the ones from which you initiate the OAuth flow, and `provider` is the provider's name from the list of [supported providers][grant].
-
-This `redirect` URL is used internally by Grant. You will receive the [response data][response-data] from the OAuth flow inside the route specified in the `callback` key of your Grant configuration.
-
-> See the [Path Prefix][path-prefix] section on how to configure the redirect URL when using the `path` configuration option.
-
+> List of all [available options](#all-available-options).
 
 ## Reserved Routes
 
-Grant operates on the following routes:
+Grant operates on the following two routes:
 
 ```
 /connect/:provider/:override?
 /connect/:provider/callback
 ```
+
+You login by navigating to the `/connect/:provider` route where `:provider` is a provider found in your configuration, usually one of the [officially supported ones](#grant). Additonally you can login through a [static override](#static-overrides) defined for that provider in your configuration by navigating to `/connect/:provider/:override?`
+
+
+## Redirect URL
+
+You should **always** use this format for `redirect_uri` of your OAuth app:
+
+```
+[protocol]://[host]/connect/[provider]/callback
+```
+
+The `protocol` and the `host` are the options you specify inside the `defaults` key of your [configuration](#configuration), and this is where your Grant server is listening. The `provider` is a key in your configuration, usually one of the [supported ones](#grant).
+
+The `/connect/:provider/callback` route is used **internally** by Grant! You will receive the OAuth [response data](#response-data) inside the `callback` route specified in your configuration.
 
 
 ## Path Prefix
@@ -193,7 +200,7 @@ app.use(mount('/path/prefix', grant(config)))
 server.register([{routes: {prefix: '/path/prefix'}, plugin: grant(config)}])
 ```
 
-In this case it is required to specify the path prefix using the `path` configuration option for the `defaults` key:
+In this case it is **required** to specify the `path` in your configuration:
 
 ```json
 {
@@ -205,18 +212,18 @@ In this case it is required to specify the path prefix using the `path` configur
 }
 ```
 
-Lastly that path prefix should be specified in your OAuth application's redirect URL as well:
+That path prefix **should be** specified in your OAuth app [Redirect URL](#redirect-url):
 
 ```
 [protocol]://[host][path]/connect/[provider]/callback
 ```
 
-In case you want your callback routes prefixed, set them accordingly:
+Optionally you can prefix your `callback` URLs as well:
 
 ```json
 {
-  "facebook": {
-    "callback": "/path/prefix/handle_facebook_callback"
+  "github": {
+    "callback": "/path/prefix/hello"
   }
 }
 ```
@@ -242,23 +249,25 @@ However, Grant tries to decode the `id_token` and verifies the following two cla
 1. `aud` - is the token intended for my OAuth app?
 2. `nonce` - does it tie to a request of my own?
 
-For convenience the [response data][response-data] contains the decoded `id_token`.
+For convenience the [response data](#response-data) contains the decoded `id_token`.
 
 > Take a look at the OpenID Connect [example][openid-connect-example].
 
 ## Custom Parameters
 
-Some providers may employ custom authorization parameters, that you can pass using the `custom_params` option:
+Some providers may employ custom authorization parameters that you can configure using the `custom_params` option:
 
 ```json
-"google": {
-  "custom_params": {"access_type": "offline"}
-},
-"reddit": {
-  "custom_params": {"duration": "permanent"}
-},
-"trello": {
-  "custom_params": {"name": "my app", "expiration": "never"}
+{
+  "google": {
+    "custom_params": {"access_type": "offline"}
+  },
+  "reddit": {
+    "custom_params": {"duration": "permanent"}
+  },
+  "trello": {
+    "custom_params": {"name": "my app", "expiration": "never"}
+  }
 }
 ```
 
@@ -267,38 +276,36 @@ Some providers may employ custom authorization parameters, that you can pass usi
 
 You can specify provider sub configurations using the `overrides` key:
 
-```js
-// navigate to /connect/facebook
-"facebook": {
-  "key": "...",
-  "secret": "...",
-  // by default request publish permissions
-  "scope": ["publish_actions", "publish_stream"],
-  // set specific callback route on your server for this provider
-  "callback": "/facebook/callback",
-  "overrides": {
-    // navigate to /connect/facebook/groups
-    "groups": {
-      // request only group permissions
-      "scope": ["user_groups", "friends_groups"]
-    },
-    // navigate to /connect/facebook/pages
-    "pages": {
-      // request only page permissions
-      "scope": ["manage_pages"],
-      // additionally use specific callback route on your server for this override
-      "callback": "/facebook_pages/callback"
+```json
+{
+  "github": {
+    "key": "...", "secret": "...",
+    "scope": ["public_repo"],
+    "callback": "/hello",
+    "overrides": {
+      "notifications": {
+        "key": "...", "secret": "...",
+        "scope": ["notifications"]
+      },
+      "all": {
+        "scope": ["repo", "gist", "user"],
+        "callback": "/awesome"
+      }
     }
   }
 }
 ```
+
+- navigate to `/connect/github` to request the *public_repo* `scope`
+- navigate to `/connect/github/notifications` to request the _notifications_ `scope` using another OAuth app (the `key` and the `secret`)
+- navigate to `/connect/github/all` to request a bunch of `scope`s and also receive the response data in another `callback` route
 
 
 ## Dynamic Override
 
 In some cases you may want certain parts of your configuration to be set dynamically.
 
-For example for `shopify` you have to embed the user's shop name into the OAuth URLs, so it makes sense to allow the [`subdomain` option][subdomain] to be set dynamically:
+For example for `shopify` you have to embed the user's shop name into the OAuth URLs, so it makes sense to allow the [`subdomain` option](#subdomain-urls) to be set dynamically:
 
 ```json
 {
@@ -313,7 +320,7 @@ Then you can have a form on your website allowing the user to specify the shop n
 ```html
 <form action="/connect/shopify" method="POST" accept-charset="utf-8">
   <input type="text" name="subdomain" value="" />
-  <button>submit</button>
+  <button>Login</button>
 </form>
 ```
 
@@ -333,13 +340,169 @@ app.use(mount(grant(config)))
 Alternatively you can make a `GET` request to the `/connect/:provider/:override?` route:
 
 ```
-https://mywebsite.com/connect/shopify?subdomain=usershop
+https://awesome.com/connect/shopify?subdomain=usershop
+```
+
+---
+
+# Response Data
+
+The OAuth response data is returned in your **final** `callback` route.
+
+- By default the OAuth response data will be encoded as **querystring**.
+
+- You can instruct Grant to return the response data in the **session** [instead](#response-data-transport), by using the `transport` option.
+
+- You can **limit** [the amount of data](#limit-response-data) returned by using the `response` option.
+
+## OAuth 2.0
+
+> The `refresh_token` is returned only if present. The `id_token` is returned only for [OpenID Connect](#openid-connect) providers requesting the _openid_ scope:
+
+```js
+{
+  id_token: {header: {...}, payload: {...}, signature: '...'},
+  access_token: '...',
+  refresh_token: '...',
+  raw: {
+    id_token: '...',
+    access_token: '...',
+    refresh_token: '...',
+    some: 'other data'
+  }
+}
 ```
 
 
-## Reserved Keys
+## OAuth 1.0a
 
-List of all [reserved keys][reserved-json] and their typical location:
+```js
+{
+  access_token: '...',
+  access_secret: '...',
+  raw: {
+    oauth_token: '...',
+    oauth_token_secret: '...',
+    some: 'other data'
+  }
+}
+```
+
+
+## Error
+
+> In case of an error, the `error` key will be populated with the raw error data:
+
+```js
+{
+  error: {
+    some: 'error data'
+  }
+}
+```
+
+## Response Data Transport
+
+By default Grant will encode the OAuth [response data](#response-data) as *querystring* in your final `callback` route:
+
+```json
+{
+  "github": {
+    "callback": "/hello"
+  }
+}
+```
+
+This `/hello?access_token=...` potentially may leak private data in your server logs, especially if you are behind reverse proxy.
+
+It is **recommended** to use the *session* `transport` instead:
+
+```json
+{
+  "defaults": {
+    "transport": "session"
+  },
+  "github": {
+    "callback": "/hello"
+  }
+}
+```
+
+This way the result will no longer be encoded as *querystring*, and you will receive the response data inside the [session][session-transport-example] instead.
+
+
+## Limit Response Data
+
+By default Grant will return all available [response data](#response-data) in your final `callback` route:
+
+```js
+{
+  id_token: {header: {...}, payload: {...}, signature: '...'},
+  access_token: '...',
+  refresh_token: '...',
+  raw: {
+    id_token: '...',
+    access_token: '...',
+    refresh_token: '...',
+    some: 'other data'
+  }
+}
+```
+
+However, encoding _potentially_ large amounts of data as **querystring** can lead to incompatibility issues with some servers and browsers, and generally is considered a bad practice.
+
+It can also cause problems when the **session** transport is used, and the particular session store implementation encodes the entire session in a cookie, not just the session ID. In this case some servers may reject the HTTP request because of too big HTTP headers size.
+
+The `response` option can be used to limit the [response data](#response-data):
+
+```json
+{
+  "defaults": {
+    "response": "tokens"
+  }
+}
+```
+
+This will return only the tokens, without the `raw` key.
+
+In case you want to include the decoded `id_token` as well:
+
+```json
+{
+  "google": {
+    "response": ["tokens", "jwt"]
+  }
+}
+```
+
+This will make the decoded `id_token` available as `id_token_jwt` in the response object.
+
+## Session
+
+Grant uses session to persist state between HTTP redirects occurring during the OAuth flow. This session, however, was never designed to be used as persistent storage, even if that's totally possible.
+
+Once you receive the [response data](#response-data) in your final `callback` route you are free to destroy that session, and do whatever you want with the returned data.
+
+However, there are a few session keys returned in your final `callback` route, that you may find useful:
+
+Key        | Availability            | Description
+:--        | :--                     | :--
+`provider` | **Always**              | The provider [name](#oauth) this authorization was called for
+`override` | Depends on URL          | The [static override](#static-overrides) name used for this authorization
+`dynamic`  | Depends on request type | The [dynamic override](#dynamic-override) configuration passed for this authorization
+`state`    | OAuth 2.0 only          | OAuth 2.0 state string that was generated
+`nonce`    | OpenID Connect only     | [OpenID Connect](#openid-connect) nonce string that was generated
+`response` | Depends on transport used | The final [response data](#response-data)
+`request`  | OAuth 1.0a only         | Data returned from the first request of the OAuth 1.0a flow
+
+---
+
+# Advanced Configuration
+
+
+## All Available Options
+
+List of all available options, and their typical location:
 
 Key | Location | Description
 :---| :--- | :---
@@ -350,46 +513,60 @@ oauth | [oauth.json][oauth-config] | OAuth version number
 scope_delimiter | [oauth.json][oauth-config] | string delimiter used for concatenating multiple scopes
 custom_parameters | [oauth.json][oauth-config] | list of known custom authorization parameters
 protocol, host, path | `defaults` | used to generate `redirect_uri`
-transport | `defaults` | [transport][session-vs-querystring] to use to deliver the response data in your final `callback` route
+transport | `defaults` | [transport](#response-data-transport) to use to deliver the response data in your final `callback` route
 state | `defaults` | toggle random `state` string generation for OAuth2
 key | `[provider]` | OAuth app key, reserved aliases: `consumer_key` and `client_id`
 secret | `[provider]` | OAuth app secret, reserved aliases: `consumer_secret` and `client_secret`
 scope | `[provider]` | list of scopes to request
-custom_params | `[provider]` | custom authorization [parameters][custom-parameters] and their values
-subdomain | `[provider]` | string to be [embedded][subdomain] in `request_url`, `authorize_url` and `access_url`
-nonce | `[provider]` | toggle random `nonce` string generation for [OpenID Connect][openid-connect] providers
-callback | `[provider]` | final callback route on your server to receive the [response data][response-data]
-dynamic | `[provider]` | allow [dynamic override][dynamic-override] of configuration
-overrides | `[provider]` | user defined [static overrides][static-overrides]
-name | generated | provider's [name][grant], used to generate `redirect_uri`
-[provider] | generated | provider's [name][grant] as key
-redirect_uri | generated | OAuth app [redirect URI][redirect-uri], generated using `protocol`, `host`, `path` and `name`
+custom_params | `[provider]` | custom authorization [parameters](#custom-parameters) and their values
+subdomain | `[provider]` | string to be [embedded](#subdomain-urls) in `request_url`, `authorize_url` and `access_url`
+nonce | `[provider]` | toggle random `nonce` string generation for [OpenID Connect](#openid-connect) providers
+callback | `[provider]` | final callback route on your server to receive the [response data](#response-data)
+dynamic | `[provider]` | allow [dynamic override](#dynamic-override) of configuration
+overrides | `[provider]` | [static overrides](#static-overrides) for a provider
+response | `[provider]` | [limit](#limit-response-data) the response data
+name | generated | provider's [name](#grant), used to generate `redirect_uri`
+[provider] | generated | provider's [name](#grant) as key
+redirect_uri | generated | OAuth app [redirect URI](#redirect-uri), generated using `protocol`, `host`, `path` and `name`
+
+
+## Configuration Scopes
+
+Grant relies on configuration gathered from **5** different places:
+
+1. The **first** place Grant looks for configuration is the built-in [oauth.json][oauth-config] file located in the config folder.
+
+2. The **second** place Grant looks for configuration is the `defaults` key, specified in the user's configuration. These defaults are applied for every provider in the user's configuration.
+
+3. The **third** place for configuration is the provider itself. All providers in the user's configuration inherit every option defined for them in the [oauth.json][oauth-config] file, and all options defined inside the `defaults` key. Having [oauth.json][oauth-config] file and a `defaults` configuration is only a convenience. You can define all available options directly for a provider.
+
+4. The **fourth** place for configuration is the provider's `overrides`. The [static overrides](#static-overrides) inherit their parent provider, essentially creating a sub provider of the same type.
+
+5. The **fifth** place for configuration, that _potentially_ can override all of the above, and make all of the above optional, is the [dynamic override](#dynamic-override).
 
 
 ## Custom Providers
 
-In case you have a private OAuth provider that you don't want to be part of the [officially supported][grant] ones, you can define it in your configuration by adding a custom key for it.
-
-In this case you have to specify all of the required provider keys by yourself:
+You can define you own provider, that's not part of the [officially supported](#grant) ones, by adding a key for it in your configuration, and supplying all of the required options by yourself:
 
 ```json
 {
   "defaults": {
     "protocol": "https",
-    "host": "mywebsite.com"
+    "host": "awesome.com"
   },
-  "mywebsite": {
-    "authorize_url": "https://mywebsite.com/authorize",
-    "access_url": "https://mywebsite.com/token",
+  "awesome": {
+    "authorize_url": "https://awesome.com/authorize",
+    "access_url": "https://awesome.com/token",
     "oauth": 2,
-    "key": "[CLIENT_ID]",
-    "secret": "[CLIENT_SECRET]",
+    "key": "APP_ID",
+    "secret": "APP_SECRET",
     "scope": ["read", "write"]
   }
 }
 ```
 
-> Refer to the Grant's [OAuth configuration][oauth-config] to see how various providers are configured.
+> Take a look at the [oauth.json][oauth-config] file to see how various providers are configured.
 
 
 ## Development Environments
@@ -399,22 +576,22 @@ You can easily configure different development environments:
 ```json
 {
   "development": {
-    "defaults": {"protocol": "http", "host": "dummy.com:3000"},
-    "facebook": {
+    "defaults": {"protocol": "http", "host": "localhost:3000"},
+    "github": {
       "key": "development OAuth app credentials",
       "secret": "development OAuth app credentials"
     }
   },
   "staging": {
-    "defaults": {"protocol": "https", "host": "staging.mywebsite.com"},
-    "facebook": {
+    "defaults": {"protocol": "https", "host": "staging.awesome.com"},
+    "github": {
       "key": "staging OAuth app credentials",
       "secret": "staging OAuth app credentials"
     }
   },
   "production": {
-    "defaults": {"protocol": "https", "host": "mywebsite.com"},
-    "facebook": {
+    "defaults": {"protocol": "https", "host": "awesome.com"},
+    "github": {
       "key": "production OAuth app credentials",
       "secret": "production OAuth app credentials"
     }
@@ -435,8 +612,84 @@ var config = require('./config.json')
 var grant = Grant(config[process.env.NODE_ENV || 'development'])
 ```
 
+## OAuth Proxy
 
-## Subdomain
+In case you really want to, you can allow [dynamic override](#dynamic-override) of every option for a provider:
+
+```json
+{
+  "github": {
+    "dynamic": true
+  }
+}
+```
+
+And the most extreme case is allowing even non preconfigured providers to be used dynamically:
+
+```json
+{
+  "defaults": {
+    "dynamic": true
+  }
+}
+```
+
+> Essentially Grant is a completely transparent **[OAuth Proxy][oauth-like-a-boss]**.
+
+
+## Redirect URI
+
+The `protocol`, the `host` (and optionally the `path`) options are used to generate **[the correct](#redirect-url)** `redirect_uri` for each provider:
+
+```json
+{
+  "defaults": {
+    "protocol": "https",
+    "host": "awesome.com"
+  },
+  "google": {},
+  "twitter": {}
+}
+```
+
+The above configuration is identical to:
+
+```json
+{
+  "google": {
+    "redirect_uri": "https://awesome.com/connect/google/callback"
+  },
+  "twitter": {
+    "redirect_uri": "https://awesome.com/connect/twitter/callback"
+  }
+}
+```
+
+> Note that the `redirect_uri` option would override the `protocol` and the `host` even if they were specified.
+
+
+## Meta Configuration
+
+You can document your configuration by adding custom keys to it:
+
+```json
+{
+  "google": {
+    "app": "My Awesome OAuth App",
+    "owner": "my_email@gmail.com",
+    "url": "https://url/to/manage/oauth/app"
+  }
+}
+```
+
+> These custom keys cannot be [reserved ones][reserved-keys].
+
+---
+
+# OAuth Quirks
+
+
+## Subdomain URLs
 
 Some providers have dynamic URLs containing bits of user information embedded in them.
 
@@ -469,7 +722,7 @@ Then Grant will generate the correct OAuth URLs:
 
 ## Sandbox OAuth URLs
 
-Some providers may have *sandbox* URLs for testing. To use them just override the entire `request_url`, `authorize_url` and `access_url` in your configuration *(notice the `sandbox` bits)*:
+Some providers may have *Sandbox* URLs to use while developing your app. To use them just override the entire `request_url`, `authorize_url` and `access_url` in your configuration *(notice the `sandbox` bits)*:
 
 ```json
 "paypal": {
@@ -486,7 +739,7 @@ Some providers may have *sandbox* URLs for testing. To use them just override th
 
 ## Sandbox Redirect URI
 
-Very rarely you may need to override the default `redirect_uri` that Grant [generates for you][redirect-uri].
+Very rarely you may need to override the default `redirect_uri` that Grant [generates for you](#redirect-uri).
 
 For example Feedly supports only `http://localhost` as redirect URL of their Sandbox OAuth application, and it won't allow the `http://localhost/connect/feedly/callback` path:
 
@@ -512,51 +765,26 @@ app.get('/', (req, res) => {
 })
 ```
 
-> As usual you will receive the [response data][response-data] in your final `callback` route.
+> As usual you will receive the [response data](#response-data) in your final `callback` route.
 
 
-## More Dynamic Overrides
-
-In case you really want to, you can allow [dynamic overriding][dynamic-override] of every option for a provider:
-
-```json
-{
-  "facebook": {
-    "dynamic": true
-  }
-}
-```
-
-And the most extreme case is allowing non preconfigured providers to be used dynamically:
-
-```json
-{
-  "defaults": {
-    "dynamic": true
-  }
-}
-```
-
-> Essentially Grant is an [OAuth proxy][oauth-proxy-example].
+## Provider Quirks
 
 
-## Quirks
+> **Ebay**
 
-
-#### Ebay
-
-Set the redirect URL of your OAuth app as usual `[protocol]://[host]/connect/ebay/callback`. Then Ebay will generate a special string called *RuName (eBay Redirect URL name)* that you need to set as `redirect_uri` in Grant:
+Set the Redirect URL of your OAuth app as usual `[protocol]://[host]/connect/ebay/callback`. Then Ebay will generate a special string called *RuName (eBay Redirect URL name)* that you need to set as `redirect_uri` in Grant:
 
 ```json
 "ebay": {
-  "redirect_uri": "[RUNAME]"
+  "redirect_uri": "RUNAME"
 }
 ```
 
 
-#### Flickr, Freelancer, Optimizely
+> **Flickr, Freelancer, Optimizely**
 
-Some providers are using custom authorization parameter to pass the requested scopes - Flickr `perms`, Freelancer `advanced_scopes`, Optimizely `scopes`, but you can use the regular `scope` option in your configuration:
+Some providers are using custom authorization parameter to pass the requested scopes - Flickr `perms`, Freelancer `advanced_scopes`, Optimizely `scopes`, but you can use the regular `scope` option instead:
 
 ```json
 "flickr": {
@@ -571,7 +799,7 @@ Some providers are using custom authorization parameter to pass the requested sc
 ```
 
 
-#### Mastodon
+> **Mastodon**
 
 Mastodon requires the entire *domain* of your server to be embedded in the OAuth URLs. However you should use the `subdomain` option:
 
@@ -582,20 +810,20 @@ Mastodon requires the entire *domain* of your server to be embedded in the OAuth
 ```
 
 
-#### SurveyMonkey
+> **SurveyMonkey**
 
 Set your Mashery user name as `key` and your application key as `api_key`:
 
 ```json
 "surveymonkey": {
-  "key": "[MASHERY_USER_NAME]",
-  "secret": "[CLIENT_SECRET]",
-  "api_key": "[CLIENT_ID]"
+  "key": "MASHERY_USER_NAME",
+  "secret": "CLIENT_SECRET",
+  "custom_params": {"api_key": "CLIENT_ID"}
 }
 ```
 
 
-#### Fitbit, LinkedIn, ProjectPlace
+> **Fitbit, LinkedIn, ProjectPlace**
 
 Initially these were OAuth1 providers, so the `fitbit`, `linkedin` and `projectplace` names are used for that. To use their OAuth2 flow append `2` at the end of their names:
 
@@ -612,72 +840,20 @@ Initially these were OAuth1 providers, so the `fitbit`, `linkedin` and `projectp
 ```
 
 
-#### VisualStudio
+> **VisualStudio**
 
 Set your Client Secret as `secret` not the App Secret:
 
 ```json
 "visualstudio": {
-  "key": "[APP_ID]",
-  "secret": "[CLIENT_SECRET not APP_SECRET]"
+  "key": "APP_ID",
+  "secret": "CLIENT_SECRET instead of APP_SECRET"
 }
 ```
 
+---
 
-## Response Data
-
-The OAuth response data is returned as *querystring* in your **final** callback - the one you specify using the `callback` key in your Grant configuration.
-
-Alternatively the response data can be returned inside the *session*, see the [configuration][configuration] section above and the [session transport][session-transport-example] example.
-
-
-### OAuth2
-
-The `access_token` and the `refresh_token` *(if present)* are accessible directly. The `id_token` *(OpenID Connect only)* contains the decoded JWT, and `raw` contains the raw response data:
-
-```js
-{
-  id_token: {header: {...}, payload: {...}, signature: '...'},
-  access_token: '...',
-  refresh_token: '...',
-  raw: {
-    id_token: '...',
-    access_token: '...',
-    refresh_token: '...',
-    some: 'other data'
-  }
-}
-```
-
-
-### OAuth1
-
-The `access_token` and the `access_secret` are accessible directly, `raw` contains the raw response data:
-
-```js
-{
-  access_token: '...',
-  access_secret: '...',
-  raw: {
-    oauth_token: '...',
-    oauth_token_secret: '...',
-    some: 'other data'
-  }
-}
-```
-
-
-### Error
-
-In case of an error, the `error` key will be populated with the raw error data:
-
-```js
-{
-  error: {
-    some: 'error data'
-  }
-}
-```
+# Misc
 
 
 ## Alternative Require
@@ -728,91 +904,8 @@ console.log(grant.config)
 
 It contains the _generated_ configuration data that Grant uses internally.
 
-> You can use the `config` property to alter the Grant's behavior during runtime.
+You can use the `config` property to alter the Grant's behavior during runtime. Keep in mind that this affects the **entire** Grant instance! Use [Dynamic Override](#dynamic-override) instead, to alter configuration per authorization attempt.
 
-> Keep in mind that this affects the entire Grant instance! [Dynamic override][dynamic-override] might be more appropriate.
-
-
-## Session vs Querystring
-
-Grant returns the [result][response-data] of the OAuth flow in the final `callback` route on your server:
-
-```json
-{
-  "facebook": {
-    "callback": "/finally"
-  }
-}
-```
-
-By default Grant encodes the result as querystring: `/finally?access_token=...`
-
-This potentially may leak private data in your server logs, especially if you are behind reverse proxy.
-
-It is **recommended** to use the session transport instead:
-
-```json
-{
-  "defaults": {
-    "transport": "session"
-  },
-  "facebook": {
-    "callback": "/finally"
-  }
-}
-```
-
-This way the result will no longer be encoded in the querystring: `/finally`
-
-And you will receive the response data inside the [session][session-transport-example] instead.
-
-
-## Redirect URI
-
-The `protocol`, the `host` (and optionally the `path`) options are used to generate [the correct][redirect-url] `redirect_uri` for each provider:
-
-```json
-{
-  "defaults": {
-    "protocol": "https",
-    "host": "website.com"
-  },
-  "facebook": {},
-  "twitter": {}
-}
-```
-
-The above configuration is identical to:
-
-```json
-{
-  "facebook": {
-    "redirect_uri": "https://website.com/connect/facebook/callback"
-  },
-  "twitter": {
-    "redirect_uri": "https://website.com/connect/twitter/callback"
-  }
-}
-```
-
-> Note that `redirect_uri` would override `protocol` and `host` even if they were specified.
-
-
-## Meta Configuration
-
-You can document your configuration by adding custom keys to it:
-
-```json
-{
-  "google": {
-    "app": "My Awesome OAuth App",
-    "owner": "my_email@gmail.com",
-    "url": "https://url/to/manage/oauth/app"
-  }
-}
-```
-
-> These custom keys cannot be [reserved ones][reserved-keys].
 
 ## Get User Profile
 
@@ -832,16 +925,16 @@ var config = {
     "host": "localhost:3000"
   },
   "facebook": {
-    "key": "[APP_ID]",
-    "secret": "[APP_SECRET]",
-    "callback": "/facebook_callback"
+    "key": "APP_ID",
+    "secret": "APP_SECRET",
+    "callback": "/hello"
   }
 }
 
 express()
   .use(session({secret: 'grant', saveUninitialized: true, resave: true}))
   .use(grant(config))
-  .get('/facebook_callback', async (req, res) => {
+  .get('/hello', async (req, res) => {
     var {body} = await request({
       url: 'https://graph.facebook.com/me',
       headers: {authorization: `Bearer ${req.query.access_token}`}
@@ -861,46 +954,13 @@ express()
   [coveralls]: https://coveralls.io/r/simov/grant?branch=master
 
   [grant-oauth]: https://grant.outofindex.com
-  [purest]: https://github.com/simov/purest
+  [oauth-like-a-boss]: https://dev.to/simov/oauth-like-a-boss-2m3b
 
-  [changelog]: https://github.com/simov/grant/blob/master/CHANGELOG.md
   [oauth-config]: https://github.com/simov/grant/blob/master/config/oauth.json
-  [reserved-json]: https://github.com/simov/grant/blob/master/config/reserved.json
-  [grant-examples]: https://github.com/simov/grant/tree/master/examples#table-of-contents
+  [reserved-keys]: https://github.com/simov/grant/blob/master/config/reserved.json
+  [examples]: https://github.com/simov/grant/tree/master/examples#table-of-contents
+  [changelog]: https://github.com/simov/grant/blob/master/CHANGELOG.md
+
   [session-transport-example]: https://github.com/simov/grant/blob/master/examples/session-transport
   [oauth-proxy-example]: https://github.com/simov/grant/blob/master/examples/oauth-proxy
   [openid-connect-example]: https://github.com/simov/grant/blob/master/examples/openid-connect
-
-  [grant]: #grant
-  [table-of-contents]: #table-of-contents
-  [express]: #express
-  [koa]: #koa
-  [hapi]: #hapi
-
-  [configuration]: #configuration
-  [redirect-url]: #redirect-url
-  [reserved-routes]: #reserved-routes
-  [path-prefix]: #path-prefix
-  [openid-connect]: #openid-connect
-  [custom-parameters]: #custom-parameters
-  [static-overrides]: #static-overrides
-  [dynamic-override]: #dynamic-override
-
-  [reserved-keys]: #reserved-keys
-  [custom-providers]: #custom-providers
-  [development-environments]: #development-environments
-  [subdomain]: #subdomain
-  [sandbox-oauth-urls]: #sandbox-oauth-urls
-  [sandbox-redirect-uri]: #sandbox-redirect-uri
-  [more-dynamic-overrides]: #more-dynamic-overrides
-  [quirks]: #quirks
-
-  [response-data]: #response-data
-
-  [alternative-require]: #alternative-require
-  [alternative-instantiation]: #alternative-instantiation
-  [programmatic-access]: #programmatic-access
-  [session-vs-querystring]: #session-vs-querystring
-  [redirect-uri]: #redirect-uri
-  [meta-configuration]: #meta-configuration
-  [get-user-profile]: #get-user-profile
