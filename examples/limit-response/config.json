@@ -1,0 +1,30 @@
+{
+  "defaults": {
+    "protocol": "http",
+    "host": "localhost:3000",
+    "transport": "session"
+  },
+  "google": {
+    "key": "APP_ID",
+    "secret": "APP_SECRET",
+    "scope": [
+      "openid"
+    ],
+    "callback": "/defaults",
+    "overrides": {
+      "browser": {
+        "transport": "querystring",
+        "response": "tokens",
+        "callback": "/browser"
+      },
+      "server": {
+        "response": "tokens",
+        "callback": "/server"
+      },
+      "jwt": {
+        "response": ["tokens", "jwt"],
+        "callback": "/jwt"
+      }
+    }
+  }
+}
