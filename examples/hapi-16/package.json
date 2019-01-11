@@ -11,7 +11,7 @@
     "url": "https://github.com/simov/grant.git"
   },
   "dependencies": {
-    "grant-hapi": "^4.2.0",
+    "grant-hapi": "^4.4.0",
     "hapi": "^16.6.3",
     "yar": "^8.1.2"
   },

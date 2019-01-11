@@ -10,7 +10,7 @@ var config = require('./config.json')
 express()
   .use(session({name: 'grant', secret: 'grant', saveUninitialized: true, resave: true}))
   .use(grant(config))
-  .get('/callback', oidc(config), (req, res) => {
+  .get('/hello', oidc(config), (req, res) => {
     res.end(JSON.stringify(req.session.grant.response, null, 2))
   })
-  .listen(3000, () => console.log(`Express server listening on port ${3000}`))
+  .listen(3000)

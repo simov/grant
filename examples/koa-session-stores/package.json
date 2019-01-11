@@ -11,7 +11,7 @@
     "url": "https://github.com/simov/grant.git"
   },
   "dependencies": {
-    "grant-koa": "^4.2.0",
+    "grant-koa": "^4.4.0",
     "koa": "^1.6.0",
     "koa-generic-session": "^1.11.6",
     "koa-generic-session-mongo": "^0.4.0",

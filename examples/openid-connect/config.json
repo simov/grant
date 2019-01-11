@@ -8,54 +8,54 @@
     "scope": [
       "openid"
     ],
-    "callback": "/callback"
+    "callback": "/hello"
   },
   "asana": {
-    "key": "[APP_ID]",
-    "secret": "[APP_SECRET]"
+    "key": "APP_ID",
+    "secret": "APP_SECRET"
   },
   "auth0": {
-    "key": "[APP_ID]",
-    "secret": "[APP_SECRET]"
+    "key": "APP_ID",
+    "secret": "APP_SECRET"
   },
   "authentiq": {
-    "key": "[APP_ID]",
-    "secret": "[APP_SECRET]"
+    "key": "APP_ID",
+    "secret": "APP_SECRET"
   },
   "google": {
-    "key": "[APP_ID]",
-    "secret": "[APP_SECRET]"
+    "key": "APP_ID",
+    "secret": "APP_SECRET"
   },
   "ibm": {
-    "key": "[APP_ID]",
-    "secret": "[APP_SECRET]"
+    "key": "APP_ID",
+    "secret": "APP_SECRET"
   },
   "microsoft": {
-    "key": "[APP_ID]",
-    "secret": "[APP_SECRET]"
+    "key": "APP_ID",
+    "secret": "APP_SECRET"
   },
   "okta": {
-    "key": "[APP_ID]",
-    "secret": "[APP_SECRET]"
+    "key": "APP_ID",
+    "secret": "APP_SECRET"
   },
   "onelogin": {
-    "key": "[APP_ID]",
-    "secret": "[APP_SECRET]"
+    "key": "APP_ID",
+    "secret": "APP_SECRET"
   },
   "paypal": {
-    "key": "[APP_ID]",
-    "secret": "[APP_SECRET]"
+    "key": "APP_ID",
+    "secret": "APP_SECRET"
   },
   "salesforce": {
-    "key": "[APP_ID]",
-    "secret": "[APP_SECRET]"
+    "key": "APP_ID",
+    "secret": "APP_SECRET"
   },
   "twitch": {
-    "key": "[APP_ID]",
-    "secret": "[APP_SECRET]"
+    "key": "APP_ID",
+    "secret": "APP_SECRET"
   },
   "yahoo": {
-    "key": "[APP_ID]",
-    "secret": "[APP_SECRET]"
+    "key": "APP_ID",
+    "secret": "APP_SECRET"
   }
 }

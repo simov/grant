@@ -5,13 +5,13 @@
     "transport": "session"
   },
   "facebook": {
-    "key": "[CLIENT_ID]",
-    "secret": "[CLIENT_SECRET]",
-    "callback": "/facebook_callback"
+    "key": "APP_ID",
+    "secret": "APP_SECRET",
+    "callback": "/hello"
   },
   "twitter": {
-    "key": "[CONSUMER_KEY]",
-    "secret": "[CONSUMER_SECRET]",
-    "callback": "/twitter_callback"
+    "key": "CONSUMER_KEY",
+    "secret": "CONSUMER_SECRET",
+    "callback": "/hi"
   }
 }

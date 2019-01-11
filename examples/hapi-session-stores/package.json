@@ -13,7 +13,7 @@
   "dependencies": {
     "catbox-mongodb": "^3.0.1",
     "catbox-redis": "^3.1.1",
-    "grant-hapi": "^4.2.0",
+    "grant-hapi": "^4.4.0",
     "hapi": "^16.6.3",
     "yar": "^8.1.2"
   },

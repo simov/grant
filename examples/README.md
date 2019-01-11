@@ -1,7 +1,6 @@
 
 # Table of Contents
 
-
 - **Basics**
   - [Basics](https://github.com/simov/grant/tree/master/examples/basics) |
     [Session Transport](https://github.com/simov/grant/tree/master/examples/session-transport) |
@@ -21,83 +20,52 @@
 - **Configuration Overrides**
   - [Static Override](https://github.com/simov/grant/tree/master/examples/static-override) |
     [Dynamic Override](https://github.com/simov/grant/tree/master/examples/dynamic-override) |
-    [OAuth Proxy](https://github.com/simov/grant/tree/master/examples/oauth-proxy)
+    [OAuth Proxy](https://github.com/simov/grant/tree/master/examples/oauth-proxy) |
+    [Like a BOSS](https://dev.to/simov/oauth-like-a-boss-2m3b)
 - **Misc**
   - [OpenID Connect](https://github.com/simov/grant/tree/master/examples/openid-connect) |
+    [Limit Response](https://github.com/simov/grant/tree/master/examples/limit-response) |
     [JWT](https://github.com/simov/grant/tree/master/examples/jwt) |
     [Custom Provider](https://github.com/simov/grant/tree/master/examples/custom-provider)
 
-
-# How To
-
-
-## Install
+# Install
 
 ```bash
 $ cd examples/[example-folder]
 $ npm install
 ```
 
-## OAuth
+# OAuth App
 
-Most of the examples are using Facebook and Twitter for showcasing the OAuth2 and OAuth1 flow respectively.
+Most of the examples are using Facebook and Twitter for showcasing the OAuth 2.0 and OAuth 1.0a flow respectively.
 
-Create OAuth apps for Facebook and Twitter and set their `redirect_uri` accordingly:
+Create OAuth Apps for Facebook and Twitter (or any provider you want), and set their `redirect_uri` accordingly:
 
 - `http://localhost:3000/connect/facebook/callback`
 - `http://localhost:3000/connect/twitter/callback`
 
+# Grant Configuration
 
-## Config
+Add your OAuth App credentials in `config.json`
 
-Add your OAuth app credentials in `config.json`
-
-
-## Start
+# Start Server
 
 ```bash
 $ node app.js
 ```
 
-
-## Login
+# Login
 
 Navigate to the following URLs in your browser:
 
 - `http://localhost:3000/connect/facebook`
 - `http://localhost:3000/connect/twitter`
 
+---
 
-# Specific Examples
+### JWT Example
 
-
-## Static Overrides - Login
-
-The static overrides example have a bunch of login URLs:
-
-- `http://localhost:3000/connect/facebook`
-- `http://localhost:3000/connect/facebook/photos`
-- `http://localhost:3000/connect/facebook/videos`
-- `http://localhost:3000/connect/twitter`
-- `http://localhost:3000/connect/twitter/write`
-
-
-## Dynamic Overrides - Login
-
-Navigate to `http://localhost:3000/form` in your browser and pick a few scopes to test dynamic override via `POST` request.
-
-Navigate to `http://localhost:3000/connect/facebook?scope=user_photos%2Cuser_videos` in your browser to test dynamic overrides via `GET` request.
-
-
-## Path Prefix - OAuth
-
-Create OAuth apps for Facebook and Twitter and set their `redirect_uri` accordingly:
-
-- `http://localhost:3000/path/prefix/connect/facebook/callback`
-- `http://localhost:3000/path/prefix/connect/twitter/callback`
-
-
-## JWT - Create self-signed certificates
+Create self-signed certificates:
 
 ```bash
 # generate private key

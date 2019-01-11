@@ -4,17 +4,17 @@
     "host": "localhost:3000"
   },
   "facebook": {
-    "key": "[APP_ID]",
-    "secret": "[APP_SECRET]",
-    "callback": "/facebook_callback",
+    "key": "APP_ID",
+    "secret": "APP_SECRET",
+    "callback": "/hello",
     "scope": [
       "public_profile",
       "email"
     ]
   },
   "twitter": {
-    "key": "[CONSUMER_KEY]",
-    "secret": "[CONSUMER_SECRET]",
-    "callback": "/twitter_callback"
+    "key": "CONSUMER_KEY",
+    "secret": "CONSUMER_SECRET",
+    "callback": "/hi"
   }
 }

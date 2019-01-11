@@ -13,9 +13,9 @@
   "dependencies": {
     "express": "^4.16.3",
     "express-session": "^1.15.6",
-    "grant-express": "^4.2.0",
+    "grant-express": "^4.4.0",
     "jws": "^3.1.4",
-    "request-compose": "0.0.12"
+    "request-compose": "^1.1.1"
   },
   "main": "app.js"
 }

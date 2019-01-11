@@ -6,9 +6,9 @@
     "state": true
   },
   "facebook": {
-    "key": "[APP_ID]",
-    "secret": "[APP_SECRET]",
-    "callback": "/facebook_callback",
+    "key": "APP_ID",
+    "secret": "APP_SECRET",
+    "callback": "/hello",
     "scope": [
       "public_profile",
       "email"

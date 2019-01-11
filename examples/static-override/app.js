@@ -3,16 +3,22 @@ var express = require('express')
 var session = require('express-session')
 var grant = require('grant-express')
 
-var config = require('./config.json')
-
 
 express()
   .use(session({secret: 'grant', saveUninitialized: true, resave: true}))
-  .use(grant(config))
-  .get('/facebook_callback', (req, res) => {
+  .use(grant(require('./config.json')))
+
+  // http://localhost:3000/connect/facebook
+  // http://localhost:3000/connect/facebook/photos
+  // http://localhost:3000/connect/facebook/videos
+  .get('/hello', (req, res) => {
     res.end(JSON.stringify(req.query, null, 2))
   })
-  .get('/twitter_callback', (req, res) => {
+
+  // http://localhost:3000/connect/twitter
+  // http://localhost:3000/connect/twitter/write
+  .get('/hi', (req, res) => {
     res.end(JSON.stringify(req.query, null, 2))
   })
-  .listen(3000, () => console.log(`Express server listening on port ${3000}`))
+
+  .listen(3000)

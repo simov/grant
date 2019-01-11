@@ -13,14 +13,16 @@ var config = require('./config.json')
 express()
   .use(session({secret: 'grant', saveUninitialized: true, resave: true}))
   .use(grant(config))
-  .get('/facebook_callback', async (req, res) => {
+
+  .get('/hello', async (req, res) => {
     var {body} = await request({
       url: 'https://graph.facebook.com/me',
       headers: {authorization: `Bearer ${req.query.access_token}`}
     })
     res.end(JSON.stringify({oauth: req.query, profile: body}, null, 2))
   })
-  .get('/twitter_callback', async (req, res) => {
+
+  .get('/hi', async (req, res) => {
     var {body} = await request({
       url: 'https://api.twitter.com/1.1/users/show.json',
       qs: {user_id: req.query.raw.user_id},
@@ -33,4 +35,5 @@ express()
     })
     res.end(JSON.stringify({oauth: req.query, profile: body}, null, 2))
   })
-  .listen(3000, () => console.log(`Express server listening on port ${3000}`))
+
+  .listen(3000)

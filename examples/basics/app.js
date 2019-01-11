@@ -12,20 +12,20 @@ express()
       host: 'localhost:3000'
     },
     facebook: {
-      key: '[APP_ID]',
-      secret: '[APP_SECRET]',
-      callback: '/facebook_callback'
+      key: 'APP_ID',
+      secret: 'APP_SECRET',
+      callback: '/hello'
     },
     twitter: {
-      key: '[CONSUMER_KEY]',
-      secret: '[CONSUMER_SECRET]',
-      callback: '/twitter_callback'
+      key: 'CONSUMER_KEY',
+      secret: 'CONSUMER_SECRET',
+      callback: '/hi'
     }
   }))
-  .get('/facebook_callback', (req, res) => {
+  .get('/hello', (req, res) => {
     res.end(JSON.stringify(req.query, null, 2))
   })
-  .get('/twitter_callback', (req, res) => {
+  .get('/hi', (req, res) => {
     res.end(JSON.stringify(req.query, null, 2))
   })
-  .listen(3000, () => console.log(`Express server listening on port ${3000}`))
+  .listen(3000)

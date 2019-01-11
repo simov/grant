@@ -15,7 +15,7 @@
     "connect-redis": "^3.3.3",
     "express": "^4.16.3",
     "express-session": "^1.15.6",
-    "grant-express": "^4.2.0"
+    "grant-express": "^4.4.0"
   },
   "main": "express-session.js"
 }

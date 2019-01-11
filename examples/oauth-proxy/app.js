@@ -8,12 +8,12 @@ express()
     var provider = req.params.provider
     var params = qs.stringify({
       transport: 'querystring',
-      callback: `http://localhost:${3000}/callback`,
+      callback: `http://localhost:${3000}/hello`,
       // pass any other option here
     })
     res.redirect(`https://grant.outofindex.com/connect/${provider}?${params}`)
   })
-  .get('/callback', (req, res) => {
+  .get('/hello', (req, res) => {
     res.end(JSON.stringify(req.query, null, 2))
   })
-  .listen(3000, () => console.log(`Express server listening on port ${3000}`))
+  .listen(3000)

@@ -4,31 +4,35 @@
     "host": "localhost:3000"
   },
   "facebook": {
-    "key": "[APP_ID]",
-    "secret": "[APP_SECRET]",
-    "callback": "/facebook_callback",
+    "key": "APP_ID",
+    "secret": "APP_SECRET",
     "scope": [
       "public_profile",
       "email"
     ],
-    "photos": {
-      "scope": [
-        "user_photos"
-      ]
-    },
-    "videos": {
-      "scope": [
-        "user_videos"
-      ]
+    "callback": "/hello",
+    "overrides": {
+      "photos": {
+        "scope": [
+          "user_photos"
+        ]
+      },
+      "videos": {
+        "scope": [
+          "user_videos"
+        ]
+      }
     }
   },
   "twitter": {
-    "key": "[APP1 - CONSUMER_KEY - READ-ONLY]",
-    "secret": "[APP1 - CONSUMER_SECRET - READ-ONLY]",
-    "callback": "/twitter_callback",
-    "write": {
-      "key": "[APP2 - CONSUMER_KEY - WRITE]",
-      "secret": "[APP2 - CONSUMER_SECRET - WRITE]"
+    "key": "CONSUMER_KEY",
+    "secret": "CONSUMER_SECRET",
+    "callback": "/hi",
+    "overrides": {
+      "write": {
+        "key": "CONSUMER_KEY",
+        "secret": "CONSUMER_SECRET"
+      }
     }
   }
 }
