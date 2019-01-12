@@ -176,13 +176,13 @@ You login by navigating to the `/connect/:provider` route where `:provider` is a
 
 ## Redirect URL
 
-You should **always** use this format for `redirect_uri` of your OAuth app:
+You should **always** use this format for `redirect_uri` of your OAuth App:
 
 ```
 [protocol]://[host]/connect/[provider]/callback
 ```
 
-The `protocol` and the `host` are the options you specify inside the `defaults` key of your [configuration](#configuration), and this is where your Grant server is listening. The `provider` is a key in your configuration, usually one of the [supported ones](#grant).
+The `protocol` and the `host` are the options you specify inside the `defaults` key of your [configuration](#configuration), and this is where your Grant server is listening. The `provider` is a provider found in your configuration, usually one of the [officially supported ones](#grant).
 
 The `/connect/:provider/callback` route is used **internally** by Grant! You will receive the OAuth [response data](#response-data) inside the `callback` route specified in your configuration.
 
@@ -200,7 +200,7 @@ app.use(mount('/path/prefix', grant(config)))
 server.register([{routes: {prefix: '/path/prefix'}, plugin: grant(config)}])
 ```
 
-In this case it is **required** to specify the `path` in your configuration:
+In this case it is **required** to specify that `path` prefix in your configuration:
 
 ```json
 {
@@ -212,7 +212,7 @@ In this case it is **required** to specify the `path` in your configuration:
 }
 ```
 
-That path prefix **should be** specified in your OAuth app [Redirect URL](#redirect-url):
+That path prefix **should also be** specified in your OAuth App [Redirect URL](#redirect-url):
 
 ```
 [protocol]://[host][path]/connect/[provider]/callback
@@ -296,9 +296,11 @@ You can specify provider sub configurations using the `overrides` key:
 }
 ```
 
-- navigate to `/connect/github` to request the *public_repo* `scope`
-- navigate to `/connect/github/notifications` to request the _notifications_ `scope` using another OAuth app (the `key` and the `secret`)
-- navigate to `/connect/github/all` to request a bunch of `scope`s and also receive the response data in another `callback` route
+Navigate to:
+
+- `/connect/github` to request the *public_repo* `scope`
+- `/connect/github/notifications` to request the _notifications_ `scope` using another OAuth App (`key` and `secret`)
+- `/connect/github/all` to request a bunch of `scope`s and also receive the response data in another `callback` route
 
 
 ## Dynamic Override
@@ -413,7 +415,7 @@ By default Grant will encode the OAuth [response data](#response-data) as *query
 }
 ```
 
-This `/hello?access_token=...` potentially may leak private data in your server logs, especially if you are behind reverse proxy.
+This `/hello?access_token=...` redirect potentially may leak private data in your server logs, especially if you are behind reverse proxy.
 
 It is **recommended** to use the *session* `transport` instead:
 
@@ -428,7 +430,7 @@ It is **recommended** to use the *session* `transport` instead:
 }
 ```
 
-This way the result will no longer be encoded as *querystring*, and you will receive the response data inside the [session][session-transport-example] instead.
+That way the result will no longer be encoded as *querystring*, and you will receive the response data inside the [session][session-transport-example] instead.
 
 
 ## Limit Response Data
@@ -479,7 +481,7 @@ This will make the decoded `id_token` available as `id_token_jwt` in the respons
 
 ## Session
 
-Grant uses session to persist state between HTTP redirects occurring during the OAuth flow. This session, however, was never designed to be used as persistent storage, even if that's totally possible.
+Grant uses session to persist state between HTTP redirects occurring during the OAuth flow. This session, however, was never meant to be used as persistent storage, even if that's totally possible.
 
 Once you receive the [response data](#response-data) in your final `callback` route you are free to destroy that session, and do whatever you want with the returned data.
 
@@ -487,7 +489,7 @@ However, there are a few session keys returned in your final `callback` route, t
 
 Key        | Availability            | Description
 :--        | :--                     | :--
-`provider` | **Always**              | The provider [name](#oauth) this authorization was called for
+`provider` | **Always**              | The provider [name](#grant) this authorization was called for
 `override` | Depends on URL          | The [static override](#static-overrides) name used for this authorization
 `dynamic`  | Depends on request type | The [dynamic override](#dynamic-override) configuration passed for this authorization
 `state`    | OAuth 2.0 only          | OAuth 2.0 state string that was generated
@@ -739,9 +741,9 @@ Some providers may have *Sandbox* URLs to use while developing your app. To use 
 
 ## Sandbox Redirect URI
 
-Very rarely you may need to override the default `redirect_uri` that Grant [generates for you](#redirect-uri).
+Very rarely you may need to override the `redirect_uri` that Grant [generates for you](#redirect-uri).
 
-For example Feedly supports only `http://localhost` as redirect URL of their Sandbox OAuth application, and it won't allow the `http://localhost/connect/feedly/callback` path:
+For example Feedly supports only `http://localhost` as redirect URL of their Sandbox OAuth application, and it won't allow the correct `http://localhost/connect/feedly/callback` URL:
 
 ```js
 "feedly": {
@@ -904,7 +906,7 @@ console.log(grant.config)
 
 It contains the _generated_ configuration data that Grant uses internally.
 
-You can use the `config` property to alter the Grant's behavior during runtime. Keep in mind that this affects the **entire** Grant instance! Use [Dynamic Override](#dynamic-override) instead, to alter configuration per authorization attempt.
+You can use the `config` property to alter the Grant's behavior during runtime. Keep in mind that this affects the **entire** Grant instance! Use [dynamic override](#dynamic-override) instead, to alter configuration per authorization attempt.
 
 
 ## Get User Profile

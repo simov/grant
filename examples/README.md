@@ -21,7 +21,7 @@
   - [Static Override](https://github.com/simov/grant/tree/master/examples/static-override) |
     [Dynamic Override](https://github.com/simov/grant/tree/master/examples/dynamic-override) |
     [OAuth Proxy](https://github.com/simov/grant/tree/master/examples/oauth-proxy) |
-    [Like a BOSS](https://dev.to/simov/oauth-like-a-boss-2m3b)
+    [Like a BOSS](https://github.com/simov/oauth-like-a-boss)
 - **Misc**
   - [OpenID Connect](https://github.com/simov/grant/tree/master/examples/openid-connect) |
     [Limit Response](https://github.com/simov/grant/tree/master/examples/limit-response) |
