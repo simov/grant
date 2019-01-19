@@ -729,6 +729,11 @@
     "access_url": "https://api.pushbullet.com/oauth2/token",
     "oauth": 2
   },
+  "qq":{
+    "authorize_url": "https://graph.qq.com/oauth2.0/authorize",
+    "access_url": "https://graph.qq.com/oauth2.0/token",
+    "oauth": 2
+  },
   "ravelry": {
     "request_url": "https://www.ravelry.com/oauth/request_token",
     "authorize_url": "https://www.ravelry.com/oauth/authorize",
@@ -1017,10 +1022,18 @@
     "access_url": "https://api.weibo.com/oauth2/access_token",
     "oauth": 2
   },
+  // "weixin": {
+  //   "authorize_url": "https://open.weixin.qq.com/connect/oauth2/authorize",
+  //   "access_url": "https://api.weixin.qq.com/sns/oauth2/access_token",
+  //   "oauth": 2,
+  //   "scope_delimiter": " ",
+  //   "custom_parameters": ["snsapi_base", "snsapi_userinfo"]
+  // },
   "withings": {
     "authorize_url": "https://account.withings.com/oauth2_user/authorize2",
     "access_url": "https://account.withings.com/oauth2/token",
-    "oauth": 2
+    "oauth": 2,
+    "scope_data"
   },
   "wordpress": {
     "authorize_url": "https://public-api.wordpress.com/oauth2/authorize",
