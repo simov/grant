@@ -739,6 +739,11 @@
     "access_url": "https://api.pushbullet.com/oauth2/token",
     "oauth": 2
   },
+  "qq": {
+    "authorize_url": "https://graph.qq.com/oauth2.0/authorize",
+    "access_url": "https://graph.qq.com/oauth2.0/token",
+    "oauth": 2
+  },
   "ravelry": {
     "request_url": "https://www.ravelry.com/oauth/request_token",
     "authorize_url": "https://www.ravelry.com/oauth/authorize",
