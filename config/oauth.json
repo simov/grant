@@ -742,7 +742,8 @@
   "qq": {
     "authorize_url": "https://graph.qq.com/oauth2.0/authorize",
     "access_url": "https://graph.qq.com/oauth2.0/token",
-    "oauth": 2
+    "oauth": 2,
+    "custom_parameters": ["display"]
   },
   "ravelry": {
     "request_url": "https://www.ravelry.com/oauth/request_token",

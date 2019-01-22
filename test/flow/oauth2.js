@@ -268,6 +268,7 @@ describe('oauth2', () => {
           fitbit2: {access_url: url('/access_url')},
           homeaway: {access_url: url('/access_url')},
           hootsuite: {access_url: url('/access_url')},
+          qq: {access_url: url('/access_url')},
           reddit: {access_url: url('/access_url')},
           shopify: {access_url: url('/access_url')},
           smartsheet: {access_url: url('/access_url')},
@@ -279,18 +280,27 @@ describe('oauth2', () => {
           .use(grant)
           .use(bodyParser.urlencoded({extended: true}))
           .post('/access_url', (req, res) => {
-            if (req.headers.authorization) {
-              res.writeHead(200, {'content-type': 'application/x-www-form-urlencoded'})
-              res.end(qs.stringify({basic: req.headers.authorization}))
-            }
-            else if (req.url.split('?')[1]) {
+            var code = req.body.code || req.query.code
+            // wrong content-type to pass the response formatter
+            if (code === 'concur') {
               res.writeHead(200, {'content-type': 'application/json'})
               res.end(qs.stringify(req.query))
+              return
+            }
+            res.writeHead(200, {'content-type': 'application/x-www-form-urlencoded'})
+            if (req.url.split('?')[1]) {
+              res.end(qs.stringify(req.query))
+            }
+            else if (req.headers.authorization) {
+              res.end(qs.stringify({basic: req.headers.authorization}))
             }
             else if (req.body) {
-              res.writeHead(200, {'content-type': 'application/x-www-form-urlencoded'})
               res.end(qs.stringify(req.body))
             }
+          })
+          .get('/access_url', (req, res) => {
+            res.writeHead(200, {'content-type': 'application/x-www-form-urlencoded'})
+            res.end(qs.stringify(Object.assign({method: req.method}, req.query)))
           })
           .listen(5000, done)
       })
@@ -306,9 +316,9 @@ describe('oauth2', () => {
         it('concur', async () => {
           grant.config.concur.key = 'key'
           grant.config.concur.secret = 'secret'
-          var data = await oauth2.access(grant.config.concur, {code: 'code'}, {})
+          var data = await oauth2.access(grant.config.concur, {code: 'concur'}, {})
           t.deepEqual(qs.parse(data.raw), {
-            code: 'code', client_id: 'key', client_secret: 'secret'
+            code: 'concur', client_id: 'key', client_secret: 'secret'
           })
         })
         it('surveymonkey', async () => {
@@ -328,6 +338,18 @@ describe('oauth2', () => {
               Buffer.from(data.raw.basic.replace('Basic ', ''), 'base64').toString().split(':'),
               ['key', 'secret']
             )
+          })
+        })
+      })
+
+      describe('get method', () => {
+        it('qq', async () => {
+          var data = await oauth2.access(grant.config.qq, {code: 'code'}, {})
+          t.deepEqual(qs.parse(data.raw), {
+            method: 'GET',
+            grant_type: 'authorization_code',
+            code: 'code',
+            redirect_uri: url('/connect/qq/callback')
           })
         })
       })
