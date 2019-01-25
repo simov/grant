@@ -1,6 +1,10 @@
 
 # Change Log
 
+## v4.4.1 (2019/01/25)
+- **Fix:** Accept array of `aud` claims when validating an `id_token`
+- **New:** Official support for 1 new provider: `qq`
+
 ## v4.4.0 (2019/01/11)
 - **New:** Added `response` option for limiting the response data
 
