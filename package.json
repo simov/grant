@@ -23,7 +23,7 @@
   },
   "dependencies": {
     "qs": "^6.6.0",
-    "request-compose": "^1.1.1",
+    "request-compose": "^1.2.0",
     "request-oauth": "0.0.3"
   },
   "devDependencies": {
