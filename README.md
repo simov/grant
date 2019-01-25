@@ -171,7 +171,7 @@ Grant operates on the following two routes:
 /connect/:provider/callback
 ```
 
-You login by navigating to the `/connect/:provider` route where `:provider` is a key in your configuration, usually one of the [officially supported](#grant) providers. Additonally you can login through a [static override](#static-overrides) key defined for that provider, in your configuration, by navigating to the `/connect/:provider/:override?` route.
+You login by navigating to the `/connect/:provider` route where `:provider` is a key in your configuration, usually one of the [officially supported](#grant) providers. Additionally you can login through a [static override](#static-overrides) key defined for that provider, in your configuration, by navigating to the `/connect/:provider/:override?` route.
 
 
 ## Redirect URL
