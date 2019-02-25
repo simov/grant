@@ -526,6 +526,7 @@ callback | `[provider]` | final callback route on your server to receive the [re
 dynamic | `[provider]` | allow [dynamic override](#dynamic-override) of configuration
 overrides | `[provider]` | [static overrides](#static-overrides) for a provider
 response | `[provider]` | [limit](#limit-response-data) the response data
+token_endpoint_auth_method | `[provider]` | Authentication method for the token endpoint from [RFC 7591](https://tools.ietf.org/html/rfc7591#section-2)
 name | generated | provider's [name](#grant), used to generate `redirect_uri`
 [provider] | generated | provider's [name](#grant) as key
 redirect_uri | generated | OAuth app [redirect URI](#redirect-uri), generated using `protocol`, `host`, `path` and `name`

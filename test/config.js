@@ -82,6 +82,15 @@ describe('config', () => {
       t.equal(config.format.secret({oauth: 3, secret: 'secret'}), undefined)
       t.equal(config.format.secret({}), undefined)
     })
+    it('token_endpoint_auth_method', () => {
+      t.equal(config.format.token_endpoint_auth_method({}), undefined)
+      t.equal(config.format.token_endpoint_auth_method({oauth: undefined}), undefined)
+      t.equal(config.format.token_endpoint_auth_method({oauth: 1}), undefined)
+      t.equal(config.format.token_endpoint_auth_method({oauth: 2}), 'client_secret_post')
+      t.equal(config.format.token_endpoint_auth_method({oauth: 2, token_endpoint_auth_method: 'foo'}), 'client_secret_post')
+      t.equal(config.format.token_endpoint_auth_method({oauth: 2, token_endpoint_auth_method: 'client_secret_basic'}), 'client_secret_basic')
+      t.equal(config.format.token_endpoint_auth_method({oauth: 2, token_endpoint_auth_method: 'client_secret_post'}), 'client_secret_post')
+    })
     it('scope', () => {
       t.equal(config.format.scope({scope: []}), undefined)
       t.equal(config.format.scope({scope: ['']}), undefined)
@@ -243,6 +252,7 @@ describe('config', () => {
         {
           protocol: 'http',
           host: 'localhost:3000',
+          token_endpoint_auth_method: 'client_secret_post',
           oauth: 2,
           client_id: 'key',
           client_secret: 'secret',
@@ -255,6 +265,7 @@ describe('config', () => {
             sub: {
               protocol: 'http',
               host: 'localhost:3000',
+              token_endpoint_auth_method: 'client_secret_post',
               oauth: 2,
               client_id: 'key',
               client_secret: 'secret',
@@ -285,6 +296,7 @@ describe('config', () => {
         facebook: {
           authorize_url: 'https://www.facebook.com/dialog/oauth',
           access_url: 'https://graph.facebook.com/oauth/access_token',
+          token_endpoint_auth_method: 'client_secret_post',
           oauth: 2,
           protocol: 'http',
           host: 'localhost:3000',
@@ -307,6 +319,7 @@ describe('config', () => {
         facebook: {
           authorize_url: 'https://www.facebook.com/dialog/oauth',
           access_url: 'https://graph.facebook.com/oauth/access_token',
+          token_endpoint_auth_method: 'client_secret_post',
           oauth: 2,
           protocol: 'http',
           host: 'localhost:3000',
@@ -344,6 +357,7 @@ describe('config', () => {
         config.provider(options, session), {
           authorize_url: 'https://www.facebook.com/dialog/oauth',
           access_url: 'https://graph.facebook.com/oauth/access_token',
+          token_endpoint_auth_method: 'client_secret_post',
           oauth: 2,
           dynamic: true,
           name: 'facebook',
