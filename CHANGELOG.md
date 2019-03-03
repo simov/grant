@@ -1,6 +1,10 @@
 
 # Change Log
 
+## v4.5.0 (2019/03/04)
+- **New:** Added [`token_endpoint_auth_method`](https://github.com/simov/grant#token-endpoint-auth-method) option
+- **New:** Official support for 1 new provider: `wechat`
+
 ## v4.4.1 (2019/01/25)
 - **Fix:** Accept array of `aud` claims when validating an `id_token`
 - **New:** Official support for 1 new provider: `qq`
@@ -26,7 +30,7 @@
 - **New:** [OpenID Connect](https://github.com/simov/grant#openid-connect) `id_token` and `nonce` support
 - **New:** The `server` configuration option is now called `defaults` (`server` is still allowed)
 - **New:** Explicit `dynamic` option to control the Dynamic Override feature
-- **Change:** The Dynamic Override is now **disabled by default!** In case you rely on it you have to enable it explicitly. Use the [more granular](https://github.com/simov/grant#dynamic-override) configuration or the [proxy one](https://github.com/simov/grant#more-dynamic-overrides)
+- **Change:** The Dynamic Override is now **disabled by default!** In case you rely on it you have to enable it explicitly. Use the [more granular](https://github.com/simov/grant#dynamic-override) configuration or the [proxy one](https://github.com/simov/grant#oauth-proxy)
 - **New:** Official support for 2 new providers: `mastodon`, `onelogin`
 - **Change:** Updated 4 providers: `bitbucket`, `strava`, `twitch`, `yahoo`
 
@@ -161,7 +165,7 @@ app.get('/final_callback', (req, res) => {
 - **Change:** Allow [Custom Provider](https://github.com/simov/grant#custom-providers) configuration
 
 ## v3.1.0 (2015/04/14)
-- **New:** `transport` option that allows the response data to be returned in the final callback either as querystring or in the [session](https://github.com/simov/grant/blob/master/example/session-transport/app.js)
+- **New:** `transport` option that allows the response data to be returned in the final callback either as querystring or in the [session](https://github.com/simov/grant/blob/master/examples/session-transport/app.js)
 - **New:** `state: true` option that enables auto generated random state string on each authorization attempt (OAuth2 only)
 
 ## v3.0.3 (2015/04/02)
