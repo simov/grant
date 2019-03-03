@@ -255,19 +255,14 @@ describe('oauth2', () => {
         })
       })
 
-      describe('replace params name', () => {
-        var config = {
-          wechat: {
-            "key": "wechat_appid",
-            "secret": "wechat_appsecret",
-            "scope": ["snsapi_base"],
-          }
-        }
+      describe('appid - client_id', () => {
+        var config = {wechat: {key: 'key', secret: 'secret'}}
         var grant = Grant(config)
         it('wechat', async () => {
           var url = await oauth2.authorize(grant.config.wechat)
           var query = qs.parse(url.split('?')[1])
-          t.equal(query.appid, 'wechat_appid')
+          t.equal(query.appid, 'key')
+          t.equal(query.client_id, undefined)
         })
       })
     })
@@ -370,22 +365,24 @@ describe('oauth2', () => {
           })
         })
       })
-      describe('replace params name', async() => {
-        it('wechat', async() => {
+
+      describe('get method + qs + custom params', () => {
+        it('wechat', async () => {
           var data = await oauth2.access(Object.assign({
-            key: 'wechat_appid',
-            secret: 'wechat_appsecret'
+            key: 'key',
+            secret: 'secret'
           }, grant.config.wechat), {code: 'code'}, {})
           t.deepEqual(qs.parse(data.raw), {
             method: 'GET',
-            appid: 'wechat_appid',
-            secret: 'wechat_appsecret',
             grant_type: 'authorization_code',
             code: 'code',
+            appid: 'key',
+            secret: 'secret',
             redirect_uri: url('/connect/wechat/callback')
           })
         })
       })
+
       describe('hash', () => {
         it('smartsheet', async () => {
           var data = await oauth2.access(grant.config.smartsheet, {code: 'code'}, {})
