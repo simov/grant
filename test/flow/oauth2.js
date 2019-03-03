@@ -266,6 +266,7 @@ describe('oauth2', () => {
           concur: {access_url: url('/access_url')},
           ebay: {access_url: url('/access_url')},
           fitbit2: {access_url: url('/access_url')},
+          google: {access_url: url('/access_url')},
           homeaway: {access_url: url('/access_url')},
           hootsuite: {access_url: url('/access_url')},
           qq: {access_url: url('/access_url')},
@@ -339,6 +340,16 @@ describe('oauth2', () => {
               ['key', 'secret']
             )
           })
+        })
+        it('token_endpoint_auth_method - client_secret_basic', async () => {
+          grant.config.google.key = 'key'
+          grant.config.google.secret = 'secret'
+          grant.config.google.token_endpoint_auth_method = 'client_secret_basic'
+          var data = await oauth2.access(grant.config.google, {code: 'code'}, {})
+          t.deepEqual(
+            Buffer.from(data.raw.basic.replace('Basic ', ''), 'base64').toString().split(':'),
+            ['key', 'secret']
+          )
         })
       })
 

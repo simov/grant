@@ -5,7 +5,6 @@
   "oauth",
   "scope_delimiter",
   "custom_parameters",
-  "token_endpoint_auth_method",
 
   "protocol",
   "host",
@@ -27,6 +26,7 @@
   "dynamic",
   "overrides",
   "response",
+  "token_endpoint_auth_method",
 
   "name",
   "redirect_uri"

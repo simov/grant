@@ -37,6 +37,7 @@
   - [Development Environments](#development-environments)
   - [OAuth Proxy](#oauth-proxy)
   - [Redirect URI](#redirect-uri)
+  - [Token Endpoint Auth Method](#token-endpoint-auth-method)
   - [Meta Configuration](#meta-configuration)
 - **OAuth Quirks**
   - [Subdomain URLs](#subdomain-urls)
@@ -526,7 +527,7 @@ callback | `[provider]` | final callback route on your server to receive the [re
 dynamic | `[provider]` | allow [dynamic override](#dynamic-override) of configuration
 overrides | `[provider]` | [static overrides](#static-overrides) for a provider
 response | `[provider]` | [limit](#limit-response-data) the response data
-token_endpoint_auth_method | `[provider]` | Authentication method for the token endpoint from [RFC 7591](https://tools.ietf.org/html/rfc7591#section-2)
+token_endpoint_auth_method | `[provider]` | authentication method for the [token endpoint](#token-endpoint-auth-method)
 name | generated | provider's [name](#grant), used to generate `redirect_uri`
 [provider] | generated | provider's [name](#grant) as key
 redirect_uri | generated | OAuth app [redirect URI](#redirect-uri), generated using `protocol`, `host`, `path` and `name`
@@ -668,6 +669,21 @@ The above configuration is identical to:
 ```
 
 > Note that the `redirect_uri` option would override the `protocol` and the `host` even if they were specified.
+
+
+## Token Endpoint Auth Method
+
+Grant is handling the OAuth 2.0 _token endpoint_ request internally.
+
+By default all of the required OAuth parameters will be encoded in the request body, including the OAuth app credentials.
+
+You can use the `token_endpoint_auth_method` option to send the OAuth app credentials as Basic authorization header instead:
+
+```json
+"google": {
+  "token_endpoint_auth_method": "client_secret_basic"
+}
+```
 
 
 ## Meta Configuration
