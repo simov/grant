@@ -254,6 +254,17 @@ describe('oauth2', () => {
           t.equal(url.replace(/.*scope=(.*)/g, '$1'), 'public+read_photos')
         })
       })
+
+      describe('appid - client_id', () => {
+        var config = {wechat: {key: 'key', secret: 'secret'}}
+        var grant = Grant(config)
+        it('wechat', async () => {
+          var url = await oauth2.authorize(grant.config.wechat)
+          var query = qs.parse(url.split('?')[1])
+          t.equal(query.appid, 'key')
+          t.equal(query.client_id, undefined)
+        })
+      })
     })
 
     describe('access', () => {
@@ -270,6 +281,7 @@ describe('oauth2', () => {
           homeaway: {access_url: url('/access_url')},
           hootsuite: {access_url: url('/access_url')},
           qq: {access_url: url('/access_url')},
+          wechat: {access_url: url('/access_url')},
           reddit: {access_url: url('/access_url')},
           shopify: {access_url: url('/access_url')},
           smartsheet: {access_url: url('/access_url')},
@@ -361,6 +373,23 @@ describe('oauth2', () => {
             grant_type: 'authorization_code',
             code: 'code',
             redirect_uri: url('/connect/qq/callback')
+          })
+        })
+      })
+
+      describe('get method + qs + custom params', () => {
+        it('wechat', async () => {
+          var data = await oauth2.access(Object.assign({
+            key: 'key',
+            secret: 'secret'
+          }, grant.config.wechat), {code: 'code'}, {})
+          t.deepEqual(qs.parse(data.raw), {
+            method: 'GET',
+            grant_type: 'authorization_code',
+            code: 'code',
+            appid: 'key',
+            secret: 'secret',
+            redirect_uri: url('/connect/wechat/callback')
           })
         })
       })
