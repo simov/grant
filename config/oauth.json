@@ -2,6 +2,7 @@
   "23andme": {
     "authorize_url": "https://api.23andme.com/authorize",
     "access_url": "https://api.23andme.com/token",
+    "profile_url": "https://api.23andme.com/1/user",
     "oauth": 2,
     "scope_delimiter": " "
   },
@@ -9,11 +10,13 @@
     "request_url": "https://api.500px.com/v1/oauth/request_token",
     "authorize_url": "https://api.500px.com/v1/oauth/authorize",
     "access_url": "https://api.500px.com/v1/oauth/access_token",
+    "profil_url": "https://api.500px.com/v1/users",
     "oauth": 1
   },
   "acton": {
     "authorize_url": "https://restapi.actonsoftware.com/authorize",
     "access_url": "https://restapi.actonsoftware.com/token",
+    "profile_url": "https://restapi.actonsoftware.com/account",
     "oauth": 2
   },
   "acuityscheduling": {
@@ -30,6 +33,7 @@
   "amazon": {
     "authorize_url": "https://www.amazon.com/ap/oa",
     "access_url": "https://api.amazon.com/auth/o2/token",
+    "profile_url": "https://api.amazon.com/user/profile",
     "oauth": 2,
     "scope_delimiter": " ",
     "custom_parameters" : ["scope_data"]
@@ -37,6 +41,7 @@
   "angellist": {
     "authorize_url": "https://angel.co/api/oauth/authorize",
     "access_url": "https://angel.co/api/oauth/token",
+    "profile_url": "https://api.angel.co/me",
     "oauth": 2,
     "scope_delimiter": " "
   },
@@ -948,6 +953,7 @@
     "request_url": "https://api.twitter.com/oauth/request_token",
     "authorize_url": "https://api.twitter.com/oauth/authenticate",
     "access_url": "https://api.twitter.com/oauth/access_token",
+    "profile_url": "https://api.twitter.com/1.1/users/show.json",
     "oauth": 1
   },
   "typeform": {
