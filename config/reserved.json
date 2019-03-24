@@ -2,6 +2,7 @@
   "request_url",
   "authorize_url",
   "access_url",
+  "profile_url",
   "oauth",
   "scope_delimiter",
   "custom_parameters",
@@ -11,6 +12,7 @@
   "path",
   "transport",
   "state",
+  "profile",
 
   "key",
   "secret",
