@@ -72,6 +72,82 @@ describe('response', () => {
     })
   })
 
+  describe('id_token', () => {
+
+    it('invalid format', () => {
+      var provider = {oauth: 2}
+      var body = {id_token: sign('a', 'b')}
+      t.deepEqual(response(provider, body), {
+        error: 'Grant: OpenID Connect invalid id_token format'
+      })
+    })
+
+    it('error decoding', () => {
+      var provider = {oauth: 2}
+      var body = {id_token: 'a.b.c'}
+      t.deepEqual(response(provider, body), {
+        error: 'Grant: OpenID Connect error decoding id_token'
+      })
+    })
+
+    it('invalid audience - string', () => {
+      var provider = {oauth: 2, key: 'simov'}
+      var body = {id_token: sign({}, {aud: 'grant'}, 'c')}
+      t.deepEqual(response(provider, body), {
+        error: 'Grant: OpenID Connect invalid id_token audience'
+      })
+    })
+
+    it('invalid audience - array', () => {
+      var provider = {oauth: 2, key: 'simov'}
+      var body = {id_token: sign({}, {aud: ['grant']}, 'c')}
+      t.deepEqual(response(provider, body), {
+        error: 'Grant: OpenID Connect invalid id_token audience'
+      })
+    })
+
+    it('nonce mismatch', () => {
+      var provider = {oauth: 2, key: 'grant'}
+      var body = {id_token: sign({}, {aud: 'grant', nonce: 'foo'}, 'c')}
+      var session = {nonce: 'bar'}
+      t.deepEqual(response(provider, body, session), {
+        error: 'Grant: OpenID Connect nonce mismatch'
+      })
+    })
+
+    it('valid jwt', () => {
+      var provider = {oauth: 2, key: 'grant'}
+      var body = {id_token: sign({typ: 'JWT'}, {aud: 'grant', nonce: 'foo'}, 'signature')}
+      var session = {nonce: 'foo'}
+      t.deepEqual(response(provider, body, session), {
+        id_token: {
+          header: {typ: 'JWT'},
+          payload: {aud: 'grant', nonce: 'foo'},
+          signature: 'signature'
+        },
+        raw: {
+          id_token: 'eyJ0eXAiOiJKV1QifQ.eyJhdWQiOiJncmFudCIsIm5vbmNlIjoiZm9vIn0.signature'
+        }
+      })
+    })
+
+    it('valid jwt - audience array', () => {
+      var provider = {oauth: 2, key: 'grant'}
+      var body = {id_token: sign({typ: 'JWT'}, {aud: ['grant'], nonce: 'foo'}, 'signature')}
+      var session = {nonce: 'foo'}
+      t.deepEqual(response(provider, body, session), {
+        id_token: {
+          header: {typ: 'JWT'},
+          payload: {aud: ['grant'], nonce: 'foo'},
+          signature: 'signature'
+        },
+        raw: {
+          id_token: 'eyJ0eXAiOiJKV1QifQ.eyJhdWQiOlsiZ3JhbnQiXSwibm9uY2UiOiJmb28ifQ.signature'
+        }
+      })
+    })
+  })
+
   describe('response option', () => {
     it('always skip raw and always return tokens', () => {
       var provider = {oauth: 2}
