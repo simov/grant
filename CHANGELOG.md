@@ -1,6 +1,9 @@
 
 # Change Log
 
+## v4.5.1 (2019/04/07)
+- **Fix:** Support for **Hapi >= 18**
+
 ## v4.5.0 (2019/03/04)
 - **New:** Added [`token_endpoint_auth_method`](https://github.com/simov/grant#token-endpoint-auth-method) option
 - **New:** Official support for 1 new provider: `wechat`
