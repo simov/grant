@@ -148,8 +148,7 @@ describe('consumer - flow', () => {
             server = new Hapi.Server({host: 'localhost', port: port.app})
 
             server.route({method: 'GET', path: '/', handler: (req, res) => {
-              var parsed = urlib.parse(req.url, false)
-              var query = qs.parse(parsed.query)
+              var query = qs.parse(req.query)
               return res.response((req.session || req.yar).get('grant').response || query)
             }})
 
@@ -298,8 +297,7 @@ describe('consumer - flow', () => {
             server = new Hapi.Server({host: 'localhost', port: port.app})
 
             server.route({method: 'GET', path: '/', handler: (req, res) => {
-              var parsed = urlib.parse(req.url, false)
-              var query = qs.parse(parsed.query)
+              var query = qs.parse(req.query)
               return res.response((req.session || req.yar).get('grant').response || query)
             }})
 
