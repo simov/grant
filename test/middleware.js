@@ -4,9 +4,14 @@ var t = require('assert')
 
 describe('middleware', () => {
 
-  describe('expose', () => {
-    it('config', () => {
+  describe('expose config', () => {
+    it('express', () => {
       var Grant = require('../').express()
+      var grant = Grant()
+      t.ok(typeof grant.config === 'object')
+    })
+    it('koa', () => {
+      var Grant = require('../').koa()
       var grant = Grant()
       t.ok(typeof grant.config === 'object')
     })
