@@ -1,6 +1,9 @@
 
 # Change Log
 
+## v4.5.2 (2019/05/19)
+- **Fix:** Support for **@hapi/hapi** namespace
+
 ## v4.5.1 (2019/04/07)
 - **Fix:** Support for **Hapi >= 18**
 
