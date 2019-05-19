@@ -9,6 +9,13 @@ exports.koa = () => {
 }
 
 exports.hapi = () => {
-  var version = parseInt(require('hapi/package.json').version.split('.')[0])
+  var pkg
+  try {
+    pkg = require('hapi/package.json')
+  }
+  catch (err) {
+    pkg = require('@hapi/hapi/package.json')
+  }
+  var version = parseInt(pkg.version.split('.')[0])
   return require('./lib/consumer/hapi' + (version < 17 ? '' : '17'))
 }
