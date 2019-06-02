@@ -547,8 +547,8 @@
     "oauth": 1
   },
   "linkedin2": {
-    "authorize_url": "https://www.linkedin.com/uas/oauth2/authorization",
-    "access_url": "https://www.linkedin.com/uas/oauth2/accessToken",
+    "authorize_url": "https://www.linkedin.com/oauth/v2/authorization",
+    "access_url": "https://www.linkedin.com/oauth/v2/accessToken",
     "oauth": 2,
     "scope_delimiter": " "
   },
