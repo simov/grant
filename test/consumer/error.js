@@ -48,6 +48,7 @@ var url = {
   auth: (path) => `http://localhost:${port.auth}${path}`,
   app: (path) => `http://localhost:${port.app}${path}`,
 }
+var client = require('./util/client')
 
 
 describe('consumer - error', () => {
@@ -230,96 +231,22 @@ describe('consumer - error', () => {
           }
         }
 
-        var servers = {
-          express: (done) => {
-            grant = Grant.express()(config)
-            var app = express()
-            app.use(session({secret: 'grant', saveUninitialized: true, resave: true}))
-            app.use(grant)
-
-            app.get('/', (req, res) => {
-              res.json(req.session.grant.response || req.query)
-            })
-
-            server = app.listen(port.app, done)
-          },
-          koa: (done) => {
-            grant = Grant.koa()(config)
-
-            var app = new Koa()
-            app.keys = ['grant']
-            app.use(koasession(app))
-            app.use(mount(grant))
-            koaqs(app)
-
-            app.use(function* () {
-              if (this.path === '/') {
-                this.response.status = 200
-                this.set('content-type', 'application/json')
-                this.body = JSON.stringify(this.session.grant.response || this.request.query)
-              }
-            })
-
-            server = app.listen(port.app, done)
-          },
-          hapi: (done) => {
-            grant = Grant.hapi()()
-
-            server = new Hapi.Server()
-            server.connection({host: 'localhost', port: port.app})
-
-            server.route({method: 'GET', path: '/', handler: (req, res) => {
-              var parsed = urlib.parse(req.url, false)
-              var query = qs.parse(parsed.query)
-              res((req.session || req.yar).get('grant').response || query)
-            }})
-
-            server.register([
-              {register: grant, options: config},
-              {register: yar, options: {cookieOptions: {password: '01234567890123456789012345678912', isSecure: false}}}
-            ], (err) => {
-              if (err) {
-                done(err)
-                return
-              }
-
-              server.start(done)
-            })
-          },
-          hapi17: (done) => {
-            grant = Grant.hapi()()
-            server = new Hapi.Server({host: 'localhost', port: port.app})
-
-            server.route({method: 'GET', path: '/', handler: (req, res) => {
-              var query = qs.parse(req.query)
-              return res.response((req.session || req.yar).get('grant').response || query)
-            }})
-
-            server.register([
-              {plugin: grant, options: config},
-              {plugin: yar, options: {cookieOptions: {password: '01234567890123456789012345678912', isSecure: false}}}
-            ])
-              .then(() => {
-                server.start().then(done).catch(done)
-              })
-              .catch(done)
-          }
-        }
-
-        before((done) => {
-          servers[
+        before(async () => {
+          var obj = await client[
             consumer === 'hapi' ? `${consumer}${hapi < 17 ? '' : '17'}` : consumer
-          ](done)
+          ](config, port.app)
+          server = obj.server
+          grant = obj.grant
         })
 
         it('authorize', async () => {
           var assert = async (message) => {
-            var {body} = await request({
+            var {body: {response}} = await request({
               url: url.app('/connect/grant'),
               cookie: {},
             })
             t.deepEqual(
-              body,
+              response,
               {error: {error: {message: 'invalid', code: '500'}}},
               message
             )
@@ -371,96 +298,22 @@ describe('consumer - error', () => {
           }
         }
 
-        var servers = {
-          express: (done) => {
-            grant = Grant.express()(config)
-            var app = express()
-            app.use(session({secret: 'grant', saveUninitialized: true, resave: true}))
-            app.use(grant)
-
-            app.get('/', (req, res) => {
-              res.json(req.session.grant.response || req.query)
-            })
-
-            server = app.listen(port.app, done)
-          },
-          koa: (done) => {
-            grant = Grant.koa()(config)
-
-            var app = new Koa()
-            app.keys = ['grant']
-            app.use(koasession(app))
-            app.use(mount(grant))
-            koaqs(app)
-
-            app.use(function* () {
-              if (this.path === '/') {
-                this.response.status = 200
-                this.set('content-type', 'application/json')
-                this.body = JSON.stringify(this.session.grant.response || this.request.query)
-              }
-            })
-
-            server = app.listen(port.app, done)
-          },
-          hapi: (done) => {
-            grant = Grant.hapi()()
-
-            server = new Hapi.Server()
-            server.connection({host: 'localhost', port: port.app})
-
-            server.route({method: 'GET', path: '/', handler: (req, res) => {
-              var parsed = urlib.parse(req.url, false)
-              var query = qs.parse(parsed.query)
-              res((req.session || req.yar).get('grant').response || query)
-            }})
-
-            server.register([
-              {register: grant, options: config},
-              {register: yar, options: {cookieOptions: {password: '01234567890123456789012345678912', isSecure: false}}}
-            ], (err) => {
-              if (err) {
-                done(err)
-                return
-              }
-
-              server.start(done)
-            })
-          },
-          hapi17: (done) => {
-            grant = Grant.hapi()()
-            server = new Hapi.Server({host: 'localhost', port: port.app})
-
-            server.route({method: 'GET', path: '/', handler: (req, res) => {
-              var query = qs.parse(req.query)
-              return res.response((req.session || req.yar).get('grant').response || query)
-            }})
-
-            server.register([
-              {plugin: grant, options: config},
-              {plugin: yar, options: {cookieOptions: {password: '01234567890123456789012345678912', isSecure: false}}}
-            ])
-              .then(() => {
-                server.start().then(done).catch(done)
-              })
-              .catch(done)
-          }
-        }
-
-        before((done) => {
-          servers[
+        before(async () => {
+          var obj = await client[
             consumer === 'hapi' ? `${consumer}${hapi < 17 ? '' : '17'}` : consumer
-          ](done)
+          ](config, port.app)
+          server = obj.server
+          grant = obj.grant
         })
 
         it('authorize', async () => {
           var assert = async (message) => {
-            var {body} = await request({
+            var {body: {response}} = await request({
               url: url.app('/connect/grant'),
               cookie: {},
             })
             t.deepEqual(
-              body,
+              response,
               {error: {error: 'Grant: OAuth2 missing code parameter'}},
               message
             )
@@ -514,96 +367,22 @@ describe('consumer - error', () => {
           }
         }
 
-        var servers = {
-          express: (done) => {
-            grant = Grant.express()(config)
-            var app = express()
-            app.use(session({secret: 'grant', saveUninitialized: true, resave: true}))
-            app.use(grant)
-
-            app.get('/', (req, res) => {
-              res.json(req.session.grant.response || req.query)
-            })
-
-            server = app.listen(port.app, done)
-          },
-          koa: (done) => {
-            grant = Grant.koa()(config)
-
-            var app = new Koa()
-            app.keys = ['grant']
-            app.use(koasession(app))
-            app.use(mount(grant))
-            koaqs(app)
-
-            app.use(function* () {
-              if (this.path === '/') {
-                this.response.status = 200
-                this.set('content-type', 'application/json')
-                this.body = JSON.stringify(this.session.grant.response || this.request.query)
-              }
-            })
-
-            server = app.listen(port.app, done)
-          },
-          hapi: (done) => {
-            grant = Grant.hapi()()
-
-            server = new Hapi.Server()
-            server.connection({host: 'localhost', port: port.app})
-
-            server.route({method: 'GET', path: '/', handler: (req, res) => {
-              var parsed = urlib.parse(req.url, false)
-              var query = qs.parse(parsed.query)
-              res((req.session || req.yar).get('grant').response || query)
-            }})
-
-            server.register([
-              {register: grant, options: config},
-              {register: yar, options: {cookieOptions: {password: '01234567890123456789012345678912', isSecure: false}}}
-            ], (err) => {
-              if (err) {
-                done(err)
-                return
-              }
-
-              server.start(done)
-            })
-          },
-          hapi17: (done) => {
-            grant = Grant.hapi()()
-            server = new Hapi.Server({host: 'localhost', port: port.app})
-
-            server.route({method: 'GET', path: '/', handler: (req, res) => {
-              var query = qs.parse(req.query)
-              return res.response((req.session || req.yar).get('grant').response || query)
-            }})
-
-            server.register([
-              {plugin: grant, options: config},
-              {plugin: yar, options: {cookieOptions: {password: '01234567890123456789012345678912', isSecure: false}}}
-            ])
-              .then(() => {
-                server.start().then(done).catch(done)
-              })
-              .catch(done)
-          }
-        }
-
-        before((done) => {
-          servers[
+        before(async () => {
+          var obj = await client[
             consumer === 'hapi' ? `${consumer}${hapi < 17 ? '' : '17'}` : consumer
-          ](done)
+          ](config, port.app)
+          server = obj.server
+          grant = obj.grant
         })
 
         it('authorize', async () => {
           var assert = async (message) => {
-            var {body} = await request({
+            var {body: {response}} = await request({
               url: url.app('/connect/grant'),
               cookie: {},
             })
             t.deepEqual(
-              body,
+              response,
               {error: {error: 'Grant: OAuth2 state mismatch'}},
               message
             )
@@ -662,96 +441,22 @@ describe('consumer - error', () => {
           }
         }
 
-        var servers = {
-          express: (done) => {
-            grant = Grant.express()(config)
-            var app = express()
-            app.use(session({secret: 'grant', saveUninitialized: true, resave: true}))
-            app.use(grant)
-
-            app.get('/', (req, res) => {
-              res.json(req.session.grant.response || req.query)
-            })
-
-            server = app.listen(port.app, done)
-          },
-          koa: (done) => {
-            grant = Grant.koa()(config)
-
-            var app = new Koa()
-            app.keys = ['grant']
-            app.use(koasession(app))
-            app.use(mount(grant))
-            koaqs(app)
-
-            app.use(function* () {
-              if (this.path === '/') {
-                this.response.status = 200
-                this.set('content-type', 'application/json')
-                this.body = JSON.stringify(this.session.grant.response || this.request.query)
-              }
-            })
-
-            server = app.listen(port.app, done)
-          },
-          hapi: (done) => {
-            grant = Grant.hapi()()
-
-            server = new Hapi.Server()
-            server.connection({host: 'localhost', port: port.app})
-
-            server.route({method: 'GET', path: '/', handler: (req, res) => {
-              var parsed = urlib.parse(req.url, false)
-              var query = qs.parse(parsed.query)
-              res((req.session || req.yar).get('grant').response || query)
-            }})
-
-            server.register([
-              {register: grant, options: config},
-              {register: yar, options: {cookieOptions: {password: '01234567890123456789012345678912', isSecure: false}}}
-            ], (err) => {
-              if (err) {
-                done(err)
-                return
-              }
-
-              server.start(done)
-            })
-          },
-          hapi17: (done) => {
-            grant = Grant.hapi()()
-            server = new Hapi.Server({host: 'localhost', port: port.app})
-
-            server.route({method: 'GET', path: '/', handler: (req, res) => {
-              var query = qs.parse(req.query)
-              return res.response((req.session || req.yar).get('grant').response || query)
-            }})
-
-            server.register([
-              {plugin: grant, options: config},
-              {plugin: yar, options: {cookieOptions: {password: '01234567890123456789012345678912', isSecure: false}}}
-            ])
-              .then(() => {
-                server.start().then(done).catch(done)
-              })
-              .catch(done)
-          }
-        }
-
-        before((done) => {
-          servers[
+        before(async () => {
+          var obj = await client[
             consumer === 'hapi' ? `${consumer}${hapi < 17 ? '' : '17'}` : consumer
-          ](done)
+          ](config, port.app)
+          server = obj.server
+          grant = obj.grant
         })
 
         it('authorize', async () => {
           var assert = async (message) => {
-            var {body} = await request({
+            var {body: {response}} = await request({
               url: url.app('/connect/grant'),
               cookie: {},
             })
             t.deepEqual(
-              body,
+              response,
               {error: 'Grant: OpenID Connect nonce mismatch'},
               message
             )
@@ -809,96 +514,22 @@ describe('consumer - error', () => {
           }
         }
 
-        var servers = {
-          express: (done) => {
-            grant = Grant.express()(config)
-            var app = express()
-            app.use(session({secret: 'grant', saveUninitialized: true, resave: true}))
-            app.use(grant)
-
-            app.get('/', (req, res) => {
-              res.json(req.session.grant.response || req.query)
-            })
-
-            server = app.listen(port.app, done)
-          },
-          koa: (done) => {
-            grant = Grant.koa()(config)
-
-            var app = new Koa()
-            app.keys = ['grant']
-            app.use(koasession(app))
-            app.use(mount(grant))
-            koaqs(app)
-
-            app.use(function* () {
-              if (this.path === '/') {
-                this.response.status = 200
-                this.set('content-type', 'application/json')
-                this.body = JSON.stringify(this.session.grant.response || this.request.query)
-              }
-            })
-
-            server = app.listen(port.app, done)
-          },
-          hapi: (done) => {
-            grant = Grant.hapi()()
-
-            server = new Hapi.Server()
-            server.connection({host: 'localhost', port: port.app})
-
-            server.route({method: 'GET', path: '/', handler: (req, res) => {
-              var parsed = urlib.parse(req.url, false)
-              var query = qs.parse(parsed.query)
-              res((req.session || req.yar).get('grant').response || query)
-            }})
-
-            server.register([
-              {register: grant, options: config},
-              {register: yar, options: {cookieOptions: {password: '01234567890123456789012345678912', isSecure: false}}}
-            ], (err) => {
-              if (err) {
-                done(err)
-                return
-              }
-
-              server.start(done)
-            })
-          },
-          hapi17: (done) => {
-            grant = Grant.hapi()()
-            server = new Hapi.Server({host: 'localhost', port: port.app})
-
-            server.route({method: 'GET', path: '/', handler: (req, res) => {
-              var query = qs.parse(req.query)
-              return res.response((req.session || req.yar).get('grant').response || query)
-            }})
-
-            server.register([
-              {plugin: grant, options: config},
-              {plugin: yar, options: {cookieOptions: {password: '01234567890123456789012345678912', isSecure: false}}}
-            ])
-              .then(() => {
-                server.start().then(done).catch(done)
-              })
-              .catch(done)
-          }
-        }
-
-        before((done) => {
-          servers[
+        before(async () => {
+          var obj = await client[
             consumer === 'hapi' ? `${consumer}${hapi < 17 ? '' : '17'}` : consumer
-          ](done)
+          ](config, port.app)
+          server = obj.server
+          grant = obj.grant
         })
 
         it('access', async () => {
           var assert = async (message) => {
-            var {body} = await request({
+            var {body: {response}} = await request({
               url: url.app('/connect/grant'),
               cookie: {},
             })
             t.deepEqual(
-              body,
+              response,
               {error: {error: {message: 'invalid', code: '500'}}},
               message
             )
@@ -932,99 +563,23 @@ describe('consumer - error', () => {
           grant: {}
         }
 
-        var servers = {
-          express: (done) => {
-            grant = Grant.express()(config)
-            var app = express()
-            app.use(session({secret: 'grant', saveUninitialized: true, resave: true}))
-            app.use(grant)
-
-            app.get('/', (req, res) => {
-              res.setHeader('x-test', true)
-              res.json(req.session.grant.response || req.query)
-            })
-            server = app.listen(port.app, done)
-          },
-          koa: (done) => {
-            grant = Grant.koa()(config)
-            var app = new Koa()
-            app.keys = ['grant']
-            app.use(koasession(app))
-            app.use(mount(grant))
-            koaqs(app)
-
-            app.use(function* () {
-              if (this.path === '/') {
-                this.response.status = 200
-                this.response.set('x-test', true)
-                this.response.set('content-type', 'application/json')
-                this.body = JSON.stringify(this.session.grant.response || this.request.query)
-              }
-            })
-
-            server = app.listen(port.app, done)
-          },
-          hapi: (done) => {
-            grant = Grant.hapi()()
-
-            server = new Hapi.Server()
-            server.connection({host: 'localhost', port: port.app})
-
-            server.route({method: 'GET', path: '/', handler: (req, res) => {
-              var parsed = urlib.parse(req.url, false)
-              var query = qs.parse(parsed.query)
-              res((req.session || req.yar).get('grant').response || query).header('x-test', true)
-            }})
-
-            server.register([
-              {register: grant, options: config},
-              {register: yar, options: {cookieOptions: {password: '01234567890123456789012345678912', isSecure: false}}}
-            ], (err) => {
-              if (err) {
-                done(err)
-                return
-              }
-
-              server.start(done)
-            })
-          },
-          hapi17: (done) => {
-            grant = Grant.hapi()()
-            server = new Hapi.Server({host: 'localhost', port: port.app})
-
-            server.route({method: 'GET', path: '/', handler: (req, res) => {
-              var query = qs.parse(req.query)
-              return res.response((req.session || req.yar).get('grant').response || query)
-                .header('x-test', true)
-            }})
-
-            server.register([
-              {plugin: grant, options: config},
-              {plugin: yar, options: {cookieOptions: {password: '01234567890123456789012345678912', isSecure: false}}}
-            ])
-              .then(() => {
-                server.start().then(done).catch(done)
-              })
-              .catch(done)
-          }
-        }
-
-        before((done) => {
-          servers[
+        before(async () => {
+          var obj = await client[
             consumer === 'hapi' ? `${consumer}${hapi < 17 ? '' : '17'}` : consumer
-          ](done)
+          ](config, port.app)
+          server = obj.server
+          grant = obj.grant
         })
 
         it('/connect - misconfigured provider - with callback', async () => {
           grant.config.grant.callback = '/'
           var assert = async (message) => {
-            var {res, body} = await request({
+            var {body: {response}} = await request({
               url: url.app('/connect/grant'),
               cookie: {},
             })
-            t.equal(res.headers['x-test'], 'true')
             t.deepEqual(
-              body,
+              response,
               {error: 'Grant: missing or misconfigured provider'},
               message
             )
@@ -1039,18 +594,17 @@ describe('consumer - error', () => {
 
         it('/connect - misconfigured provider - no callback', async () => {
           delete grant.config.grant.callback
-          var {res, body} = await request({
+          var {body} = await request({
             url: url.app('/connect/grant'),
             cookie: {},
           })
-          t.equal(res.headers['x-test'], undefined)
           t.deepEqual(qs.parse(body), {
             error: 'Grant: missing or misconfigured provider'
           })
         })
 
         it('/connect - missing provider - non preconfigured no dynamic', async () => {
-          var {res, body} = await request({
+          var {body} = await request({
             url: url.app('/connect/purest'),
             cookie: {},
           })
@@ -1062,11 +616,10 @@ describe('consumer - error', () => {
         })
 
         it('/callback - missing session', async () => {
-          var {res, body} = await request({
+          var {body} = await request({
             url: url.app('/connect/grant/callback'),
             cookie: {},
           })
-          t.equal(res.headers['x-test'], undefined)
           t.deepEqual(qs.parse(body), {
             error: 'Grant: missing session or misconfigured provider'
           })
