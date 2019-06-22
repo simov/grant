@@ -5,7 +5,6 @@
 var koa = require('koa')
 var session = require('koa-generic-session')
 var Store = require('koa-generic-session-mongo')
-var mount = require('koa-mount')
 var router = require('koa-router')
 var koaqs = require('koa-qs')
 var grant = require('grant-koa')
@@ -14,7 +13,7 @@ var grant = require('grant-koa')
 var app = koa()
 app.keys = ['grant']
 app.use(session({store: new Store()}))
-app.use(mount(grant(require('./config.json'))))
+app.use(grant(require('./config.json')))
 app.use(router(app))
 koaqs(app)
 
