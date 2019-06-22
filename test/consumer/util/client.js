@@ -9,7 +9,6 @@ var bodyParser = require('body-parser')
 var Koa = require('koa')
 var koasession = require('koa-session')
 var koabody = require('koa-bodyparser')
-var mount = require('koa-mount')
 var convert = require('koa-convert')
 var koaqs = require('koa-qs')
 
@@ -58,7 +57,7 @@ module.exports = {
     app.keys = ['grant']
     app.use(koasession(app))
     app.use(koabody())
-    app.use(mount(grant))
+    app.use(grant)
     koaqs(app)
 
     app.use(function* () {

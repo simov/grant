@@ -79,7 +79,7 @@ describe('consumer - error', () => {
                 t.equal(err.message, 'Grant: mount session middleware first')
               }
             })
-            app.use(mount(grant))
+            app.use(grant)
             server = app.listen(port.app, done)
           },
           hapi: (done) => {
@@ -173,7 +173,7 @@ describe('consumer - error', () => {
                 t.equal(err.message, 'Grant: mount body parser middleware first')
               }
             })
-            app.use(mount(grant))
+            app.use(grant)
             server = app.listen(port.app, done)
           }
         }
