@@ -85,7 +85,6 @@ npm install grant-koa
 ```js
 var Koa = require('koa')
 var session = require('koa-session')
-var mount = require('koa-mount')
 var grant = require('grant-koa')
 
 var app = new Koa()
@@ -93,7 +92,7 @@ var app = new Koa()
 app.keys = ['grant']
 app.use(session(app))
 // mount grant
-app.use(mount(grant({/*configuration - see below*/})))
+app.use(grant({/*configuration - see below*/}))
 ```
 
 
@@ -195,7 +194,7 @@ You can mount Grant under specific path prefix:
 ```js
 // Express
 app.use('/path/prefix', grant(config))
-// Koa
+// Koa - using koa-mount
 app.use(mount('/path/prefix', grant(config)))
 // Hapi
 server.register([{routes: {prefix: '/path/prefix'}, plugin: grant(config)}])
@@ -337,7 +336,7 @@ app.use(grant(config))
 // koa
 var parser = require('koa-bodyparser')
 app.use(parser())
-app.use(mount(grant(config)))
+app.use(grant(config))
 ```
 
 Alternatively you can make a `GET` request to the `/connect/:provider/:override?` route:
