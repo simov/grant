@@ -1,6 +1,10 @@
 
 # Change Log
 
+## v4.6.0 (2019/06/23)
+- **Fix:** Race condition for [slow session stores](https://github.com/simov/grant/pull/122) in Express middleware
+- **New:** `koa-mount` no longer required for the Koa middleware
+
 ## v4.5.2 (2019/05/19)
 - **Fix:** Support for **@hapi/hapi** namespace
 
