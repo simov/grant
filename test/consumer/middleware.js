@@ -13,7 +13,7 @@ var url = {
 }
 
 var provider = require('./util/provider')
-var client = require('./util/koa-mount')
+var client = require('./util/client')
 
 
 describe('middleware', () => {
@@ -40,7 +40,7 @@ describe('middleware', () => {
       }
     }
 
-    ;['mount', 'nomount'].forEach((name) => {
+    ;['koa', 'koa-mount'].forEach((name) => {
       describe(name, () => {
         before(async () => {
           var obj = await client[name](config, port.app)
