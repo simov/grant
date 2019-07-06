@@ -1,6 +1,9 @@
 
 # Change Log
 
+## v4.6.1 (2019/07/06)
+- **Fix:** Support for `cookie-session` in Express middleware
+
 ## v4.6.0 (2019/06/23)
 - **Fix:** Race condition for [slow session stores](https://github.com/simov/grant/pull/122) in Express middleware
 - **New:** `koa-mount` no longer required for the Koa middleware
