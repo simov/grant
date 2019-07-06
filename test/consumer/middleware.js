@@ -40,7 +40,7 @@ describe('middleware', () => {
       }
     }
 
-    ;['koa', 'koa-mount'].forEach((name) => {
+    ;['koa', 'koa-mount', 'express', 'express-cookie'].forEach((name) => {
       describe(name, () => {
         before(async () => {
           var obj = await client[name](config, port.app)

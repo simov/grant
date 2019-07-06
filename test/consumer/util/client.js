@@ -4,6 +4,7 @@ var qs = require('qs')
 
 var express = require('express')
 var session = require('express-session')
+var cookiesession = require('cookie-session')
 var bodyParser = require('body-parser')
 
 var Koa = require('koa')
@@ -39,6 +40,17 @@ module.exports = {
     var app = express()
     app.use(bodyParser.urlencoded({extended: true}))
     app.use(session({secret: 'grant', saveUninitialized: true, resave: false}))
+    app.use(grant)
+    app.get('/', callback.express)
+
+    var server = app.listen(port, () => resolve({grant, server, app}))
+  }),
+  'express-cookie': (config, port) => new Promise((resolve) => {
+    var grant = Grant.express()(config)
+
+    var app = express()
+    app.use(bodyParser.urlencoded({extended: true}))
+    app.use(cookiesession({signed: true, secret: 'grant', maxAge: 60 * 1000}))
     app.use(grant)
     app.get('/', callback.express)
 
