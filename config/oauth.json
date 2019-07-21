@@ -573,6 +573,11 @@
     "access_url": "https://services.mailup.com/Authorization/OAuth/Token",
     "oauth": 2
   },
+  "mailxpert": {
+    "authorize_url": "https://app.mailxpert.ch/oauth/v2/auth",
+    "access_url": "https://app.mailxpert.ch/oauth/v2/token",
+    "oauth": 2
+  },
   "mapmyfitness": {
     "authorize_url": "https://www.mapmyfitness.com/v7.1/oauth2/uacf/authorize",
     "access_url": "https://api.mapmyfitness.com/v7.1/oauth2/access_token",
