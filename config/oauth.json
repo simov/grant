@@ -823,6 +823,12 @@
       "username", "viewportScale"
     ]
   },
+  "snapchat": {
+    "authorize_url": "https://accounts.snapchat.com/accounts/oauth2/auth",
+    "access_url": "https://accounts.snapchat.com/accounts/oauth2/token",
+    "oauth": 2,
+    "scope_delimiter": " "
+  },
   "socialpilot": {
     "authorize_url": "https://panel.socialpilot.co/oauth",
     "access_url": "https://panel.socialpilot.co/oauth/accesstoken",
@@ -1094,5 +1100,11 @@
     "oauth": 2,
     "scope_delimiter": " ",
     "subdomain": true
+  },
+  "zoom": {
+    "authorize_url": "https://zoom.us/oauth/authorize",
+    "access_url": "https://zoom.us/oauth/token",
+    "oauth": 2,
+    "scope_delimiter": " "
   }
 }
