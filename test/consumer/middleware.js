@@ -27,7 +27,51 @@ describe('middleware', () => {
     server.oauth2.close(done)
   })
 
-  describe('koa', () => {
+  describe('path prefix', () => {
+    var server
+    var config = {
+      defaults: {
+        protocol: 'http', host: `localhost:${port.app}`, callback: '/',
+        path: '/prefix',
+      },
+      oauth2: {
+        authorize_url: url.oauth2('/authorize_url'),
+        access_url: url.oauth2('/access_url'),
+        oauth: 2,
+      }
+    }
+
+    ;['express-prefix', 'koa-prefix', 'hapi-prefix'].forEach((consumer) => {
+      describe(consumer, () => {
+        before(async () => {
+          var obj = await client[consumer](config, port.app)
+          server = obj.server
+        })
+
+        after((done) => {
+          server[/express|koa/.test(consumer) ? 'close' : 'stop'](done)
+        })
+
+        it('success', async () => {
+          var {body: {response}} = await request({
+            url: url.app('/prefix/connect/oauth2'),
+            cookie: {},
+          })
+          t.deepEqual(response, {
+            access_token: 'token',
+            refresh_token: 'refresh',
+            raw: {
+              access_token: 'token',
+              refresh_token: 'refresh',
+              expires_in: '3600'
+            }
+          })
+        })
+      })
+    })
+  })
+
+  describe('third-party middlewares', () => {
     var server
     var config = {
       defaults: {
@@ -40,10 +84,10 @@ describe('middleware', () => {
       }
     }
 
-    ;['koa', 'koa-mount', 'express', 'express-cookie'].forEach((name) => {
-      describe(name, () => {
+    ;['koa', 'koa-mount', 'express', 'express-cookie'].forEach((consumer) => {
+      describe(consumer, () => {
         before(async () => {
-          var obj = await client[name](config, port.app)
+          var obj = await client[consumer](config, port.app)
           server = obj.server
         })
 
