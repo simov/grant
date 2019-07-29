@@ -1,6 +1,9 @@
 
 # Change Log
 
+## v4.6.2 (2019/07/29)
+- **New:** Official support for 3 new providers: `mailxpert`, `snapchat` and `zoom`
+
 ## v4.6.1 (2019/07/06)
 - **Fix:** Support for `cookie-session` in Express middleware
 
