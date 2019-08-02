@@ -701,6 +701,12 @@
     "oauth": 2,
     "scope_delimiter": " "
   },
+  "phantauth": {
+    "authorize_url": "https://phantauth.net/auth/authorize",
+    "access_url": "https://phantauth.net/auth/token",
+    "oauth": 2,
+    "scope_delimiter": " "
+  },
   "pinterest": {
     "authorize_url": "https://api.pinterest.com/oauth/",
     "access_url": "https://api.pinterest.com/v1/oauth/token",
