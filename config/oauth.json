@@ -73,6 +73,15 @@
       "display", "response_mode", "prompt", "max_age", "ui_locales"
     ]
   },
+  "atlassian": {
+    "authorize_url": "https://auth.atlassian.com/authorize",
+    "access_url": "https://auth.atlassian.com/oauth/token",
+    "oauth": 2,
+    "scope_delimiter": " ",
+    "custom_parameters": [
+      "audience", "prompt"
+    ]
+  },
   "axosoft": {
     "authorize_url": "https://[subdomain].axosoft.com/auth",
     "access_url": "https://[subdomain].axosoft.com/api/oauth2/token",
