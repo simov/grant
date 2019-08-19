@@ -56,6 +56,15 @@
     "access_url": "https://api.assembla.com/token",
     "oauth": 2
   },
+  "atlassian": {
+    "authorize_url": "https://auth.atlassian.com/authorize",
+    "access_url": "https://auth.atlassian.com/oauth/token",
+    "oauth": 2,
+    "scope_delimiter": " ",
+    "custom_parameters": [
+      "audience", "prompt"
+    ]
+  },
   "auth0": {
     "authorize_url": "https://[subdomain].auth0.com/authorize",
     "access_url": "https://[subdomain].auth0.com/oauth/token",
@@ -71,15 +80,6 @@
     "scope_delimiter": " ",
     "custom_parameters": [
       "display", "response_mode", "prompt", "max_age", "ui_locales"
-    ]
-  },
-  "atlassian": {
-    "authorize_url": "https://auth.atlassian.com/authorize",
-    "access_url": "https://auth.atlassian.com/oauth/token",
-    "oauth": 2,
-    "scope_delimiter": " ",
-    "custom_parameters": [
-      "audience", "prompt"
     ]
   },
   "axosoft": {
