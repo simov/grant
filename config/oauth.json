@@ -82,6 +82,12 @@
       "display", "response_mode", "prompt", "max_age", "ui_locales"
     ]
   },
+  "aweber": {
+    "authorize_url": "https://auth.aweber.com/oauth2/authorize",
+    "access_url": "https://auth.aweber.com/oauth2/token",
+    "oauth": 2,
+    "scope_delimiter": " "
+  },
   "axosoft": {
     "authorize_url": "https://[subdomain].axosoft.com/auth",
     "access_url": "https://[subdomain].axosoft.com/api/oauth2/token",
