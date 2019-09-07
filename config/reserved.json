@@ -29,5 +29,7 @@
   "token_endpoint_auth_method",
 
   "name",
-  "redirect_uri"
+  "redirect_uri",
+
+  "profile_url"
 ]
