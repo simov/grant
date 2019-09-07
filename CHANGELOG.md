@@ -1,6 +1,11 @@
 
 # Change Log
 
+## v4.6.3 (2019/09/07)
+- **New:** Official support for 3 new providers: `atlassian`, `aweber`, `phantauth`
+- **Change:** Removed 6 discontinued providers: `dailymile`, `everyplay`, `fluidsurveys`, `moves`, `mydigipass`, `producteev`
+- **Change:** Renamed `letsfreckle` to `nokotime`
+
 ## v4.6.2 (2019/07/29)
 - **New:** Official support for 3 new providers: `mailxpert`, `snapchat` and `zoom`
 
