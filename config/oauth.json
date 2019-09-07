@@ -179,11 +179,6 @@
     "oauth": 2,
     "scope_delimiter": " "
   },
-  "dailymile": {
-    "authorize_url": "https://api.dailymile.com/oauth/authorize",
-    "access_url": "https://api.dailymile.com/oauth/token",
-    "oauth": 2
-  },
   "dailymotion": {
     "authorize_url": "https://www.dailymotion.com/oauth/authorize",
     "access_url": "https://api.dailymotion.com/oauth/token",
@@ -305,11 +300,6 @@
     "access_url": "https://www.evernote.com/oauth",
     "oauth": 1
   },
-  "everyplay": {
-    "authorize_url": "https://everyplay.com/connect",
-    "access_url": "https://api.everyplay.com/oauth2/access_token",
-    "oauth": 2
-  },
   "eyeem": {
     "authorize_url": "https://www.eyeem.com/oauth/authorize",
     "access_url": "https://api.eyeem.com/v2/oauth/token",
@@ -361,11 +351,6 @@
     "access_url": "https://api.flowdock.com/oauth/token",
     "oauth": 2,
     "scope_delimiter": " "
-  },
-  "fluidsurveys": {
-    "authorize_url": "https://fluidsurveys.com/accounts/developer/authorize/",
-    "access_url": "https://fluidsurveys.com/accounts/oauth/token/",
-    "oauth": 2
   },
   "formstack": {
     "authorize_url": "https://www.formstack.com/api/v2/oauth2/authorize",
@@ -550,11 +535,6 @@
     "access_url": "https://kauth.kakao.com/oauth/token",
     "oauth": 2
   },
-  "letsfreckle": {
-    "authorize_url": "https://secure.letsfreckle.com/oauth/2/authorize",
-    "access_url": "https://secure.letsfreckle.com/oauth/2/access_token",
-    "oauth": 2
-  },
   "linkedin": {
     "request_url": "https://api.linkedin.com/uas/oauth/requestToken",
     "authorize_url": "https://www.linkedin.com/uas/oauth/authenticate",
@@ -639,21 +619,9 @@
     "oauth": 2,
     "scope_delimiter": " "
   },
-  "moves": {
-    "authorize_url": "https://api.moves-app.com/oauth/v1/authorize",
-    "access_url": "https://api.moves-app.com/oauth/v1/access_token",
-    "oauth": 2,
-    "scope_delimiter": " "
-  },
   "moxtra": {
     "authorize_url": "https://api.moxtra.com/oauth/authorize",
     "access_url": "https://api.moxtra.com/oauth/token",
-    "oauth": 2,
-    "scope_delimiter": " "
-  },
-  "mydigipass": {
-    "authorize_url": "https://www.mydigipass.com/oauth/authenticate",
-    "access_url": "https://www.mydigipass.com/oauth/token",
     "oauth": 2,
     "scope_delimiter": " "
   },
@@ -665,6 +633,11 @@
   "nest": {
     "authorize_url": "https://home.nest.com/login/oauth2",
     "access_url": "https://api.home.nest.com/oauth2/access_token",
+    "oauth": 2
+  },
+  "nokotime": {
+    "authorize_url": "https://secure.nokotime.com/oauth/2/authorize",
+    "access_url": "https://secure.nokotime.com/oauth/2/access_token",
     "oauth": 2
   },
   "nylas": {
@@ -736,11 +709,6 @@
   "podio": {
     "authorize_url": "https://podio.com/oauth/authorize",
     "access_url": "https://podio.com/oauth/token",
-    "oauth": 2
-  },
-  "producteev": {
-    "authorize_url": "https://www.producteev.com/oauth/v2/auth",
-    "access_url": "https://www.producteev.com/oauth/v2/token",
     "oauth": 2
   },
   "producthunt": {
