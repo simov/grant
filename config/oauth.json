@@ -630,6 +630,11 @@
     "access_url": "https://secure.myob.com/oauth2/v1/authorize",
     "oauth": 2
   },
+  "naver": {
+    "authorize_url": "https://nid.naver.com/oauth2.0/authorize",
+    "access_url": "https://nid.naver.com/oauth2.0/token",
+    "oauth": 2
+  },
   "nest": {
     "authorize_url": "https://home.nest.com/login/oauth2",
     "access_url": "https://api.home.nest.com/oauth2/access_token",
