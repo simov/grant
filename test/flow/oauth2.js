@@ -276,7 +276,7 @@ describe('oauth2', () => {
           basecamp: {access_url: url('/access_url')},
           concur: {access_url: url('/access_url')},
           ebay: {access_url: url('/access_url')},
-          fitbit2: {access_url: url('/access_url')},
+          fitbit: {access_url: url('/access_url')},
           google: {access_url: url('/access_url')},
           homeaway: {access_url: url('/access_url')},
           hootsuite: {access_url: url('/access_url')},
@@ -342,7 +342,7 @@ describe('oauth2', () => {
       })
 
       describe('basic auth', () => {
-        ;['ebay', 'fitbit2', 'homeaway', 'hootsuite', 'reddit'].forEach((provider) => {
+        ;['ebay', 'fitbit', 'homeaway', 'hootsuite', 'reddit'].forEach((provider) => {
           it(provider, async () => {
             grant.config.ebay.key = 'key'
             grant.config.ebay.secret = 'secret'
