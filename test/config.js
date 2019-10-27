@@ -269,6 +269,32 @@ describe('config', () => {
     })
   })
 
+  describe('compat', () => {
+    it('oauth1 to oauth2', () => {
+      var input = {fitbit2: {key: 'key', secret: 'secret'}}
+      var output = config.compat(input)
+      t.deepEqual(
+        input,
+        {fitbit2: {key: 'key', secret: 'secret'}},
+        'input config should be unchanged'
+      )
+      t.deepEqual(
+        output, {
+          fitbit2: {
+            authorize_url: 'https://www.fitbit.com/oauth2/authorize',
+             access_url: 'https://api.fitbit.com/oauth2/token',
+             oauth: 2,
+             scope_delimiter: ' ',
+             custom_parameters: ['prompt'],
+             key: 'key',
+             secret: 'secret'
+           }
+         },
+        'output config should be merged with oauth.fitbit'
+      )
+    })
+  })
+
   describe('ctor', () => {
     it('defaults', () => {
       var defaults = config({

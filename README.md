@@ -845,12 +845,9 @@ Set your Mashery user name as `key` and your application key as `api_key`:
 
 > **Fitbit, LinkedIn, ProjectPlace**
 
-Initially these were OAuth1 providers, so the `fitbit`, `linkedin` and `projectplace` names are used for that. To use their OAuth2 flow append `2` at the end of their names:
+Initially these were OAuth1 providers, so the `linkedin` and `projectplace` names are used for that. To use their OAuth2 flow append `2` at the end of their names:
 
 ```js
-"fitbit2": {
-  // navigate to /connect/fitbit2
-},
 "linkedin2": {
   // navigate to /connect/linkedin2
 },
