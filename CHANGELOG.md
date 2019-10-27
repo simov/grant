@@ -1,6 +1,10 @@
 
 # Change Log
 
+## v4.6.4 (2019/10/27)
+- **New:** Official support for 2 new providers: `line` and `naver`
+- **Fix:** Updated 4 providers: `clio`, `concur`, `familysearch` and `fitbit`
+
 ## v4.6.3 (2019/09/07)
 - **New:** Official support for 3 new providers: `atlassian`, `aweber`, `phantauth`
 - **Change:** Removed 6 discontinued providers: `dailymile`, `everyplay`, `fluidsurveys`, `moves`, `mydigipass`, `producteev`
