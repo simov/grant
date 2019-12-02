@@ -1033,7 +1033,8 @@
   "wechat": {
     "authorize_url": "https://open.weixin.qq.com/connect/oauth2/authorize",
     "access_url": "https://api.weixin.qq.com/sns/oauth2/access_token",
-    "oauth": 2
+    "oauth": 2,
+    "credentials_fields": {"key": "appid", "secret": "secret"}
   },
   "weekdone": {
     "authorize_url": "https://weekdone.com/oauth_authorize",

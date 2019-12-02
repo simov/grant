@@ -5,6 +5,7 @@
   "oauth",
   "scope_delimiter",
   "custom_parameters",
+  "credentials_fields",
 
   "protocol",
   "host",

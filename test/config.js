@@ -251,6 +251,10 @@ describe('config', () => {
           key: 'key',
           secret: 'secret',
           custom_params: {team: 'github'},
+          credentials_fields: {
+            key: 'client_id',
+            secret: 'client_secret'
+          },
           overrides: {
             sub: {
               protocol: 'http',
@@ -261,7 +265,11 @@ describe('config', () => {
               custom_parameters: ['team'],
               key: 'key',
               secret: 'secret',
-              custom_params: {team: 'github'}
+              custom_params: {team: 'github'},
+              credentials_fields: {
+                key: 'client_id',
+                secret: 'client_secret'
+              },
             }
           }
         }
@@ -318,7 +326,11 @@ describe('config', () => {
           scope: 'openid',
           name: 'facebook',
           facebook: true,
-          redirect_uri: 'http://localhost:3000/connect/facebook/callback'
+          redirect_uri: 'http://localhost:3000/connect/facebook/callback',
+          credentials_fields: {
+            key: 'client_id',
+            secret: 'client_secret'
+          }
         }
       })
     })
@@ -340,7 +352,11 @@ describe('config', () => {
           scope: 'openid',
           name: 'facebook',
           facebook: true,
-          redirect_uri: 'http://localhost:3000/connect/facebook/callback'
+          redirect_uri: 'http://localhost:3000/connect/facebook/callback',
+          credentials_fields: {
+            key: 'client_id',
+            secret: 'client_secret'
+          }
         }
       })
     })
@@ -373,7 +389,11 @@ describe('config', () => {
           oauth: 2,
           dynamic: true,
           name: 'facebook',
-          facebook: true
+          facebook: true,
+          credentials_fields: {
+            key: 'client_id',
+            secret: 'client_secret'
+          }
         }
       )
     })
