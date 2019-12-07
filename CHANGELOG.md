@@ -1,6 +1,9 @@
 
 # Change Log
 
+## v4.6.5 (2019/12/07)
+- **Fix:** Support for `instagram` Graph API
+
 ## v4.6.4 (2019/10/27)
 - **New:** Official support for 2 new providers: `line` and `naver`
 - **Fix:** Updated 4 providers: `clio`, `concur`, `familysearch` and `fitbit`
