@@ -255,6 +255,39 @@ describe('oauth2', () => {
         })
       })
 
+      describe('app_id - client_id', () => {
+        it('instagram - v1', async () => {
+          var config = {instagram: {
+            key: '00cd22b35e8e42c0a29d1d71236f5c1d', secret: 'secret', scope: 'a b'}}
+          var grant = Grant(config)
+          var url = await oauth2.authorize(grant.config.instagram)
+          var query = qs.parse(url.split('?')[1])
+          t.equal(query.client_id, '00cd22b35e8e42c0a29d1d71236f5c1d')
+          t.equal(query.app_id, undefined)
+          t.equal(query.scope, 'a b')
+        })
+        it('instagram - graph', async () => {
+          var config = {instagram: {
+            key: '771866756573877', secret: 'secret', scope: 'a b'}}
+          var grant = Grant(config)
+          var url = await oauth2.authorize(grant.config.instagram)
+          var query = qs.parse(url.split('?')[1])
+          t.equal(query.app_id, '771866756573877')
+          t.equal(query.client_id, undefined)
+          t.equal(query.scope, 'a,b')
+        })
+        it('instagram - graph - no scope', async () => {
+          var config = {instagram: {
+            key: '771866756573877', secret: 'secret'}}
+          var grant = Grant(config)
+          var url = await oauth2.authorize(grant.config.instagram)
+          var query = qs.parse(url.split('?')[1])
+          t.equal(query.app_id, '771866756573877')
+          t.equal(query.client_id, undefined)
+          t.equal(query.scope, undefined)
+        })
+      })
+
       describe('appid - client_id', () => {
         var config = {wechat: {key: 'key', secret: 'secret'}}
         var grant = Grant(config)
@@ -280,6 +313,7 @@ describe('oauth2', () => {
           google: {access_url: url('/access_url')},
           homeaway: {access_url: url('/access_url')},
           hootsuite: {access_url: url('/access_url')},
+          instagram: {access_url: url('/access_url')},
           qq: {access_url: url('/access_url')},
           wechat: {access_url: url('/access_url')},
           reddit: {access_url: url('/access_url')},
@@ -362,6 +396,33 @@ describe('oauth2', () => {
             Buffer.from(data.raw.basic.replace('Basic ', ''), 'base64').toString().split(':'),
             ['key', 'secret']
           )
+        })
+      })
+
+      describe('app_id/app_secret - client_id/client_secret', () => {
+        it('instagram - v1', async () => {
+          grant.config.instagram.key = '00cd22b35e8e42c0a29d1d71236f5c1d'
+          grant.config.instagram.secret = 'secret'
+          var data = await oauth2.access(grant.config.instagram, {code: 'code'}, {})
+          t.deepEqual(qs.parse(data.raw), {
+            grant_type: 'authorization_code',
+            code: 'code',
+            client_id: '00cd22b35e8e42c0a29d1d71236f5c1d',
+            client_secret: 'secret',
+            redirect_uri: url('/connect/instagram/callback')
+          })
+        })
+        it('instagram - graph', async () => {
+          grant.config.instagram.key = '771866756573877'
+          grant.config.instagram.secret = 'secret'
+          var data = await oauth2.access(grant.config.instagram, {code: 'code'}, {})
+          t.deepEqual(qs.parse(data.raw), {
+            grant_type: 'authorization_code',
+            code: 'code',
+            app_id: '771866756573877',
+            app_secret: 'secret',
+            redirect_uri: url('/connect/instagram/callback')
+          })
         })
       })
 
