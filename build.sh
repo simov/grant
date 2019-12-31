@@ -8,6 +8,10 @@
 # prepublish
 rm -rf build/ && mkdir build
 
+# fix for Node v4
+rm -rf node_modules/core-js
+npm i core-js@2.6.10 --no-save
+
 # alias
 babel=node_modules/.bin/babel
 
