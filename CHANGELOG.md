@@ -1,6 +1,10 @@
 
 # Change Log
 
+## v4.6.6 (2020/01/01)
+- **Fix:** Regression about race condition for [slow session stores](https://github.com/simov/grant/pull/122) in Express middleware
+- **New:** Official support for 2 new providers: `livechat` and `zeit`
+
 ## v4.6.5 (2019/12/07)
 - **Fix:** Support for `instagram` Graph API
 
