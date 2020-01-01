@@ -554,6 +554,11 @@
     "access_url": "https://login.live.com/oauth20_token.srf",
     "oauth": 2
   },
+  "livechat": {
+    "authorize_url": "https://accounts.livechatinc.com/",
+    "access_url": "https://accounts.livechatinc.com/token",
+    "oauth": 2
+  },
   "lyft": {
     "authorize_url": "https://api.lyft.com/oauth/authorize",
     "access_url": "https://api.lyft.com/oauth/token",
@@ -1089,6 +1094,11 @@
     "access_url": "https://oauth.yandex.com/token",
     "oauth": 2,
     "custom_parameters": ["device_id", "device_name"]
+  },
+  "zeit": {
+    "authorize_url": "https://zeit.co/oauth/authorize",
+    "access_url": "https://api.zeit.co/v2/oauth/access_token",
+    "oauth": 2
   },
   "zendesk": {
     "authorize_url": "https://[subdomain].zendesk.com/oauth/authorizations/new",
