@@ -30,6 +30,10 @@
     "key": "APP_ID",
     "secret": "APP_SECRET"
   },
+  "line": {
+    "key": "APP_ID",
+    "secret": "APP_SECRET"
+  },
   "microsoft": {
     "key": "APP_ID",
     "secret": "APP_SECRET"

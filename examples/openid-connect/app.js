@@ -8,9 +8,10 @@ var config = require('./config.json')
 
 
 express()
-  .use(session({name: 'grant', secret: 'grant', saveUninitialized: true, resave: true}))
+  .use(session({name: 'grant', secret: 'grant', saveUninitialized: true}))
   .use(grant(config))
-  .get('/hello', oidc(config), (req, res) => {
+  .use(oidc(config))
+  .get('/hello', (req, res) => {
     res.end(JSON.stringify(req.session.grant.response, null, 2))
   })
   .listen(3000)
