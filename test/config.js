@@ -417,6 +417,34 @@ describe('config', () => {
         {grant: {dynamic: ['state'], name: 'grant', grant: true, state: 'grant', scope: 'grant'}}
       )
     })
+    it('state - dynamic', () => {
+      var options = config({grant: {}})
+      var session = {provider: 'grant'}
+      var state = {dynamic: {state: 's1'}}
+      t.deepEqual(
+        config.provider(options, session, state),
+        {name: 'grant', grant: true, state: 's1'}
+      )
+      t.deepEqual(
+        options,
+        {grant: {name: 'grant', grant: true}}
+      )
+    })
+    it('state - dynamic + session dynamic', () => {
+      var options = config({grant: {oauth: 2, dynamic: ['state', 'scope']}})
+      var session = {provider: 'grant', dynamic:
+        {key: 'session', secret: 'session', state: 'session', scope: ['session']}}
+      var state = {dynamic: {key: 'state', secret: 'state', state: 'state'}}
+      t.deepEqual(
+        config.provider(options, session, state),
+        {name: 'grant', grant: true, oauth: 2, dynamic: ['state', 'scope'],
+          key: 'state', secret: 'state', state: 'session', scope: 'session'}
+      )
+      t.deepEqual(
+        options,
+        {grant: {name: 'grant', grant: true, oauth: 2, dynamic: ['state', 'scope']}}
+      )
+    })
     it('state', () => {
       var options = config({grant: {state: true}})
       var session = {provider: 'grant'}
