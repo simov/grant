@@ -114,4 +114,69 @@ describe('middleware', () => {
     })
   })
 
+  describe('dynamic state', () => {
+    var server
+    var config = {
+      defaults: {
+        protocol: 'http', host: `localhost:${port.app}`, callback: '/',
+      },
+      oauth2: {
+        authorize_url: url.oauth2('/authorize_url'),
+        access_url: url.oauth2('/access_url'),
+        oauth: 2,
+      }
+    }
+
+    ;['express', 'koa', 'hapi'].forEach((consumer) => {
+      describe(consumer, () => {
+        before(async () => {
+          var obj = await client.state[consumer](config, port.app)
+          server = obj.server
+        })
+
+        after((done) => {
+          server[/express|koa/.test(consumer) ? 'close' : 'stop'](done)
+        })
+
+        afterEach(() => {
+          provider.oauth2.authorize = () => {}
+          provider.oauth2.access = () => {}
+        })
+
+        it('success', async () => {
+          provider.oauth2.authorize = ({query}) => {
+            t.deepEqual(query, {
+              client_id: 'very',
+              response_type: 'code',
+              redirect_uri: 'http://localhost:5002/connect/oauth2/callback'
+            })
+          }
+          provider.oauth2.access = ({form}) => {
+            t.deepEqual(form, {
+              grant_type: 'authorization_code',
+              code: 'code',
+              client_id: 'very',
+              client_secret: 'secret',
+              redirect_uri: 'http://localhost:5002/connect/oauth2/callback'
+            })
+          }
+          var {body: {response, session}} = await request({
+            url: url.app('/connect/oauth2'),
+            cookie: {},
+          })
+          t.deepEqual(response, {
+            access_token: 'token',
+            refresh_token: 'refresh',
+            raw: {
+              access_token: 'token',
+              refresh_token: 'refresh',
+              expires_in: '3600'
+            }
+          })
+          t.deepEqual(session, {provider: 'oauth2'})
+        })
+      })
+    })
+  })
+
 })

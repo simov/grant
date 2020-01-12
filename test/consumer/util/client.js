@@ -160,6 +160,64 @@ module.exports = {
     ])
     .then(() => server.start().then(() => resolve({grant, server})))
   }),
+  state: {
+    express: (config, port) => new Promise((resolve) => {
+      var grant = Grant.express()(config)
+
+      var app = express()
+      app.use(bodyParser.urlencoded({extended: true}))
+      app.use(session({secret: 'grant', saveUninitialized: true, resave: false}))
+      app.use((req, res, next) => {
+        if (/^\/connect/.test(req.url)) {
+          res.locals.grant = {dynamic: {key: 'very', secret: 'secret'}}
+        }
+        next()
+      })
+      app.use(grant)
+      app.get('/', callback.express)
+
+      var server = app.listen(port, () => resolve({grant, server, app}))
+    }),
+    koa: (config, port) => new Promise((resolve) => {
+      var grant = Grant.koa()(config)
+
+      var app = new Koa()
+      app.keys = ['grant']
+      app.use(koasession(app))
+      app.use(koabody())
+      app.use(function* (next) {
+        if (/^\/connect/.test(this.path)) {
+          this.state.grant = {dynamic: {key: 'very', 'secret': 'secret'}}
+        }
+        yield next
+      })
+      app.use(grant)
+      koaqs(app)
+      app.use(callback.koa)
+
+      var server = app.listen(port, () => resolve({grant, server, app}))
+    }),
+    hapi: (config, port) => new Promise((resolve) => {
+      var grant = Grant.hapi()(config)
+
+      var server = new Hapi.Server()
+      server.connection({host: 'localhost', port})
+      server.ext('onPreHandler', (req, res) => {
+        if (/^\/connect/.test(req.path)) {
+          req.plugins.grant = {dynamic: {key: 'very', 'secret': 'secret'}}
+        }
+        res.continue()
+      })
+      server.route({method: 'GET', path: '/', handler: callback.hapi})
+
+      server.register([
+        {register: grant},
+        {register: yar, options: {cookieOptions:
+          {password: '01234567890123456789012345678912', isSecure: false}}}
+      ],
+      () => server.start(() => resolve({grant, server})))
+    }),
+  },
 }
 
 var callback = {
@@ -185,7 +243,7 @@ var callback = {
     var query = qs.parse(parsed.query)
     res({
       session: (req.session || req.yar).get('grant'),
-      response: (req.session || req.yar).get('grant').response || query
+      response: (req.session || req.yar).get('grant').response || query,
     })
   },
   hapi17: (req, res) => {
