@@ -179,4 +179,59 @@ describe('middleware', () => {
     })
   })
 
+  describe('transport state', () => {
+    var server
+    var config = {
+      defaults: {
+        protocol: 'http', host: `localhost:${port.app}`, transport: 'state',
+      },
+      oauth2: {
+        authorize_url: url.oauth2('/authorize_url'),
+        access_url: url.oauth2('/access_url'),
+        oauth: 2,
+      }
+    }
+
+    ;['express', 'koa', 'koa-before', 'hapi'].forEach((consumer) => {
+      describe(consumer, () => {
+        before(async () => {
+          var obj = await client.transport[consumer](config, port.app)
+          server = obj.server
+        })
+
+        after((done) => {
+          server[/express|koa/.test(consumer) ? 'close' : 'stop'](done)
+        })
+
+        it('success', async () => {
+          var {body: {response, session, state}} = await request({
+            url: url.app('/connect/oauth2'),
+            cookie: {},
+          })
+          t.deepEqual(response, {
+            access_token: 'token',
+            refresh_token: 'refresh',
+            raw: {
+              access_token: 'token',
+              refresh_token: 'refresh',
+              expires_in: '3600'
+            }
+          })
+          t.deepEqual(session, {provider: 'oauth2'})
+          t.deepEqual(state, {
+            response: {
+              access_token: 'token',
+              refresh_token: 'refresh',
+              raw: {
+                access_token: 'token',
+                refresh_token: 'refresh',
+                expires_in: '3600'
+              }
+            }
+          })
+        })
+      })
+    })
+  })
+
 })

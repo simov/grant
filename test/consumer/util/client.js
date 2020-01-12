@@ -218,6 +218,65 @@ module.exports = {
       () => server.start(() => resolve({grant, server})))
     }),
   },
+  transport: {
+    express: (config, port) => new Promise((resolve) => {
+      var grant = Grant.express()(config)
+
+      var app = express()
+      app.use(bodyParser.urlencoded({extended: true}))
+      app.use(session({secret: 'grant', saveUninitialized: true, resave: false}))
+      app.use(grant)
+      app.use(callback.express)
+
+      var server = app.listen(port, () => resolve({grant, server, app}))
+    }),
+    koa: (config, port) => new Promise((resolve) => {
+      var grant = Grant.koa()(config)
+
+      var app = new Koa()
+      app.keys = ['grant']
+      app.use(koasession(app))
+      app.use(koabody())
+      app.use(grant)
+      koaqs(app)
+      app.use(callback.koa)
+
+      var server = app.listen(port, () => resolve({grant, server, app}))
+    }),
+    'koa-before': (config, port) => new Promise((resolve) => {
+      var grant = Grant.koa()(config)
+
+      var app = new Koa()
+      app.keys = ['grant']
+      app.use(koasession(app))
+      app.use(koabody())
+      app.use(callback['koa-before'])
+      app.use(grant)
+      koaqs(app)
+
+      var server = app.listen(port, () => resolve({grant, server, app}))
+    }),
+    hapi: (config, port) => new Promise((resolve) => {
+      var grant = Grant.hapi()(config)
+
+      var server = new Hapi.Server()
+      server.connection({host: 'localhost', port})
+      server.ext('onPostHandler', (req, res) => {
+        if (/\/callback$/.test(req.path)) {
+          callback.hapi(req, res)
+          return
+        }
+        res.continue()
+      })
+
+      server.register([
+        {register: grant},
+        {register: yar, options: {cookieOptions:
+          {password: '01234567890123456789012345678912', isSecure: false}}}
+      ],
+      () => server.start(() => resolve({grant, server})))
+    }),
+  },
 }
 
 var callback = {
@@ -225,16 +284,30 @@ var callback = {
     res.writeHead(200, {'content-type': 'application/json'})
     res.end(JSON.stringify({
       session: req.session.grant,
-      response: req.session.grant.response || req.query,
+      response: (res.locals.grant || {}).response || req.session.grant.response || req.query,
+      state: res.locals.grant,
     }))
   },
   koa: function* () {
-    if (this.path === '/') {
+    if (this.path === '/' || /\/callback$/.test(this.path)) {
       this.response.status = 200
       this.set('content-type', 'application/json')
       this.body = JSON.stringify({
         session: this.session.grant,
-        response: this.session.grant.response || this.request.query,
+        response: (this.state.grant || {}).response || this.session.grant.response || this.request.query,
+        state: this.state.grant,
+      })
+    }
+  },
+  'koa-before': function* (next) {
+    yield next
+    if (this.path === '/' || /\/callback$/.test(this.path)) {
+      this.response.status = 200
+      this.set('content-type', 'application/json')
+      this.body = JSON.stringify({
+        session: this.session.grant,
+        response: (this.state.grant || {}).response || this.session.grant.response || this.request.query,
+        state: this.state.grant,
       })
     }
   },
@@ -243,14 +316,16 @@ var callback = {
     var query = qs.parse(parsed.query)
     res({
       session: (req.session || req.yar).get('grant'),
-      response: (req.session || req.yar).get('grant').response || query,
+      response: (req.plugins.grant || {}).response || (req.session || req.yar).get('grant').response || query,
+      state: req.plugins.grant,
     })
   },
   hapi17: (req, res) => {
     var query = qs.parse(req.query)
     return res.response({
       session: req.yar.get('grant'),
-      response: req.yar.get('grant').response || query,
+      response: (req.plugins.grant || {}).response || req.yar.get('grant').response || query,
+      state: req.plugins.grant,
     })
   }
 }
