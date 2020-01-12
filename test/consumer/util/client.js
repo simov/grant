@@ -14,8 +14,18 @@ var mount = require('koa-mount')
 var convert = require('koa-convert')
 var koaqs = require('koa-qs')
 
-var Hapi = require('hapi')
-var yar = require('yar')
+var {Hapi, yar} = (() => {
+  var load = (prefix) => ({
+    Hapi: require(`${prefix}hapi`),
+    yar: require(`${prefix}yar`)
+  })
+  try {
+    return load('')
+  }
+  catch (err) {
+    return load('@hapi/')
+  }
+})()
 
 var Grant = require('../../../')
 
@@ -45,17 +55,6 @@ module.exports = {
 
     var server = app.listen(port, () => resolve({grant, server, app}))
   }),
-  'express-prefix': (config, port) => new Promise((resolve) => {
-    var grant = Grant.express()(config)
-
-    var app = express()
-    app.use(bodyParser.urlencoded({extended: true}))
-    app.use(session({secret: 'grant', saveUninitialized: true, resave: false}))
-    app.use('/prefix', grant)
-    app.get('/', callback.express)
-
-    var server = app.listen(port, () => resolve({grant, server, app}))
-  }),
   'express-cookie': (config, port) => new Promise((resolve) => {
     var grant = Grant.express()(config)
 
@@ -75,19 +74,6 @@ module.exports = {
     app.use(koasession(app))
     app.use(koabody())
     app.use(grant)
-    koaqs(app)
-    app.use(callback.koa)
-
-    var server = app.listen(port, () => resolve({grant, server, app}))
-  }),
-  'koa-prefix': (config, port) => new Promise((resolve) => {
-    var grant = Grant.koa()(config)
-
-    var app = new Koa()
-    app.keys = ['grant']
-    app.use(koasession(app))
-    app.use(koabody())
-    app.use(mount('/prefix', grant))
     koaqs(app)
     app.use(callback.koa)
 
@@ -120,20 +106,6 @@ module.exports = {
     ],
     () => server.start(() => resolve({grant, server})))
   }),
-  'hapi-prefix': (config, port) => new Promise((resolve) => {
-    var grant = Grant.hapi()(config)
-
-    var server = new Hapi.Server()
-    server.connection({host: 'localhost', port})
-    server.route({method: 'GET', path: '/', handler: callback.hapi})
-
-    server.register([
-      {routes: {prefix: '/prefix'}, register: grant},
-      {register: yar, options: {cookieOptions:
-        {password: '01234567890123456789012345678912', isSecure: false}}}
-    ],
-    () => server.start(() => resolve({grant, server})))
-  }),
   hapi17: (config, port) => new Promise((resolve) => {
     var grant = Grant.hapi()(config)
 
@@ -147,19 +119,59 @@ module.exports = {
     ])
     .then(() => server.start().then(() => resolve({grant, server})))
   }),
-  'hapi17-prefix': (config, port) => new Promise((resolve) => {
-    var grant = Grant.hapi()(config)
+  prefix: {
+    express: (config, port) => new Promise((resolve) => {
+      var grant = Grant.express()(config)
 
-    var server = new Hapi.Server({host: 'localhost', port})
-    server.route({method: 'GET', path: '/', handler: callback.hapi17})
+      var app = express()
+      app.use(bodyParser.urlencoded({extended: true}))
+      app.use(session({secret: 'grant', saveUninitialized: true, resave: false}))
+      app.use('/prefix', grant)
+      app.get('/', callback.express)
 
-    server.register([
-      {routes: {prefix: '/prefix'}, plugin: grant},
-      {plugin: yar, options: {cookieOptions:
-        {password: '01234567890123456789012345678912', isSecure: false}}}
-    ])
-    .then(() => server.start().then(() => resolve({grant, server})))
-  }),
+      var server = app.listen(port, () => resolve({grant, server, app}))
+    }),
+    koa: (config, port) => new Promise((resolve) => {
+      var grant = Grant.koa()(config)
+
+      var app = new Koa()
+      app.keys = ['grant']
+      app.use(koasession(app))
+      app.use(koabody())
+      app.use(mount('/prefix', grant))
+      koaqs(app)
+      app.use(callback.koa)
+
+      var server = app.listen(port, () => resolve({grant, server, app}))
+    }),
+    hapi: (config, port) => new Promise((resolve) => {
+      var grant = Grant.hapi()(config)
+
+      var server = new Hapi.Server()
+      server.connection({host: 'localhost', port})
+      server.route({method: 'GET', path: '/', handler: callback.hapi})
+
+      server.register([
+        {routes: {prefix: '/prefix'}, register: grant},
+        {register: yar, options: {cookieOptions:
+          {password: '01234567890123456789012345678912', isSecure: false}}}
+      ],
+      () => server.start(() => resolve({grant, server})))
+    }),
+    hapi17: (config, port) => new Promise((resolve) => {
+      var grant = Grant.hapi()(config)
+
+      var server = new Hapi.Server({host: 'localhost', port})
+      server.route({method: 'GET', path: '/', handler: callback.hapi17})
+
+      server.register([
+        {routes: {prefix: '/prefix'}, plugin: grant},
+        {plugin: yar, options: {cookieOptions:
+          {password: '01234567890123456789012345678912', isSecure: false}}}
+      ])
+      .then(() => server.start().then(() => resolve({grant, server})))
+    }),
+  },
   state: {
     express: (config, port) => new Promise((resolve) => {
       var grant = Grant.express()(config)
@@ -216,6 +228,25 @@ module.exports = {
           {password: '01234567890123456789012345678912', isSecure: false}}}
       ],
       () => server.start(() => resolve({grant, server})))
+    }),
+    hapi17: (config, port) => new Promise((resolve) => {
+      var grant = Grant.hapi()(config)
+
+      var server = new Hapi.Server({host: 'localhost', port})
+      server.ext('onPreHandler', (req, res) => {
+        if (/^\/connect/.test(req.path)) {
+          req.plugins.grant = {dynamic: {key: 'very', 'secret': 'secret'}}
+        }
+        return res.continue
+      })
+      server.route({method: 'GET', path: '/', handler: callback.hapi17})
+
+      server.register([
+        {plugin: grant},
+        {plugin: yar, options: {cookieOptions:
+          {password: '01234567890123456789012345678912', isSecure: false}}}
+      ])
+      .then(() => server.start().then(() => resolve({grant, server})))
     }),
   },
   transport: {
@@ -275,6 +306,24 @@ module.exports = {
           {password: '01234567890123456789012345678912', isSecure: false}}}
       ],
       () => server.start(() => resolve({grant, server})))
+    }),
+    hapi17: (config, port) => new Promise((resolve) => {
+      var grant = Grant.hapi()(config)
+
+      var server = new Hapi.Server({host: 'localhost', port})
+      server.ext('onPostHandler', (req, res) => {
+        if (/\/callback$/.test(req.path)) {
+          return callback.hapi17(req, res)
+        }
+        return res.continue
+      })
+
+      server.register([
+        {plugin: grant},
+        {plugin: yar, options: {cookieOptions:
+          {password: '01234567890123456789012345678912', isSecure: false}}}
+      ])
+      .then(() => server.start().then(() => resolve({grant, server})))
     }),
   },
 }

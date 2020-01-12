@@ -6,7 +6,14 @@ var request = require('request-compose').extend({
   Response: {cookie: require('request-cookie').Response},
 }).client
 
-var hapi = parseInt(require('hapi/package.json').version.split('.')[0])
+var hapi = (() => {
+  try {
+    return parseInt(require('hapi/package.json').version.split('.')[0])
+  }
+  catch (err) {
+    return parseInt(require('@hapi/hapi/package.json').version.split('.')[0])
+  }
+})()
 
 var port = {oauth1: 5000, oauth2: 5001, app: 5002}
 var url = {

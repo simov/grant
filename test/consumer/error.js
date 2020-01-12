@@ -18,8 +18,19 @@ var mount = require('koa-mount')
 var convert = require('koa-convert')
 var koaqs = require('koa-qs')
 
-var Hapi = require('hapi')
-var yar = require('yar')
+var {Hapi, yar, hapi} = (() => {
+  var load = (prefix) => ({
+    Hapi: require(`${prefix}hapi`),
+    yar: require(`${prefix}yar`),
+    hapi: parseInt(require(`${prefix}hapi/package.json`).version.split('.')[0])
+  })
+  try {
+    return load('')
+  }
+  catch (err) {
+    return load('@hapi/')
+  }
+})()
 
 var Grant = require('../../')
 
@@ -36,7 +47,6 @@ Koa = function () {
 
   return app
 }
-var hapi = parseInt(require('hapi/package.json').version.split('.')[0])
 
 var sign = (...args) => args.map((arg, index) => index < 2
   ? Buffer.from(JSON.stringify(arg)).toString('base64')
@@ -590,6 +600,7 @@ describe('consumer - error', () => {
           await assert('querystring transport')
           grant.config.grant.transport = 'session'
           await assert('session transport')
+          delete grant.config.grant.transport
         })
 
         it('/connect - misconfigured provider - no callback', async () => {

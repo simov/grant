@@ -47,9 +47,19 @@ describe('middleware', () => {
   })
 
   describe('hapi options', () => {
-    var Hapi = require('hapi')
+    var {Hapi, hapi} = (() => {
+      var load = (prefix) => ({
+        Hapi: require(`${prefix}hapi`),
+        hapi: parseInt(require(`${prefix}hapi/package.json`).version.split('.')[0])
+      })
+      try {
+        return load('')
+      }
+      catch (err) {
+        return load('@hapi/')
+      }
+    })()
     var Grant = require('../').hapi()
-    var hapi = parseInt(require('hapi/package.json').version.split('.')[0])
 
     if (hapi < 17) {
       it('passed in server.register', (done) => {

@@ -6,6 +6,15 @@ var request = require('request-compose').extend({
   Response: {cookie: require('request-cookie').Response},
 }).client
 
+var hapi = (() => {
+  try {
+    return parseInt(require('hapi/package.json').version.split('.')[0])
+  }
+  catch (err) {
+    return parseInt(require('@hapi/hapi/package.json').version.split('.')[0])
+  }
+})()
+
 var port = {oauth2: 5001, app: 5002}
 var url = {
   oauth2: (path) => `http://localhost:${port.oauth2}${path}`,
@@ -41,15 +50,19 @@ describe('middleware', () => {
       }
     }
 
-    ;['express-prefix', 'koa-prefix', 'hapi-prefix'].forEach((consumer) => {
+    ;['express', 'koa', 'hapi'].forEach((consumer) => {
       describe(consumer, () => {
         before(async () => {
-          var obj = await client[consumer](config, port.app)
+          var obj = await client.prefix[
+            consumer === 'hapi' ? `${consumer}${hapi < 17 ? '' : '17'}` : consumer
+          ](config, port.app)
           server = obj.server
         })
 
         after((done) => {
-          server[/express|koa/.test(consumer) ? 'close' : 'stop'](done)
+          consumer === 'hapi' && hapi >= 17
+            ? server.stop().then(done)
+            : server[/express|koa/.test(consumer) ? 'close' : 'stop'](done)
         })
 
         it('success', async () => {
@@ -130,12 +143,16 @@ describe('middleware', () => {
     ;['express', 'koa', 'hapi'].forEach((consumer) => {
       describe(consumer, () => {
         before(async () => {
-          var obj = await client.state[consumer](config, port.app)
+          var obj = await client.state[
+            consumer === 'hapi' ? `${consumer}${hapi < 17 ? '' : '17'}` : consumer
+          ](config, port.app)
           server = obj.server
         })
 
         after((done) => {
-          server[/express|koa/.test(consumer) ? 'close' : 'stop'](done)
+          consumer === 'hapi' && hapi >= 17
+            ? server.stop().then(done)
+            : server[/express|koa/.test(consumer) ? 'close' : 'stop'](done)
         })
 
         afterEach(() => {
@@ -195,12 +212,16 @@ describe('middleware', () => {
     ;['express', 'koa', 'koa-before', 'hapi'].forEach((consumer) => {
       describe(consumer, () => {
         before(async () => {
-          var obj = await client.transport[consumer](config, port.app)
+          var obj = await client.transport[
+            consumer === 'hapi' ? `${consumer}${hapi < 17 ? '' : '17'}` : consumer
+          ](config, port.app)
           server = obj.server
         })
 
         after((done) => {
-          server[/express|koa/.test(consumer) ? 'close' : 'stop'](done)
+          consumer === 'hapi' && hapi >= 17
+            ? server.stop().then(done)
+            : server[/express|koa/.test(consumer) ? 'close' : 'stop'](done)
         })
 
         it('success', async () => {
