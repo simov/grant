@@ -22,6 +22,7 @@
   "custom_params",
   "subdomain",
   "nonce",
+  "pkce",
   "callback",
   "dynamic",
   "overrides",
