@@ -50,11 +50,9 @@ describe('consumer - flow', () => {
         }
 
         before(async () => {
-          var obj = await client[
+          ;({server, grant} = await client[
             consumer === 'hapi' ? `${consumer}${hapi < 17 ? '' : '17'}` : consumer
-          ](config, port.app)
-          server = obj.server
-          grant = obj.grant
+          ](config, port.app))
         })
 
         it('flow', async () => {
@@ -109,11 +107,9 @@ describe('consumer - flow', () => {
         }
 
         before(async () => {
-          var obj = await client[
+          ;({server, grant} = await client[
             consumer === 'hapi' ? `${consumer}${hapi < 17 ? '' : '17'}` : consumer
-          ](config, port.app)
-          server = obj.server
-          grant = obj.grant
+          ](config, port.app))
         })
 
         it('flow', async () => {

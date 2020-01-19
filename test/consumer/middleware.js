@@ -53,10 +53,9 @@ describe('middleware', () => {
     ;['express', 'koa', 'hapi'].forEach((consumer) => {
       describe(consumer, () => {
         before(async () => {
-          var obj = await client.prefix[
+          ;({server} = await client.prefix[
             consumer === 'hapi' ? `${consumer}${hapi < 17 ? '' : '17'}` : consumer
-          ](config, port.app)
-          server = obj.server
+          ](config, port.app))
         })
 
         after((done) => {
@@ -100,8 +99,7 @@ describe('middleware', () => {
     ;['koa', 'koa-mount', 'express', 'express-cookie'].forEach((consumer) => {
       describe(consumer, () => {
         before(async () => {
-          var obj = await client[consumer](config, port.app)
-          server = obj.server
+          ;({server} = await client[consumer](config, port.app))
         })
 
         after((done) => {
@@ -143,10 +141,9 @@ describe('middleware', () => {
     ;['express', 'koa', 'hapi'].forEach((consumer) => {
       describe(consumer, () => {
         before(async () => {
-          var obj = await client.state[
+          ;({server} = await client.state[
             consumer === 'hapi' ? `${consumer}${hapi < 17 ? '' : '17'}` : consumer
-          ](config, port.app)
-          server = obj.server
+          ](config, port.app))
         })
 
         after((done) => {
@@ -212,10 +209,9 @@ describe('middleware', () => {
     ;['express', 'koa', 'koa-before', 'hapi'].forEach((consumer) => {
       describe(consumer, () => {
         before(async () => {
-          var obj = await client.transport[
+          ;({server} = await client.transport[
             consumer === 'hapi' ? `${consumer}${hapi < 17 ? '' : '17'}` : consumer
-          ](config, port.app)
-          server = obj.server
+          ](config, port.app))
         })
 
         after((done) => {
