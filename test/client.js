@@ -2,11 +2,32 @@
 var t = require('assert')
 var http = require('http')
 var qs = require('qs')
-var request = require('../lib/client')
 var compose = require('request-compose')
+var request = require('../lib/client')
 
 
 describe('client', () => {
+  describe('defaults', () => {
+    var server
+
+    before((done) => {
+      server = http.createServer()
+      server.on('request', (req, res) => {
+        t.ok(/^simov\/grant/.test(req.headers['user-agent']))
+        res.end()
+      })
+      server.listen(5000, done)
+    })
+
+    after((done) => {
+      server.close(done)
+    })
+
+    it('user-agent', async () => {
+      var {res} = await request({url: 'http://localhost:5000'})
+      t.equal(res.statusCode, 200)
+    })
+  })
   describe('parse', () => {
     var server
 
@@ -31,6 +52,10 @@ describe('client', () => {
         }
       })
       server.listen(5000, done)
+    })
+
+    after((done) => {
+      server.close(done)
     })
 
     it('json', async () => {
@@ -58,10 +83,6 @@ describe('client', () => {
       t.deepStrictEqual(body, {nested: {querystring: 'true'}})
       var {body} = await compose.client({url: 'http://localhost:5000/qstext'})
       t.equal(body, 'nested%5Bquerystring%5D=true')
-    })
-
-    after((done) => {
-      server.close(done)
     })
   })
 })
