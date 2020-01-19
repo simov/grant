@@ -67,6 +67,17 @@ describe('consumer - session', () => {
         grant = obj.grant
       })
 
+      after((done) => {
+        consumer === 'hapi' && hapi >= 17
+          ? server.stop().then(done)
+          : server[/express|koa/.test(consumer) ? 'close' : 'stop'](done)
+      })
+
+      afterEach(() => {
+        provider.oauth2.authorize = () => {}
+        provider.oauth2.access = () => {}
+      })
+
       it('provider', async () => {
         var {body: {session}} = await request({
           url: url.app('/connect/oauth2'),
@@ -168,6 +179,24 @@ describe('consumer - session', () => {
         t.ok(typeof session.nonce === 'string')
       })
 
+      it('pkce', async () => {
+        provider.oauth2.authorize = ({query}) => {
+          t.equal(query.code_challenge_method, 'S256')
+          t.ok(typeof query.code_challenge === 'string')
+        }
+        provider.oauth2.access = ({form}) => {
+          t.ok(typeof form.code_verifier === 'string')
+          t.ok(/[a-z0-9]{80}/.test(form.code_verifier))
+        }
+        grant.config.oauth2.pkce = true
+        var {body: {session}} = await request({
+          url: url.app('/connect/oauth2'),
+          cookie: {},
+        })
+        t.ok(typeof session.code_verifier === 'string')
+        t.ok(/[a-z0-9]{80}/.test(session.code_verifier))
+      })
+
       it('oauth1', async () => {
         var {body: {session}} = await request({
           url: url.app('/connect/oauth1'),
@@ -177,12 +206,6 @@ describe('consumer - session', () => {
           provider: 'oauth1',
           request: {oauth_token: 'token', oauth_token_secret: 'secret'}
         })
-      })
-
-      after((done) => {
-        consumer === 'hapi' && hapi >= 17
-          ? server.stop().then(done)
-          : server[/express|koa/.test(consumer) ? 'close' : 'stop'](done)
       })
     })
   })

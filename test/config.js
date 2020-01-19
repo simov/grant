@@ -230,6 +230,16 @@ describe('config', () => {
     })
   })
 
+  describe('pkce', () => {
+    it('pkce', () => {
+      var {code_verifier, code_challenge} = config.pkce()
+      t.ok(typeof code_verifier === 'string')
+      t.ok(/[a-z0-9]{80}/.test(code_verifier))
+      t.ok(typeof code_challenge === 'string')
+      t.equal(code_challenge.length, 43)
+    })
+  })
+
   describe('transform', () => {
     it('transform', () => {
       t.deepEqual(
@@ -458,6 +468,16 @@ describe('config', () => {
       var result = config.provider(options, session)
       t.ok(/^[a-fA-F0-9]+$/.test(result.nonce))
       t.deepEqual(options, {grant: {name: 'grant', grant: true, nonce: true}})
+    })
+    it('pkce', () => {
+      var options = config({grant: {pkce: true}})
+      var session = {provider: 'grant'}
+      var result = config.provider(options, session)
+      t.ok(typeof result.code_verifier === 'string')
+      t.ok(/^[a-z0-9]{80}$/.test(result.code_verifier))
+      t.ok(typeof result.code_challenge === 'string')
+      t.equal(result.code_challenge.length, 43)
+      t.deepEqual(options, {grant: {name: 'grant', grant: true, pkce: true}})
     })
   })
 
