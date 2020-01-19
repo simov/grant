@@ -11,18 +11,18 @@ var request = require('request-compose').extend({
 var config = require('../../lib/config')
 var oauth1 = require('../../lib/flow/oauth1')
 
-var provider = {
-  ...require('../consumer/util/provider'),
+var provider = Object.assign({}, require('../consumer/util/provider'), {
+  // ...require('../consumer/util/provider'),
   port: 5000,
   url: (path) => `http://localhost:${provider.port}${path}`,
   server: null,
-}
-var client = {
-  ...require('../consumer/util/client'),
+})
+var client = Object.assign({}, require('../consumer/util/client'), {
+  // ...require('../consumer/util/client'),
   port: 5001,
   url: (path) => `http://localhost:${client.port}${path}`,
   server: null, grant: null, app: null,
-}
+})
 
 
 describe('oauth1', () => {
@@ -45,7 +45,8 @@ describe('oauth1', () => {
       server: client.server,
       grant: client.grant,
       app: client.app,
-    } = await client.express({defaults, ...providers}, client.port))
+    // } = await client.express({defaults, ...providers}, client.port))
+    } = await client.express(Object.assign({defaults}, providers), client.port))
   })
 
   after((done) => {
@@ -218,9 +219,10 @@ describe('oauth1', () => {
       provider.oauth1.authorize = ({query}) => {
         t.deepEqual(query, {perms: 'a,b', oauth_token: 'token'})
       }
-      client.grant.config.flickr.scope = config.format.scope({
-        ...client.grant.config.flickr, scope: ['a', 'b']
-      })
+      client.grant.config.flickr.scope = config.format.scope(
+        // {...client.grant.config.flickr, scope: ['a', 'b']}
+        Object.assign(client.grant.config.flickr, {scope: ['a', 'b']})
+      )
       var {body: {response}} = await request({
         url: client.url('/connect/flickr'),
         cookie: {},
@@ -248,9 +250,10 @@ describe('oauth1', () => {
       provider.oauth1.authorize = ({query}) => {
         t.deepEqual(query, {scope: 'a b', oauth_token: 'token'})
       }
-      client.grant.config.ravelry.scope = config.format.scope({
-        ...client.grant.config.ravelry, scope: ['a', 'b']
-      })
+      client.grant.config.ravelry.scope = config.format.scope(
+        // {...client.grant.config.ravelry, scope: ['a', 'b']}
+        Object.assign(client.grant.config.ravelry, {scope: ['a', 'b']})
+      )
       var {body: {response}} = await request({
         url: client.url('/connect/ravelry'),
         cookie: {},
@@ -266,9 +269,10 @@ describe('oauth1', () => {
       provider.oauth1.authorize = ({query}) => {
         t.deepEqual(query, {scope: 'a,b', oauth_token: 'token'})
       }
-      client.grant.config.trello.scope = config.format.scope({
-        ...client.grant.config.trello, scope: ['a', 'b']
-      })
+      client.grant.config.trello.scope = config.format.scope(
+        // {...client.grant.config.trello, scope: ['a', 'b']}
+        Object.assign(client.grant.config.trello, {scope: ['a', 'b']})
+      )
       var {body: {response}} = await request({
         url: client.url('/connect/trello'),
         cookie: {},
