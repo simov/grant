@@ -1,6 +1,12 @@
 
 # Change Log
 
+## v4.7.0 (2020/01/26)
+- **New:** [PKCE](https://github.com/simov/grant/commit/3b04eb69a278165ae9be7ba7a06e8b85da21c5e5) support
+- **New:** [input state](https://github.com/simov/grant/commit/3b04eb69a278165ae9be7ba7a06e8b85da21c5e5) overrides
+- **New:** [output state](https://github.com/simov/grant/commit/3b04eb69a278165ae9be7ba7a06e8b85da21c5e5) transport
+- **New:** user-agent header is set on all internal requests
+
 ## v4.6.6 (2020/01/01)
 - **Fix:** Regression about race condition for [slow session stores](https://github.com/simov/grant/pull/122) in Express middleware
 - **New:** Official support for 2 new providers: `livechat` and `zeit`
