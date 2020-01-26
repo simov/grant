@@ -347,6 +347,21 @@ Alternatively you can use a `GET` request for the `/connect/:provider/:override?
 https://awesome.com/connect/shopify?subdomain=usershop
 ```
 
+Lastly you can use the request/response lifecycle state as well:
+
+```js
+// Express
+res.locals.grant = {dynamic: {subdomain: 'usershop'}}
+// Koa
+ctx.state.grant = {dynamic: {subdomain: 'usershop'}}
+// Hapi
+request.plugins.grant = {dynamic: {subdomain: 'usershop'}}
+```
+
+Note that the dynamic overrides set in the request/response lifecycle state are not controlled by the `dynamic` configuration option.
+
+Any allowed dynamic key sent through GET/POST request will override the identical one set in state.
+
 ---
 
 # Response Data
@@ -435,6 +450,27 @@ It is **recommended** to use the *session* `transport` instead:
 
 That way the result will no longer be encoded as *querystring*, and you will receive the response data inside the [*session*][session-transport-example] instead.
 
+Lastly the request/response lifecycle state can be used as `state` transport:
+
+```json
+{
+  "defaults": {
+    "transport": "state"
+  }
+}
+```
+
+Note that in this case a `callback` route is not needed, and if there is one, the user won't be redirected there. The response data will be available in the request/response lifecycle state instead:
+
+```js
+// Express
+res.locals.grant.response
+// Koa
+ctx.state.grant.response
+// Hapi
+request.plugins.grant.response
+```
+
 
 ## Limit Response Data
 
@@ -497,8 +533,9 @@ Key        | Availability            | Description
 `dynamic`  | Depends on request type | The [dynamic override](#dynamic-override) configuration passed for this authorization
 `state`    | OAuth 2.0 only          | OAuth 2.0 state string that was generated
 `nonce`    | OpenID Connect only     | [OpenID Connect](#openid-connect) nonce string that was generated
-`response` | Depends on transport used | The final [response data](#response-data)
+`code_verifier` | PKCE only     | The code verifier that was generated
 `request`  | OAuth 1.0a only         | Data returned from the first request of the OAuth 1.0a flow
+`response` | Depends on transport used | The final [response data](#response-data)
 
 ---
 
@@ -523,6 +560,7 @@ scope | `[provider]` | list of scopes to request
 custom_params | `[provider]` | custom authorization [parameters](#custom-parameters) and their values
 subdomain | `[provider]` | string to be [embedded](#subdomain-urls) in `request_url`, `authorize_url` and `access_url`
 nonce | `[provider]` | toggle random `nonce` string generation for [OpenID Connect](#openid-connect) providers
+pkce | `[provider]` | toggle `pkce` support
 callback | `[provider]` | final callback route on your server to receive the [response data](#response-data)
 dynamic | `[provider]` | allow [dynamic override](#dynamic-override) of configuration
 overrides | `[provider]` | [static overrides](#static-overrides) for a provider
@@ -535,7 +573,7 @@ redirect_uri | generated | OAuth app [redirect URI](#redirect-uri), generated us
 
 ## Configuration Scopes
 
-Grant relies on configuration gathered from **5** different places:
+Grant relies on configuration gathered from **6** different places:
 
 1. The **first** place Grant looks for configuration is the built-in [oauth.json][oauth-config] file located in the config folder.
 
@@ -543,9 +581,11 @@ Grant relies on configuration gathered from **5** different places:
 
 3. The **third** place for configuration is the provider itself. All providers in the user's configuration inherit every option defined for them in the [oauth.json][oauth-config] file, and all options defined inside the `defaults` key. Having [oauth.json][oauth-config] file and a `defaults` configuration is only a convenience. You can define all available options directly for a provider.
 
-4. The **fourth** place for configuration is the provider's `overrides`. The [static overrides](#static-overrides) inherit their parent provider, essentially creating a sub provider of the same type.
+4. The **fourth** place for configuration are the provider's `overrides`. The [static overrides](#static-overrides) inherit their parent provider, essentially creating a sub provider of the same type.
 
-5. The **fifth** place for configuration, that _[potentially](#oauth-proxy)_ can override all of the above, and make all of the above optional, is the [dynamic override](#dynamic-override).
+5. The **fifth** place for configuration is the [dynamic state override](#dynamic-override). The request/response lifecycle state of your HTTP framework of choice can be used to dynamically override configuration.
+
+6. The **sixth** place for configuration, that _[potentially](#oauth-proxy)_ can override all of the above, and make all of the above optional, is the [dynamic HTTP override](#dynamic-override).
 
 
 ## Custom Providers
