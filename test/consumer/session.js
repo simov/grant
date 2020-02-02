@@ -166,7 +166,7 @@ describe('consumer - session', () => {
         })
       })
 
-      it('auto generated state and nonce', async () => {
+      it('state and nonce', async () => {
         grant.config.oauth2.state = true
         grant.config.oauth2.nonce = true
         var {body: {session}} = await request({
@@ -177,6 +177,8 @@ describe('consumer - session', () => {
         t.ok(typeof session.state === 'string')
         t.ok(/\d+/.test(session.nonce))
         t.ok(typeof session.nonce === 'string')
+        delete grant.config.oauth2.state
+        delete grant.config.oauth2.nonce
       })
 
       it('pkce', async () => {
@@ -195,6 +197,7 @@ describe('consumer - session', () => {
         })
         t.ok(typeof session.code_verifier === 'string')
         t.ok(/[a-z0-9]{80}/.test(session.code_verifier))
+        delete grant.config.oauth2.pkce
       })
 
       it('oauth1', async () => {
@@ -206,6 +209,20 @@ describe('consumer - session', () => {
           provider: 'oauth1',
           request: {oauth_token: 'token', oauth_token_secret: 'secret'}
         })
+      })
+
+      it('fresh session on connect', async () => {
+        var cookie = {}
+        var {body: {session}} = await request({
+          url: url.app('/connect/oauth2/grant'),
+          cookie,
+        })
+        t.deepEqual(session, {provider: 'oauth2', override: 'grant'})
+        var {body: {session}} = await request({
+          url: url.app('/connect/oauth2'),
+          cookie,
+        })
+        t.deepEqual(session, {provider: 'oauth2'})
       })
     })
   })
