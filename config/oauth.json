@@ -475,8 +475,8 @@
     "oauth": 2
   },
   "ibm": {
-    "authorize_url": "https://idaas.iam.ibm.com/idaas/oidc/endpoint/default/authorize",
-    "access_url": "https://idaas.iam.ibm.com/idaas/oidc/endpoint/default/token",
+    "authorize_url": "https://login.ibm.com/oidc/endpoint/default/authorize",
+    "access_url": "https://login.ibm.com/oidc/endpoint/default/token",
     "oauth": 2
   },
   "iconfinder": {
