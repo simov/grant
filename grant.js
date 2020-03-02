@@ -6,12 +6,12 @@ function grant ({config, handler}) {
 // DEPRECATED
 
 grant.express = () => {
-  return require('./lib/consumer/express')
+  return require('./lib/consumer/express-4')
 }
 
 grant.koa = () => {
   var version = parseInt(require('koa/package.json').version.split('.')[0])
-  return require('./lib/consumer/koa' + (version < 2 ? '' : '2'))
+  return require('./lib/consumer/koa-' + (version < 2 ? '1' : '2'))
 }
 
 grant.hapi = () => {
@@ -23,7 +23,7 @@ grant.hapi = () => {
     pkg = require('@hapi/hapi/package.json')
   }
   var version = parseInt(pkg.version.split('.')[0])
-  return require('./lib/consumer/hapi' + (version < 17 ? '' : '17'))
+  return require('./lib/consumer/hapi-' + (version < 17 ? '16' : '17'))
 }
 
 module.exports = grant
