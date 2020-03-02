@@ -6,8 +6,6 @@ node_js:
   - 12
   - 10
   - 8
-  - 6
-  - 4
 
 jobs:
   include:
