@@ -45,14 +45,6 @@ describe('config', () => {
       var result = config.filter({state: true, foo: true})
       t.deepEqual(result, {state: true})
     })
-    it('custom_parameters', () => {
-      var result = config.filter({custom_parameters: ['foo'], foo: true})
-      t.deepEqual(result, {custom_parameters: ['foo'], foo: true})
-    })
-    it('static overrides', () => {
-      var result = config.filter({obj: {}})
-      t.deepEqual(result, {obj: {}})
-    })
   })
 
   describe('format', () => {
@@ -142,30 +134,10 @@ describe('config', () => {
           'return undefined on empty custom_params'
         ],
         [
-          {custom_parameters: ['name'], name: 'grant'},
-          undefined,
-          'filter out reserved keys'
-        ],
-        [
-          {custom_parameters: ['grant'], name: 'grant', grant: true},
-          undefined,
-          'filter out provider name set as key'
-        ],
-        [
-          {custom_parameters: ['a'], a: {}},
-          undefined,
-          'filter out object keys'
-        ],
-        [
-          {custom_parameters: ['a'], a: '', custom_params: {b: ''}},
-          undefined,
-          'filter out falsy values'
-        ],
-        [
-          {custom_parameters: ['a', 'b'], a: 1, b: 2, custom_params: {b: 3, c: 4}},
-          {a: 1, b: 3, c: 4},
-          'custom_params override custom_parameters'
-        ],
+          {custom_params: {a: 1, b: 2}},
+          {a: 1, b: 2},
+          'return custom_params'
+        ]
       ].forEach(([provider, result, message]) => {
         t.deepEqual(config.format.custom_params(provider), result, message)
       })
@@ -183,28 +155,13 @@ describe('config', () => {
           'return undefined on empty overrides'
         ],
         [
-          {name: {a: 1}},
-          undefined,
-          'filter out reserved keys'
+          {overrides: {a: {scope: 1}}},
+          {a: {scope: 1}},
+          'return overrides'
         ],
         [
-          {name: 'grant', grant: {a: 1}},
-          undefined,
-          'filter out provider name set as key'
-        ],
-        [
-          {a: 1, b: 2},
-          undefined,
-          'filter out non object keys'
-        ],
-        [
-          {a: {dynamic: [1]}, b: {dynamic: [2]}, overrides: {b: {dynamic: [3]}, c: {dynamic: [4]}}},
-          {a: {dynamic: [1]}, b: {dynamic: [3]}, c: {dynamic: [4]}},
-          'overrides override direct object keys'
-        ],
-        [
-          {a: {nested: {scope: 1}}, overrides: {b: {nested: {scope: 2}, overrides: {c: {scope: 3}}}}},
-          {a: {}, b: {}},
+          {overrides: {a: {scope: 1, overrides: {b: {scope: 1}}}}},
+          {a: {scope: 1}},
           'filter out nested overrides'
         ],
       ].forEach(([provider, result, message]) => {
@@ -247,8 +204,10 @@ describe('config', () => {
           protocol: 'http', host: 'localhost:3000',
           oauth: '2', client_id: 'key', client_secret: 'secret',
           state: true, nonce: false,
-          custom_parameters: ['team'], team: 'github',
-          sub: {state: false, nonce: false}
+          custom_params: {team: 'github'},
+          overrides: {
+            sub: {state: false, nonce: false}
+          }
         }),
         {
           protocol: 'http',
@@ -257,7 +216,6 @@ describe('config', () => {
           client_id: 'key',
           client_secret: 'secret',
           state: true,
-          custom_parameters: ['team'],
           key: 'key',
           secret: 'secret',
           custom_params: {team: 'github'},
@@ -268,7 +226,6 @@ describe('config', () => {
               oauth: 2,
               client_id: 'key',
               client_secret: 'secret',
-              custom_parameters: ['team'],
               key: 'key',
               secret: 'secret',
               custom_params: {team: 'github'}
@@ -295,7 +252,6 @@ describe('config', () => {
              access_url: 'https://api.fitbit.com/oauth2/token',
              oauth: 2,
              scope_delimiter: ' ',
-             custom_parameters: ['prompt'],
              key: 'key',
              secret: 'secret'
            }
@@ -396,7 +352,7 @@ describe('config', () => {
       )
     })
     it('static override', () => {
-      var options = config({grant: {sub: {state: 'purest'}}})
+      var options = config({grant: {overrides: {sub: {state: 'purest'}}}})
       var session = {provider: 'grant', override: 'sub'}
       t.deepEqual(
         config.provider(options, session),

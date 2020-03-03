@@ -165,30 +165,6 @@ describe('oauth2', () => {
 
   describe('custom', () => {
     describe('authorize', () => {
-      describe('custom_parameters', () => {
-        var config = {}
-        for (var key in oauth) {
-          var provider = oauth[key]
-          if (provider.oauth === 2 && provider.custom_parameters) {
-            config[key] = {}
-            provider.custom_parameters.forEach((param, index) => {
-              config[key][param] = index.toString()
-            })
-          }
-        }
-        var grant = Grant(config)
-
-        Object.keys(config).forEach((key) => {
-          it(key, async () => {
-            var url = await oauth2.authorize(grant.config[key])
-            var query = qs.parse(url.split('?')[1])
-            delete query.response_type
-            delete query.redirect_uri
-            t.deepEqual(query, config[key])
-          })
-        })
-      })
-
       describe('subdomain', () => {
         var config = {}
         for (var key in oauth) {

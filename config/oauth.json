@@ -31,8 +31,7 @@
     "authorize_url": "https://www.amazon.com/ap/oa",
     "access_url": "https://api.amazon.com/auth/o2/token",
     "oauth": 2,
-    "scope_delimiter": " ",
-    "custom_parameters" : ["scope_data"]
+    "scope_delimiter": " "
   },
   "angellist": {
     "authorize_url": "https://angel.co/api/oauth/authorize",
@@ -60,27 +59,20 @@
     "authorize_url": "https://auth.atlassian.com/authorize",
     "access_url": "https://auth.atlassian.com/oauth/token",
     "oauth": 2,
-    "scope_delimiter": " ",
-    "custom_parameters": [
-      "audience", "prompt"
-    ]
+    "scope_delimiter": " "
   },
   "auth0": {
     "authorize_url": "https://[subdomain].auth0.com/authorize",
     "access_url": "https://[subdomain].auth0.com/oauth/token",
     "oauth": 2,
     "scope_delimiter": " ",
-    "subdomain": true,
-    "custom_parameters": ["audience", "prompt"]
+    "subdomain": true
   },
   "authentiq": {
     "authorize_url": "https://connect.authentiq.io/sign-in",
     "access_url": "https://connect.authentiq.io/token",
     "oauth": 2,
-    "scope_delimiter": " ",
-    "custom_parameters": [
-      "display", "response_mode", "prompt", "max_age", "ui_locales"
-    ]
+    "scope_delimiter": " "
   },
   "aweber": {
     "authorize_url": "https://auth.aweber.com/oauth2/authorize",
@@ -98,8 +90,7 @@
   "baidu": {
     "authorize_url": "https://openapi.baidu.com/oauth/2.0/authorize",
     "access_url": "https://openapi.baidu.com/oauth/2.0/token",
-    "oauth": 2,
-    "custom_parameters": ["display", "force_login", "confirm_login", "login_type"]
+    "oauth": 2
   },
   "basecamp": {
     "authorize_url": "https://launchpad.37signals.com/authorization/new",
@@ -160,8 +151,7 @@
     "authorize_url": "https://www.coinbase.com/oauth/authorize",
     "access_url": "https://www.coinbase.com/oauth/token",
     "oauth": 2,
-    "scope_delimiter": " ",
-    "custom_parameters": ["layout", "referral", "account", "meta"]
+    "scope_delimiter": " "
   },
   "concur": {
     "authorize_url": "https://[subdomain].api.concursolutions.com/oauth2/v0/authorize",
@@ -183,8 +173,7 @@
   "dailymotion": {
     "authorize_url": "https://www.dailymotion.com/oauth/authorize",
     "access_url": "https://api.dailymotion.com/oauth/token",
-    "oauth": 2,
-    "custom_parameters": ["display"]
+    "oauth": 2
   },
   "deezer": {
     "authorize_url": "https://connect.deezer.com/oauth/auth.php",
@@ -244,18 +233,13 @@
   "dropbox": {
     "authorize_url": "https://www.dropbox.com/oauth2/authorize",
     "access_url": "https://api.dropboxapi.com/oauth2/token",
-    "oauth": 2,
-    "custom_parameters": [
-      "require_role", "force_reapprove", "disable_signup", "locale",
-      "force_reauthentication"
-    ]
+    "oauth": 2
   },
   "ebay": {
     "authorize_url": "https://signin.ebay.com/authorize",
     "access_url": "https://api.ebay.com/identity/v1/oauth2/token",
     "oauth": 2,
-    "scope_delimiter": " ",
-    "custom_parameters": ["prompt"]
+    "scope_delimiter": " "
   },
   "echosign": {
     "authorize_url": "https://secure.echosign.com/public/oauth",
@@ -280,8 +264,7 @@
     "access_url": "https://[subdomain].egnyte.com/puboauth/token",
     "oauth": 2,
     "subdomain": true,
-    "scope_delimiter": " ",
-    "custom_parameters": ["mobile"]
+    "scope_delimiter": " "
   },
   "etsy": {
     "request_url": "https://openapi.etsy.com/v2/oauth/request_token",
@@ -326,8 +309,7 @@
     "authorize_url": "https://www.fitbit.com/oauth2/authorize",
     "access_url": "https://api.fitbit.com/oauth2/token",
     "oauth": 2,
-    "scope_delimiter": " ",
-    "custom_parameters": ["prompt"]
+    "scope_delimiter": " "
   },
   "flattr": {
     "authorize_url": "https://flattr.com/oauth/authorize",
@@ -339,8 +321,7 @@
     "request_url": "https://www.flickr.com/services/oauth/request_token",
     "authorize_url": "https://www.flickr.com/services/oauth/authorize",
     "access_url": "https://www.flickr.com/services/oauth/access_token",
-    "oauth": 1,
-    "custom_parameters": ["perms"]
+    "oauth": 1
   },
   "flowdock": {
     "authorize_url": "https://api.flowdock.com/oauth/authorize",
@@ -367,8 +348,7 @@
     "authorize_url": "https://accounts.freelancer.com/oauth/authorize",
     "access_url": "https://accounts.freelancer.com/oauth/token",
     "oauth": 2,
-    "scope_delimiter": " ",
-    "custom_parameters": ["advanced_scopes", "prompt"]
+    "scope_delimiter": " "
   },
   "freshbooks": {
     "request_url": "https://[subdomain].freshbooks.com/oauth/oauth_request.php",
@@ -409,8 +389,7 @@
   "github": {
     "authorize_url": "https://github.com/login/oauth/authorize",
     "access_url": "https://github.com/login/oauth/access_token",
-    "oauth": 2,
-    "custom_parameters": ["login", "allow_signup"]
+    "oauth": 2
   },
   "gitlab": {
     "authorize_url": "https://gitlab.com/oauth/authorize",
@@ -432,11 +411,7 @@
     "authorize_url": "https://accounts.google.com/o/oauth2/auth",
     "access_url": "https://accounts.google.com/o/oauth2/token",
     "oauth": 2,
-    "scope_delimiter": " ",
-    "custom_parameters": [
-      "access_type", "approval_prompt", "login_hint", "include_granted_scopes",
-      "prompt", "display", "hd"
-    ]
+    "scope_delimiter": " "
   },
   "groove": {
     "authorize_url": "https://api.groovehq.com/oauth/authorize",
@@ -612,8 +587,7 @@
     "authorize_url": "https://login.microsoftonline.com/common/oauth2/v2.0/authorize",
     "access_url": "https://login.microsoftonline.com/common/oauth2/v2.0/token",
     "oauth": 2,
-    "scope_delimiter": " ",
-    "custom_parameters": ["response_mode", "prompt", "login_hint", "domain_hint"]
+    "scope_delimiter": " "
   },
   "mixcloud": {
     "authorize_url": "https://www.mixcloud.com/oauth/authorize",
@@ -655,20 +629,14 @@
   "nylas": {
     "authorize_url": "https://api.nylas.com/oauth/authorize",
     "access_url": "https://api.nylas.com/oauth/token",
-    "oauth": 2,
-    "custom_parameters": ["login_hint"]
+    "oauth": 2
   },
   "okta": {
     "authorize_url": "https://[subdomain].okta.com/oauth2/v1/authorize",
     "access_url": "https://[subdomain].okta.com/oauth2/v1/token",
     "oauth": 2,
     "scope_delimiter": " ",
-    "subdomain": true,
-    "custom_parameters": [
-      "code_challenge", "code_challenge_method", "idp_scope", "idp",
-      "display", "login_hint", "max_age", "prompt", "response_mode",
-      "sessionToken"
-    ]
+    "subdomain": true
   },
   "onelogin": {
     "authorize_url": "https://[subdomain].onelogin.com/oidc/auth",
@@ -686,8 +654,7 @@
   "optimizely": {
     "authorize_url": "https://app.optimizely.com/oauth2/authorize",
     "access_url": "https://app.optimizely.com/oauth2/token",
-    "oauth": 2,
-    "custom_parameters": ["scopes"]
+    "oauth": 2
   },
   "patreon": {
     "authorize_url": "https://www.patreon.com/oauth2/authorize",
@@ -748,8 +715,7 @@
   "qq": {
     "authorize_url": "https://graph.qq.com/oauth2.0/authorize",
     "access_url": "https://graph.qq.com/oauth2.0/token",
-    "oauth": 2,
-    "custom_parameters": ["display"]
+    "oauth": 2
   },
   "ravelry": {
     "request_url": "https://www.ravelry.com/oauth/request_token",
@@ -766,8 +732,7 @@
   "reddit": {
     "authorize_url": "https://ssl.reddit.com/api/v1/authorize",
     "access_url": "https://ssl.reddit.com/api/v1/access_token",
-    "oauth": 2,
-    "custom_parameters": ["duration"]
+    "oauth": 2
   },
   "runkeeper": {
     "authorize_url": "https://runkeeper.com/apps/authorize",
@@ -800,8 +765,7 @@
   "slack": {
     "authorize_url": "https://slack.com/oauth/authorize",
     "access_url": "https://slack.com/api/oauth.access",
-    "oauth": 2,
-    "custom_parameters": ["team"]
+    "oauth": 2
   },
   "slice": {
     "authorize_url": "https://api.slice.com/oauth/authorize",
@@ -818,11 +782,7 @@
     "request_url": "https://api.smugmug.com/services/oauth/1.0a/getRequestToken",
     "authorize_url": "https://api.smugmug.com/services/oauth/1.0a/authorize",
     "access_url": "https://api.smugmug.com/services/oauth/1.0a/getAccessToken",
-    "oauth": 1,
-    "custom_parameters": [
-      "Access", "Permissions", "allowThirdPartyLogin", "showSignUpButton",
-      "username", "viewportScale"
-    ]
+    "oauth": 1
   },
   "snapchat": {
     "authorize_url": "https://accounts.snapchat.com/accounts/oauth2/auth",
@@ -844,22 +804,19 @@
   "soundcloud": {
     "authorize_url": "https://soundcloud.com/connect",
     "access_url": "https://api.soundcloud.com/oauth2/token",
-    "oauth": 2,
-    "custom_parameters": ["display"]
+    "oauth": 2
   },
   "spotify": {
     "authorize_url": "https://accounts.spotify.com/authorize",
     "access_url": "https://accounts.spotify.com/api/token",
     "oauth": 2,
-    "scope_delimiter": " ",
-    "custom_parameters": ["show_dialog"]
+    "scope_delimiter": " "
   },
   "square": {
     "authorize_url": "https://connect.squareup.com/oauth2/authorize",
     "access_url": "https://connect.squareup.com/oauth2/token",
     "oauth": 2,
-    "scope_delimiter": " ",
-    "custom_parameters": ["locale", "session", "plan_id"]
+    "scope_delimiter": " "
   },
   "stackexchange": {
     "authorize_url": "https://stackexchange.com/oauth",
@@ -880,8 +837,7 @@
   "strava": {
     "authorize_url": "https://www.strava.com/oauth/authorize",
     "access_url": "https://www.strava.com/oauth/token",
-    "oauth": 2,
-    "custom_parameters": ["approval_prompt"]
+    "oauth": 2
   },
   "stripe": {
     "authorize_url": "https://connect.stripe.com/oauth/authorize",
@@ -897,8 +853,7 @@
   "surveymonkey": {
     "authorize_url": "https://api.surveymonkey.com/oauth/authorize",
     "access_url": "https://api.surveymonkey.net/oauth/token",
-    "oauth": 2,
-    "custom_parameters": ["api_key"]
+    "oauth": 2
   },
   "thingiverse": {
     "authorize_url": "https://www.thingiverse.com/login/oauth/authorize",
@@ -934,8 +889,7 @@
     "request_url": "https://trello.com/1/OAuthGetRequestToken",
     "authorize_url": "https://trello.com/1/OAuthAuthorizeToken",
     "access_url": "https://trello.com/1/OAuthGetAccessToken",
-    "oauth": 1,
-    "custom_parameters": ["name", "expiration"]
+    "oauth": 1
   },
   "tripit": {
     "request_url": "https://api.tripit.com/oauth/request_token",
@@ -953,8 +907,7 @@
     "authorize_url": "https://id.twitch.tv/oauth2/authorize",
     "access_url": "https://id.twitch.tv/oauth2/token",
     "oauth": 2,
-    "scope_delimiter": " ",
-    "custom_parameters": ["force_verify"]
+    "scope_delimiter": " "
   },
   "twitter": {
     "request_url": "https://api.twitter.com/oauth/request_token",
@@ -1058,8 +1011,7 @@
   "wordpress": {
     "authorize_url": "https://public-api.wordpress.com/oauth2/authorize",
     "access_url": "https://public-api.wordpress.com/oauth2/token",
-    "oauth": 2,
-    "custom_parameters": ["blog"]
+    "oauth": 2
   },
   "wrike": {
     "authorize_url": "https://www.wrike.com/oauth2/authorize",
@@ -1081,8 +1033,7 @@
   "yahoo": {
     "authorize_url": "https://api.login.yahoo.com/oauth2/request_auth",
     "access_url": "https://api.login.yahoo.com/oauth2/get_token",
-    "oauth": 2,
-    "custom_parameters": ["language", "prompt", "max_age"]
+    "oauth": 2
   },
   "yammer": {
     "authorize_url": "https://www.yammer.com/dialog/oauth",
@@ -1092,8 +1043,7 @@
   "yandex": {
     "authorize_url": "https://oauth.yandex.com/authorize",
     "access_url": "https://oauth.yandex.com/token",
-    "oauth": 2,
-    "custom_parameters": ["device_id", "device_name"]
+    "oauth": 2
   },
   "zeit": {
     "authorize_url": "https://zeit.co/oauth/authorize",
