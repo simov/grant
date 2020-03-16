@@ -6,6 +6,7 @@
   "scope_delimiter",
 
   "origin",
+  "prefix",
   "protocol",
   "host",
   "path",

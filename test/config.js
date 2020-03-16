@@ -110,17 +110,17 @@ describe('config', () => {
           'http://localhost:3000/connect/grant/callback',
         ],
         [
-          {origin: 'http://localhost:3000', name: 'grant'},
-          'http://localhost:3000/connect/grant/callback',
+          {origin: 'http://localhost:3000', prefix: '/oauth', name: 'grant'},
+          'http://localhost:3000/oauth/grant/callback',
         ],
         [
-          {protocol: 'https', host: 'outofindex.com', name: 'grant'},
-          'https://outofindex.com/connect/grant/callback',
+          {origin: 'http://localhost:3000', prefix: '', name: 'grant'},
+          'http://localhost:3000/grant/callback',
         ],
         [
-          {protocol: 'https', host: 'outofindex.com', path: '/prefix', name: 'grant'},
-          'https://outofindex.com/prefix/connect/grant/callback',
-        ]
+          {protocol: 'https', host: 'outofindex.com', prefix: '/oauth', name: 'grant'},
+          'https://outofindex.com/oauth/grant/callback',
+        ],
       ].forEach(([provider, result, message]) => {
         t.deepEqual(config.format.redirect_uri(provider), result, message)
       })
@@ -205,7 +205,7 @@ describe('config', () => {
     it('transform', () => {
       t.deepEqual(
         config.transform({
-          origin: 'http://localhost:3000',
+          origin: 'http://localhost:3000', prefix: '/oauth',
           oauth: 2, client_id: 'key', client_secret: 'secret',
           state: true, nonce: false,
           custom_params: {team: 'github'},
@@ -216,23 +216,23 @@ describe('config', () => {
           name: 'github', github: true
         }),
         {
-          origin: 'http://localhost:3000',
+          origin: 'http://localhost:3000', prefix: '/oauth',
           oauth: 2, key: 'key', secret: 'secret',
           client_id: 'key', client_secret: 'secret',
           state: true,
           custom_params: {team: 'github'},
           dynamic: ['scope'],
-          redirect_uri: 'http://localhost:3000/connect/github/callback',
+          redirect_uri: 'http://localhost:3000/oauth/github/callback',
           name: 'github', github: true,
           overrides: {
             sub: {
-              origin: 'http://localhost:3000',
+              origin: 'http://localhost:3000', prefix: '/oauth',
               oauth: 2, key: 'key', secret: 'secret',
               client_id: 'key', client_secret: 'secret',
               nonce: true,
               dynamic: ['callback'],
               custom_params: {team: 'github'},
-              redirect_uri: 'http://localhost:3000/connect/github/callback',
+              redirect_uri: 'http://localhost:3000/oauth/github/callback',
               name: 'github', github: true,
             }
           }
@@ -272,24 +272,17 @@ describe('config', () => {
         defaults: {protocol: 'http', host: 'localhost:3000'},
         facebook: {state: true, scope: ['openid']}
       })
-      var server = config({
-        defaults: {protocol: 'http', host: 'localhost:3000'},
-        facebook: {state: true, scope: ['openid']}
-      })
-      t.deepEqual(defaults, server)
       t.deepEqual(defaults, {
-        defaults: {protocol: 'http', host: 'localhost:3000'},
+        defaults: {protocol: 'http', host: 'localhost:3000', prefix: '/connect'},
         facebook: {
           authorize_url: 'https://www.facebook.com/dialog/oauth',
           access_url: 'https://graph.facebook.com/oauth/access_token',
           oauth: 2,
-          protocol: 'http',
-          host: 'localhost:3000',
+          protocol: 'http', host: 'localhost:3000', prefix: '/connect',
           state: true,
           scope: 'openid',
-          name: 'facebook',
-          facebook: true,
-          redirect_uri: 'http://localhost:3000/connect/facebook/callback'
+          redirect_uri: 'http://localhost:3000/connect/facebook/callback',
+          name: 'facebook', facebook: true
         }
       })
     })
@@ -301,18 +294,42 @@ describe('config', () => {
         }
       })
       t.deepEqual(nodefaults, {
+        defaults: {prefix: '/connect'},
         facebook: {
           authorize_url: 'https://www.facebook.com/dialog/oauth',
           access_url: 'https://graph.facebook.com/oauth/access_token',
           oauth: 2,
-          protocol: 'http',
-          host: 'localhost:3000',
+          protocol: 'http', host: 'localhost:3000', prefix: '/connect',
           state: true,
           scope: 'openid',
-          name: 'facebook',
-          facebook: true,
-          redirect_uri: 'http://localhost:3000/connect/facebook/callback'
+          redirect_uri: 'http://localhost:3000/connect/facebook/callback',
+          name: 'facebook', facebook: true
         }
+      })
+    })
+  })
+
+  describe('defaults', () => {
+    it('prefix', () => {
+      ;[
+        [
+          {},
+          {prefix: '/connect'}
+        ],
+        [
+          {prefix: '/oauth'},
+          {prefix: '/oauth'}
+        ],
+        [
+          {path: '/api'},
+          {prefix: '/api/connect'}
+        ],
+        [
+          {path: '/api', prefix: '/oauth'},
+          {prefix: '/api/oauth'}
+        ]
+      ].forEach(([provider, result, message]) => {
+        t.deepEqual(config.defaults(provider), result, message)
       })
     })
   })
@@ -323,7 +340,9 @@ describe('config', () => {
       var session = {provider: 'grant'}
       t.deepEqual(
         config.provider(options, session),
-        {name: 'grant', grant: true}
+        {
+          prefix: '/connect', name: 'grant', grant: true
+        }
       )
     })
     it('dynamic provider - defaults to false', () => {
@@ -342,6 +361,7 @@ describe('config', () => {
           authorize_url: 'https://www.facebook.com/dialog/oauth',
           access_url: 'https://graph.facebook.com/oauth/access_token',
           oauth: 2,
+          prefix: '/connect',
           dynamic: true,
           name: 'facebook',
           facebook: true
@@ -353,7 +373,10 @@ describe('config', () => {
       var session = {provider: 'grant'}
       t.deepEqual(
         config.provider(options, session),
-        {dynamic: true, name: 'grant', grant: true}
+        {
+          dynamic: true,
+          prefix: '/connect', name: 'grant', grant: true
+        }
       )
     })
     it('static override', () => {
@@ -361,7 +384,10 @@ describe('config', () => {
       var session = {provider: 'grant', override: 'sub'}
       t.deepEqual(
         config.provider(options, session),
-        {name: 'grant', grant: true, state: 'purest'}
+        {
+          state: 'purest',
+          prefix: '/connect', name: 'grant', grant: true
+        }
       )
     })
     it('dynamic params - true', () => {
@@ -369,11 +395,20 @@ describe('config', () => {
       var session = {provider: 'grant', dynamic: {state: 'purest'}}
       t.deepEqual(
         config.provider(options, session),
-        {dynamic: true, name: 'grant', grant: true, state: 'purest'}
+        {
+          dynamic: true, state: 'purest',
+          prefix: '/connect', name: 'grant', grant: true
+        }
       )
       t.deepEqual(
         options,
-        {grant: {dynamic: true, name: 'grant', grant: true, state: 'grant'}}
+        {
+          defaults: {prefix: '/connect'},
+          grant: {
+            dynamic: true, state: 'grant',
+            prefix: '/connect', name: 'grant', grant: true
+          }
+        }
       )
     })
     it('dynamic params - array', () => {
@@ -381,11 +416,20 @@ describe('config', () => {
       var session = {provider: 'grant', dynamic: {state: 'purest', scope: 'purest'}}
       t.deepEqual(
         config.provider(options, session),
-        {dynamic: ['state'], name: 'grant', grant: true, state: 'purest', scope: 'grant'}
+        {
+          dynamic: ['state'], state: 'purest', scope: 'grant',
+          prefix: '/connect', name: 'grant', grant: true
+        }
       )
       t.deepEqual(
         options,
-        {grant: {dynamic: ['state'], name: 'grant', grant: true, state: 'grant', scope: 'grant'}}
+        {
+          defaults: {prefix: '/connect'},
+          grant: {
+            dynamic: ['state'], state: 'grant', scope: 'grant',
+            prefix: '/connect', name: 'grant', grant: true
+          }
+        }
       )
     })
     it('state - dynamic', () => {
@@ -394,11 +438,17 @@ describe('config', () => {
       var state = {dynamic: {state: 's1'}}
       t.deepEqual(
         config.provider(options, session, state),
-        {name: 'grant', grant: true, state: 's1'}
+        {
+          state: 's1',
+          prefix: '/connect', name: 'grant', grant: true
+        }
       )
       t.deepEqual(
         options,
-        {grant: {name: 'grant', grant: true}}
+        {
+          defaults: {prefix: '/connect'},
+          grant: {prefix: '/connect', name: 'grant', grant: true}
+        }
       )
     })
     it('state - dynamic + session dynamic', () => {
@@ -408,12 +458,21 @@ describe('config', () => {
       var state = {dynamic: {key: 'state', secret: 'state', state: 'state'}}
       t.deepEqual(
         config.provider(options, session, state),
-        {name: 'grant', grant: true, oauth: 2, dynamic: ['state', 'scope'],
-          key: 'state', secret: 'state', state: 'session', scope: 'session'}
+        {
+          oauth: 2, dynamic: ['state', 'scope'],
+          key: 'state', secret: 'state', state: 'session', scope: 'session',
+          prefix: '/connect', name: 'grant', grant: true
+        }
       )
       t.deepEqual(
         options,
-        {grant: {name: 'grant', grant: true, oauth: 2, dynamic: ['state', 'scope']}}
+        {
+          defaults: {prefix: '/connect'},
+          grant: {
+            oauth: 2, dynamic: ['state', 'scope'],
+            prefix: '/connect', name: 'grant', grant: true
+          }
+        }
       )
     })
     it('state', () => {
@@ -421,14 +480,32 @@ describe('config', () => {
       var session = {provider: 'grant'}
       var result = config.provider(options, session)
       t.ok(/^[a-fA-F0-9]+$/.test(result.state))
-      t.deepEqual(options, {grant: {name: 'grant', grant: true, state: true}})
+      t.deepEqual(
+        options,
+        {
+          defaults: {prefix: '/connect'},
+          grant: {
+            state: true,
+            prefix: '/connect', name: 'grant', grant: true
+          }
+        }
+      )
     })
     it('nonce', () => {
       var options = config({grant: {nonce: true}})
       var session = {provider: 'grant'}
       var result = config.provider(options, session)
       t.ok(/^[a-fA-F0-9]+$/.test(result.nonce))
-      t.deepEqual(options, {grant: {name: 'grant', grant: true, nonce: true}})
+      t.deepEqual(
+        options,
+        {
+          defaults: {prefix: '/connect'},
+          grant: {
+            nonce: true,
+            prefix: '/connect', name: 'grant', grant: true
+          }
+        }
+      )
     })
     it('pkce', () => {
       var options = config({grant: {pkce: true}})
@@ -438,7 +515,16 @@ describe('config', () => {
       t.ok(/^[a-z0-9]{80}$/.test(result.code_verifier))
       t.ok(typeof result.code_challenge === 'string')
       t.equal(result.code_challenge.length, 43)
-      t.deepEqual(options, {grant: {name: 'grant', grant: true, pkce: true}})
+      t.deepEqual(
+        options,
+        {
+          defaults: {prefix: '/connect'},
+          grant: {
+            pkce: true,
+            prefix: '/connect', name: 'grant', grant: true
+          }
+        }
+      )
     })
   })
 
