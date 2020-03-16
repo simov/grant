@@ -110,6 +110,10 @@ describe('config', () => {
           'http://localhost:3000/connect/grant/callback',
         ],
         [
+          {origin: 'http://localhost:3000', name: 'grant'},
+          'http://localhost:3000/connect/grant/callback',
+        ],
+        [
           {protocol: 'https', host: 'outofindex.com', name: 'grant'},
           'https://outofindex.com/connect/grant/callback',
         ],
@@ -201,34 +205,35 @@ describe('config', () => {
     it('transform', () => {
       t.deepEqual(
         config.transform({
-          protocol: 'http', host: 'localhost:3000',
-          oauth: '2', client_id: 'key', client_secret: 'secret',
+          origin: 'http://localhost:3000',
+          oauth: 2, client_id: 'key', client_secret: 'secret',
           state: true, nonce: false,
           custom_params: {team: 'github'},
+          dynamic: ['scope'],
           overrides: {
-            sub: {state: false, nonce: false}
-          }
+            sub: {state: false, nonce: true, dynamic: ['callback']}
+          },
+          name: 'github', github: true
         }),
         {
-          protocol: 'http',
-          host: 'localhost:3000',
-          oauth: 2,
-          client_id: 'key',
-          client_secret: 'secret',
+          origin: 'http://localhost:3000',
+          oauth: 2, key: 'key', secret: 'secret',
+          client_id: 'key', client_secret: 'secret',
           state: true,
-          key: 'key',
-          secret: 'secret',
           custom_params: {team: 'github'},
+          dynamic: ['scope'],
+          redirect_uri: 'http://localhost:3000/connect/github/callback',
+          name: 'github', github: true,
           overrides: {
             sub: {
-              protocol: 'http',
-              host: 'localhost:3000',
-              oauth: 2,
-              client_id: 'key',
-              client_secret: 'secret',
-              key: 'key',
-              secret: 'secret',
-              custom_params: {team: 'github'}
+              origin: 'http://localhost:3000',
+              oauth: 2, key: 'key', secret: 'secret',
+              client_id: 'key', client_secret: 'secret',
+              nonce: true,
+              dynamic: ['callback'],
+              custom_params: {team: 'github'},
+              redirect_uri: 'http://localhost:3000/connect/github/callback',
+              name: 'github', github: true,
             }
           }
         }

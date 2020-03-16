@@ -5,6 +5,7 @@
   "oauth",
   "scope_delimiter",
 
+  "origin",
   "protocol",
   "host",
   "path",
