@@ -1,473 +1,504 @@
 
 var t = require('assert')
-var http = require('http')
-var qs = require('qs')
-var express = require('express')
-var bodyParser = require('body-parser')
-var Grant = require('../../').express()
-var oauth2 = require('../../lib/flow/oauth2')
+
+var request = require('request-compose').extend({
+  Request: {cookie: require('request-cookie').Request},
+  Response: {cookie: require('request-cookie').Response},
+}).client
+
 var oauth = require('../../config/oauth')
 
-var sign = (...args) => args.map((arg, index) => index < 2
-  ? Buffer.from(JSON.stringify(arg)).toString('base64')
-    .replace(/=/g, '').replace(/\+/g, '-').replace(/\//g, '_')
-  : arg).join('.')
+var Provider = require('../consumer/util/provider'), provider
+var Client = require('../consumer/util/client'), client
 
 
 describe('oauth2', () => {
-  var url = (path) => `http://localhost:5000${path}`
-
-  describe('success', () => {
-    var server
-
-    before((done) => {
-      server = http.createServer()
-      server.on('request', (req, res) => {
-        res.writeHead(200, {'content-type': 'application/x-www-form-urlencoded'})
-        req.pipe(res)
-      })
-      server.listen(5000, done)
-    })
-
-    it('authorize', async () => {
-      var provider = {
-        authorize_url: '/authorize_url',
-        redirect_uri: '/redirect_uri',
-        key: 'key',
-        scope: 'read,write',
-        state: '123',
-        nonce: '456'
+  before(async () => {
+    provider = await Provider({flow: 'oauth2'})
+    client = await Client({
+      test: 'handlers',
+      handler: 'express',
+      config: {
+        defaults: {
+          origin: 'http://localhost:5001',
+          callback: '/',
+        },
+        ...Object.keys(oauth).reduce((all, name) => (all[name] = {
+          authorize_url: provider.url(`/${name}/authorize_url`),
+          access_url: provider.url(`/${name}/access_url`),
+          dynamic: true,
+        }, all), {})
       }
-      var url = await oauth2.authorize(provider)
-      t.deepEqual(qs.parse(url.replace('/authorize_url?', '')), {
-        client_id: 'key',
-        response_type: 'code',
-        redirect_uri: '/redirect_uri',
-        scope: 'read,write',
-        state: '123',
-        nonce: '456'
-      })
-    })
-
-    it('access', async () => {
-      var provider = {
-        access_url: url('/access_url'),
-        redirect_uri: '/redirect_uri',
-        key: 'key',
-        secret: 'secret'
-      }
-      var authorize = {
-        code: 'code'
-      }
-      var data = await oauth2.access(provider, authorize, {})
-      t.deepEqual(data.raw, {
-        grant_type: 'authorization_code',
-        code: 'code',
-        client_id: 'key',
-        client_secret: 'secret',
-        redirect_uri: '/redirect_uri'
-      })
-    })
-
-    after((done) => {
-      server.close(done)
     })
   })
 
-  describe('error', () => {
-    var server
+  after(async () => {
+    await client.close()
+    await provider.close()
+  })
 
-    before((done) => {
-      server = http.createServer()
-      server.on('request', (req, res) => {
-        if (/^\/access_url_nonce/.test(req.url)) {
-          res.writeHead(200, {'content-type': 'application/x-www-form-urlencoded'})
-          res.end(qs.stringify({id_token: sign({typ: 'JWT'}, {nonce: 'Purest'}, 'signature')}))
-        }
-        else if (/^\/access_url_error/.test(req.url)) {
-          res.writeHead(500, {'content-type': 'application/x-www-form-urlencoded'})
-          res.end(qs.stringify({error: 'invalid'}))
-        }
+  afterEach(() => {
+    provider.oauth2.authorize = () => {}
+    provider.oauth2.access = () => {}
+  })
+
+  describe('success', () => {
+    it('google', async () => {
+      provider.oauth2.authorize = ({url, headers, query}) => {
+        t.ok(url.startsWith('/google/authorize_url'))
+        t.equal(typeof headers, 'object')
+        t.deepEqual(query, {
+          response_type: 'code',
+          redirect_uri: 'http://localhost:5001/connect/google/callback'
+        })
+      }
+      provider.oauth2.access = ({url, headers, query, form}) => {
+        t.equal(url, '/google/access_url')
+        t.equal(headers['content-type'], 'application/x-www-form-urlencoded')
+        t.deepEqual(form, {
+          grant_type: 'authorization_code',
+          code: 'code',
+          redirect_uri: 'http://localhost:5001/connect/google/callback'
+        })
+      }
+      var {body: {response}} = await request({
+        url: client.url('/connect/google'),
+        cookie: {},
       })
-      server.listen(5000, done)
+      t.deepEqual(response, {
+        access_token: 'token',
+        refresh_token: 'refresh',
+        raw: {access_token: 'token', refresh_token: 'refresh', expires_in: '3600'}
+      })
     })
+  })
 
-    it('access - missing code - response error', async () => {
-      var provider = {}
-      var authorize = {error: 'invalid'}
-      try {
-        await oauth2.access(provider, authorize, {})
+  describe('subdomain', () => {
+    it('auth0', async () => {
+      provider.oauth2.authorize = ({url, headers, query}) => {
+        t.ok(url.startsWith('/auth0/authorize_url'))
       }
-      catch (err) {
-        t.deepEqual(err.error, {error: 'invalid'})
+      provider.oauth2.access = ({url, headers, query, form}) => {
+        t.ok(url.startsWith('/auth0/access_url'))
       }
-    })
-    it('access - missing code - empty response', async () => {
-      var provider = {}
-      var authorize = {}
-      try {
-        await oauth2.access(provider, authorize, {})
-      }
-      catch (err) {
-        t.deepEqual(
-          err.error,
-          {error: 'Grant: OAuth2 missing code parameter'}
-        )
-      }
-    })
-    it('access - state mismatch', async () => {
-      var provider = {}
-      var authorize = {code: 'code', state: 'Purest'}
-      var session = {state: 'Grant'}
-      try {
-        await oauth2.access(provider, authorize, session)
-      }
-      catch (err) {
-        t.deepEqual(err.error, {error: 'Grant: OAuth2 state mismatch'})
-      }
-    })
-    it('access - nonce mismatch', async () => {
-      var provider = {access_url: url('/access_url_nonce')}
-      var authorize = {code: 'code', nonce: 'Grant'}
-      var session = {}
-      try {
-        await oauth2.access(provider, authorize, session)
-      }
-      catch (err) {
-        t.deepEqual(err.error, {error: 'Grant: OpenID Connect nonce mismatch'})
-      }
-    })
-    it('access - request error', async () => {
-      var provider = {access_url: 'compose:5000'}
-      var authorize = {code: 'code'}
-      try {
-        await oauth2.access(provider, authorize, {})
-      }
-      catch (err) {
-        t.ok(/^Protocol "compose:" not supported\. Expected "http:"/.test(err.error))
-      }
-    })
-    it('access - response error', async () => {
-      var provider = {access_url: url('/access_url_error')}
-      var authorize = {code: 'code'}
-      try {
-        await oauth2.access(provider, authorize, {})
-      }
-      catch (err) {
-        t.deepEqual(err.error, {error: 'invalid'})
-      }
-    })
-
-    after((done) => {
-      server.close(done)
+      var {body: {response}} = await request({
+        url: client.url('/connect/auth0'),
+        qs: {
+          authorize_url: provider.url('/[subdomain]/authorize_url'),
+          access_url: provider.url('/[subdomain]/access_url'),
+          subdomain: 'auth0',
+        },
+        cookie: {},
+      })
+      t.deepEqual(response, {
+        access_token: 'token',
+        refresh_token: 'refresh',
+        raw: {access_token: 'token', refresh_token: 'refresh', expires_in: '3600'}
+      })
     })
   })
 
   describe('custom', () => {
-    describe('authorize', () => {
-      describe('subdomain', () => {
-        var config = {}
-        for (var key in oauth) {
-          var provider = oauth[key]
-          if (provider.oauth === 2 && provider.subdomain) {
-            config[key] = {subdomain: 'grant'}
-          }
-        }
-        var grant = Grant(config)
-
-        Object.keys(config).forEach((key) => {
-          it(key, async () => {
-            var url = await oauth2.authorize(grant.config[key])
-            if (key !== 'vend') {
-              t.ok(/grant/.test(url))
-            }
-          })
-        })
+    it('authorize - web_server- basecamp', async () => {
+      provider.oauth2.authorize = ({url, headers, query}) => {
+        t.equal(query.type, 'web_server')
+      }
+      var {body: {response}} = await request({
+        url: client.url('/connect/basecamp'),
+        cookie: {},
       })
-
-      describe('web_server', () => {
-        var config = {basecamp: {}}
-        var grant = Grant(config)
-        it('basecamp', async () => {
-          var url = await oauth2.authorize(grant.config.basecamp)
-          var query = qs.parse(url.split('?')[1])
-          t.equal(query.type, 'web_server')
-        })
-      })
-
-      describe('scopes', () => {
-        var grant = Grant({
-          freelancer: {scope: ['1', '2']},
-          optimizely: {scope: ['1', '2']}
-        })
-        it('freelancer', async () => {
-          var url = await oauth2.authorize(grant.config.freelancer)
-          var query = qs.parse(url.split('?')[1])
-          t.equal(query.advanced_scopes, '1 2')
-        })
-        it('optimizely', async () => {
-          var url = await oauth2.authorize(grant.config.optimizely)
-          var query = qs.parse(url.split('?')[1])
-          t.equal(query.scopes, '1,2')
-        })
-      })
-
-      describe('response_type', () => {
-        var config = {visualstudio: {response_type: 'Assertion'}}
-        var grant = Grant(config)
-        it('visualstudio', async () => {
-          var url = await oauth2.authorize(grant.config.visualstudio)
-          var query = qs.parse(url.split('?')[1])
-          t.equal(query.response_type, 'Assertion')
-        })
-      })
-
-      describe('scopes separated by unencoded + sign', () => {
-        var config = {unsplash: {scope: ['public', 'read_photos']}}
-        var grant = Grant(config)
-        it('unsplash', async () => {
-          var url = await oauth2.authorize(grant.config.unsplash)
-          t.equal(url.replace(/.*scope=(.*)/g, '$1'), 'public+read_photos')
-        })
-      })
-
-      describe('app_id - client_id', () => {
-        it('instagram - v1', async () => {
-          var config = {instagram: {
-            key: '00cd22b35e8e42c0a29d1d71236f5c1d', secret: 'secret', scope: 'a b'}}
-          var grant = Grant(config)
-          var url = await oauth2.authorize(grant.config.instagram)
-          var query = qs.parse(url.split('?')[1])
-          t.equal(query.client_id, '00cd22b35e8e42c0a29d1d71236f5c1d')
-          t.equal(query.app_id, undefined)
-          t.equal(query.scope, 'a b')
-        })
-        it('instagram - graph', async () => {
-          var config = {instagram: {
-            key: '771866756573877', secret: 'secret', scope: 'a b'}}
-          var grant = Grant(config)
-          var url = await oauth2.authorize(grant.config.instagram)
-          var query = qs.parse(url.split('?')[1])
-          t.equal(query.app_id, '771866756573877')
-          t.equal(query.client_id, undefined)
-          t.equal(query.scope, 'a,b')
-        })
-        it('instagram - graph - no scope', async () => {
-          var config = {instagram: {
-            key: '771866756573877', secret: 'secret'}}
-          var grant = Grant(config)
-          var url = await oauth2.authorize(grant.config.instagram)
-          var query = qs.parse(url.split('?')[1])
-          t.equal(query.app_id, '771866756573877')
-          t.equal(query.client_id, undefined)
-          t.equal(query.scope, undefined)
-        })
-      })
-
-      describe('appid - client_id', () => {
-        var config = {wechat: {key: 'key', secret: 'secret'}}
-        var grant = Grant(config)
-        it('wechat', async () => {
-          var url = await oauth2.authorize(grant.config.wechat)
-          var query = qs.parse(url.split('?')[1])
-          t.equal(query.appid, 'key')
-          t.equal(query.client_id, undefined)
-        })
+      t.deepEqual(response, {
+        access_token: 'token',
+        refresh_token: 'refresh',
+        raw: {access_token: 'token', refresh_token: 'refresh', expires_in: '3600'}
       })
     })
 
-    describe('access', () => {
-      var grant, server
+    it('authorize - scopes - freelancer', async () => {
+      provider.oauth2.authorize = ({url, headers, query}) => {
+        t.equal(query.advanced_scopes, '1 2')
+      }
+      var {body: {response}} = await request({
+        url: client.url('/connect/freelancer'),
+        qs: {scope: ['1', '2']},
+        cookie: {},
+      })
+      t.deepEqual(response, {
+        access_token: 'token',
+        refresh_token: 'refresh',
+        raw: {access_token: 'token', refresh_token: 'refresh', expires_in: '3600'}
+      })
+    })
 
-      before((done) => {
-        var config = {
-          defaults: {protocol: 'http', host: 'localhost:5000', callback: '/'},
-          basecamp: {access_url: url('/access_url')},
-          concur: {access_url: url('/access_url')},
-          ebay: {access_url: url('/access_url')},
-          fitbit: {access_url: url('/access_url')},
-          google: {access_url: url('/access_url')},
-          homeaway: {access_url: url('/access_url')},
-          hootsuite: {access_url: url('/access_url')},
-          instagram: {access_url: url('/access_url')},
-          qq: {access_url: url('/access_url')},
-          wechat: {access_url: url('/access_url')},
-          reddit: {access_url: url('/access_url')},
-          shopify: {access_url: url('/access_url')},
-          smartsheet: {access_url: url('/access_url')},
-          surveymonkey: {access_url: url('/access_url')},
-          visualstudio: {access_url: url('/access_url')},
-        }
-        grant = Grant(config)
-        server = express()
-          .use(grant)
-          .use(bodyParser.urlencoded({extended: true}))
-          .post('/access_url', (req, res) => {
-            var code = req.body.code || req.query.code
-            // wrong content-type to pass the response formatter
-            if (code === 'concur') {
-              res.writeHead(200, {'content-type': 'application/json'})
-              res.end(qs.stringify(req.query))
-              return
-            }
-            res.writeHead(200, {'content-type': 'application/x-www-form-urlencoded'})
-            if (req.url.split('?')[1]) {
-              res.end(qs.stringify(req.query))
-            }
-            else if (req.headers.authorization) {
-              res.end(qs.stringify({basic: req.headers.authorization}))
-            }
-            else if (req.body) {
-              res.end(qs.stringify(req.body))
-            }
+    it('authorize - scopes - optimizely', async () => {
+      provider.oauth2.authorize = ({url, headers, query}) => {
+        t.equal(query.scopes, '1,2')
+      }
+      var {body: {response}} = await request({
+        url: client.url('/connect/optimizely'),
+        qs: {scope: ['1', '2']},
+        cookie: {},
+      })
+      t.deepEqual(response, {
+        access_token: 'token',
+        refresh_token: 'refresh',
+        raw: {access_token: 'token', refresh_token: 'refresh', expires_in: '3600'}
+      })
+    })
+
+    it('authorize - response_type - visualstudio', async () => {
+      provider.oauth2.authorize = ({url, headers, query}) => {
+        t.equal(query.response_type, 'Assertion')
+      }
+      var {body: {response}} = await request({
+        url: client.url('/connect/visualstudio'),
+        cookie: {},
+      })
+      t.deepEqual(response, {
+        access_token: 'token',
+        refresh_token: 'refresh',
+        raw: {access_token: 'token', refresh_token: 'refresh', expires_in: '3600'}
+      })
+    })
+
+    it('authorize - scopes separated by unencoded + sign - unsplash', async () => {
+      provider.oauth2.authorize = ({url, headers, query}) => {
+        t.equal(url.replace(/.*scope=(.*)/g, '$1'), 'public+read_photos')
+      }
+      var {body: {response}} = await request({
+        url: client.url('/connect/unsplash'),
+        qs: {scope: ['public', 'read_photos']},
+        cookie: {},
+      })
+      t.deepEqual(response, {
+        access_token: 'token',
+        refresh_token: 'refresh',
+        raw: {access_token: 'token', refresh_token: 'refresh', expires_in: '3600'}
+      })
+    })
+
+    it('authorize - app_id/client_id, access - app_id/app_secret -> client_id/client_secret - instagram v1', async () => {
+      provider.oauth2.authorize = ({url, headers, query}) => {
+        t.equal(query.client_id, '00cd22b35e8e42c0a29d1d71236f5c1d')
+        t.equal(query.app_id, undefined)
+        t.equal(query.scope, 'a b')
+      }
+      provider.oauth2.access = ({url, headers, query, form}) => {
+        t.deepEqual(form, {
+          grant_type: 'authorization_code',
+          code: 'code',
+          client_id: '00cd22b35e8e42c0a29d1d71236f5c1d',
+          client_secret: 'secret',
+          redirect_uri: 'http://localhost:5001/connect/instagram/callback'
+        })
+      }
+      var {body: {response}} = await request({
+        url: client.url('/connect/instagram'),
+        qs: {key: '00cd22b35e8e42c0a29d1d71236f5c1d', secret: 'secret', scope: 'a b'},
+        cookie: {},
+      })
+      t.deepEqual(response, {
+        access_token: 'token',
+        refresh_token: 'refresh',
+        raw: {access_token: 'token', refresh_token: 'refresh', expires_in: '3600'}
+      })
+    })
+
+    it('authorize - app_id/client_id, access - app_id/app_secret -> client_id/client_secret - instagram graph', async () => {
+      provider.oauth2.authorize = ({url, headers, query}) => {
+        t.equal(query.app_id, '771866756573877')
+        t.equal(query.client_id, undefined)
+        t.equal(query.scope, 'a,b')
+      }
+      provider.oauth2.access = ({url, headers, query, form}) => {
+        t.deepEqual(form, {
+          grant_type: 'authorization_code',
+          code: 'code',
+          app_id: '771866756573877',
+          app_secret: 'secret',
+          redirect_uri: 'http://localhost:5001/connect/instagram/callback'
+        })
+      }
+      var {body: {response}} = await request({
+        url: client.url('/connect/instagram'),
+        qs: {key: '771866756573877', secret: 'secret', scope: 'a b'},
+        cookie: {},
+      })
+      t.deepEqual(response, {
+        access_token: 'token',
+        refresh_token: 'refresh',
+        raw: {access_token: 'token', refresh_token: 'refresh', expires_in: '3600'}
+      })
+    })
+
+    it('authorize - app_id/client_id - instagram graph - no scope', async () => {
+      provider.oauth2.authorize = ({url, headers, query}) => {
+        t.equal(query.app_id, '771866756573877')
+        t.equal(query.client_id, undefined)
+        t.equal(query.scope, undefined)
+      }
+      var {body: {response}} = await request({
+        url: client.url('/connect/instagram'),
+        qs: {key: '771866756573877', secret: 'secret'},
+        cookie: {},
+      })
+      t.deepEqual(response, {
+        access_token: 'token',
+        refresh_token: 'refresh',
+        raw: {access_token: 'token', refresh_token: 'refresh', expires_in: '3600'}
+      })
+    })
+
+    it('authorize - appid/client_id - wechat', async () => {
+      provider.oauth2.authorize = ({url, headers, query}) => {
+        t.equal(query.appid, 'key')
+        t.equal(query.client_id, undefined)
+      }
+      var {body: {response}} = await request({
+        url: client.url('/connect/wechat'),
+        qs: {key: 'key', secret: 'secret'},
+        cookie: {},
+      })
+      t.deepEqual(response, {
+        access_token: 'token',
+        refresh_token: 'refresh',
+        raw: {access_token: 'token', refresh_token: 'refresh', expires_in: '3600'}
+      })
+    })
+
+    it('access - web_server - basecamp', async () => {
+      provider.oauth2.access = ({url, headers, query, form}) => {
+        t.equal(form.type, 'web_server')
+      }
+      var {body: {response}} = await request({
+        url: client.url('/connect/basecamp'),
+        cookie: {},
+      })
+      t.deepEqual(response, {
+        access_token: 'token',
+        refresh_token: 'refresh',
+        raw: {access_token: 'token', refresh_token: 'refresh', expires_in: '3600'}
+      })
+    })
+
+    it('access - qs - concur', async () => {
+      provider.oauth2.access = ({url, headers, query, form}) => {
+        t.deepEqual(query, {code: 'code', client_id: 'key', client_secret: 'secret'})
+      }
+      var {body: {response}} = await request({
+        url: client.url('/connect/concur'),
+        qs: {key: 'key', secret: 'secret'},
+        cookie: {},
+      })
+      t.deepEqual(response, {
+        access_token: 'token',
+        refresh_token: 'refresh',
+        raw: ' <Token>token</Token> <Refresh_Token>refresh</Refresh_Token> '
+      })
+    })
+
+    it('access - qs - surveymonkey', async () => {
+      provider.oauth2.access = ({url, headers, query, form}) => {
+        t.equal(query.api_key, 'api_key')
+      }
+      var {body: {response}} = await request({
+        url: client.url('/connect/surveymonkey'),
+        // request-compose:querystring can't handle nested objects
+        qs: 'custom_params%5Bapi_key%5D=api_key',
+        cookie: {},
+      })
+      t.deepEqual(response, {
+        access_token: 'token',
+        refresh_token: 'refresh',
+        raw: {access_token: 'token', refresh_token: 'refresh', expires_in: '3600'}
+      })
+    })
+
+    it('access - basic auth', async () => {
+      provider.oauth2.access = ({url, headers, query, form}) => {
+        t.deepEqual(
+          Buffer.from(headers.authorization.replace('Basic ', ''), 'base64').toString().split(':'),
+          ['key', 'secret']
+        )
+      }
+      await Promise.all(
+        ['ebay', 'fitbit', 'homeaway', 'hootsuite', 'reddit'].map((provider) =>
+          request({
+            url: client.url(`/connect/${provider}`),
+            qs: {key: 'key', secret: 'secret'},
+            cookie: {},
           })
-          .get('/access_url', (req, res) => {
-            res.writeHead(200, {'content-type': 'application/x-www-form-urlencoded'})
-            res.end(qs.stringify(Object.assign({method: req.method}, req.query)))
-          })
-          .listen(5000, done)
+        )
+      ).then((responses) => responses.forEach(({body: {response}}) => {
+        t.deepEqual(response, {
+          access_token: 'token',
+          refresh_token: 'refresh',
+          raw: {access_token: 'token', refresh_token: 'refresh', expires_in: '3600'}
+        })
+      }))
+    })
+    it('access - basic auth - token_endpoint_auth_method -> client_secret_basic', async () => {
+      provider.oauth2.access = ({url, headers, query, form}) => {
+        t.deepEqual(
+          Buffer.from(headers.authorization.replace('Basic ', ''), 'base64').toString().split(':'),
+          ['key', 'secret']
+        )
+      }
+      var {body: {response}} = await request({
+        url: client.url('/connect/google'),
+        qs: {key: 'key', secret: 'secret', token_endpoint_auth_method: 'client_secret_basic'},
+        cookie: {},
       })
+      t.deepEqual(response, {
+        access_token: 'token',
+        refresh_token: 'refresh',
+        raw: {access_token: 'token', refresh_token: 'refresh', expires_in: '3600'}
+      })
+    })
 
-      describe('web_server', () => {
-        it('basecamp', async () => {
-          var data = await oauth2.access(grant.config.basecamp, {code: 'code'}, {})
-          t.equal(data.raw.type, 'web_server')
-        })
+    it('access - GET - qq', async () => {
+      provider.oauth2.access = ({method, url, headers, query, form}) => {
+        t.equal(method, 'GET')
+      }
+      var {body: {response}} = await request({
+        url: client.url('/connect/qq'),
+        cookie: {},
       })
+      t.deepEqual(response, {
+        access_token: 'token',
+        refresh_token: 'refresh',
+        raw: {access_token: 'token', refresh_token: 'refresh', expires_in: '3600'}
+      })
+    })
 
-      describe('qs', () => {
-        it('concur', async () => {
-          grant.config.concur.key = 'key'
-          grant.config.concur.secret = 'secret'
-          var data = await oauth2.access(grant.config.concur, {code: 'concur'}, {})
-          t.deepEqual(qs.parse(data.raw), {
-            code: 'concur', client_id: 'key', client_secret: 'secret'
-          })
+    it('access - GET + qs + custom params - wechat', async () => {
+      provider.oauth2.access = ({method, url, headers, query, form}) => {
+        t.equal(method, 'GET')
+        t.deepEqual(query, {
+          grant_type: 'authorization_code',
+          code: 'code',
+          appid: 'key',
+          secret: 'secret',
+          redirect_uri: 'http://localhost:5001/connect/wechat/callback'
         })
-        it('surveymonkey', async () => {
-          grant.config.surveymonkey.custom_params = {api_key: 'api_key'}
-          var data = await oauth2.access(grant.config.surveymonkey, {code: 'code'}, {})
-          t.deepEqual(qs.parse(data.raw), {api_key: 'api_key'})
-        })
+      }
+      var {body: {response}} = await request({
+        url: client.url('/connect/wechat'),
+        qs: {key: 'key', secret: 'secret'},
+        cookie: {},
       })
+      t.deepEqual(response, {
+        access_token: 'token',
+        refresh_token: 'refresh',
+        raw: {access_token: 'token', refresh_token: 'refresh', expires_in: '3600'}
+      })
+    })
 
-      describe('basic auth', () => {
-        ;['ebay', 'fitbit', 'homeaway', 'hootsuite', 'reddit'].forEach((provider) => {
-          it(provider, async () => {
-            grant.config.ebay.key = 'key'
-            grant.config.ebay.secret = 'secret'
-            var data = await oauth2.access(grant.config.ebay, {code: 'code'}, {})
-            t.deepEqual(
-              Buffer.from(data.raw.basic.replace('Basic ', ''), 'base64').toString().split(':'),
-              ['key', 'secret']
-            )
-          })
+    it('access - hash - smartsheet', async () => {
+      provider.oauth2.access = ({url, headers, query, form}) => {
+        t.deepEqual(form, {
+          grant_type: 'authorization_code',
+          code: 'code',
+          hash: '3dc1bef34740659fb7395d85e501168e2314ba6df88af1a853dbdc03abb2411b',
+          redirect_uri: 'http://localhost:5001/connect/smartsheet/callback'
         })
-        it('token_endpoint_auth_method - client_secret_basic', async () => {
-          grant.config.google.key = 'key'
-          grant.config.google.secret = 'secret'
-          grant.config.google.token_endpoint_auth_method = 'client_secret_basic'
-          var data = await oauth2.access(grant.config.google, {code: 'code'}, {})
-          t.deepEqual(
-            Buffer.from(data.raw.basic.replace('Basic ', ''), 'base64').toString().split(':'),
-            ['key', 'secret']
-          )
-        })
+      }
+      var {body: {response}} = await request({
+        url: client.url('/connect/smartsheet'),
+        cookie: {},
       })
+      t.deepEqual(response, {
+        access_token: 'token',
+        refresh_token: 'refresh',
+        raw: {access_token: 'token', refresh_token: 'refresh', expires_in: '3600'}
+      })
+    })
 
-      describe('app_id/app_secret - client_id/client_secret', () => {
-        it('instagram - v1', async () => {
-          grant.config.instagram.key = '00cd22b35e8e42c0a29d1d71236f5c1d'
-          grant.config.instagram.secret = 'secret'
-          var data = await oauth2.access(grant.config.instagram, {code: 'code'}, {})
-          t.deepEqual(qs.parse(data.raw), {
-            grant_type: 'authorization_code',
-            code: 'code',
-            client_id: '00cd22b35e8e42c0a29d1d71236f5c1d',
-            client_secret: 'secret',
-            redirect_uri: url('/connect/instagram/callback')
-          })
+    it('access - Assertion Framework for OAuth 2.0 - visualstudio', async () => {
+      provider.oauth2.access = ({url, headers, query, form}) => {
+        t.deepEqual(form, {
+          client_assertion_type: 'urn:ietf:params:oauth:client-assertion-type:jwt-bearer',
+          client_assertion: 'secret',
+          grant_type: 'urn:ietf:params:oauth:grant-type:jwt-bearer',
+          assertion: 'code',
+          redirect_uri: 'http://localhost:5001/connect/visualstudio/callback'
         })
-        it('instagram - graph', async () => {
-          grant.config.instagram.key = '771866756573877'
-          grant.config.instagram.secret = 'secret'
-          var data = await oauth2.access(grant.config.instagram, {code: 'code'}, {})
-          t.deepEqual(qs.parse(data.raw), {
-            grant_type: 'authorization_code',
-            code: 'code',
-            app_id: '771866756573877',
-            app_secret: 'secret',
-            redirect_uri: url('/connect/instagram/callback')
-          })
-        })
+      }
+      var {body: {response}} = await request({
+        url: client.url('/connect/visualstudio'),
+        qs: {secret: 'secret'},
+        cookie: {},
       })
+      t.deepEqual(response, {
+        access_token: 'token',
+        refresh_token: 'refresh',
+        raw: {access_token: 'token', refresh_token: 'refresh', expires_in: '3600'}
+      })
+    })
+  })
 
-      describe('get method', () => {
-        it('qq', async () => {
-          var data = await oauth2.access(grant.config.qq, {code: 'code'}, {})
-          t.deepEqual(qs.parse(data.raw), {
-            method: 'GET',
-            grant_type: 'authorization_code',
-            code: 'code',
-            redirect_uri: url('/connect/qq/callback')
-          })
-        })
+  describe('error', () => {
+    it('authorize - missing code with response message', async () => {
+      var {body: {response}} = await request({
+        url: client.url('/connect/google'),
+        qs: {authorize_url: provider.url('/authorize_error_message')},
+        cookie: {},
       })
+      t.deepEqual(response, {error: {message: 'invalid'}})
+    })
 
-      describe('get method + qs + custom params', () => {
-        it('wechat', async () => {
-          var data = await oauth2.access(Object.assign({
-            key: 'key',
-            secret: 'secret'
-          }, grant.config.wechat), {code: 'code'}, {})
-          t.deepEqual(qs.parse(data.raw), {
-            method: 'GET',
-            grant_type: 'authorization_code',
-            code: 'code',
-            appid: 'key',
-            secret: 'secret',
-            redirect_uri: url('/connect/wechat/callback')
-          })
-        })
+    it('authorize - missing code without response message', async () => {
+      var {body: {response}} = await request({
+        url: client.url('/connect/google'),
+        qs: {authorize_url: provider.url('/authorize_error_code')},
+        cookie: {},
       })
+      t.deepEqual(response, {error: 'Grant: OAuth2 missing code parameter'})
+    })
 
-      describe('hash', () => {
-        it('smartsheet', async () => {
-          var data = await oauth2.access(grant.config.smartsheet, {code: 'code'}, {})
-          t.ok(typeof data.raw.hash === 'string')
-        })
+    it('authorize - state mismatch', async () => {
+      provider.oauth2.authorize = ({url, headers, query}) => {
+        t.equal(query.state.length, 20)
+      }
+      var {body: {response}} = await request({
+        url: client.url('/connect/google'),
+        qs: {
+          authorize_url: provider.url('/authorize_error_state'),
+          state: true
+        },
+        cookie: {},
       })
+      t.deepEqual(response, {error: 'Grant: OAuth2 state mismatch'})
+    })
 
-      describe('Assertion Framework for OAuth 2.0', () => {
-        it('visualstudio', async () => {
-          grant.config.visualstudio.secret = 'secret'
-          var data = await oauth2.access(grant.config.visualstudio, {code: 'code'}, {})
-          t.deepEqual(data.raw, {
-            client_assertion_type: 'urn:ietf:params:oauth:client-assertion-type:jwt-bearer',
-            client_assertion: 'secret',
-            grant_type: 'urn:ietf:params:oauth:grant-type:jwt-bearer',
-            assertion: 'code',
-            redirect_uri: url('/connect/visualstudio/callback')
-          })
-        })
+    it('access - nonce mismatch', async () => {
+      provider.oauth2.authorize = ({url, headers, query}) => {
+        t.equal(query.nonce.length, 20)
+      }
+      var {body: {response}} = await request({
+        url: client.url('/connect/google'),
+        qs: {
+          access_url: provider.url('/access_error_nonce'),
+          nonce: true
+        },
+        cookie: {},
       })
+      t.deepEqual(response, {error: 'Grant: OpenID Connect nonce mismatch'})
+    })
 
-      describe('subdomain', () => {
-        it('shopify', async () => {
-          grant.config.shopify.access_url = url('/[subdomain]')
-          grant.config.shopify.subdomain = 'access_url'
-          var data = await oauth2.access(grant.config.shopify, {code: 'code'}, {})
-          t.deepEqual(data.raw, {
-            grant_type: 'authorization_code',
-            code: 'code',
-            redirect_uri: url('/connect/shopify/callback')
-          })
-        })
+    it('access - error response', async () => {
+      provider.oauth2.authorize = ({url, headers, query}) => {
+        t.equal(query.nonce.length, 20)
+      }
+      var {body: {response}} = await request({
+        url: client.url('/connect/google'),
+        qs: {
+          access_url: provider.url('/access_error_message'),
+          nonce: true
+        },
+        cookie: {},
       })
-
-      after((done) => {
-        server.close(done)
-      })
+      t.deepEqual(response, {raw: {error: { message: 'invalid' }}})
     })
   })
 })

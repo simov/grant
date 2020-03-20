@@ -6,71 +6,48 @@ var request = require('request-compose').extend({
   Response: {cookie: require('request-cookie').Response},
 }).client
 
-var hapi = (() => {
-  try {
-    return parseInt(require('hapi/package.json').version.split('.')[0])
-  }
-  catch (err) {
-    return parseInt(require('@hapi/hapi/package.json').version.split('.')[0])
-  }
-})()
-
-var port = {oauth1: 5000, oauth2: 5001, app: 5002}
-var url = {
-  oauth1: (path) => `http://localhost:${port.oauth1}${path}`,
-  oauth2: (path) => `http://localhost:${port.oauth2}${path}`,
-  app: (path) => `http://localhost:${port.app}${path}`,
-}
-
-var provider = require('./util/provider')
-var client = require('./util/client')
+var Provider = require('./util/provider'), provider, oauth1
+var Client = require('./util/client'), client
 
 
 describe('consumer - session', () => {
-  var server = {oauth1: null, oauth2: null}
+  var config
 
   before(async () => {
-    server.oauth1 = await provider.oauth1(port.oauth1)
-    server.oauth2 = await provider.oauth2(port.oauth2)
-  })
-
-  after((done) => {
-    server.oauth1.close(() => server.oauth2.close(done))
-  })
-
-  ;['express', 'koa', 'hapi'].forEach((name) => {
-    describe(name, () => {
-      var server, grant, consumer = name
-      var config = {
-        defaults: {
-          protocol: 'http', host: `localhost:${port.app}`, callback: '/',
-          dynamic: true
-        },
-        oauth1: {
-          request_url: url.oauth1('/request_url'),
-          authorize_url: url.oauth1('/authorize_url'),
-          access_url: url.oauth1('/access_url'),
-          oauth: 1,
-        },
-        oauth2: {
-          authorize_url: url.oauth2('/authorize_url'),
-          access_url: url.oauth2('/access_url'),
-          oauth: 2,
-        }
+    provider = await Provider({flow: 'oauth2'})
+    oauth1 = await Provider({flow: 'oauth1', port: 5002})
+    config = {
+      defaults: {
+        origin: 'http://localhost:5001', callback: '/',
+        dynamic: true
+      },
+      oauth1: {
+        request_url: oauth1.url('/request_url'),
+        authorize_url: oauth1.url('/authorize_url'),
+        access_url: oauth1.url('/access_url'),
+        oauth: 1,
+      },
+      oauth2: {
+        authorize_url: provider.url('/authorize_url'),
+        access_url: provider.url('/access_url'),
+        oauth: 2,
       }
+    }
+  })
 
+  after(async () => {
+    await provider.close()
+    await oauth1.close()
+  })
+
+  ;['express', 'koa', 'hapi'].forEach((handler) => {
+    describe(handler, () => {
       before(async () => {
-        var obj = await client[
-          consumer === 'hapi' ? `${consumer}${hapi < 17 ? '' : '17'}` : consumer
-        ](config, port.app)
-        server = obj.server
-        grant = obj.grant
+        client = await Client({test: 'handlers', handler, config})
       })
 
-      after((done) => {
-        consumer === 'hapi' && hapi >= 17
-          ? server.stop().then(done)
-          : server[/express|koa/.test(consumer) ? 'close' : 'stop'](done)
+      after(async () => {
+        await client.close()
       })
 
       afterEach(() => {
@@ -80,7 +57,7 @@ describe('consumer - session', () => {
 
       it('provider', async () => {
         var {body: {session}} = await request({
-          url: url.app('/connect/oauth2'),
+          url: client.url('/connect/oauth2'),
           cookie: {},
         })
         t.deepEqual(session, {provider: 'oauth2'})
@@ -88,7 +65,7 @@ describe('consumer - session', () => {
 
       it('override', async () => {
         var {body: {session}} = await request({
-          url: url.app('/connect/oauth2/contacts'),
+          url: client.url('/connect/oauth2/contacts'),
           cookie: {},
         })
         t.deepEqual(session, {provider: 'oauth2', override: 'contacts'})
@@ -97,7 +74,7 @@ describe('consumer - session', () => {
       it('dynamic - POST', async () => {
         var {body: {session}} = await request({
           method: 'POST',
-          url: url.app('/connect/oauth2/contacts'),
+          url: client.url('/connect/oauth2/contacts'),
           form: {scope: ['scope1', 'scope2'], state: 'Grant', nonce: 'simov'},
           cookie: {},
           redirect: {all: true, method: false},
@@ -110,7 +87,7 @@ describe('consumer - session', () => {
 
       it('dynamic - GET', async () => {
         var {body: {session}} = await request({
-          url: url.app('/connect/oauth2/contacts'),
+          url: client.url('/connect/oauth2/contacts'),
           qs: {scope: ['scope1', 'scope2'], state: 'Grant', nonce: 'simov'},
           cookie: {},
         })
@@ -121,13 +98,13 @@ describe('consumer - session', () => {
       })
 
       it('dynamic - non configured provider', async () => {
-        t.equal(grant.config.google, undefined)
+        t.equal(client.grant.config.google, undefined)
 
         var {body: {session}} = await request({
-          url: url.app('/connect/google'),
+          url: client.url('/connect/google'),
           qs: {
-            authorize_url: url.oauth2('/authorize_url'),
-            access_url: url.oauth2('/access_url'),
+            authorize_url: provider.url('/authorize_url'),
+            access_url: provider.url('/access_url'),
             scope: ['scope1', 'scope2'], state: 'Grant', nonce: 'simov',
           },
           cookie: {},
@@ -135,8 +112,8 @@ describe('consumer - session', () => {
         t.deepEqual(session, {
           provider: 'google',
           dynamic: {
-            authorize_url: 'http://localhost:5001/authorize_url',
-            access_url: 'http://localhost:5001/access_url',
+            authorize_url: 'http://localhost:5000/authorize_url',
+            access_url: 'http://localhost:5000/access_url',
             scope: ['scope1', 'scope2'], state: 'Grant', nonce: 'simov',
           },
           state: 'Grant', nonce: 'simov'
@@ -144,41 +121,41 @@ describe('consumer - session', () => {
       })
 
       it('dynamic - non existing provider', async () => {
-        t.equal(grant.config.grant, undefined)
+        t.equal(client.grant.config.grant, undefined)
 
         var {body: {session}} = await request({
-          url: url.app('/connect/grant'),
+          url: client.url('/connect/grant'),
           qs: {
-            authorize_url: url.oauth2('/authorize_url'),
-            access_url: url.oauth2('/access_url'),
+            authorize_url: provider.url('/authorize_url'),
+            access_url: provider.url('/access_url'),
             oauth: 2,
           },
           cookie: {},
         })
-        t.equal(grant.config.grant, undefined)
+        t.equal(client.grant.config.grant, undefined)
         t.deepEqual(session, {
           provider: 'grant',
           dynamic: {
-            authorize_url: 'http://localhost:5001/authorize_url',
-            access_url: 'http://localhost:5001/access_url',
+            authorize_url: 'http://localhost:5000/authorize_url',
+            access_url: 'http://localhost:5000/access_url',
             oauth: '2',
           }
         })
       })
 
       it('state and nonce', async () => {
-        grant.config.oauth2.state = true
-        grant.config.oauth2.nonce = true
+        provider.oauth2.authorize = ({query}) => {
+          t.ok(/[\d\w]{20}/.test(query.state))
+          t.ok(/[\d\w]{20}/.test(query.nonce))
+        }
         var {body: {session}} = await request({
-          url: url.app('/connect/oauth2'),
+          url: client.url('/connect/oauth2'),
+          qs: {state: true, nonce: true},
           cookie: {},
         })
-        t.ok(/\d+/.test(session.state))
-        t.ok(typeof session.state === 'string')
-        t.ok(/\d+/.test(session.nonce))
-        t.ok(typeof session.nonce === 'string')
-        delete grant.config.oauth2.state
-        delete grant.config.oauth2.nonce
+        t.deepEqual(session.dynamic, {state: 'true', nonce: 'true'})
+        t.ok(/[\d\w]{20}/.test(session.state))
+        t.ok(/[\d\w]{20}/.test(session.nonce))
       })
 
       it('pkce', async () => {
@@ -190,19 +167,18 @@ describe('consumer - session', () => {
           t.ok(typeof form.code_verifier === 'string')
           t.ok(/[a-z0-9]{80}/.test(form.code_verifier))
         }
-        grant.config.oauth2.pkce = true
         var {body: {session}} = await request({
-          url: url.app('/connect/oauth2'),
+          url: client.url('/connect/oauth2'),
+          qs: {pkce: true},
           cookie: {},
         })
-        t.ok(typeof session.code_verifier === 'string')
+        t.deepEqual(session.dynamic, {pkce: 'true'})
         t.ok(/[a-z0-9]{80}/.test(session.code_verifier))
-        delete grant.config.oauth2.pkce
       })
 
       it('oauth1', async () => {
         var {body: {session}} = await request({
-          url: url.app('/connect/oauth1'),
+          url: client.url('/connect/oauth1'),
           cookie: {},
         })
         t.deepEqual(session, {
@@ -214,15 +190,31 @@ describe('consumer - session', () => {
       it('fresh session on connect', async () => {
         var cookie = {}
         var {body: {session}} = await request({
-          url: url.app('/connect/oauth2/grant'),
+          url: client.url('/connect/oauth2/grant'),
           cookie,
         })
         t.deepEqual(session, {provider: 'oauth2', override: 'grant'})
         var {body: {session}} = await request({
-          url: url.app('/connect/oauth2'),
+          url: client.url('/connect/oauth2'),
           cookie,
         })
         t.deepEqual(session, {provider: 'oauth2'})
+      })
+
+      it('/connect - missing or misconfigured provider', async () => {
+        var {body: {response}} = await request({
+          url: client.url('/connect/grant'),
+          cookie: {},
+        })
+        t.deepEqual(response, {error: 'Grant: missing or misconfigured provider'})
+      })
+
+      it('/callback - missing session or misconfigured provider', async () => {
+        var {body: {response}} = await request({
+          url: client.url('/connect/grant/callback'),
+          cookie: {},
+        })
+        t.deepEqual(response, {error: 'Grant: missing session or misconfigured provider'})
       })
     })
   })

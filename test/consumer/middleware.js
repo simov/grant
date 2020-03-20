@@ -6,119 +6,134 @@ var request = require('request-compose').extend({
   Response: {cookie: require('request-cookie').Response},
 }).client
 
-var hapi = (() => {
-  try {
-    return parseInt(require('hapi/package.json').version.split('.')[0])
-  }
-  catch (err) {
-    return parseInt(require('@hapi/hapi/package.json').version.split('.')[0])
-  }
-})()
-
-var port = {oauth2: 5001, app: 5002}
-var url = {
-  oauth2: (path) => `http://localhost:${port.oauth2}${path}`,
-  app: (path) => `http://localhost:${port.app}${path}`,
-}
-
-var provider = require('./util/provider')
-var client = require('./util/client')
+var Provider = require('../consumer/util/provider'), provider
+var Client = require('../consumer/util/client'), client
 
 
 describe('middleware', () => {
-  var server = {oauth2: null}
+  var config
 
   before(async () => {
-    server.oauth2 = await provider.oauth2(port.oauth2)
-  })
-
-  after((done) => {
-    server.oauth2.close(done)
-  })
-
-  describe('path prefix', () => {
-    var server
-    var config = {
+    provider = await Provider({flow: 'oauth2'})
+    config = {
       defaults: {
-        protocol: 'http', host: `localhost:${port.app}`, callback: '/',
-        path: '/prefix',
+        origin: 'http://localhost:5001', callback: '/',
       },
       oauth2: {
-        authorize_url: url.oauth2('/authorize_url'),
-        access_url: url.oauth2('/access_url'),
+        authorize_url: provider.url('/oauth2/authorize_url'),
+        access_url: provider.url('/oauth2/access_url'),
         oauth: 2,
+        dynamic: true,
       }
     }
+  })
 
-    ;['express', 'koa', 'hapi'].forEach((consumer) => {
-      describe(consumer, () => {
+  after(async () => {
+    await provider.close()
+  })
+
+  describe('handlers', () => {
+    ;['express', 'koa', 'hapi'].forEach((handler) => {
+      describe(handler, () => {
         before(async () => {
-          ;({server} = await client.prefix[
-            consumer === 'hapi' ? `${consumer}${hapi < 17 ? '' : '17'}` : consumer
-          ](config, port.app))
+          client = await Client({test: 'handlers', handler, config})
         })
 
-        after((done) => {
-          consumer === 'hapi' && hapi >= 17
-            ? server.stop().then(done)
-            : server[/express|koa/.test(consumer) ? 'close' : 'stop'](done)
+        after(async () => {
+          await client.close()
         })
 
         it('success', async () => {
           var {body: {response}} = await request({
-            url: url.app('/prefix/connect/oauth2'),
+            url: client.url('/connect/oauth2'),
             cookie: {},
           })
           t.deepEqual(response, {
             access_token: 'token',
             refresh_token: 'refresh',
-            raw: {
-              access_token: 'token',
-              refresh_token: 'refresh',
-              expires_in: '3600'
-            }
+            raw: {access_token: 'token', refresh_token: 'refresh', expires_in: '3600'}
           })
         })
       })
     })
   })
 
-  describe('third-party middlewares', () => {
-    var server
-    var config = {
-      defaults: {
-        protocol: 'http', host: `localhost:${port.app}`, callback: '/',
-      },
-      oauth2: {
-        authorize_url: url.oauth2('/authorize_url'),
-        access_url: url.oauth2('/access_url'),
-        oauth: 2,
-      }
-    }
-
-    ;['koa', 'koa-mount', 'express', 'express-cookie'].forEach((consumer) => {
-      describe(consumer, () => {
+  describe('missing session middleware', () => {
+    ;['express', 'koa', 'hapi'].forEach((handler) => {
+      describe(handler, () => {
         before(async () => {
-          ;({server} = await client[consumer](config, port.app))
+          client = await Client({test: 'missing-session', handler, config})
         })
 
-        after((done) => {
-          server.close(done)
+        after(async () => {
+          await client.close()
+        })
+
+        it('success', async () => {
+          handler === 'hapi' && client.server.events.on('request', (event, tags) => {
+            t.equal(tags.error.message, 'Grant: register session plugin first')
+          })
+          try {
+            var {body} = await request({
+              url: client.url('/connect/oauth2'),
+              cookie: {},
+            })
+            t.equal(body, 'Grant: mount session middleware first')
+          }
+          catch (err) {
+            // hapi
+          }
+        })
+      })
+    })
+  })
+
+  describe('missing body-parser middleware', () => {
+    ;['express', 'koa'].forEach((handler) => {
+      describe(handler, () => {
+        before(async () => {
+          client = await Client({test: 'missing-parser', handler, config})
+        })
+
+        after(async () => {
+          await client.close()
+        })
+
+        it('success', async () => {
+          var {body} = await request({
+            method: 'POST',
+            url: client.url('/connect/oauth2'),
+            cookie: {},
+          })
+          t.equal(body, 'Grant: mount body parser middleware first')
+        })
+      })
+    })
+  })
+
+  describe('path prefix', () => {
+    ;['express', 'koa', 'hapi'].forEach((handler) => {
+      describe(handler, () => {
+        before(async () => {
+          client = await Client({test: 'path-prefix', handler, config: {
+            defaults: {...config.defaults, path: '/prefix'},
+            oauth2: config.oauth2
+          }})
+        })
+
+        after(async () => {
+          await client.close()
         })
 
         it('success', async () => {
           var {body: {response}} = await request({
-            url: url.app('/connect/oauth2'),
+            url: client.url('/prefix/connect/oauth2'),
             cookie: {},
           })
           t.deepEqual(response, {
             access_token: 'token',
             refresh_token: 'refresh',
-            raw: {
-              access_token: 'token',
-              refresh_token: 'refresh',
-              expires_in: '3600'
-            }
+            raw: {access_token: 'token', refresh_token: 'refresh', expires_in: '3600'}
           })
         })
       })
@@ -126,30 +141,14 @@ describe('middleware', () => {
   })
 
   describe('dynamic state', () => {
-    var server
-    var config = {
-      defaults: {
-        protocol: 'http', host: `localhost:${port.app}`, callback: '/',
-      },
-      oauth2: {
-        authorize_url: url.oauth2('/authorize_url'),
-        access_url: url.oauth2('/access_url'),
-        oauth: 2,
-      }
-    }
-
-    ;['express', 'koa', 'hapi'].forEach((consumer) => {
-      describe(consumer, () => {
+    ;['express', 'koa', 'hapi'].forEach((handler) => {
+      describe(handler, () => {
         before(async () => {
-          ;({server} = await client.state[
-            consumer === 'hapi' ? `${consumer}${hapi < 17 ? '' : '17'}` : consumer
-          ](config, port.app))
+          client = await Client({test: 'dynamic-state', handler, config})
         })
 
-        after((done) => {
-          consumer === 'hapi' && hapi >= 17
-            ? server.stop().then(done)
-            : server[/express|koa/.test(consumer) ? 'close' : 'stop'](done)
+        after(async () => {
+          await client.close()
         })
 
         afterEach(() => {
@@ -162,7 +161,7 @@ describe('middleware', () => {
             t.deepEqual(query, {
               client_id: 'very',
               response_type: 'code',
-              redirect_uri: 'http://localhost:5002/connect/oauth2/callback'
+              redirect_uri: 'http://localhost:5001/connect/oauth2/callback'
             })
           }
           provider.oauth2.access = ({form}) => {
@@ -171,79 +170,93 @@ describe('middleware', () => {
               code: 'code',
               client_id: 'very',
               client_secret: 'secret',
-              redirect_uri: 'http://localhost:5002/connect/oauth2/callback'
+              redirect_uri: 'http://localhost:5001/connect/oauth2/callback'
             })
           }
           var {body: {response, session}} = await request({
-            url: url.app('/connect/oauth2'),
+            url: client.url('/connect/oauth2'),
             cookie: {},
           })
           t.deepEqual(response, {
             access_token: 'token',
             refresh_token: 'refresh',
-            raw: {
-              access_token: 'token',
-              refresh_token: 'refresh',
-              expires_in: '3600'
-            }
+            raw: {access_token: 'token', refresh_token: 'refresh', expires_in: '3600'}
           })
           t.deepEqual(session, {provider: 'oauth2'})
+        })
+      })
+    })
+  })
+
+  describe('transport querystring session', () => {
+    ;['express', 'koa', 'hapi'].forEach((handler) => {
+      ;['', 'querystring', 'session'].forEach((transport) => {
+        describe(`${handler} - transport ${transport}`, () => {
+          before(async () => {
+            client = await Client({test: 'handlers', handler, config})
+          })
+
+          after(async () => {
+            await client.close()
+          })
+
+          it('success', async () => {
+            var {body: {response, session, state}} = await request({
+              url: client.url('/connect/oauth2'),
+              qs: {transport},
+              cookie: {},
+            })
+            t.deepEqual(response, {
+              access_token: 'token',
+              refresh_token: 'refresh',
+              raw: {access_token: 'token', refresh_token: 'refresh', expires_in: '3600'}
+            })
+            if (/^(|querystring)$/.test(transport)) {
+              t.deepEqual(session, {provider: 'oauth2', dynamic: {transport}})
+            }
+            else if (/session/.test(transport)) {
+              t.deepEqual(session, {provider: 'oauth2', dynamic: {transport}, response: {
+                access_token: 'token',
+                refresh_token: 'refresh',
+                raw: {access_token: 'token', refresh_token: 'refresh', expires_in: '3600'}
+              }})
+            }
+          })
         })
       })
     })
   })
 
   describe('transport state', () => {
-    var server
-    var config = {
-      defaults: {
-        protocol: 'http', host: `localhost:${port.app}`, transport: 'state',
-      },
-      oauth2: {
-        authorize_url: url.oauth2('/authorize_url'),
-        access_url: url.oauth2('/access_url'),
-        oauth: 2,
-      }
-    }
-
-    ;['express', 'koa', 'koa-before', 'hapi'].forEach((consumer) => {
-      describe(consumer, () => {
+    ;['express', 'koa', 'koa-before', 'hapi'].forEach((handler) => {
+      describe(handler, () => {
         before(async () => {
-          ;({server} = await client.transport[
-            consumer === 'hapi' ? `${consumer}${hapi < 17 ? '' : '17'}` : consumer
-          ](config, port.app))
+          client = await Client({test: 'transport-state', handler, config: {
+            defaults: {...config.defaults, transport: 'state'},
+            oauth2: config.oauth2
+          }})
         })
 
-        after((done) => {
-          consumer === 'hapi' && hapi >= 17
-            ? server.stop().then(done)
-            : server[/express|koa/.test(consumer) ? 'close' : 'stop'](done)
+        after(async () => {
+          await client.close()
         })
 
         it('success', async () => {
           var {body: {response, session, state}} = await request({
-            url: url.app('/connect/oauth2'),
+            url: client.url('/connect/oauth2'),
             cookie: {},
           })
           t.deepEqual(response, {
             access_token: 'token',
             refresh_token: 'refresh',
-            raw: {
-              access_token: 'token',
-              refresh_token: 'refresh',
-              expires_in: '3600'
-            }
+            raw: {access_token: 'token', refresh_token: 'refresh', expires_in: '3600'}
           })
           t.deepEqual(session, {provider: 'oauth2'})
           t.deepEqual(state, {
             response: {
               access_token: 'token',
               refresh_token: 'refresh',
-              raw: {
-                access_token: 'token',
-                refresh_token: 'refresh',
-                expires_in: '3600'
-              }
+              raw: {access_token: 'token', refresh_token: 'refresh', expires_in: '3600'}
             }
           })
         })
@@ -251,4 +264,29 @@ describe('middleware', () => {
     })
   })
 
+  describe('third-party middlewares', () => {
+    ;['koa-mount', 'express-cookie'].forEach((handler) => {
+      describe(handler, () => {
+        before(async () => {
+          client = await Client({test: 'third-party', handler, config})
+        })
+
+        after(async () => {
+          await client.close()
+        })
+
+        it('success', async () => {
+          var {body: {response}} = await request({
+            url: client.url('/connect/oauth2'),
+            cookie: {},
+          })
+          t.deepEqual(response, {
+            access_token: 'token',
+            refresh_token: 'refresh',
+            raw: {access_token: 'token', refresh_token: 'refresh', expires_in: '3600'}
+          })
+        })
+      })
+    })
+  })
 })
