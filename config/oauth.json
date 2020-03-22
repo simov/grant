@@ -24,8 +24,7 @@
   "aha": {
     "authorize_url": "https://[subdomain].aha.io/oauth/authorize",
     "access_url": "https://[subdomain].aha.io/oauth/token",
-    "oauth": 2,
-    "subdomain": true
+    "oauth": 2
   },
   "amazon": {
     "authorize_url": "https://www.amazon.com/ap/oa",
@@ -65,8 +64,7 @@
     "authorize_url": "https://[subdomain].auth0.com/authorize",
     "access_url": "https://[subdomain].auth0.com/oauth/token",
     "oauth": 2,
-    "scope_delimiter": " ",
-    "subdomain": true
+    "scope_delimiter": " "
   },
   "authentiq": {
     "authorize_url": "https://connect.authentiq.io/sign-in",
@@ -84,8 +82,7 @@
     "authorize_url": "https://[subdomain].axosoft.com/auth",
     "access_url": "https://[subdomain].axosoft.com/api/oauth2/token",
     "oauth": 2,
-    "scope_delimiter": " ",
-    "subdomain": true
+    "scope_delimiter": " "
   },
   "baidu": {
     "authorize_url": "https://openapi.baidu.com/oauth/2.0/authorize",
@@ -101,8 +98,7 @@
     "authorize_url": "https://[subdomain].battle.net/oauth/authorize",
     "access_url": "https://[subdomain].battle.net/oauth/token",
     "oauth": 2,
-    "scope_delimiter": " ",
-    "subdomain": true
+    "scope_delimiter": " "
   },
   "beatport": {
     "request_url": "https://oauth-api.beatport.com/identity/1/oauth/request-token",
@@ -156,8 +152,7 @@
   "concur": {
     "authorize_url": "https://[subdomain].api.concursolutions.com/oauth2/v0/authorize",
     "access_url": "https://[subdomain].api.concursolutions.com/oauth2/v0/token",
-    "oauth": 2,
-    "subdomain": true
+    "oauth": 2
   },
   "constantcontact": {
     "authorize_url": "https://oauth2.constantcontact.com/oauth2/oauth/siteowner/authorize",
@@ -263,7 +258,6 @@
     "authorize_url": "https://[subdomain].egnyte.com/puboauth/token",
     "access_url": "https://[subdomain].egnyte.com/puboauth/token",
     "oauth": 2,
-    "subdomain": true,
     "scope_delimiter": " "
   },
   "etsy": {
@@ -354,8 +348,7 @@
     "request_url": "https://[subdomain].freshbooks.com/oauth/oauth_request.php",
     "authorize_url": "https://[subdomain].freshbooks.com/oauth/oauth_authorize.php",
     "access_url": "https://[subdomain].freshbooks.com/oauth/oauth_access.php",
-    "oauth": 1,
-    "subdomain": true
+    "oauth": 1
   },
   "geeklist": {
     "request_url": "https://api.geekli.st/v1/oauth/request_token",
@@ -564,8 +557,7 @@
     "authorize_url": "https://[subdomain]/oauth/authorize",
     "access_url": "https://[subdomain]/oauth/token",
     "oauth": 2,
-    "scope_delimiter": " ",
-    "subdomain": true
+    "scope_delimiter": " "
   },
   "medium": {
     "authorize_url": "https://medium.com/m/oauth/authorize",
@@ -635,15 +627,13 @@
     "authorize_url": "https://[subdomain].okta.com/oauth2/v1/authorize",
     "access_url": "https://[subdomain].okta.com/oauth2/v1/token",
     "oauth": 2,
-    "scope_delimiter": " ",
-    "subdomain": true
+    "scope_delimiter": " "
   },
   "onelogin": {
     "authorize_url": "https://[subdomain].onelogin.com/oidc/auth",
     "access_url": "https://[subdomain].onelogin.com/oidc/token",
     "oauth": 2,
-    "scope_delimiter": " ",
-    "subdomain": true
+    "scope_delimiter": " "
   },
   "openstreetmap": {
     "request_url": "https://www.openstreetmap.org/oauth/request_token",
@@ -753,8 +743,7 @@
   "shopify": {
     "authorize_url": "https://[subdomain].myshopify.com/admin/oauth/authorize",
     "access_url": "https://[subdomain].myshopify.com/admin/oauth/access_token",
-    "oauth": 2,
-    "subdomain": true
+    "oauth": 2
   },
   "skyrock": {
     "request_url": "https://api.skyrock.com/v2/oauth/initiate",
@@ -798,8 +787,7 @@
   "socrata": {
     "authorize_url": "https://[subdomain]/oauth/authorize",
     "access_url": "https://[subdomain]/oauth/access_token",
-    "oauth": 2,
-    "subdomain": true
+    "oauth": 2
   },
   "soundcloud": {
     "authorize_url": "https://soundcloud.com/connect",
@@ -952,8 +940,7 @@
   "vend": {
     "authorize_url": "https://secure.vendhq.com/connect",
     "access_url": "https://[subdomain].vendhq.com/api/1.0/token",
-    "oauth": 2,
-    "subdomain": true
+    "oauth": 2
   },
   "venmo": {
     "authorize_url": "https://api.venmo.com/v1/oauth/authorize",
@@ -1054,8 +1041,7 @@
     "authorize_url": "https://[subdomain].zendesk.com/oauth/authorizations/new",
     "access_url": "https://[subdomain].zendesk.com/oauth/tokens",
     "oauth": 2,
-    "scope_delimiter": " ",
-    "subdomain": true
+    "scope_delimiter": " "
   },
   "zoom": {
     "authorize_url": "https://zoom.us/oauth/authorize",
