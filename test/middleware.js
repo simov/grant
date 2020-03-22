@@ -4,6 +4,51 @@ var t = require('assert')
 
 describe('middleware', () => {
 
+  describe('function handlers', () => {
+    var grant = require('../')
+
+    it('express', () => {
+      t.ok(typeof grant.express === 'function')
+      t.deepEqual(
+        grant.express()({defaults: {dynamic: true}}).config,
+        {defaults: {prefix: '/connect', dynamic: true}}
+      )
+    })
+    it('koa', () => {
+      t.ok(typeof grant.koa === 'function')
+      t.deepEqual(
+        grant.koa()({defaults: {dynamic: true}}).config,
+        {defaults: {prefix: '/connect', dynamic: true}}
+      )
+    })
+    it('hapi', () => {
+      t.ok(typeof grant.hapi === 'function')
+      t.ok(typeof grant.hapi()({defaults: {dynamic: true}}).register === 'function')
+    })
+  })
+
+  describe('grant', () => {
+    var grant = require('../')
+    var config = {defaults: {dynamic: true}}
+
+    it('express', () => {
+      var mw = grant({handler: 'express', config})
+      t.deepEqual(mw.config, {defaults: {prefix: '/connect', dynamic: true}})
+    })
+    it('koa', () => {
+      var mw = grant({handler: 'koa', config})
+      t.deepEqual(mw.config, {defaults: {prefix: '/connect', dynamic: true}})
+    })
+    it('koa-2', () => {
+      var mw = grant({handler: 'koa-2', config})
+      t.deepEqual(mw.config, {defaults: {prefix: '/connect', dynamic: true}})
+    })
+    it('hapi', () => {
+      var mw = grant({handler: 'hapi', config})
+      t.ok(typeof mw.register === 'function')
+    })
+  })
+
   describe('expose config', () => {
     it('express', () => {
       var Grant = require('../').express()
