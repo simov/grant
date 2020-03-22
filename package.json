@@ -23,27 +23,27 @@
   },
   "dependencies": {
     "qs": "^6.9.1",
-    "request-compose": "^1.2.2",
+    "request-compose": "^1.2.3",
     "request-oauth": "0.0.3"
   },
   "devDependencies": {
+    "@hapi/hapi": "^18.4.1",
+    "@hapi/yar": "^9.2.1",
     "body-parser": "^1.19.0",
     "cookie-session": "^1.3.3",
-    "coveralls": "^3.0.9",
+    "coveralls": "^3.0.11",
     "express": "^4.17.1",
     "express-session": "^1.17.0",
-    "hapi": "^18.1.0",
-    "istanbul": "^1.1.0-alpha.1",
     "koa": "^2.11.0",
     "koa-bodyparser": "^4.2.1",
     "koa-convert": "^1.2.0",
     "koa-mount": "^4.0.0",
     "koa-qs": "^2.0.0",
     "koa-session": "^5.13.1",
-    "mocha": "^7.1.0",
+    "mocha": "^7.1.1",
+    "nyc": "^15.0.0",
     "request-cookie": "0.0.2",
-    "request-logs": "^1.0.3",
-    "yar": "^9.1.0"
+    "request-logs": "^1.0.3"
   },
   "main": "./grant.js",
   "files": [
@@ -57,8 +57,8 @@
   ],
   "scripts": {
     "test": "npm run test:ci",
-    "test:ci": "npx mocha test/ --recursive",
-    "test:cov": "npx istanbul cover _mocha -- --recursive"
+    "test:ci": "npx mocha --recursive",
+    "test:cov": "npx nyc --reporter=lcov --reporter=text-summary mocha -- --recursive"
   },
   "engines": {
     "node": ">=8.0.0"
