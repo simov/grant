@@ -554,6 +554,7 @@ scope_delimiter | [oauth.json][oauth-config] | string delimiter used for concate
 protocol, host, path | `defaults` | used to generate `redirect_uri`
 transport | `defaults` | [transport](#response-data-transport) to use to deliver the response data in your final `callback` route
 state | `defaults` | toggle random `state` string generation for OAuth2
+timeout | `[provider]` | timeout for HTTP(S) requests against the provider
 key | `[provider]` | OAuth app key, reserved aliases: `consumer_key` and `client_id`
 secret | `[provider]` | OAuth app secret, reserved aliases: `consumer_secret` and `client_secret`
 scope | `[provider]` | list of scopes to request
