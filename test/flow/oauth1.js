@@ -210,6 +210,23 @@ describe('oauth1', () => {
       })
     })
 
+    it('custom_params - authorize - trello', async () => {
+      provider.oauth1.authorize = ({query}) => {
+        t.deepEqual(query, {oauth_token: 'token', name: 'grant'})
+      }
+      var {body: {response}} = await request({
+        url: client.url('/connect/trello'),
+        // request-compose:querystring can't handle nested objects
+        qs: 'custom_params%5Bname%5D=grant',
+        cookie: {},
+      })
+      t.deepEqual(response, {
+        access_token: 'token',
+        access_secret: 'secret',
+        raw: {oauth_token: 'token', oauth_token_secret: 'secret'}
+      })
+    })
+
     it('oauth_verifier - access - goodreads', async () => {
       provider.oauth1.access = ({oauth}) => {
         t.equal(oauth.oauth_verifier, undefined)
