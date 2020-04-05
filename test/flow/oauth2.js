@@ -487,18 +487,14 @@ describe('oauth2', () => {
     })
 
     it('access - error response', async () => {
-      provider.oauth2.authorize = ({url, headers, query}) => {
-        t.equal(query.nonce.length, 20)
-      }
       var {body: {response}} = await request({
         url: client.url('/connect/google'),
         qs: {
           access_url: provider.url('/access_error_message'),
-          nonce: true
         },
         cookie: {},
       })
-      t.deepEqual(response, {raw: {error: { message: 'invalid' }}})
+      t.deepEqual(response, {error: {message: 'invalid'}})
     })
   })
 })
