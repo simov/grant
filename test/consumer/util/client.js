@@ -54,12 +54,12 @@ Koa = function () {
   return app
 }
 
-var client = async ({test, handler, config, port = 5001}) => {
+var client = async ({test, handler, config, hook, extend, port = 5001}) => {
   var _handler = () => handler === 'hapi'
     ? `${handler}${version.hapi < 17 ? '' : '17'}`
     : handler
 
-  var {grant, server, app} = await clients[test][_handler()](config, port)
+  var {grant, server, app} = await clients[test][_handler()]({config, hook, extend, port})
   return {
     grant,
     server,
@@ -75,7 +75,7 @@ var client = async ({test, handler, config, port = 5001}) => {
 
 var clients = {
   'handlers': {
-    express: (config, port) => new Promise((resolve) => {
+    express: ({config, port}) => new Promise((resolve) => {
       var grant = Grant.express()(config)
 
       var app = express()
@@ -86,7 +86,7 @@ var clients = {
 
       var server = app.listen(port, () => resolve({grant, server, app}))
     }),
-    koa: (config, port) => new Promise((resolve) => {
+    koa: ({config, port}) => new Promise((resolve) => {
       var grant = Grant.koa()(config)
 
       var app = new Koa()
@@ -99,7 +99,7 @@ var clients = {
 
       var server = app.listen(port, () => resolve({grant, server, app}))
     }),
-    hapi: (config, port) => new Promise((resolve) => {
+    hapi: ({config, port}) => new Promise((resolve) => {
       var grant = Grant.hapi()(config)
 
       var server = new Hapi.Server()
@@ -113,7 +113,7 @@ var clients = {
       ],
       () => server.start(() => resolve({grant, server})))
     }),
-    hapi17: (config, port) => new Promise((resolve) => {
+    hapi17: ({config, port}) => new Promise((resolve) => {
       var grant = Grant.hapi()(config)
 
       var server = new Hapi.Server({host: 'localhost', port})
@@ -128,7 +128,7 @@ var clients = {
     }),
   },
   'missing-session': {
-    express: (config, port) => new Promise((resolve) => {
+    express: ({config, port}) => new Promise((resolve) => {
       var grant = Grant.express()(config)
 
       var app = express()
@@ -139,7 +139,7 @@ var clients = {
 
       var server = app.listen(port, () => resolve({grant, server, app}))
     }),
-    koa: (config, port) => new Promise((resolve) => {
+    koa: ({config, port}) => new Promise((resolve) => {
       var grant = Grant.koa()(config)
 
       var app = new Koa()
@@ -155,7 +155,7 @@ var clients = {
 
       var server = app.listen(port, () => resolve({grant, server, app}))
     }),
-    hapi: (config, port) => new Promise((resolve) => {
+    hapi: ({config, port}) => new Promise((resolve) => {
       var grant = Grant.hapi()(config)
 
       var server = new Hapi.Server({debug: {request: false}})
@@ -171,7 +171,7 @@ var clients = {
         server.start(() => resolve({grant, server}))
       })
     }),
-    hapi17: (config, port) => new Promise((resolve) => {
+    hapi17: ({config, port}) => new Promise((resolve) => {
       var grant = Grant.hapi()(config)
 
       var server = new Hapi.Server({host: 'localhost', port})
@@ -186,7 +186,7 @@ var clients = {
     }),
   },
   'missing-parser': {
-    express: (config, port) => new Promise((resolve) => {
+    express: ({config, port}) => new Promise((resolve) => {
       var grant = Grant.express()(config)
 
       var app = express()
@@ -198,7 +198,7 @@ var clients = {
 
       var server = app.listen(port, () => resolve({grant, server, app}))
     }),
-    koa: (config, port) => new Promise((resolve) => {
+    koa: ({config, port}) => new Promise((resolve) => {
       var grant = Grant.koa()(config)
 
       var app = new Koa()
@@ -218,7 +218,7 @@ var clients = {
     }),
   },
   'path-prefix': {
-    express: (config, port) => new Promise((resolve) => {
+    express: ({config, port}) => new Promise((resolve) => {
       var grant = Grant.express()(config)
 
       var app = express()
@@ -229,7 +229,7 @@ var clients = {
 
       var server = app.listen(port, () => resolve({grant, server, app}))
     }),
-    koa: (config, port) => new Promise((resolve) => {
+    koa: ({config, port}) => new Promise((resolve) => {
       var grant = Grant.koa()(config)
 
       var app = new Koa()
@@ -242,7 +242,7 @@ var clients = {
 
       var server = app.listen(port, () => resolve({grant, server, app}))
     }),
-    hapi: (config, port) => new Promise((resolve) => {
+    hapi: ({config, port}) => new Promise((resolve) => {
       var grant = Grant.hapi()(config)
 
       var server = new Hapi.Server()
@@ -256,7 +256,7 @@ var clients = {
       ],
       () => server.start(() => resolve({grant, server})))
     }),
-    hapi17: (config, port) => new Promise((resolve) => {
+    hapi17: ({config, port}) => new Promise((resolve) => {
       var grant = Grant.hapi()(config)
 
       var server = new Hapi.Server({host: 'localhost', port})
@@ -271,7 +271,7 @@ var clients = {
     }),
   },
   'dynamic-state': {
-    express: (config, port) => new Promise((resolve) => {
+    express: ({config, port}) => new Promise((resolve) => {
       var grant = Grant.express()(config)
 
       var app = express()
@@ -288,7 +288,7 @@ var clients = {
 
       var server = app.listen(port, () => resolve({grant, server, app}))
     }),
-    koa: (config, port) => new Promise((resolve) => {
+    koa: ({config, port}) => new Promise((resolve) => {
       var grant = Grant.koa()(config)
 
       var app = new Koa()
@@ -307,7 +307,7 @@ var clients = {
 
       var server = app.listen(port, () => resolve({grant, server, app}))
     }),
-    hapi: (config, port) => new Promise((resolve) => {
+    hapi: ({config, port}) => new Promise((resolve) => {
       var grant = Grant.hapi()(config)
 
       var server = new Hapi.Server()
@@ -327,7 +327,7 @@ var clients = {
       ],
       () => server.start(() => resolve({grant, server})))
     }),
-    hapi17: (config, port) => new Promise((resolve) => {
+    hapi17: ({config, port}) => new Promise((resolve) => {
       var grant = Grant.hapi()(config)
 
       var server = new Hapi.Server({host: 'localhost', port})
@@ -348,7 +348,7 @@ var clients = {
     }),
   },
   'transport-state': {
-    express: (config, port) => new Promise((resolve) => {
+    express: ({config, port}) => new Promise((resolve) => {
       var grant = Grant.express()(config)
 
       var app = express()
@@ -359,7 +359,7 @@ var clients = {
 
       var server = app.listen(port, () => resolve({grant, server, app}))
     }),
-    koa: (config, port) => new Promise((resolve) => {
+    koa: ({config, port}) => new Promise((resolve) => {
       var grant = Grant.koa()(config)
 
       var app = new Koa()
@@ -372,7 +372,7 @@ var clients = {
 
       var server = app.listen(port, () => resolve({grant, server, app}))
     }),
-    'koa-before': (config, port) => new Promise((resolve) => {
+    'koa-before': ({config, port}) => new Promise((resolve) => {
       var grant = Grant.koa()(config)
 
       var app = new Koa()
@@ -385,7 +385,7 @@ var clients = {
 
       var server = app.listen(port, () => resolve({grant, server, app}))
     }),
-    hapi: (config, port) => new Promise((resolve) => {
+    hapi: ({config, port}) => new Promise((resolve) => {
       var grant = Grant.hapi()(config)
 
       var server = new Hapi.Server()
@@ -405,7 +405,7 @@ var clients = {
       ],
       () => server.start(() => resolve({grant, server})))
     }),
-    hapi17: (config, port) => new Promise((resolve) => {
+    hapi17: ({config, port}) => new Promise((resolve) => {
       var grant = Grant.hapi()(config)
 
       var server = new Hapi.Server({host: 'localhost', port})
@@ -425,7 +425,7 @@ var clients = {
     }),
   },
   'third-party': {
-    'express-cookie': (config, port) => new Promise((resolve) => {
+    'express-cookie': ({config, port}) => new Promise((resolve) => {
       var grant = Grant.express()(config)
 
       var app = express()
@@ -436,7 +436,7 @@ var clients = {
 
       var server = app.listen(port, () => resolve({grant, server, app}))
     }),
-    'koa-mount': (config, port) => new Promise((resolve) => {
+    'koa-mount': ({config, port}) => new Promise((resolve) => {
       var grant = Grant.koa()(config)
 
       var app = new Koa()
@@ -448,6 +448,59 @@ var clients = {
       app.use(callback.koa)
 
       var server = app.listen(port, () => resolve({grant, server, app}))
+    }),
+  },
+  'extend-hook': {
+    express: ({config, hook, extend, port}) => new Promise((resolve) => {
+      var grant = Grant({config, handler: 'express', hook, extend})
+
+      var app = express()
+      app.use(bodyParser.urlencoded({extended: true}))
+      app.use(session({secret: 'grant', saveUninitialized: true, resave: false}))
+      app.use(grant)
+      app.get('/', callback.express)
+
+      var server = app.listen(port, () => resolve({grant, server, app}))
+    }),
+    koa: ({config, hook, extend, port}) => new Promise((resolve) => {
+      var grant = Grant({config, handler: 'koa', hook, extend})
+
+      var app = new Koa()
+      app.keys = ['grant']
+      app.use(koasession(app))
+      app.use(koabody())
+      app.use(grant)
+      koaqs(app)
+      app.use(callback.koa)
+
+      var server = app.listen(port, () => resolve({grant, server, app}))
+    }),
+    hapi: ({config, hook, extend, port}) => new Promise((resolve) => {
+      var grant = Grant({config, handler: 'hapi', hook, extend})
+
+      var server = new Hapi.Server()
+      server.connection({host: 'localhost', port})
+      server.route({method: 'GET', path: '/', handler: callback.hapi})
+
+      server.register([
+        {register: grant},
+        {register: yar, options: {cookieOptions:
+          {password: '01234567890123456789012345678912', isSecure: false}}}
+      ],
+      () => server.start(() => resolve({grant, server})))
+    }),
+    hapi17: ({config, hook, extend, port}) => new Promise((resolve) => {
+      var grant = Grant({config, handler: 'hapi', hook, extend})
+
+      var server = new Hapi.Server({host: 'localhost', port})
+      server.route({method: 'GET', path: '/', handler: callback.hapi17})
+
+      server.register([
+        {plugin: grant},
+        {plugin: yar, options: {cookieOptions:
+          {password: '01234567890123456789012345678912', isSecure: false}}}
+      ])
+      .then(() => server.start().then(() => resolve({grant, server})))
     }),
   },
 }

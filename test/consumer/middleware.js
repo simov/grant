@@ -289,4 +289,44 @@ describe('middleware', () => {
       })
     })
   })
+
+  describe('extend + hook', () => {
+    ;['express', 'koa', 'hapi'].forEach((handler) => {
+      describe(handler, () => {
+        before(async () => {
+          var state = {grant: 'simov'}
+          var hook = ({get, set}) =>
+            get ? Promise.resolve(state[get]) :
+            set ? (state[set.id] = set.value, Promise.resolve()) :
+            Promise.resolve()
+          var extend = [
+            ({hook}) => async ({provider, input, output}) => {
+              output.profile = await hook({get: 'grant'})
+              await hook({set: {id: 'grant', value: 'purest'}})
+              t.deepEqual(state, {grant: 'purest'})
+              return {provider, input, output}
+            }
+          ]
+          client = await Client({test: 'extend-hook', handler, config, hook, extend})
+        })
+
+        after(async () => {
+          await client.close()
+        })
+
+        it('success', async () => {
+          var {body: {response}} = await request({
+            url: client.url('/connect/oauth2'),
+            cookie: {},
+          })
+          t.deepEqual(response, {
+            access_token: 'token',
+            refresh_token: 'refresh',
+            raw: {access_token: 'token', refresh_token: 'refresh', expires_in: '3600'},
+            profile: 'simov'
+          })
+        })
+      })
+    })
+  })
 })

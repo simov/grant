@@ -1,5 +1,5 @@
 
-function grant ({handler, config}) {
+function grant ({handler, ...rest}) {
   var version = () => ({
     express: 4,
     koa: parseInt(require('koa/package.json').version.split('.')[0]) < 2 ? '1' : '2',
@@ -14,10 +14,10 @@ function grant ({handler, config}) {
   }[handler])
 
   if (/express|koa|hapi/.test(handler) && !/-\d+$/.test(handler)) {
-    return require(`./lib/consumer/${handler}-${version()}`)(config)
+    return require(`./lib/consumer/${handler}-${version()}`)(rest)
   }
   else {
-    return require(`./lib/consumer/${handler}`)(config)
+    return require(`./lib/consumer/${handler}`)(rest)
   }
 }
 
