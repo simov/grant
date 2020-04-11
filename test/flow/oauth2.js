@@ -99,7 +99,7 @@ describe('oauth2', () => {
   })
 
   describe('custom', () => {
-    it('authorize - web_server- basecamp', async () => {
+    it('authorize - web_server - basecamp', async () => {
       provider.oauth2.authorize = ({url, headers, query}) => {
         t.equal(query.type, 'web_server')
       }
@@ -495,6 +495,17 @@ describe('oauth2', () => {
         cookie: {},
       })
       t.deepEqual(response, {error: {message: 'invalid'}})
+    })
+
+    it('access - error status', async () => {
+      var {body: {response}} = await request({
+        url: client.url('/connect/google'),
+        qs: {
+          access_url: provider.url('/access_error_status'),
+        },
+        cookie: {},
+      })
+      t.deepEqual(response, {error: {invalid: 'access_url'}})
     })
   })
 })

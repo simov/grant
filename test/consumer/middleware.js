@@ -58,6 +58,32 @@ describe('middleware', () => {
     })
   })
 
+  describe('handlers function', () => {
+    ;['express', 'koa', 'hapi'].forEach((handler) => {
+      describe(handler, () => {
+        before(async () => {
+          client = await Client({test: 'handlers-function', handler, config})
+        })
+
+        after(async () => {
+          await client.close()
+        })
+
+        it('success', async () => {
+          var {body: {response}} = await request({
+            url: client.url('/connect/oauth2'),
+            cookie: {},
+          })
+          t.deepEqual(response, {
+            access_token: 'token',
+            refresh_token: 'refresh',
+            raw: {access_token: 'token', refresh_token: 'refresh', expires_in: '3600'}
+          })
+        })
+      })
+    })
+  })
+
   describe('missing session middleware', () => {
     ;['express', 'koa', 'hapi'].forEach((handler) => {
       describe(handler, () => {
@@ -70,9 +96,6 @@ describe('middleware', () => {
         })
 
         it('success', async () => {
-          handler === 'hapi' && client.server.events.on('request', (event, tags) => {
-            t.equal(tags.error.message, 'Grant: register session plugin first')
-          })
           try {
             var {body} = await request({
               url: client.url('/connect/oauth2'),
@@ -81,7 +104,7 @@ describe('middleware', () => {
             t.equal(body, 'Grant: mount session middleware first')
           }
           catch (err) {
-            // hapi
+            // hapi - assertion is in the client
           }
         })
       })
@@ -113,27 +136,38 @@ describe('middleware', () => {
 
   describe('path prefix', () => {
     ;['express', 'koa', 'hapi'].forEach((handler) => {
-      describe(handler, () => {
-        before(async () => {
-          client = await Client({test: 'path-prefix', handler, config: {
-            defaults: {...config.defaults, path: '/prefix'},
-            oauth2: config.oauth2
-          }})
-        })
-
-        after(async () => {
-          await client.close()
-        })
-
-        it('success', async () => {
-          var {body: {response}} = await request({
-            url: client.url('/prefix/connect/oauth2'),
-            cookie: {},
+      ;[
+        {config: {path: '/oauth'},         connect: '/oauth/connect/oauth2'},
+        {config: {prefix: '/oauth'},       connect: '/oauth/oauth2'},
+        {config: {prefix: '/oauth/login'}, connect: '/oauth/login/oauth2'},
+      ]
+      .forEach((test) => {
+        describe(`${handler} ${JSON.stringify(test.config)}`, () => {
+          before(async () => {
+            client = await Client({
+              test: 'path-prefix',
+              handler,
+              config: {
+                defaults: {...config.defaults, ...test.config},
+                oauth2: config.oauth2
+              }
+            })
           })
-          t.deepEqual(response, {
-            access_token: 'token',
-            refresh_token: 'refresh',
-            raw: {access_token: 'token', refresh_token: 'refresh', expires_in: '3600'}
+
+          after(async () => {
+            await client.close()
+          })
+
+          it('success', async () => {
+            var {body: {response}} = await request({
+              url: client.url(test.connect),
+              cookie: {},
+            })
+            t.deepEqual(response, {
+              access_token: 'token',
+              refresh_token: 'refresh',
+              raw: {access_token: 'token', refresh_token: 'refresh', expires_in: '3600'}
+            })
           })
         })
       })
@@ -258,6 +292,95 @@ describe('middleware', () => {
               refresh_token: 'refresh',
               raw: {access_token: 'token', refresh_token: 'refresh', expires_in: '3600'}
             }
+          })
+        })
+      })
+    })
+  })
+
+  describe('response filter', () => {
+    ;['express', 'koa', 'hapi'].forEach((handler) => {
+      ;['token', ['tokens'], ['raw'], ['jwt'], ['raw', 'jwt'], ['tokens', 'raw', 'jwt']].forEach((response) => {
+        describe(`${handler} - ${JSON.stringify(response)}`, () => {
+          before(async () => {
+            client = await Client({test: 'handlers', handler, config})
+          })
+
+          after(async () => {
+            await client.close()
+          })
+
+          it('success', async () => {
+            var {body} = await request({
+              url: client.url('/connect/oauth2'),
+              qs: {scope: ['openid'], response},
+              cookie: {},
+            })
+            t.deepEqual(
+              body.response,
+              {
+                token: {
+                  id_token: 'eyJ0eXAiOiJKV1QifQ.eyJub25jZSI6IndoYXRldmVyIn0.signature',
+                  access_token: 'token',
+                  refresh_token: 'refresh'
+                },
+                tokens: {
+                  id_token: 'eyJ0eXAiOiJKV1QifQ.eyJub25jZSI6IndoYXRldmVyIn0.signature',
+                  access_token: 'token',
+                  refresh_token: 'refresh'
+                },
+                raw: {
+                  raw: {
+                    access_token: 'token',
+                    refresh_token: 'refresh',
+                    expires_in: '3600',
+                    id_token: 'eyJ0eXAiOiJKV1QifQ.eyJub25jZSI6IndoYXRldmVyIn0.signature'
+                  }
+                },
+                jwt: {
+                  jwt: {
+                    id_token: {
+                      header: {typ: 'JWT'},
+                      payload: {nonce: 'whatever'},
+                      signature: 'signature'
+                    }
+                  }
+                },
+                'raw,jwt': {
+                  raw: {
+                    access_token: 'token',
+                    refresh_token: 'refresh',
+                    expires_in: '3600',
+                    id_token: 'eyJ0eXAiOiJKV1QifQ.eyJub25jZSI6IndoYXRldmVyIn0.signature'
+                  },
+                  jwt: {
+                    id_token: {
+                      header: {typ: 'JWT'},
+                      payload: {nonce: 'whatever'},
+                      signature: 'signature'
+                    }
+                  }
+                },
+                'tokens,raw,jwt': {
+                  id_token: 'eyJ0eXAiOiJKV1QifQ.eyJub25jZSI6IndoYXRldmVyIn0.signature',
+                  access_token: 'token',
+                  refresh_token: 'refresh',
+                  raw: {
+                    access_token: 'token',
+                    refresh_token: 'refresh',
+                    expires_in: '3600',
+                    id_token: 'eyJ0eXAiOiJKV1QifQ.eyJub25jZSI6IndoYXRldmVyIn0.signature'
+                  },
+                  jwt: {
+                    id_token: {
+                      header: {typ: 'JWT'},
+                      payload: {nonce: 'whatever'},
+                      signature: 'signature'
+                    }
+                  }
+                }
+              }[[].concat(response).join()]
+            )
           })
         })
       })

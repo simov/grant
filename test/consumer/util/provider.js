@@ -91,6 +91,14 @@ var oauth1 = (port) => new Promise((resolve) => {
         res.end()
       })
     }
+    else if (/request_error_status/.test(url)) {
+      callback = oauth.oauth_callback
+      buffer(req, (form) => {
+        oauth1.request({url, headers, query, form, oauth})
+        res.writeHead(500, {'content-type': 'application/x-www-form-urlencoded'})
+        res.end(qs.stringify({invalid: 'request_url'}))
+      })
+    }
     else if (/authorize_error_message/.test(url)) {
       var location = callback + '?' + qs.stringify({error: {message: 'invalid'}})
       oauth1.authorize({url, headers, query})
@@ -103,12 +111,20 @@ var oauth1 = (port) => new Promise((resolve) => {
       res.writeHead(302, {location})
       res.end()
     }
+    else if (/access_error_status/.test(url)) {
+      buffer(req, (form) => {
+        oauth1.access({url, headers, query, form, oauth})
+        res.writeHead(500, {'content-type': 'application/json'})
+        res.end(JSON.stringify({invalid: 'access_url'}))
+      })
+    }
   })
   server.listen(port, () => resolve(server))
 })
 
 var oauth2 = (port) => new Promise((resolve) => {
   var server = http.createServer()
+  var openid
   server.on('request', (req, res) => {
     var method = req.method
     var url = req.url
@@ -117,6 +133,7 @@ var oauth2 = (port) => new Promise((resolve) => {
     var provider = /^\/(.*)\/.*/.exec(url) && /^\/(.*)\/.*/.exec(url)[1]
 
     if (/authorize_url/.test(req.url)) {
+      openid = (query.scope || []).includes('openid')
       oauth2.authorize({url, query, headers})
       var location = query.redirect_uri + '?' + qs.stringify({code: 'code'})
       res.writeHead(302, {location})
@@ -129,7 +146,8 @@ var oauth2 = (port) => new Promise((resolve) => {
         provider === 'concur'
           ? res.end(' <Token>token</Token> <Refresh_Token>refresh</Refresh_Token> ')
           : res.end(JSON.stringify({
-            access_token: 'token', refresh_token: 'refresh', expires_in: 3600
+            access_token: 'token', refresh_token: 'refresh', expires_in: 3600,
+            id_token: openid ? sign({typ: 'JWT'}, {nonce: 'whatever'}, 'signature') : undefined
           }))
       })
     }
@@ -165,6 +183,13 @@ var oauth2 = (port) => new Promise((resolve) => {
         oauth2.access({method, url, query, headers, form})
         res.writeHead(200, {'content-type': 'application/json'})
         res.end(JSON.stringify({error: {message: 'invalid'}}))
+      })
+    }
+    else if (/access_error_status/.test(req.url)) {
+      buffer(req, (form) => {
+        oauth2.access({method, url, query, headers, form})
+        res.writeHead(500, {'content-type': 'application/json'})
+        res.end(JSON.stringify({invalid: 'access_url'}))
       })
     }
   })

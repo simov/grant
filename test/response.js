@@ -122,7 +122,7 @@ describe('response', () => {
     })
 
     it('valid jwt', () => {
-      var provider = {oauth: 2, key: 'grant', response: ['jwt']}
+      var provider = {oauth: 2, key: 'grant', response: ['tokens', 'jwt']}
       var input = {session: {nonce: 'foo'}}
       var output = {id_token: sign({typ: 'JWT'}, {aud: 'grant', nonce: 'foo'}, 'signature')}
       t.deepEqual(response.data({provider, input, output}).output, {
@@ -138,7 +138,7 @@ describe('response', () => {
     })
 
     it('valid jwt - audience array', () => {
-      var provider = {oauth: 2, key: 'grant', response: ['jwt']}
+      var provider = {oauth: 2, key: 'grant', response: ['tokens', 'jwt']}
       var input = {session: {nonce: 'foo'}}
       var output = {id_token: sign({typ: 'JWT'}, {aud: ['grant'], nonce: 'foo'}, 'signature')}
       t.deepEqual(response.data({provider, input, output}).output, {
@@ -150,43 +150,6 @@ describe('response', () => {
             signature: 'signature'
           }
         }
-      })
-    })
-  })
-
-  describe('response option', () => {
-    it('always skip raw and always return tokens', () => {
-      var provider = {oauth: 2}
-      var input = {}
-      var output = {access_token: 'token'}
-      ;[true, 'tokens', 'jwt', [], ['tokens'], ['jwt'], ['tokens', 'jwt']]
-      .forEach((value) => {
-        provider.response = value
-        t.deepEqual(response.data({provider, input, output}).output, {access_token: 'token'})
-      })
-    })
-    it('return id_token as raw string', () => {
-      var provider = {oauth: 2, response: 'tokens'}
-      var input = {}
-      var output = {id_token: sign({typ: 'JWT'}, {hey: 'hi'}, 'signature')}
-      t.deepEqual(response.data({provider, input, output}).output,
-        {id_token: 'eyJ0eXAiOiJKV1QifQ.eyJoZXkiOiJoaSJ9.signature'}
-      )
-    })
-    it('optionally include the decoded id_token', () => {
-      var provider = {oauth: 2}
-      var input = {}
-      var output = {id_token: sign({typ: 'JWT'}, {hey: 'hi'}, 'signature')}
-      ;['jwt', ['jwt'], ['tokens', 'jwt']].forEach((value) => {
-        provider.response = value
-        t.deepEqual(response.data({provider, input, output}).output, {
-          id_token: 'eyJ0eXAiOiJKV1QifQ.eyJoZXkiOiJoaSJ9.signature',
-          jwt: {
-            id_token: {
-              header: {typ: 'JWT'}, payload: {hey: 'hi'}, signature: 'signature'
-            }
-          }
-        })
       })
     })
   })

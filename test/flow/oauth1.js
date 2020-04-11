@@ -319,6 +319,15 @@ describe('oauth1', () => {
       t.deepEqual(response, {error: {message: 'invalid'}})
     })
 
+    it('request - status code', async () => {
+      var {body: {response}} = await request({
+        url: client.url('/connect/twitter'),
+        qs: {request_url: provider.url('/request_error_status')},
+        cookie: {},
+      })
+      t.deepEqual(response, {error: {invalid: 'request_url'}})
+    })
+
     it('request - missing oauth_token without response message', async () => {
       var {body: {response}} = await request({
         url: client.url('/connect/twitter'),
@@ -344,6 +353,15 @@ describe('oauth1', () => {
         cookie: {},
       })
       t.deepEqual(response, {error: 'Grant: OAuth1 missing oauth_token parameter'})
+    })
+
+    it('access - status code', async () => {
+      var {body: {response}} = await request({
+        url: client.url('/connect/twitter'),
+        qs: {access_url: provider.url('/access_error_status')},
+        cookie: {},
+      })
+      t.deepEqual(response, {error: {invalid: 'access_url'}})
     })
   })
 })
