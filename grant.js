@@ -2,44 +2,47 @@
 function grant ({handler, ...rest}) {
   var version = () => ({
     express: 4,
-    koa: parseInt(require('koa/package.json').version.split('.')[0]) < 2 ? '1' : '2',
+    koa: parseInt(require('koa/package.json').version.split('.')[0]) >= 2 ? 2 : 1,
     hapi: (() => {
+      var pkg
       try {
-        return parseInt(require('@hapi/hapi/package.json').version.split('.')[0])
+        pkg = require('@hapi/hapi/package.json')
       }
       catch (err) {
-        return parseInt(require('hapi/package.json').version.split('.')[0])
+        pkg = require('hapi/package.json')
       }
-    })() < 17 ? '16' : '17'
+      return parseInt(pkg.version.split('.')[0])
+    })() >= 17 ? 17 : 16
   }[handler])
 
   if (/express|koa|hapi/.test(handler) && !/-\d+$/.test(handler)) {
-    return require(`./lib/consumer/${handler}-${version()}`)(rest)
+    return require(`./lib/handler/${handler}-${version()}`)(rest)
   }
   else {
-    return require(`./lib/consumer/${handler}`)(rest)
+    return require(`./lib/handler/${handler}`)(rest)
   }
 }
 
 grant.express = () => {
-  return require('./lib/consumer/express-4')
+  var version = 4
+  return require(`./lib/handler/express-${version}`)
 }
 
 grant.koa = () => {
   var version = parseInt(require('koa/package.json').version.split('.')[0])
-  return require('./lib/consumer/koa-' + (version < 2 ? '1' : '2'))
+  return require('./lib/handler/koa-' + (version >= 2 ? 2 : 1))
 }
 
 grant.hapi = () => {
   var pkg
   try {
-    pkg = require('hapi/package.json')
-  }
-  catch (err) {
     pkg = require('@hapi/hapi/package.json')
   }
+  catch (err) {
+    pkg = require('hapi/package.json')
+  }
   var version = parseInt(pkg.version.split('.')[0])
-  return require('./lib/consumer/hapi-' + (version < 17 ? '16' : '17'))
+  return require('./lib/handler/hapi-' + (version >= 17 ? 17 : 16))
 }
 
 module.exports = grant

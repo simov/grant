@@ -2,7 +2,7 @@
 var t = require('assert')
 
 
-describe('middleware', () => {
+describe('handler', () => {
 
   describe('function handlers', () => {
     var grant = require('../')

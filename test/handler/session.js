@@ -6,11 +6,11 @@ var request = require('request-compose').extend({
   Response: {cookie: require('request-cookie').Response},
 }).client
 
-var Provider = require('./util/provider'), provider, oauth1
-var Client = require('./util/client'), client
+var Provider = require('../util/provider'), provider, oauth1
+var Client = require('../util/client'), client
 
 
-describe('consumer - session', () => {
+describe('session', () => {
   var config
 
   before(async () => {

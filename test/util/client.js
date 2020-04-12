@@ -23,7 +23,7 @@ catch (err) {
   var yar = require('yar')
 }
 
-var Grant = require('../../../')
+var Grant = require('../../')
 
 var version = {
   express: 4,

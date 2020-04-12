@@ -6,11 +6,11 @@ var request = require('request-compose').extend({
   Response: {cookie: require('request-cookie').Response},
 }).client
 
-var Provider = require('../consumer/util/provider'), provider
-var Client = require('../consumer/util/client'), client
+var Provider = require('../util/provider'), provider
+var Client = require('../util/client'), client
 
 
-describe('middleware', () => {
+describe('handler', () => {
   var config
 
   before(async () => {

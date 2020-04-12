@@ -8,8 +8,8 @@ var request = require('request-compose').extend({
 
 var oauth = require('../../config/oauth')
 
-var Provider = require('../consumer/util/provider'), provider
-var Client = require('../consumer/util/client'), client
+var Provider = require('../util/provider'), provider
+var Client = require('../util/client'), client
 
 
 describe('oauth1', () => {
