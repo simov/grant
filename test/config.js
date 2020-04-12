@@ -246,7 +246,7 @@ describe('config', () => {
   })
 
   describe('compat', () => {
-    it('oauth1 to oauth2', () => {
+    it('fitbit2 - oauth1 to oauth2', () => {
       var input = {fitbit2: {key: 'key', secret: 'secret'}}
       var output = config.compat(input)
       t.deepEqual(
@@ -257,6 +257,28 @@ describe('config', () => {
       t.deepEqual(
         output, {
           fitbit2: {
+            authorize_url: 'https://www.fitbit.com/oauth2/authorize',
+             access_url: 'https://api.fitbit.com/oauth2/token',
+             oauth: 2,
+             scope_delimiter: ' ',
+             key: 'key',
+             secret: 'secret'
+           }
+         },
+        'output config should be merged with oauth.fitbit'
+      )
+    })
+    it('linkedin2 - oauth1 to oauth2', () => {
+      var input = {linkedin2: {key: 'key', secret: 'secret'}}
+      var output = config.compat(input)
+      t.deepEqual(
+        input,
+        {linkedin2: {key: 'key', secret: 'secret'}},
+        'input config should be unchanged'
+      )
+      t.deepEqual(
+        output, {
+          linkedin2: {
             authorize_url: 'https://www.fitbit.com/oauth2/authorize',
              access_url: 'https://api.fitbit.com/oauth2/token',
              oauth: 2,

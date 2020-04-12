@@ -506,12 +506,6 @@
     "scope_delimiter": " "
   },
   "linkedin": {
-    "request_url": "https://api.linkedin.com/uas/oauth/requestToken",
-    "authorize_url": "https://www.linkedin.com/uas/oauth/authenticate",
-    "access_url": "https://api.linkedin.com/uas/oauth/accessToken",
-    "oauth": 1
-  },
-  "linkedin2": {
     "authorize_url": "https://www.linkedin.com/oauth/v2/authorization",
     "access_url": "https://www.linkedin.com/oauth/v2/accessToken",
     "oauth": 2,
@@ -693,8 +687,8 @@
     "oauth": 1
   },
   "projectplace2": {
-    "authorize_url": "https://service.projectplace.com/oauth2/authorize",
-    "access_url": "https://service.projectplace.com/oauth2/access_token",
+    "authorize_url": "https://api.projectplace.com/oauth2/authorize",
+    "access_url": "https://api.projectplace.com/oauth2/access_token",
     "oauth": 2
   },
   "pushbullet": {

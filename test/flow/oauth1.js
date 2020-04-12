@@ -128,22 +128,6 @@ describe('oauth1', () => {
       })
     })
 
-    it('querystring scope - request - linkedin', async () => {
-      provider.oauth1.request = ({query}) => {
-        t.deepEqual(query, {scope: 'scope1,scope2'})
-      }
-      var {body: {response}} = await request({
-        url: client.url('/connect/linkedin'),
-        qs: {scope: 'scope1,scope2'},
-        cookie: {},
-      })
-      t.deepEqual(response, {
-        access_token: 'token',
-        access_secret: 'secret',
-        raw: {oauth_token: 'token', oauth_token_secret: 'secret'}
-      })
-    })
-
     it('signature_method - request/access - freshbooks', async () => {
       provider.oauth1.request = ({headers}) => {
         t.ok(/oauth_signature_method="PLAINTEXT"/.test(headers.authorization))
