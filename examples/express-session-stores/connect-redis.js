@@ -1,14 +1,14 @@
 
 var express = require('express')
 var session = require('express-session')
-var grant = require('grant-express')
+var grant = require('../../').express()
 var RedisStore = require('connect-redis')(session)
 
 
 express()
   .use(session({
     store: new RedisStore(),
-    secret: 'grant', saveUninitialized: true, resave: true
+    secret: 'grant', saveUninitialized: true, resave: false
   }))
   .use(grant(require('./config.json')))
   .get('/hello', (req, res) => {

@@ -1,7 +1,7 @@
 
 var express = require('express')
 var session = require('express-session')
-var grant = require('grant-express')
+var grant = require('../../').express()
 var request = require('request-compose').client
 var jwt = require('./jwt')
 

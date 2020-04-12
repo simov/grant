@@ -11,8 +11,7 @@
     "url": "https://github.com/simov/grant.git"
   },
   "dependencies": {
-    "express": "^3.21.2",
-    "grant-express": "^4.4.0"
+    "express": "^3.21.2"
   },
   "main": "app.js"
 }

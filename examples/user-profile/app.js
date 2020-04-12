@@ -1,7 +1,7 @@
 
 var express = require('express')
 var session = require('express-session')
-var grant = require('grant-express')
+var grant = require('../../').express()
 
 var request = require('request-compose').extend({
   Request: {oauth: require('request-oauth')}
@@ -11,7 +11,7 @@ var config = require('./config.json')
 
 
 express()
-  .use(session({secret: 'grant', saveUninitialized: true, resave: true}))
+  .use(session({secret: 'grant', saveUninitialized: true, resave: false}))
   .use(grant(config))
 
   .get('/hello', async (req, res) => {

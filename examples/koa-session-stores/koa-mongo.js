@@ -7,7 +7,7 @@ var session = require('koa-generic-session')
 var Store = require('koa-generic-session-mongo')
 var router = require('koa-router')
 var koaqs = require('koa-qs')
-var grant = require('grant-koa')
+var grant = require('../../').koa()
 
 
 var app = koa()

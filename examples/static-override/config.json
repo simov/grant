@@ -1,7 +1,6 @@
 {
   "defaults": {
-    "protocol": "http",
-    "host": "localhost:3000"
+    "origin": "http://localhost:3000"
   },
   "facebook": {
     "key": "APP_ID",

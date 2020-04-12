@@ -1,8 +1,7 @@
 {
   "defaults": {
-    "protocol": "http",
-    "host": "localhost:3000",
-    "path": "/path/prefix"
+    "origin": "http://localhost:3000",
+    "prefix": "/oauth"
   },
   "facebook": {
     "key": "APP_ID",

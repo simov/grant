@@ -13,9 +13,8 @@
   "dependencies": {
     "express": "^4.16.3",
     "express-session": "^1.15.6",
-    "grant-express": "^4.4.0",
-    "request-compose": "^1.1.1",
-    "request-oauth": "0.0.3"
+    "request-compose": "^2.0.0",
+    "request-oauth": "^1.0.0"
   },
   "main": "app.js"
 }

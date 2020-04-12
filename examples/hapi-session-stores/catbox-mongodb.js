@@ -2,7 +2,7 @@
 var Hapi = require('hapi')
 var yar = require('yar')
 var store = require('catbox-mongodb')
-var grant = require('grant-hapi')
+var grant = require('../../').hapi()
 
 
 var server = new Hapi.Server({cache: {engine: store}})

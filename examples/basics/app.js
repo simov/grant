@@ -1,15 +1,14 @@
 
 var express = require('express')
 var session = require('express-session')
-var grant = require('grant-express')
+var grant = require('../../').express()
 
 
 express()
-  .use(session({secret: 'grant', saveUninitialized: true, resave: true}))
+  .use(session({secret: 'grant', saveUninitialized: true, resave: false}))
   .use(grant({
     defaults: {
-      protocol: 'http',
-      host: 'localhost:3000'
+      origin: 'http://localhost:3000'
     },
     facebook: {
       key: 'APP_ID',

@@ -1,13 +1,13 @@
 
 var express = require('express')
 var session = require('express-session')
-var grant = require('grant-express')
+var grant = require('../../').express()
 var qs = require('querystring')
 var assert = require('assert')
 
 
 express()
-  .use(session({secret: 'grant', saveUninitialized: true, resave: true}))
+  .use(session({secret: 'grant', saveUninitialized: true, resave: false}))
   .use(grant(require('./config.json')))
 
   // fake authorize url

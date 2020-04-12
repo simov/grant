@@ -9,7 +9,7 @@ express()
     var params = qs.stringify({
       transport: 'querystring',
       callback: `http://localhost:${3000}/hello`,
-      // pass any other option here
+      // pass any other configuration here
     })
     res.redirect(`https://grant.outofindex.com/connect/${provider}?${params}`)
   })

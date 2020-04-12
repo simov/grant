@@ -2,12 +2,12 @@
 var express = require('express')
 var session = require('express-session')
 var parser = require('body-parser')
-var grant = require('grant-express')
+var grant = require('../../').express()
 var fs = require('fs')
 
 
 express()
-  .use(session({secret: 'grant', saveUninitialized: true, resave: true}))
+  .use(session({secret: 'grant', saveUninitialized: true, resave: false}))
   .use(parser.urlencoded({extended: true}))
   .use(grant(require('./config.json')))
 

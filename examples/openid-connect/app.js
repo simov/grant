@@ -1,7 +1,7 @@
 
 var express = require('express')
 var session = require('express-session')
-var grant = require('grant-express')
+var grant = require('../../').express()
 var oidc = require('grant-oidc')
 
 var config = require('./config.json')

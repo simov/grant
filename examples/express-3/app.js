@@ -1,6 +1,6 @@
 
 var express = require('express')
-var grant = require('grant-express')
+var grant = require('../../').express()
 
 
 express()
