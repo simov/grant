@@ -1,7 +1,7 @@
 {
   "name": "grant",
   "version": "4.7.0",
-  "description": "OAuth Middleware for Express, Koa and Hapi",
+  "description": "OAuth Proxy",
   "keywords": [
     "oauth",
     "oauth2",
@@ -9,6 +9,7 @@
     "openid-connect",
     "authentication",
     "authorization",
+    "proxy",
     "middleware",
     "express",
     "koa",
@@ -22,9 +23,9 @@
     "url": "https://github.com/simov/grant.git"
   },
   "dependencies": {
-    "qs": "^6.9.1",
-    "request-compose": "^1.2.3",
-    "request-oauth": "0.0.3"
+    "qs": "^6.9.3",
+    "request-compose": "^2.0.0",
+    "request-oauth": "^1.0.0"
   },
   "devDependencies": {
     "@hapi/hapi": "^18.4.1",
@@ -36,14 +37,13 @@
     "express-session": "^1.17.0",
     "koa": "^2.11.0",
     "koa-bodyparser": "^4.2.1",
-    "koa-convert": "^1.2.0",
     "koa-mount": "^4.0.0",
     "koa-qs": "^2.0.0",
     "koa-session": "^5.13.1",
     "mocha": "^7.1.1",
     "nyc": "^15.0.0",
-    "request-cookie": "0.0.2",
-    "request-logs": "^1.0.3"
+    "request-cookie": "^1.0.0",
+    "request-logs": "^2.0.0"
   },
   "main": "./grant.js",
   "files": [
