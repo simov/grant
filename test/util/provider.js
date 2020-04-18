@@ -192,6 +192,10 @@ var oauth2 = (port) => new Promise((resolve) => {
         res.end(JSON.stringify({invalid: 'access_url'}))
       })
     }
+    else if (/profile_url/.test(req.url)) {
+      res.writeHead(200, {'content-type': 'application/json'})
+      res.end(JSON.stringify({user: 'simov'}))
+    }
   })
   server.listen(port, () => resolve(server))
 })

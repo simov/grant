@@ -5,6 +5,7 @@ var request = require('request-compose').extend({
   Request: {cookie: require('request-cookie').Request},
   Response: {cookie: require('request-cookie').Response},
 }).client
+var profile = require('grant-profile')
 
 var Provider = require('../util/provider'), provider
 var Client = require('../util/client'), client
@@ -22,6 +23,7 @@ describe('handler', () => {
       oauth2: {
         authorize_url: provider.url('/oauth2/authorize_url'),
         access_url: provider.url('/oauth2/access_url'),
+        profile_url: provider.url('/oauth2/profile_url'),
         oauth: 2,
         dynamic: true,
       }
@@ -300,10 +302,12 @@ describe('handler', () => {
 
   describe('response filter', () => {
     ;['express', 'koa', 'hapi'].forEach((handler) => {
-      ;['token', ['tokens'], ['raw'], ['jwt'], ['raw', 'jwt'], ['tokens', 'raw', 'jwt']].forEach((response) => {
+      ;['token', ['tokens'], ['raw'], ['jwt'], ['profile'], ['raw', 'jwt'],
+        ['tokens', 'raw', 'jwt', 'profile']].forEach((response) => {
         describe(`${handler} - ${JSON.stringify(response)}`, () => {
           before(async () => {
-            client = await Client({test: 'handlers', handler, config})
+            var extend = [profile]
+            client = await Client({test: 'handlers', handler, config, extend})
           })
 
           after(async () => {
@@ -346,6 +350,9 @@ describe('handler', () => {
                     }
                   }
                 },
+                profile: {
+                  profile: {user: 'simov'}
+                },
                 'raw,jwt': {
                   raw: {
                     access_token: 'token',
@@ -361,7 +368,7 @@ describe('handler', () => {
                     }
                   }
                 },
-                'tokens,raw,jwt': {
+                'tokens,raw,jwt,profile': {
                   id_token: 'eyJ0eXAiOiJKV1QifQ.eyJub25jZSI6IndoYXRldmVyIn0.signature',
                   access_token: 'token',
                   refresh_token: 'refresh',
@@ -377,7 +384,8 @@ describe('handler', () => {
                       payload: {nonce: 'whatever'},
                       signature: 'signature'
                     }
-                  }
+                  },
+                  profile: {user: 'simov'}
                 }
               }[[].concat(response).join()]
             )
@@ -447,6 +455,35 @@ describe('handler', () => {
             refresh_token: 'refresh',
             raw: {access_token: 'token', refresh_token: 'refresh', expires_in: '3600'},
             profile: 'simov'
+          })
+        })
+      })
+    })
+  })
+
+  describe('profile', () => {
+    ;['express', 'koa', 'hapi'].forEach((handler) => {
+      describe(handler, () => {
+        before(async () => {
+          var state = {grant: 'simov'}
+          var extend = [profile]
+          client = await Client({test: 'handlers', handler, config, extend})
+        })
+
+        after(async () => {
+          await client.close()
+        })
+
+        it('success', async () => {
+          var {body: {response}} = await request({
+            url: client.url('/connect/oauth2'),
+            cookie: {},
+          })
+          t.deepEqual(response, {
+            access_token: 'token',
+            refresh_token: 'refresh',
+            raw: {access_token: 'token', refresh_token: 'refresh', expires_in: '3600'},
+            profile: {user: 'simov'}
           })
         })
       })
