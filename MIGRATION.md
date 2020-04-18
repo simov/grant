@@ -109,7 +109,7 @@ In Grant v5 it is reommended to use the `origin` configuration instead:
 
 #### Documentation
 
-- [`origin`](https://github.com/simov/grant#connect-prefix) configuration
+- [`origin`](https://github.com/simov/grant#connect-origin) configuration
 
 
 ## Deprecate: `path` configuration

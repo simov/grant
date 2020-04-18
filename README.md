@@ -147,7 +147,7 @@ Key | Location | Description
 **`access_url`** | [oauth.json] | OAuth 2.0 second step, OAuth 1.0a third step
 **`oauth`** | [oauth.json] | OAuth version number
 **`scope_delimiter`** | [oauth.json] | String delimiter used for concatenating multiple scopes
-**`token_endpoint_auth_method`** | `[provider]` | Authentication method for the [token endpoint](#token-endpoint-auth-method)
+**`token_endpoint_auth_method`** | `[provider]` | Authentication method for the token endpoint
 ***Client Server*** |
 **`origin`** | `defaults` | Where your server and Grant can be reached
 **`prefix`** | `defaults` | Path prefix for the Grant internal routes
