@@ -1,6 +1,15 @@
 
 # Change Log
 
+## v5.0.0 (2020/04/18)
+- **Breaking:** Drop support for Node v4 and v6
+- **Breaking:** Return `id_token` as string by default
+- **Breaking:** Change in the `response` configuration
+- **New:** `origin` and `prefix` configuration
+- **Deprecate:** Koa v1 and Hapi <= v16
+- **Deprecate:** `protocol`, `host`, and `path` configuration
+- **[Migration Guide: from v4 to v5](https://github.com/simov/grant/blob/master/MIGRATION.md)**
+
 ## v4.7.0 (2020/01/26)
 - **New:** [PKCE](https://github.com/simov/grant/commit/3b04eb69a278165ae9be7ba7a06e8b85da21c5e5) support
 - **New:** [input state](https://github.com/simov/grant/commit/3b04eb69a278165ae9be7ba7a06e8b85da21c5e5) overrides
