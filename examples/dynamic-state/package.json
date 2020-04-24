@@ -1,0 +1,23 @@
+{
+  "name": "grant-examples",
+  "version": "0.0.0",
+  "description": "Grant Examples",
+  "private": true,
+  "license": "MIT",
+  "homepage": "https://github.com/simov/grant",
+  "author": "Simeon Velichkov <simeonvelichkov@gmail.com> (https://simov.github.io)",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/simov/grant.git"
+  },
+  "dependencies": {
+    "@hapi/hapi": "^19.1.1",
+    "@hapi/yar": "^10.1.0",
+    "express": "^4.17.1",
+    "express-session": "^1.17.1",
+    "koa": "^2.11.0",
+    "koa-qs": "^2.0.0",
+    "koa-router": "^8.0.8",
+    "koa-session": "^5.13.1"
+  }
+}

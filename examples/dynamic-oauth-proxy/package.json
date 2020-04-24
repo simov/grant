@@ -1,0 +1,16 @@
+{
+  "name": "grant-examples",
+  "version": "0.0.0",
+  "description": "Grant Examples",
+  "private": true,
+  "license": "MIT",
+  "homepage": "https://github.com/simov/grant",
+  "author": "Simeon Velichkov <simeonvelichkov@gmail.com> (https://simov.github.io)",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/simov/grant.git"
+  },
+  "dependencies": {
+    "express": "^4.17.1"
+  }
+}

@@ -1,0 +1,40 @@
+{
+  "defaults": {
+    "origin": "http://localhost:3000",
+    "transport": "session"
+  },
+  "google": {
+    "key": "APP_ID",
+    "secret": "APP_SECRET",
+    "callback": "/hello",
+    "response": ["tokens", "raw", "jwt"],
+    "scope": [
+      "openid"
+    ],
+    "overrides": {
+      "profile": {
+        "scope": ["openid", "profile", "email"]
+      },
+      "gmail": {
+        "response": ["tokens"],
+        "scope": [
+          "https://www.googleapis.com/auth/gmail.send"
+        ],
+        "custom_params": {
+          "access_type": "offline"
+        }
+      }
+    }
+  },
+  "twitter": {
+    "key": "CONSUMER_KEY",
+    "secret": "CONSUMER_SECRET",
+    "callback": "/hi",
+    "overrides": {
+      "write": {
+        "key": "CONSUMER_KEY",
+        "secret": "CONSUMER_SECRET"
+      }
+    }
+  }
+}
