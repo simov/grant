@@ -47,7 +47,7 @@ var session = require('express-session')
 var grant = require('grant-express')
 
 var app = express()
-// REQUIRED: any session store - see /examples/express-session-stores
+// REQUIRED: any session store - see /examples/handler-express
 app.use(session({secret: 'grant'}))
 // mount grant
 app.use(grant({/*configuration - see below*/}))
@@ -66,7 +66,7 @@ var session = require('koa-session')
 var grant = require('grant-koa')
 
 var app = new Koa()
-// REQUIRED: any session store - see /examples/koa-session-stores
+// REQUIRED: any session store - see /examples/handler-koa
 app.keys = ['grant']
 app.use(session(app))
 // mount grant
@@ -87,7 +87,7 @@ var grant = require('grant-hapi')
 
 var server = new Hapi.Server()
 server.register([
-  // REQUIRED: any session store - see /examples/hapi-session-stores
+  // REQUIRED: any session store - see /examples/handler-hapi
   {plugin: yar, options: {cookieOptions: {password: 'grant', isSecure: false}}},
   // mount grant
   {plugin: grant(), options: {/*configuration - see below*/}}
@@ -989,6 +989,6 @@ Set your Client Secret as `secret` not the App Secret:
 
   [oauth.json]: https://github.com/simov/grant/blob/master/config/oauth.json
   [reserved-keys]: https://github.com/simov/grant/blob/master/config/reserved.json
-  [examples]: https://github.com/simov/grant/tree/master/examples#table-of-contents
+  [examples]: https://github.com/simov/grant/tree/master/examples
   [changelog]: https://github.com/simov/grant/blob/master/CHANGELOG.md
   [migration]: https://github.com/simov/grant/blob/master/MIGRATION.md

@@ -74,7 +74,7 @@ The decoded JWT will be available as `jwt.id_token` instead:
     access_token: '...',
     refresh_token: '...',
     some: 'other data'
-  }
+  },
   jwt: {id_token: {header: {}, payload: {}, signature: '...'}}
 }
 ```
