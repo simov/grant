@@ -1,6 +1,9 @@
 
 # Change Log
 
+## v5.0.1 (2020/05/01)
+- **Fix:** Fixed the path matching regexp for Express and Koa
+
 ## v5.0.0 (2020/04/18)
 - **Breaking:** Drop support for Node v4 and v6
 - **Breaking:** Return `id_token` as string by default
