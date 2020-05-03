@@ -144,8 +144,8 @@
     "oauth": 2
   },
   "cognito": {
-    "authorize_url": "https://[subdomain]/authorize",
-    "access_url": "https://[subdomain]/token",
+    "authorize_url": "https://[subdomain]/oauth2/authorize",
+    "access_url": "https://[subdomain]/oauth2/token",
     "oauth": 2,
     "scope_delimiter": " "
   },
