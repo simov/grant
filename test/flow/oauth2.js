@@ -458,7 +458,7 @@ describe('oauth2', () => {
 
     it('authorize - state mismatch', async () => {
       provider.oauth2.authorize = ({url, headers, query}) => {
-        t.equal(query.state.length, 20)
+        t.equal(query.state.length, 40)
       }
       var {body: {response}} = await request({
         url: client.url('/connect/google'),
@@ -473,7 +473,7 @@ describe('oauth2', () => {
 
     it('access - nonce mismatch', async () => {
       provider.oauth2.authorize = ({url, headers, query}) => {
-        t.equal(query.nonce.length, 20)
+        t.equal(query.nonce.length, 40)
       }
       var {body: {response}} = await request({
         url: client.url('/connect/google'),
