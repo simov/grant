@@ -133,6 +133,16 @@
     "access_url": "https://api.createsend.com/oauth/token",
     "oauth": 2
   },
+  "casoauth2": {
+    "authorize_url": "https://[subdomain]/oauth2.0/authorize",
+    "access_url": "https://[subdomain]/oauth2.0/token",
+    "oauth": 2
+  },
+  "casoidc": {
+    "authorize_url": "https://[subdomain]/oidc/authorize",
+    "access_url": "https://[subdomain]/oidc/token",
+    "oauth": 2
+  },
   "cheddar": {
     "authorize_url": "https://api.cheddarapp.com/oauth/authorize",
     "access_url": "https://api.cheddarapp.com/oauth/token",
