@@ -5,6 +5,7 @@
   "oauth",
   "scope_delimiter",
   "token_endpoint_auth_method",
+  "token_endpoint_auth_signing_alg",
 
   "origin",
   "prefix",
@@ -16,6 +17,8 @@
   "callback",
   "overrides",
   "dynamic",
+  "public_key",
+  "private_key",
 
   "protocol",
   "host",

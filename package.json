@@ -27,6 +27,10 @@
     "request-compose": "^2.0.0",
     "request-oauth": "^1.0.0"
   },
+  "optionalDependencies": {
+    "jwk-to-pem": "^2.0.3",
+    "jws": "^4.0.0"
+  },
   "devDependencies": {
     "@hapi/hapi": "^18.4.1",
     "@hapi/yar": "^9.2.1",

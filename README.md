@@ -148,6 +148,7 @@ Key | Location | Description
 **`oauth`** | [oauth.json] | OAuth version number
 **`scope_delimiter`** | [oauth.json] | String delimiter used for concatenating multiple scopes
 **`token_endpoint_auth_method`** | `[provider]` | Authentication method for the token endpoint
+**`token_endpoint_auth_signing_alg`** | `[provider]` | Signing algorithm for the token endpoint
 ***Client Server*** |
 **`origin`** | `defaults` | Where your server and Grant can be reached
 **`prefix`** | `defaults` | Path prefix for the Grant internal routes
@@ -165,6 +166,8 @@ Key | Location | Description
 **`scope`** | `[provider]` | List of scopes to request
 **`custom_params`** | `[provider]` | Custom authorization parameters and their values
 **`subdomain`** | `[provider]` | String to embed into the authorization server URLs
+**`public_key`** | `[provider]` | Public PEM or JWK
+**`private_key`** | `[provider]` | Private PEM or JWK
 **`redirect_uri`** | `generated` | Absolute redirect URL of the OAuth app
 ***Grant*** |
 **`name`** | `generated` | Provider's [name](#grant)
@@ -181,7 +184,8 @@ Key | Location | Value
 **`access_url`** | [oauth.json] | `'https://api.twitter.com/oauth/access_token'`
 **`oauth`** | [oauth.json] | `2` `1`
 **`scope_delimiter`** | [oauth.json] | `','` `' '`
-**`token_endpoint_auth_method`** | [oauth.json] | `'client_secret_post'` `'client_secret_basic'`
+**`token_endpoint_auth_method`** | `[provider]` | `'client_secret_post'` `'client_secret_basic'` `'private_key_jwt'`
+**`token_endpoint_auth_signing_alg`** | `[provider]` | `'RS256'` `'ES256'` `'PS256'`
 ***Client Server*** |
 **`origin`** | `defaults` | `'http://localhost:3000'` `https://site.com`
 **`prefix`** | `defaults` | `'/connect'` `/oauth` `''`
@@ -199,6 +203,8 @@ Key | Location | Value
 **`scope`** | `[provider]` | `['openid', '..']`
 **`custom_params`** | `[provider]` | `{access_type: 'offline'}`
 **`subdomain`** | `[provider]` | `'myorg'`
+**`public_key`** | `[provider]` | `'..PEM..'` `'{..JWK..}'`
+**`private_key`** | `[provider]` | `'..PEM..'` `'{..JWK..}'`
 **`redirect_uri`** |`generated` | `'http://localhost:3000/connect/twitter/callback'`
 ***Grant*** |
 **`name`** |`generated` | `name: 'twitter'`
