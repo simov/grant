@@ -527,6 +527,12 @@
     "access_url": "https://accounts.livechatinc.com/token",
     "oauth": 2
   },
+  "logingov": {
+    "authorize_url": "https://idp.int.identitysandbox.gov/openid_connect/authorize",
+    "access_url": "https://idp.int.identitysandbox.gov/api/openid_connect/token",
+    "oauth": 2,
+    "scope_delimiter": " "
+  },
   "lyft": {
     "authorize_url": "https://api.lyft.com/oauth/authorize",
     "access_url": "https://api.lyft.com/oauth/token",
