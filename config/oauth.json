@@ -133,12 +133,7 @@
     "access_url": "https://api.createsend.com/oauth/token",
     "oauth": 2
   },
-  "casoauth2": {
-    "authorize_url": "https://[subdomain]/oauth2.0/authorize",
-    "access_url": "https://[subdomain]/oauth2.0/token",
-    "oauth": 2
-  },
-  "casoidc": {
+  "cas": {
     "authorize_url": "https://[subdomain]/oidc/authorize",
     "access_url": "https://[subdomain]/oidc/token",
     "oauth": 2
