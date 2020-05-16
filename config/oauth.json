@@ -361,6 +361,12 @@
     "access_url": "https://[subdomain].freshbooks.com/oauth/oauth_access.php",
     "oauth": 1
   },
+  "fusionauth": {
+    "authorize_url": "https://[subdomain]/oauth2/authorize",
+    "access_url": "https://[subdomain]/oauth2/token",
+    "oauth": 2,
+    "scope_delimiter": " "
+  },
   "geeklist": {
     "request_url": "https://api.geekli.st/v1/oauth/request_token",
     "authorize_url": "https://geekli.st/oauth/authorize",
