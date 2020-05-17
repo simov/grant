@@ -27,6 +27,7 @@ var provider = async ({flow, port = 5000}) => {
   return {
     oauth1,
     oauth2,
+    on,
     server,
     url: (path) => `http://localhost:${port}${path}`,
     close: () => new Promise((resolve) => server.close(resolve))
@@ -49,7 +50,7 @@ var oauth1 = (port) => new Promise((resolve) => {
         if (provider === 'getpocket') {
           callback = form.redirect_uri
         }
-        oauth1.request({url, headers, query, form, oauth})
+        on.request({url, headers, query, form, oauth})
         res.writeHead(200, {'content-type': 'application/x-www-form-urlencoded'})
         provider === 'getpocket'
           ? res.end(qs.stringify({code: 'code'}))
@@ -62,13 +63,13 @@ var oauth1 = (port) => new Promise((resolve) => {
           ? qs.stringify({oauth_token: 'token', oauth_verifier: 'verifier', realmId: '123'})
           : qs.stringify({oauth_token: 'token', oauth_verifier: 'verifier'})
       )
-      oauth1.authorize({url, headers, query})
+      on.authorize({url, headers, query})
       res.writeHead(302, {location})
       res.end()
     }
     else if (/access_url/.test(url)) {
       buffer(req, (form) => {
-        oauth1.access({url, headers, query, form, oauth})
+        on.access({url, headers, query, form, oauth})
         res.writeHead(200, {'content-type': 'application/json'})
         provider === 'getpocket'
           ? res.end(JSON.stringify({access_token: 'token'}))
@@ -78,7 +79,7 @@ var oauth1 = (port) => new Promise((resolve) => {
     else if (/request_error_message/.test(url)) {
       callback = oauth.oauth_callback
       buffer(req, (form) => {
-        oauth1.request({url, headers, query, form, oauth})
+        on.request({url, headers, query, form, oauth})
         res.writeHead(200, {'content-type': 'application/x-www-form-urlencoded'})
         res.end(qs.stringify({error: {message: 'invalid'}}))
       })
@@ -86,7 +87,7 @@ var oauth1 = (port) => new Promise((resolve) => {
     else if (/request_error_token/.test(url)) {
       callback = oauth.oauth_callback
       buffer(req, (form) => {
-        oauth1.request({url, headers, query, form, oauth})
+        on.request({url, headers, query, form, oauth})
         res.writeHead(200, {'content-type': 'application/x-www-form-urlencoded'})
         res.end()
       })
@@ -94,29 +95,33 @@ var oauth1 = (port) => new Promise((resolve) => {
     else if (/request_error_status/.test(url)) {
       callback = oauth.oauth_callback
       buffer(req, (form) => {
-        oauth1.request({url, headers, query, form, oauth})
+        on.request({url, headers, query, form, oauth})
         res.writeHead(500, {'content-type': 'application/x-www-form-urlencoded'})
         res.end(qs.stringify({invalid: 'request_url'}))
       })
     }
     else if (/authorize_error_message/.test(url)) {
       var location = callback + '?' + qs.stringify({error: {message: 'invalid'}})
-      oauth1.authorize({url, headers, query})
+      on.authorize({url, headers, query})
       res.writeHead(302, {location})
       res.end()
     }
     else if (/authorize_error_token/.test(url)) {
       var location = callback
-      oauth1.authorize({url, headers, query})
+      on.authorize({url, headers, query})
       res.writeHead(302, {location})
       res.end()
     }
     else if (/access_error_status/.test(url)) {
       buffer(req, (form) => {
-        oauth1.access({url, headers, query, form, oauth})
+        on.access({url, headers, query, form, oauth})
         res.writeHead(500, {'content-type': 'application/json'})
         res.end(JSON.stringify({invalid: 'access_url'}))
       })
+    }
+    else if (/profile_url/.test(req.url)) {
+      res.writeHead(200, {'content-type': 'application/json'})
+      res.end(JSON.stringify({user: 'simov'}))
     }
   })
   server.listen(port, () => resolve(server))
@@ -134,14 +139,14 @@ var oauth2 = (port) => new Promise((resolve) => {
 
     if (/authorize_url/.test(req.url)) {
       openid = (query.scope || []).includes('openid')
-      oauth2.authorize({url, query, headers})
+      on.authorize({url, query, headers})
       var location = query.redirect_uri + '?' + qs.stringify({code: 'code'})
       res.writeHead(302, {location})
       res.end()
     }
     else if (/access_url/.test(req.url)) {
       buffer(req, (form) => {
-        oauth2.access({method, url, query, headers, form})
+        on.access({method, url, query, headers, form})
         res.writeHead(200, {'content-type': 'application/json'})
         provider === 'concur'
           ? res.end(' <Token>token</Token> <Refresh_Token>refresh</Refresh_Token> ')
@@ -152,26 +157,26 @@ var oauth2 = (port) => new Promise((resolve) => {
       })
     }
     else if (/authorize_error_message/.test(req.url)) {
-      oauth2.authorize({url, query, headers})
+      on.authorize({url, query, headers})
       var location = query.redirect_uri + '?' + qs.stringify({error: {message: 'invalid'}})
       res.writeHead(302, {location})
       res.end()
     }
     else if (/authorize_error_code/.test(req.url)) {
-      oauth2.authorize({url, query, headers})
+      on.authorize({url, query, headers})
       var location = query.redirect_uri
       res.writeHead(302, {location})
       res.end()
     }
     else if (/authorize_error_state/.test(req.url)) {
-      oauth2.authorize({url, query, headers})
+      on.authorize({url, query, headers})
       var location = query.redirect_uri + '?' + qs.stringify({code: 'code', state: 'whatever'})
       res.writeHead(302, {location})
       res.end()
     }
     else if (/access_error_nonce/.test(req.url)) {
       buffer(req, (form) => {
-        oauth2.access({method, url, query, headers, form})
+        on.access({method, url, query, headers, form})
         res.writeHead(200, {'content-type': 'application/json'})
         res.end(JSON.stringify({
           id_token: sign({typ: 'JWT'}, {nonce: 'whatever'}, 'signature')
@@ -180,14 +185,14 @@ var oauth2 = (port) => new Promise((resolve) => {
     }
     else if (/access_error_message/.test(req.url)) {
       buffer(req, (form) => {
-        oauth2.access({method, url, query, headers, form})
+        on.access({method, url, query, headers, form})
         res.writeHead(200, {'content-type': 'application/json'})
         res.end(JSON.stringify({error: {message: 'invalid'}}))
       })
     }
     else if (/access_error_status/.test(req.url)) {
       buffer(req, (form) => {
-        oauth2.access({method, url, query, headers, form})
+        on.access({method, url, query, headers, form})
         res.writeHead(500, {'content-type': 'application/json'})
         res.end(JSON.stringify({invalid: 'access_url'}))
       })
@@ -200,10 +205,11 @@ var oauth2 = (port) => new Promise((resolve) => {
   server.listen(port, () => resolve(server))
 })
 
-oauth1.request = () => {}
-oauth1.authorize = () => {}
-oauth1.access = () => {}
-oauth2.authorize = () => {}
-oauth2.access = () => {}
+var on = {
+  request: () => {},
+  authorize: () => {},
+  access: () => {},
+  profile: () => {},
+}
 
 module.exports = provider

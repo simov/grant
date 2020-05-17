@@ -38,13 +38,13 @@ describe('oauth2', () => {
   })
 
   afterEach(() => {
-    provider.oauth2.authorize = () => {}
-    provider.oauth2.access = () => {}
+    provider.on.authorize = () => {}
+    provider.on.access = () => {}
   })
 
   describe('success', () => {
     it('google', async () => {
-      provider.oauth2.authorize = ({url, headers, query}) => {
+      provider.on.authorize = ({url, headers, query}) => {
         t.ok(url.startsWith('/google/authorize_url'))
         t.equal(typeof headers, 'object')
         t.deepEqual(query, {
@@ -52,7 +52,7 @@ describe('oauth2', () => {
           redirect_uri: 'http://localhost:5001/connect/google/callback'
         })
       }
-      provider.oauth2.access = ({url, headers, query, form}) => {
+      provider.on.access = ({url, headers, query, form}) => {
         t.equal(url, '/google/access_url')
         t.equal(headers['content-type'], 'application/x-www-form-urlencoded')
         t.deepEqual(form, {
@@ -75,10 +75,10 @@ describe('oauth2', () => {
 
   describe('subdomain', () => {
     it('auth0', async () => {
-      provider.oauth2.authorize = ({url, headers, query}) => {
+      provider.on.authorize = ({url, headers, query}) => {
         t.ok(url.startsWith('/auth0/authorize_url'))
       }
-      provider.oauth2.access = ({url, headers, query, form}) => {
+      provider.on.access = ({url, headers, query, form}) => {
         t.ok(url.startsWith('/auth0/access_url'))
       }
       var {body: {response}} = await request({
@@ -100,7 +100,7 @@ describe('oauth2', () => {
 
   describe('custom', () => {
     it('authorize - web_server - basecamp', async () => {
-      provider.oauth2.authorize = ({url, headers, query}) => {
+      provider.on.authorize = ({url, headers, query}) => {
         t.equal(query.type, 'web_server')
       }
       var {body: {response}} = await request({
@@ -115,7 +115,7 @@ describe('oauth2', () => {
     })
 
     it('authorize - scopes - freelancer', async () => {
-      provider.oauth2.authorize = ({url, headers, query}) => {
+      provider.on.authorize = ({url, headers, query}) => {
         t.equal(query.advanced_scopes, '1 2')
       }
       var {body: {response}} = await request({
@@ -131,7 +131,7 @@ describe('oauth2', () => {
     })
 
     it('authorize - scopes - optimizely', async () => {
-      provider.oauth2.authorize = ({url, headers, query}) => {
+      provider.on.authorize = ({url, headers, query}) => {
         t.equal(query.scopes, '1,2')
       }
       var {body: {response}} = await request({
@@ -147,7 +147,7 @@ describe('oauth2', () => {
     })
 
     it('authorize - response_type - visualstudio', async () => {
-      provider.oauth2.authorize = ({url, headers, query}) => {
+      provider.on.authorize = ({url, headers, query}) => {
         t.equal(query.response_type, 'Assertion')
       }
       var {body: {response}} = await request({
@@ -162,7 +162,7 @@ describe('oauth2', () => {
     })
 
     it('authorize - scopes separated by unencoded + sign - unsplash', async () => {
-      provider.oauth2.authorize = ({url, headers, query}) => {
+      provider.on.authorize = ({url, headers, query}) => {
         t.equal(url.replace(/.*scope=(.*)/g, '$1'), 'public+read_photos')
       }
       var {body: {response}} = await request({
@@ -178,12 +178,12 @@ describe('oauth2', () => {
     })
 
     it('authorize - app_id/client_id, access - app_id/app_secret -> client_id/client_secret - instagram v1', async () => {
-      provider.oauth2.authorize = ({url, headers, query}) => {
+      provider.on.authorize = ({url, headers, query}) => {
         t.equal(query.client_id, '00cd22b35e8e42c0a29d1d71236f5c1d')
         t.equal(query.app_id, undefined)
         t.equal(query.scope, 'a b')
       }
-      provider.oauth2.access = ({url, headers, query, form}) => {
+      provider.on.access = ({url, headers, query, form}) => {
         t.deepEqual(form, {
           grant_type: 'authorization_code',
           code: 'code',
@@ -205,12 +205,12 @@ describe('oauth2', () => {
     })
 
     it('authorize - app_id/client_id, access - app_id/app_secret -> client_id/client_secret - instagram graph', async () => {
-      provider.oauth2.authorize = ({url, headers, query}) => {
+      provider.on.authorize = ({url, headers, query}) => {
         t.equal(query.app_id, '771866756573877')
         t.equal(query.client_id, undefined)
         t.equal(query.scope, 'a,b')
       }
-      provider.oauth2.access = ({url, headers, query, form}) => {
+      provider.on.access = ({url, headers, query, form}) => {
         t.deepEqual(form, {
           grant_type: 'authorization_code',
           code: 'code',
@@ -232,7 +232,7 @@ describe('oauth2', () => {
     })
 
     it('authorize - app_id/client_id - instagram graph - no scope', async () => {
-      provider.oauth2.authorize = ({url, headers, query}) => {
+      provider.on.authorize = ({url, headers, query}) => {
         t.equal(query.app_id, '771866756573877')
         t.equal(query.client_id, undefined)
         t.equal(query.scope, undefined)
@@ -250,7 +250,7 @@ describe('oauth2', () => {
     })
 
     it('authorize - appid/client_id - wechat', async () => {
-      provider.oauth2.authorize = ({url, headers, query}) => {
+      provider.on.authorize = ({url, headers, query}) => {
         t.equal(query.appid, 'key')
         t.equal(query.client_id, undefined)
       }
@@ -267,7 +267,7 @@ describe('oauth2', () => {
     })
 
     it('access - web_server - basecamp', async () => {
-      provider.oauth2.access = ({url, headers, query, form}) => {
+      provider.on.access = ({url, headers, query, form}) => {
         t.equal(form.type, 'web_server')
       }
       var {body: {response}} = await request({
@@ -282,7 +282,7 @@ describe('oauth2', () => {
     })
 
     it('access - qs - concur', async () => {
-      provider.oauth2.access = ({url, headers, query, form}) => {
+      provider.on.access = ({url, headers, query, form}) => {
         t.deepEqual(query, {code: 'code', client_id: 'key', client_secret: 'secret'})
       }
       var {body: {response}} = await request({
@@ -298,7 +298,7 @@ describe('oauth2', () => {
     })
 
     it('access - qs - surveymonkey', async () => {
-      provider.oauth2.access = ({url, headers, query, form}) => {
+      provider.on.access = ({url, headers, query, form}) => {
         t.equal(query.api_key, 'api_key')
       }
       var {body: {response}} = await request({
@@ -315,7 +315,7 @@ describe('oauth2', () => {
     })
 
     it('access - basic auth', async () => {
-      provider.oauth2.access = ({url, headers, query, form}) => {
+      provider.on.access = ({url, headers, query, form}) => {
         t.deepEqual(
           Buffer.from(headers.authorization.replace('Basic ', ''), 'base64').toString().split(':'),
           ['key', 'secret']
@@ -338,7 +338,7 @@ describe('oauth2', () => {
       }))
     })
     it('access - basic auth - token_endpoint_auth_method -> client_secret_basic', async () => {
-      provider.oauth2.access = ({url, headers, query, form}) => {
+      provider.on.access = ({url, headers, query, form}) => {
         t.deepEqual(
           Buffer.from(headers.authorization.replace('Basic ', ''), 'base64').toString().split(':'),
           ['key', 'secret']
@@ -357,7 +357,7 @@ describe('oauth2', () => {
     })
 
     it('access - GET - qq', async () => {
-      provider.oauth2.access = ({method, url, headers, query, form}) => {
+      provider.on.access = ({method, url, headers, query, form}) => {
         t.equal(method, 'GET')
       }
       var {body: {response}} = await request({
@@ -372,7 +372,7 @@ describe('oauth2', () => {
     })
 
     it('access - GET + qs + custom params - wechat', async () => {
-      provider.oauth2.access = ({method, url, headers, query, form}) => {
+      provider.on.access = ({method, url, headers, query, form}) => {
         t.equal(method, 'GET')
         t.deepEqual(query, {
           grant_type: 'authorization_code',
@@ -395,7 +395,7 @@ describe('oauth2', () => {
     })
 
     it('access - hash - smartsheet', async () => {
-      provider.oauth2.access = ({url, headers, query, form}) => {
+      provider.on.access = ({url, headers, query, form}) => {
         t.deepEqual(form, {
           grant_type: 'authorization_code',
           code: 'code',
@@ -415,7 +415,7 @@ describe('oauth2', () => {
     })
 
     it('access - Assertion Framework for OAuth 2.0 - visualstudio', async () => {
-      provider.oauth2.access = ({url, headers, query, form}) => {
+      provider.on.access = ({url, headers, query, form}) => {
         t.deepEqual(form, {
           client_assertion_type: 'urn:ietf:params:oauth:client-assertion-type:jwt-bearer',
           client_assertion: 'secret',
@@ -457,7 +457,7 @@ describe('oauth2', () => {
     })
 
     it('authorize - state mismatch', async () => {
-      provider.oauth2.authorize = ({url, headers, query}) => {
+      provider.on.authorize = ({url, headers, query}) => {
         t.equal(query.state.length, 40)
       }
       var {body: {response}} = await request({
@@ -472,7 +472,7 @@ describe('oauth2', () => {
     })
 
     it('access - nonce mismatch', async () => {
-      provider.oauth2.authorize = ({url, headers, query}) => {
+      provider.on.authorize = ({url, headers, query}) => {
         t.equal(query.nonce.length, 40)
       }
       var {body: {response}} = await request({

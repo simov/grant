@@ -39,14 +39,14 @@ describe('oauth1', () => {
   })
 
   afterEach(() => {
-    provider.oauth1.request = () => {}
-    provider.oauth1.authorize = () => {}
-    provider.oauth1.access = () => {}
+    provider.on.request = () => {}
+    provider.on.authorize = () => {}
+    provider.on.access = () => {}
   })
 
   describe('success', () => {
     it('twitter', async () => {
-      provider.oauth1.request = ({url, headers, query, form, oauth}) => {
+      provider.on.request = ({url, headers, query, form, oauth}) => {
         t.equal(url, '/twitter/request_url')
         t.ok(/^simov\/grant/.test(headers['user-agent']))
         t.equal(typeof query, 'object')
@@ -55,12 +55,12 @@ describe('oauth1', () => {
         t.equal(oauth.oauth_consumer_key, 'key')
         t.equal(oauth.oauth_callback, 'http://localhost:5001/connect/twitter/callback')
       }
-      provider.oauth1.authorize = ({url, headers, query}) => {
+      provider.on.authorize = ({url, headers, query}) => {
         t.equal(url, '/twitter/authorize_url?oauth_token=token')
         t.equal(typeof headers, 'object')
         t.deepEqual(query, {oauth_token: 'token'})
       }
-      provider.oauth1.access = ({url, headers, query, form, oauth}) => {
+      provider.on.access = ({url, headers, query, form, oauth}) => {
         t.equal(url, '/twitter/access_url')
         t.ok(/^simov\/grant/.test(headers['user-agent']))
         t.equal(typeof query, 'object')
@@ -84,13 +84,13 @@ describe('oauth1', () => {
 
   describe('subdomain', () => {
     it('freshbooks', async () => {
-      provider.oauth1.request = ({url, headers, query, form, oauth}) => {
+      provider.on.request = ({url, headers, query, form, oauth}) => {
         t.ok(url.startsWith('/freshbooks/request_url'))
       }
-      provider.oauth1.authorize = ({url, headers, query}) => {
+      provider.on.authorize = ({url, headers, query}) => {
         t.ok(url.startsWith('/freshbooks/authorize_url'))
       }
-      provider.oauth1.access = ({url, headers, query, form, oauth}) => {
+      provider.on.access = ({url, headers, query, form, oauth}) => {
         t.ok(url.startsWith('/freshbooks/access_url'))
       }
       var {body: {response}} = await request({
@@ -113,7 +113,7 @@ describe('oauth1', () => {
 
   describe('custom', () => {
     it('querystring scope - request - etsy', async () => {
-      provider.oauth1.request = ({query}) => {
+      provider.on.request = ({query}) => {
         t.deepEqual(query, {scope: 'email_r profile_r'})
       }
       var {body: {response}} = await request({
@@ -129,10 +129,10 @@ describe('oauth1', () => {
     })
 
     it('signature_method - request/access - freshbooks', async () => {
-      provider.oauth1.request = ({headers}) => {
+      provider.on.request = ({headers}) => {
         t.ok(/oauth_signature_method="PLAINTEXT"/.test(headers.authorization))
       }
-      provider.oauth1.access = ({headers}) => {
+      provider.on.access = ({headers}) => {
         t.ok(/oauth_signature_method="PLAINTEXT"/.test(headers.authorization))
       }
       var {body: {response}} = await request({
@@ -147,7 +147,7 @@ describe('oauth1', () => {
     })
 
     it('scope - authorize - flickr', async () => {
-      provider.oauth1.authorize = ({query}) => {
+      provider.on.authorize = ({query}) => {
         t.deepEqual(query, {perms: 'a,b', oauth_token: 'token'})
       }
       var {body: {response}} = await request({
@@ -163,7 +163,7 @@ describe('oauth1', () => {
     })
 
     it('scope - authorize - ravelry', async () => {
-      provider.oauth1.authorize = ({query}) => {
+      provider.on.authorize = ({query}) => {
         t.deepEqual(query, {scope: 'a b', oauth_token: 'token'})
       }
       var {body: {response}} = await request({
@@ -179,7 +179,7 @@ describe('oauth1', () => {
     })
 
     it('scope - authorize - trello', async () => {
-      provider.oauth1.authorize = ({query}) => {
+      provider.on.authorize = ({query}) => {
         t.deepEqual(query, {scope: 'a,b', oauth_token: 'token'})
       }
       var {body: {response}} = await request({
@@ -195,7 +195,7 @@ describe('oauth1', () => {
     })
 
     it('custom_params - authorize - trello', async () => {
-      provider.oauth1.authorize = ({query}) => {
+      provider.on.authorize = ({query}) => {
         t.deepEqual(query, {oauth_token: 'token', name: 'grant'})
       }
       var {body: {response}} = await request({
@@ -212,7 +212,7 @@ describe('oauth1', () => {
     })
 
     it('oauth_verifier - access - goodreads', async () => {
-      provider.oauth1.access = ({oauth}) => {
+      provider.on.access = ({oauth}) => {
         t.equal(oauth.oauth_verifier, undefined)
       }
       var {body: {response}} = await request({
@@ -239,13 +239,13 @@ describe('oauth1', () => {
     })
 
     it('oauth_callback - authorize, oauth_verifier - access - tripit', async () => {
-      provider.oauth1.authorize = ({query}) => {
+      provider.on.authorize = ({query}) => {
         t.deepEqual(query, {
           oauth_callback: 'http://localhost:5001/connect/tripit/callback',
           oauth_token: 'token'
         })
       }
-      provider.oauth1.access = ({oauth}) => {
+      provider.on.access = ({oauth}) => {
         t.equal(oauth.oauth_verifier, undefined)
       }
       var {body: {response}} = await request({
@@ -260,7 +260,7 @@ describe('oauth1', () => {
     })
 
     it('custom - request/authorize/access - getpocket', async () => {
-      provider.oauth1.request = ({headers, form}) => {
+      provider.on.request = ({headers, form}) => {
         t.equal(headers['x-accept'], 'application/x-www-form-urlencoded')
         t.deepEqual(form, {
           consumer_key: 'key',
@@ -268,13 +268,13 @@ describe('oauth1', () => {
           redirect_uri: 'http://localhost:5001/connect/getpocket/callback',
         })
       }
-      provider.oauth1.authorize = ({query}) => {
+      provider.on.authorize = ({query}) => {
         t.deepEqual(query, {
           request_token: 'code',
           redirect_uri: 'http://localhost:5001/connect/getpocket/callback'
         })
       }
-      provider.oauth1.access = ({headers, form}) => {
+      provider.on.access = ({headers, form}) => {
         t.equal(headers['x-accept'], 'application/x-www-form-urlencoded')
         t.deepEqual(form, {
           consumer_key: 'key',

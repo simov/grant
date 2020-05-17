@@ -36,8 +36,8 @@ describe('oidc', () => {
   after(async () => {
     await provider.close()
     await client.close()
-    provider.oauth2.authorize = () => {}
-    provider.oauth2.access = () => {}
+    provider.on.authorize = () => {}
+    provider.on.access = () => {}
   })
 
   var verify = ({form, alg}) => {
@@ -71,7 +71,7 @@ describe('oidc', () => {
   }
 
   it('private pem - no kid', async () => {
-    provider.oauth2.access = ({form}) => {
+    provider.on.access = ({form}) => {
       var jwt = verify({form, alg: 'RS256'})
       t.ok(jwt.header.kid === undefined, 'no pem-to-jwk convertion yet')
     }
@@ -88,7 +88,7 @@ describe('oidc', () => {
   })
 
   it('private jwk - set kid', async () => {
-    provider.oauth2.access = ({form}) => {
+    provider.on.access = ({form}) => {
       var jwt = verify({form, alg: 'RS256'})
       t.ok(typeof jwt.header.kid === 'string', 'should pick the kid from the jwk')
     }
@@ -106,7 +106,7 @@ describe('oidc', () => {
 
   it('private jwk - generate kid', async () => {
     delete keys.RS256.private_jwk.kid
-    provider.oauth2.access = ({form}) => {
+    provider.on.access = ({form}) => {
       var jwt = verify({form, alg: 'RS256'})
       t.ok(typeof jwt.header.kid === 'string', 'should generate the kid out of the jwk')
     }
@@ -123,7 +123,7 @@ describe('oidc', () => {
   })
 
   it('public pem - generate x5t', async () => {
-    provider.oauth2.access = ({form}) => {
+    provider.on.access = ({form}) => {
       var jwt = verify({form, alg: 'RS256'})
       t.ok(jwt.header.kid === undefined, 'no pem-to-jwk convertion yet')
       t.ok(typeof jwt.header.x5t === 'string', 'should generate x5t out of the pem')
@@ -142,7 +142,7 @@ describe('oidc', () => {
   })
 
   it('public jwk - set x5t', async () => {
-    provider.oauth2.access = ({form}) => {
+    provider.on.access = ({form}) => {
       var jwt = verify({form, alg: 'RS256'})
       t.ok(jwt.header.kid === undefined, 'no pem-to-jwk convertion yet')
       t.ok(typeof jwt.header.x5t === 'string', 'should pick the x5t from the jwk')
@@ -161,7 +161,7 @@ describe('oidc', () => {
   })
 
   it('token alg - ES256', async () => {
-    provider.oauth2.access = ({form}) => {
+    provider.on.access = ({form}) => {
       var jwt = verify({form, alg: 'ES256'})
       t.ok(jwt.header.kid === undefined, 'no pem-to-jwk convertion yet')
     }
@@ -179,7 +179,7 @@ describe('oidc', () => {
   })
 
   it('token alg - PS256', async () => {
-    provider.oauth2.access = ({form}) => {
+    provider.on.access = ({form}) => {
       var jwt = verify({form, alg: 'PS256'})
       t.ok(jwt.header.kid === undefined, 'no pem-to-jwk convertion yet')
     }

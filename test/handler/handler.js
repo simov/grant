@@ -188,19 +188,19 @@ describe('handler', () => {
         })
 
         afterEach(() => {
-          provider.oauth2.authorize = () => {}
-          provider.oauth2.access = () => {}
+          provider.on.authorize = () => {}
+          provider.on.access = () => {}
         })
 
         it('success', async () => {
-          provider.oauth2.authorize = ({query}) => {
+          provider.on.authorize = ({query}) => {
             t.deepEqual(query, {
               client_id: 'very',
               response_type: 'code',
               redirect_uri: 'http://localhost:5001/connect/oauth2/callback'
             })
           }
-          provider.oauth2.access = ({form}) => {
+          provider.on.access = ({form}) => {
             t.deepEqual(form, {
               grant_type: 'authorization_code',
               code: 'code',
