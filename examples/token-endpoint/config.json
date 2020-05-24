@@ -1,0 +1,16 @@
+{
+  "defaults": {
+    "origin": "http://localhost:3000",
+    "transport": "session"
+  },
+  "microsoft": {
+    "key": "APP_ID",
+    "token_endpoint_auth_method": "private_key_jwt",
+    "public_key": "-----BEGIN CERTIFICATE-----\n...actual key here...\n-----END CERTIFICATE-----\n\n",
+    "private_key": "-----BEGIN RSA PRIVATE KEY-----\n...actual key here...\n-----END RSA PRIVATE KEY-----\n\n",
+    "scope": [
+      "openid"
+    ],
+    "callback": "/hello"
+  }
+}
