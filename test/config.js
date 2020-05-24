@@ -259,6 +259,7 @@ describe('config', () => {
           fitbit2: {
             authorize_url: 'https://www.fitbit.com/oauth2/authorize',
              access_url: 'https://api.fitbit.com/oauth2/token',
+             profile_url: 'https://api.fitbit.com/1/user/-/profile.json',
              oauth: 2,
              scope_delimiter: ' ',
              key: 'key',
@@ -279,8 +280,9 @@ describe('config', () => {
       t.deepEqual(
         output, {
           linkedin2: {
-            authorize_url: 'https://www.fitbit.com/oauth2/authorize',
-             access_url: 'https://api.fitbit.com/oauth2/token',
+            authorize_url: 'https://www.linkedin.com/oauth/v2/authorization',
+             access_url: 'https://www.linkedin.com/oauth/v2/accessToken',
+             profile_url: 'https://api.linkedin.com/v1/people/~',
              oauth: 2,
              scope_delimiter: ' ',
              key: 'key',
@@ -303,6 +305,7 @@ describe('config', () => {
         facebook: {
           authorize_url: 'https://www.facebook.com/dialog/oauth',
           access_url: 'https://graph.facebook.com/oauth/access_token',
+          profile_url: 'https://graph.facebook.com/me',
           oauth: 2,
           protocol: 'http', host: 'localhost:3000', prefix: '/connect',
           state: true,
@@ -324,6 +327,7 @@ describe('config', () => {
         facebook: {
           authorize_url: 'https://www.facebook.com/dialog/oauth',
           access_url: 'https://graph.facebook.com/oauth/access_token',
+          profile_url: 'https://graph.facebook.com/me',
           oauth: 2,
           protocol: 'http', host: 'localhost:3000', prefix: '/connect',
           state: true,
@@ -386,6 +390,7 @@ describe('config', () => {
         config.provider(options, session), {
           authorize_url: 'https://www.facebook.com/dialog/oauth',
           access_url: 'https://graph.facebook.com/oauth/access_token',
+          profile_url: 'https://graph.facebook.com/me',
           oauth: 2,
           prefix: '/connect',
           dynamic: true,
