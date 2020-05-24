@@ -1,0 +1,32 @@
+{
+  "defaults": {
+    "origin": "http://localhost:3000",
+    "transport": "session"
+  },
+  "google": {
+    "key": "APP_ID",
+    "secret": "APP_SECRET",
+    "callback": "/hello",
+    "response": ["tokens", "raw", "jwt", "profile"],
+    "scope": [
+      "openid",
+      "email",
+      "profile"
+    ],
+    "overrides": {
+      "gender": {
+        "profile_url": "https://people.googleapis.com/v1/people/me?personFields=names,genders",
+        "scope": [
+          "https://www.googleapis.com/auth/userinfo.profile",
+          "https://www.googleapis.com/auth/user.gender.read"
+        ]
+      }
+    }
+  },
+  "twitter": {
+    "key": "CONSUMER_KEY",
+    "secret": "CONSUMER_SECRET",
+    "callback": "/hi",
+    "response": ["tokens", "profile"]
+  }
+}
