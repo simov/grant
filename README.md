@@ -145,6 +145,7 @@ Key | Location | Description
 **`request_url`** | [oauth.json] | OAuth 1.0a only, first step
 **`authorize_url`** | [oauth.json] | OAuth 2.0 first step, OAuth 1.0a second step
 **`access_url`** | [oauth.json] | OAuth 2.0 second step, OAuth 1.0a third step
+**`profile_url`** | [oauth.json] | User profile URL
 **`oauth`** | [oauth.json] | OAuth version number
 **`scope_delimiter`** | [oauth.json] | String delimiter used for concatenating multiple scopes
 **`token_endpoint_auth_method`** | `[provider]` | Authentication method for the token endpoint
@@ -182,6 +183,7 @@ Key | Location | Value
 **`request_url`** | [oauth.json] | `'https://api.twitter.com/oauth/request_token'`
 **`authorize_url`** | [oauth.json] | `'https://api.twitter.com/oauth/authenticate'`
 **`access_url`** | [oauth.json] | `'https://api.twitter.com/oauth/access_token'`
+**`profile_url`** | [oauth.json] | `'https://api.twitter.com/1.1/users/show.json'`
 **`oauth`** | [oauth.json] | `2` `1`
 **`scope_delimiter`** | [oauth.json] | `','` `' '`
 **`token_endpoint_auth_method`** | `[provider]` | `'client_secret_post'` `'client_secret_basic'` `'private_key_jwt'`
@@ -192,7 +194,7 @@ Key | Location | Value
 **`state`** | `defaults` | `true`
 **`nonce`** | `defaults` | `true`
 **`pkce`** | `defaults` | `true`
-**`response`** | `defaults` | `['tokens', 'raw', 'jwt']`
+**`response`** | `defaults` | `['tokens', 'raw', 'jwt', 'profile']`
 **`transport`** | `defaults` | `'querystring'` `'session'` `'state'`
 **`callback`** | `[provider]` | `'/hello'` `'https://site.com/hey'`
 **`overrides`** | `[provider]` | `{something: {scope: ['..']}}`
@@ -562,6 +564,33 @@ This will make the decoded JWT available in the response data:
 ```
 
 Make sure you include all response keys that you want returned when configuring the `response` data explicitly.
+
+
+### profile
+
+Outside of the regular OAuth flow, Grant can request the user profile as well:
+
+```json
+{
+  "google": {
+    "response": ["tokens", "profile"]
+  }
+}
+```
+
+Additionaly a `profile` key will be available in the response data:
+
+```js
+{
+  access_token: '...',
+  refresh_token: '...',
+  profile: {some: 'user data'}
+}
+```
+
+The `profile` key contains either the raw response data returned from the user endpoint or an error message.
+
+Not all of the supported providers have their `profile_url` set, and some of them might require custom parameters. Usually the user profile endpoint is only accessible if you request certain `scope`s.
 
 
 ## Callback: Session

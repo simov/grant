@@ -38,6 +38,7 @@ var oauth1 = (port) => new Promise((resolve) => {
   var callback
   var server = http.createServer()
   server.on('request', (req, res) => {
+    var method = req.method
     var url = req.url
     var headers = req.headers
     var oauth = _oauth(req)
@@ -120,8 +121,11 @@ var oauth1 = (port) => new Promise((resolve) => {
       })
     }
     else if (/profile_url/.test(req.url)) {
+      on.profile({method, url, query, headers})
       res.writeHead(200, {'content-type': 'application/json'})
-      res.end(JSON.stringify({user: 'simov'}))
+      provider === 'flickr'
+        ? res.end('callback({"user": "simov"})')
+        : res.end(JSON.stringify({user: 'simov'}))
     }
   })
   server.listen(port, () => resolve(server))
@@ -198,8 +202,14 @@ var oauth2 = (port) => new Promise((resolve) => {
       })
     }
     else if (/profile_url/.test(req.url)) {
+      on.profile({method, url, query, headers})
       res.writeHead(200, {'content-type': 'application/json'})
       res.end(JSON.stringify({user: 'simov'}))
+    }
+    else if (/profile_error/.test(req.url)) {
+      on.profile({method, url, query, headers})
+      res.writeHead(400, {'content-type': 'application/json'})
+      res.end(JSON.stringify({error: {message: 'Not Found'}}))
     }
   })
   server.listen(port, () => resolve(server))
