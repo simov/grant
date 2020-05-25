@@ -1,6 +1,12 @@
 
 # Change Log
 
+## v5.1.0 (2020/05/25)
+- **New:** Support for `private_key_jwt` client authentication
+- **New:** `grant-profile` was deprecated as standalone module and is now [embedded](https://github.com/simov/grant#profile) into Grant
+- **New:** Increase the random `state` and `nonce` size
+- **New:** Official support for 4 new providers: `cas`, `cognito`, `fusionauth`, `logingov`
+
 ## v5.0.1 (2020/05/01)
 - **Fix:** Fixed the path matching regexp for Express and Koa
 
