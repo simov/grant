@@ -200,22 +200,6 @@ describe('session', () => {
         })
         t.deepEqual(session, {provider: 'oauth2'})
       })
-
-      it('/connect - missing or misconfigured provider', async () => {
-        var {body: {response}} = await request({
-          url: client.url('/connect/grant'),
-          cookie: {},
-        })
-        t.deepEqual(response, {error: 'Grant: missing or misconfigured provider'})
-      })
-
-      it('/callback - missing session or misconfigured provider', async () => {
-        var {body: {response}} = await request({
-          url: client.url('/connect/grant/callback'),
-          cookie: {},
-        })
-        t.deepEqual(response, {error: 'Grant: missing session or misconfigured provider'})
-      })
     })
   })
 

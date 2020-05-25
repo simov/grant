@@ -136,6 +136,46 @@ describe('handler', () => {
     })
   })
 
+  describe('missing provider', () => {
+    ;['express', 'koa', 'hapi'].forEach((handler) => {
+      describe(handler, () => {
+        before(async () => {
+          client = await Client({test: 'handlers', handler, config})
+        })
+
+        after(async () => {
+          await client.close()
+        })
+
+        it('/connect - misconfigured provider', async () => {
+          var {body: {response}} = await request({
+            url: client.url('/connect/oauth2'),
+            qs: {oauth: 5},
+            cookie: {},
+          })
+          t.deepEqual(response, {error: 'Grant: missing or misconfigured provider'})
+        })
+
+        it('/connect - missing provider', async () => {
+          t.equal(config.defaults.dynamic, undefined)
+          var {body: {response}} = await request({
+            url: client.url('/connect/oauth5'),
+            cookie: {},
+          })
+          t.deepEqual(response, {error: 'Grant: missing or misconfigured provider'})
+        })
+
+        it('/callback - missing session', async () => {
+          var {body: {response}} = await request({
+            url: client.url('/connect/oauth2/callback'),
+            cookie: {},
+          })
+          t.deepEqual(response, {error: 'Grant: missing session or misconfigured provider'})
+        })
+      })
+    })
+  })
+
   describe('path prefix', () => {
     ;['express', 'koa', 'hapi'].forEach((handler) => {
       ;[
