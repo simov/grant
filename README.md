@@ -145,7 +145,6 @@ Key | Location | Description
 **`request_url`** | [oauth.json] | OAuth 1.0a only, first step
 **`authorize_url`** | [oauth.json] | OAuth 2.0 first step, OAuth 1.0a second step
 **`access_url`** | [oauth.json] | OAuth 2.0 second step, OAuth 1.0a third step
-**`profile_url`** | [oauth.json] | User profile URL
 **`oauth`** | [oauth.json] | OAuth version number
 **`scope_delimiter`** | [oauth.json] | String delimiter used for concatenating multiple scopes
 **`token_endpoint_auth_method`** | `[provider]` | Authentication method for the token endpoint
@@ -162,8 +161,8 @@ Key | Location | Description
 **`overrides`** | `[provider]` | Static configuration overrides for a provider
 **`dynamic`** | `[provider]` | Configuration keys that can be overridden dynamically over HTTP
 ***Client App*** |
-**`key`** | `[provider]` | The `consumer_key` or `client_id` of your OAuth app
-**`secret`** | `[provider]` | The `consumer_secret` or `client_secret` of your OAuth app
+**`key`** **`client_id`** **`consumer_key`** | `[provider]` | The `client_id` or `consumer_key` of your OAuth app
+**`secret`** **`client_secret`**  **`consumer_secret`** | `[provider]` | The `client_secret` or `consumer_secret` of your OAuth app
 **`scope`** | `[provider]` | List of scopes to request
 **`custom_params`** | `[provider]` | Custom authorization parameters and their values
 **`subdomain`** | `[provider]` | String to embed into the authorization server URLs
@@ -173,6 +172,7 @@ Key | Location | Description
 ***Grant*** |
 **`name`** | `generated` | Provider's [name](#grant)
 **`[provider]`** | `generated` | Provider's [name](#grant) as key
+**`profile_url`** | [profile.json] | User profile URL
 
 
 ## Configuration: Values
@@ -183,7 +183,6 @@ Key | Location | Value
 **`request_url`** | [oauth.json] | `'https://api.twitter.com/oauth/request_token'`
 **`authorize_url`** | [oauth.json] | `'https://api.twitter.com/oauth/authenticate'`
 **`access_url`** | [oauth.json] | `'https://api.twitter.com/oauth/access_token'`
-**`profile_url`** | [oauth.json] | `'https://api.twitter.com/1.1/users/show.json'`
 **`oauth`** | [oauth.json] | `2` `1`
 **`scope_delimiter`** | [oauth.json] | `','` `' '`
 **`token_endpoint_auth_method`** | `[provider]` | `'client_secret_post'` `'client_secret_basic'` `'private_key_jwt'`
@@ -200,8 +199,8 @@ Key | Location | Value
 **`overrides`** | `[provider]` | `{something: {scope: ['..']}}`
 **`dynamic`** | `[provider]` | `['scope', 'subdomain']`
 ***Client App*** |
-**`key`** | `[provider]` | `'123'`
-**`secret`** | `[provider]` | `'123'`
+**`key`** **`client_id`** **`consumer_key`** | `[provider]` | `'123'`
+**`secret`** **`client_secret`**  **`consumer_secret`** | `[provider]` | `'123'`
 **`scope`** | `[provider]` | `['openid', '..']`
 **`custom_params`** | `[provider]` | `{access_type: 'offline'}`
 **`subdomain`** | `[provider]` | `'myorg'`
@@ -211,6 +210,7 @@ Key | Location | Value
 ***Grant*** |
 **`name`** |`generated` | `name: 'twitter'`
 **`[provider]`** |`generated` | `twitter: true`
+**`profile_url`** | [profile.json] | `'https://api.twitter.com/1.1/users/show.json'`
 
 
 ## Configuration: Scopes
@@ -534,6 +534,8 @@ In case your session store encodes the entire session in a cookie, not just the 
 }
 ```
 
+This will return only the tokens available, without the `raw` response data.
+
 ### jwt
 
 Grant can also return even larger [response data](#callback-data) by including the decoded JWT for [OpenID Connect](#connect-openid-connect) providers that return `id_token`:
@@ -588,7 +590,7 @@ Additionaly a `profile` key will be available in the response data:
 }
 ```
 
-The `profile` key contains either the raw response data returned from the user endpoint or an error message.
+The `profile` key contains either the raw response data returned from the user profile endpoint or an error message.
 
 Not all of the supported providers have their `profile_url` set, and some of them might require custom parameters. Usually the user profile endpoint is only accessible if you request certain `scope`s.
 
@@ -1023,6 +1025,7 @@ Set your Client Secret as `secret` not the App Secret:
   [oauth-like-a-boss]: https://dev.to/simov/oauth-like-a-boss-2m3b
 
   [oauth.json]: https://github.com/simov/grant/blob/master/config/oauth.json
+  [profile.json]: https://github.com/simov/grant/blob/master/config/profile.json
   [reserved-keys]: https://github.com/simov/grant/blob/master/config/reserved.json
   [examples]: https://github.com/simov/grant/tree/master/examples
   [changelog]: https://github.com/simov/grant/blob/master/CHANGELOG.md
