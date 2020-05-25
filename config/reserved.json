@@ -2,7 +2,6 @@
   "request_url",
   "authorize_url",
   "access_url",
-  "profile_url",
   "oauth",
   "scope_delimiter",
   "token_endpoint_auth_method",
@@ -36,5 +35,6 @@
   "subdomain",
 
   "name",
-  "redirect_uri"
+  "redirect_uri",
+  "profile_url"
 ]
