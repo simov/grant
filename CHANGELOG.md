@@ -1,6 +1,9 @@
 
 # Change Log
 
+## v5.1.1 (2020/05/25)
+- **Fix:** The upcoming Grant constructor
+
 ## v5.1.0 (2020/05/25)
 - **New:** Support for `private_key_jwt` client authentication
 - **New:** `grant-profile` was deprecated as standalone module and is now [embedded](https://github.com/simov/grant#profile) into Grant
