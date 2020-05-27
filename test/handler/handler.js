@@ -176,6 +176,72 @@ describe('handler', () => {
     })
   })
 
+  describe('path matching regexp', () => {
+    ;['express', 'koa', 'hapi'].forEach((handler) => {
+      describe(handler, () => {
+        before(async () => {
+          client = await Client({test: 'handlers', handler, config: {
+            defaults: {
+              origin: 'http://localhost:5001', callback: '/',
+            },
+            oauth2: {
+              authorize_url: provider.url('/oauth2/authorize_url'),
+              access_url: provider.url('/oauth2/access_url'),
+              oauth: 2,
+              overrides: {override: {}},
+            }
+          }})
+        })
+
+        after(async () => {
+          await client.close()
+        })
+
+        it('success', async () => {
+          var paths = [
+            '/connect/oauth2',
+            '/connect/oauth2/override',
+          ]
+          var endings = [
+            '',
+            '/',
+            '/?a=/',
+            '?',
+            '?a=/',
+          ]
+          for (var path of paths) {
+            for (var end of endings) {
+              if (
+                'hapi' === handler &&
+                '/connect/oauth2/override' === path &&
+                ['/', '/?a=/'].includes(end)) {
+                continue
+              }
+              var {body: {response}} = await request({
+                url: client.url(path + end),
+                cookie: {},
+              })
+              t.deepEqual(response, {
+                access_token: 'token',
+                refresh_token: 'refresh',
+                raw: {access_token: 'token', refresh_token: 'refresh', expires_in: '3600'}
+              })
+            }
+          }
+          try {
+            var {body: {response}} = await request({
+              url: client.url('/connect/oauth2/override/something'),
+              cookie: {},
+            })
+          }
+          catch (err) {
+            t.equal(err.message, '404 Not Found')
+          }
+        })
+      })
+    })
+  })
+
   describe('path prefix', () => {
     ;['express', 'koa', 'hapi'].forEach((handler) => {
       ;[
