@@ -41,7 +41,7 @@
   "apple": {
     "authorize_url": "https://appleid.apple.com/auth/authorize",
     "access_url": "https://appleid.apple.com/auth/token",
-    "oauth": 2,
+    "oauth": 2
   },
   "arcgis": {
     "authorize_url": "https://www.arcgis.com/sharing/rest/oauth2/authorize",
