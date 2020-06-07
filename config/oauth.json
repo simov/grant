@@ -373,6 +373,12 @@
     "oauth": 2,
     "scope_delimiter": " "
   },
+  "garmin": {
+    "request_url": "https://connectapi.garmin.com/oauth-service/oauth/request_token",
+    "authorize_url": "https://connect.garmin.com/oauthConfirm",
+    "access_url": "https://connectapi.garmin.com/oauth-service/oauth/access_token",
+    "oauth": 1
+  },
   "geeklist": {
     "request_url": "https://api.geekli.st/v1/oauth/request_token",
     "authorize_url": "https://geekli.st/oauth/authorize",
