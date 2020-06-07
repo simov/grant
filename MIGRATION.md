@@ -141,3 +141,28 @@ The equivalent of the above in Grant v5 is:
 
 - [`prefix`](https://github.com/simov/grant#connect-prefix) configuration
 - [path prefix](https://github.com/simov/grant#misc-path-prefix) for a middleware
+
+
+## Deprecate: Meta modules
+
+In Grant v4 it was possible to require Express, Koa and Hapi using:
+
+```js
+var grant = require('grant-express')
+var grant = require('grant-koa')
+var grant = require('grant-hapi')
+```
+
+In Grant v5 it is recommended to use one of the following:
+
+```js
+var grant = require('grant').express()(config)
+var grant = require('grant').express()({config, ...})
+var grant = require('grant').express(config)
+var grant = require('grant').express({config, ...})
+var grant = require('grant')({handler: 'express', config})
+```
+
+#### Documentation
+
+- [handler constructors](https://github.com/simov/grant#misc-handler-constructors) configuration
