@@ -7,7 +7,7 @@
 
 ## 180+ Supported Providers / [OAuth Playground][grant-oauth]
 
-[`23andme`](https://api.23andme.com) | [`500px`](https://github.com/500px/api-documentation) | [`acton`](https://developer.act-on.com) | [`acuityscheduling`](https://developers.acuityscheduling.com) | [`aha`](https://www.aha.io/api) | [`amazon`](https://login.amazon.com/documentation) | [`angellist`](https://angel.co/api) | [`arcgis`](https://developers.arcgis.com) | [`asana`](https://asana.com/developers) | [`assembla`](https://api-docs.assembla.cc) | [`atlassian`](https://developer.atlassian.com) | [`auth0`](https://auth0.com/docs) | [`authentiq`](https://www.authentiq.com/developers) | [`aweber`](https://api.aweber.com) | [`axosoft`](https://developer.axosoft.com) | [`baidu`](https://developer.baidu.com) | [`basecamp`](https://github.com/basecamp/bc3-api) | [`battlenet`](https://develop.battle.net) | [`beatport`](https://oauth-api.beatport.com) | [`bitbucket`](https://developer.atlassian.com/bitbucket/api/2/reference/) | [`bitly`](https://dev.bitly.com) | [`box`](https://developer.box.com) | [`buffer`](https://buffer.com/developers) | [`campaignmonitor`](https://www.campaignmonitor.com/api) | [`cas`](https://apereo.github.io/cas/) | [`cheddar`](https://cheddarapp.com/developer) | [`clio`](https://app.clio.com/api/v4/documentation) | [`cognito`](https://aws.amazon.com/cognito/) | [`coinbase`](https://developers.coinbase.com) | [`concur`](https://developer.concur.com) | [`constantcontact`](https://developer.constantcontact.com) | [`coursera`](https://building.coursera.org) | [`dailymotion`](https://developer.dailymotion.com) | [`deezer`](https://developers.deezer.com) | [`delivery`](https://developers.delivery.com) | [`deputy`](https://www.deputy.com/api-doc/) | [`deviantart`](https://www.deviantart.com/developers/) | [`digitalocean`](https://developers.digitalocean.com) | [`discogs`](https://www.discogs.com/developers/) | [`discord`](https://discordapp.com/developers/docs/intro) | [`disqus`](https://disqus.com/api/docs) | [`docusign`](https://developers.docusign.com) | [`dribbble`](https://developer.dribbble.com) | [`dropbox`](https://www.dropbox.com/developers) | [`ebay`](https://developer.ebay.com) | [`echosign`](https://secure.echosign.com/public/docs/restapi/v3) | [`ecwid`](https://developers.ecwid.com) | [`edmodo`](https://partnerships.edmodo.com) | [`egnyte`](https://developers.egnyte.com) | [`etsy`](https://www.etsy.com/developers) | [`eventbrite`](https://www.eventbrite.com/platform) | [`evernote`](https://dev.evernote.com) | [`eyeem`](https://github.com/eyeem/Public-API) | [`facebook`](https://developers.facebook.com) | [`familysearch`](https://www.familysearch.org/developers/) | [`feedly`](https://developer.feedly.com) | [`fitbit`](https://dev.fitbit.com) | [`flattr`](http://developers.flattr.net) | [`flickr`](https://www.flickr.com/services) | [`flowdock`](https://www.flowdock.com/api) | [`formstack`](https://developers.formstack.com) | [`foursquare`](https://developer.foursquare.com) | [`freeagent`](https://dev.freeagent.com) | [`freelancer`](https://developers.freelancer.com) | [`freshbooks`](https://www.freshbooks.com/developers) | [`fusionauth`](https://fusionauth.io/docs/) | [`geeklist`](http://hackers.geekli.st) | [`genius`](https://docs.genius.com) | [`getbase`](https://developers.getbase.com) | [`getpocket`](https://getpocket.com/developer) | [`gitbook`](https://developer.gitbook.com) | [`github`](https://developer.github.com) | [`gitlab`](https://docs.gitlab.com/ce/api/) | [`gitter`](https://developer.gitter.im) | [`goodreads`](https://www.goodreads.com/api) | [`google`](https://developers.google.com) | [`groove`](https://www.groovehq.com/docs) | [`gumroad`](https://gumroad.com/api) | [`harvest`](https://help.getharvest.com/api-v2/) | [`hellosign`](https://www.hellosign.com/api) | [`heroku`](https://devcenter.heroku.com/categories/platform-api) | [`homeaway`](https://www.homeaway.com/platform) | [`hootsuite`](https://developer.hootsuite.com) | [`ibm`](https://www.ibm.com/support/knowledgecenter/SSAT72/com.ibm.help.ssm_adminguide.doc/t_RegisteringforblueID.html) | [`iconfinder`](https://developer.iconfinder.com) | [`idme`](https://developer.id.me) | [`idonethis`](https://i-done-this.readme.io/docs) | [`imgur`](https://apidocs.imgur.com) | [`infusionsoft`](https://developer.infusionsoft.com) | [`instagram`](https://instagram.com/developer) | [`intuit`](https://developer.intuit.com) | [`jamendo`](https://devportal.jamendo.com/) | [`jumplead`](https://developer.jumplead.com) | [`kakao`](https://developers.kakao.com) | [`line`](https://developers.line.biz) | [`linkedin`](https://www.linkedin.com/developers) | [`live`](https://docs.microsoft.com/en-us/onedrive/developer/rest-api/getting-started/msa-oauth?view=odsp-graph-online) | [`livechat`](https://developers.livechatinc.com) | [`logingov`](https://developers.login.gov) | [`lyft`](https://developer.lyft.com) | [`mailchimp`](https://developer.mailchimp.com) | [`mailup`](http://help.mailup.com/display/mailupapi/REST+API) | [`mailxpert`](https://dev.mailxpert.ch) | [`mapmyfitness`](https://developer.underarmour.com) | [`mastodon`](https://docs.joinmastodon.org/) | [`medium`](https://developers.medium.com) | [`meetup`](https://www.meetup.com/meetup_api/) | [`mention`](https://dev.mention.com) | [`microsoft`](https://developer.microsoft.com/en-us/graph) | [`mixcloud`](https://www.mixcloud.com/developers) | [`mixer`](https://dev.mixer.com) | [`moxtra`](https://developer.moxtra.com) | [`myob`](https://developer.myob.com) | [`naver`](https://developers.naver.com) | [`nest`](https://developers.nest.com) | [`nokotime`](https://developer.nokotime.com) | [`nylas`](https://docs.nylas.com) | [`okta`](https://developer.okta.com/) | [`onelogin`](https://developers.onelogin.com) | [`openstreetmap`](https://wiki.openstreetmap.org/wiki/API_v0.6) | [`optimizely`](https://developers.optimizely.com) | [`patreon`](https://docs.patreon.com) | [`paypal`](https://developer.paypal.com) | [`phantauth`](https://www.phantauth.net) | [`pinterest`](https://developers.pinterest.com) | [`plurk`](https://www.plurk.com/API) | [`podio`](https://developers.podio.com) | [`producthunt`](https://api.producthunt.com/v2/docs) | [`projectplace`](https://service.projectplace.com/apidocs) | [`pushbullet`](https://docs.pushbullet.com) | [`qq`](https://wiki.connect.qq.com/%E5%87%86%E5%A4%87%E5%B7%A5%E4%BD%9C_oauth2-0) | [`ravelry`](https://www.ravelry.com/api) | [`redbooth`](https://redbooth.com/api) | [`reddit`](https://www.reddit.com/dev/api) | [`runkeeper`](https://runkeeper.com/developer/healthgraph/) | [`salesforce`](https://developer.salesforce.com) | [`shoeboxed`](https://github.com/Shoeboxed/api) | [`shopify`](https://developers.shopify.com) | [`skyrock`](https://www.skyrock.com/developer) | [`slack`](https://api.slack.com) | [`slice`](https://developer.slice.com) | [`smartsheet`](https://smartsheet-platform.github.io/api-docs) | [`smugmug`](https://api.smugmug.com) | [`snapchat`](https://kit.snapchat.com) | [`socialpilot`](https://developer.socialpilot.co) | [`socrata`](https://dev.socrata.com) | [`soundcloud`](https://developers.soundcloud.com) | [`spotify`](https://developer.spotify.com) | [`square`](https://squareup.com/developers) | [`stackexchange`](https://api.stackexchange.com) | [`stocktwits`](https://api.stocktwits.com/developers) | [`stormz`](https://developer.stormz.me) | [`strava`](https://developers.strava.com) | [`stripe`](https://stripe.com/docs) | [`surveygizmo`](https://apihelp.surveygizmo.com) | [`surveymonkey`](https://developer.surveymonkey.com) | [`thingiverse`](https://www.thingiverse.com/developers) | [`ticketbud`](https://api.ticketbud.com) | [`timelyapp`](https://dev.timelyapp.com) | [`todoist`](https://developer.todoist.com) | [`trakt`](https://trakt.docs.apiary.io) | [`traxo`](https://developer.traxo.com) | [`trello`](https://developers.trello.com) | [`tripit`](https://www.tripit.com/developer) | [`tumblr`](https://www.tumblr.com/docs/en/api/v2) | [`twitch`](https://dev.twitch.tv) | [`twitter`](https://developer.twitter.com) | [`typeform`](https://developer.typeform.com) | [`uber`](https://developer.uber.com) | [`underarmour`](https://developer.underarmour.com) | [`unsplash`](https://unsplash.com/documentation) | [`upwork`](https://developers.upwork.com) | [`uservoice`](https://developer.uservoice.com) | [`vend`](https://developers.vendhq.com) | [`venmo`](https://developers.braintreepayments.com/guides/venmo/overview/) | [`verticalresponse`](http://developers.verticalresponse.com) | [`viadeo`](https://partners.viadeo.com) | [`vimeo`](https://developer.vimeo.com) | [`visualstudio`](https://docs.microsoft.com/en-us/vsts/integrate/get-started/authentication/oauth?view=vsts) | [`vk`](https://vk.com/dev) | [`wechat`](https://mp.weixin.qq.com) | [`weekdone`](https://weekdone.com/developer) | [`weibo`](https://open.weibo.com) | [`withings`](http://developer.withings.com) | [`wordpress`](https://developer.wordpress.com) | [`wrike`](https://developers.wrike.com) | [`xero`](https://developer.xero.com) | [`xing`](https://dev.xing.com) | [`yahoo`](https://developer.yahoo.com) | [`yammer`](https://developer.yammer.com/docs) | [`yandex`](https://tech.yandex.com) | [`zeit`](https://zeit.co/docs) | [`zendesk`](https://developer.zendesk.com) | [`zoom`](https://marketplace.zoom.us/docs)
+[`23andme`](https://api.23andme.com) | [`500px`](https://github.com/500px/api-documentation) | [`acton`](https://developer.act-on.com) | [`acuityscheduling`](https://developers.acuityscheduling.com) | [`aha`](https://www.aha.io/api) | [`amazon`](https://login.amazon.com/documentation) | [`angellist`](https://angel.co/api) | [`apple`](https://developer.apple.com) | [`arcgis`](https://developers.arcgis.com) | [`asana`](https://asana.com/developers) | [`assembla`](https://api-docs.assembla.cc) | [`atlassian`](https://developer.atlassian.com) | [`auth0`](https://auth0.com/docs) | [`authentiq`](https://www.authentiq.com/developers) | [`aweber`](https://api.aweber.com) | [`axosoft`](https://developer.axosoft.com) | [`baidu`](https://developer.baidu.com) | [`basecamp`](https://github.com/basecamp/bc3-api) | [`battlenet`](https://develop.battle.net) | [`beatport`](https://oauth-api.beatport.com) | [`bitbucket`](https://developer.atlassian.com/bitbucket/api/2/reference/) | [`bitly`](https://dev.bitly.com) | [`box`](https://developer.box.com) | [`buffer`](https://buffer.com/developers) | [`campaignmonitor`](https://www.campaignmonitor.com/api) | [`cas`](https://apereo.github.io/cas/) | [`cheddar`](https://cheddarapp.com/developer) | [`clio`](https://app.clio.com/api/v4/documentation) | [`cognito`](https://aws.amazon.com/cognito/) | [`coinbase`](https://developers.coinbase.com) | [`concur`](https://developer.concur.com) | [`constantcontact`](https://developer.constantcontact.com) | [`coursera`](https://building.coursera.org) | [`dailymotion`](https://developer.dailymotion.com) | [`deezer`](https://developers.deezer.com) | [`delivery`](https://developers.delivery.com) | [`deputy`](https://www.deputy.com/api-doc/) | [`deviantart`](https://www.deviantart.com/developers/) | [`digitalocean`](https://developers.digitalocean.com) | [`discogs`](https://www.discogs.com/developers/) | [`discord`](https://discordapp.com/developers/docs/intro) | [`disqus`](https://disqus.com/api/docs) | [`docusign`](https://developers.docusign.com) | [`dribbble`](https://developer.dribbble.com) | [`dropbox`](https://www.dropbox.com/developers) | [`ebay`](https://developer.ebay.com) | [`echosign`](https://secure.echosign.com/public/docs/restapi/v3) | [`ecwid`](https://developers.ecwid.com) | [`edmodo`](https://partnerships.edmodo.com) | [`egnyte`](https://developers.egnyte.com) | [`etsy`](https://www.etsy.com/developers) | [`eventbrite`](https://www.eventbrite.com/platform) | [`evernote`](https://dev.evernote.com) | [`eyeem`](https://github.com/eyeem/Public-API) | [`facebook`](https://developers.facebook.com) | [`familysearch`](https://www.familysearch.org/developers/) | [`feedly`](https://developer.feedly.com) | [`fitbit`](https://dev.fitbit.com) | [`flattr`](http://developers.flattr.net) | [`flickr`](https://www.flickr.com/services) | [`flowdock`](https://www.flowdock.com/api) | [`formstack`](https://developers.formstack.com) | [`foursquare`](https://developer.foursquare.com) | [`freeagent`](https://dev.freeagent.com) | [`freelancer`](https://developers.freelancer.com) | [`freshbooks`](https://www.freshbooks.com/developers) | [`fusionauth`](https://fusionauth.io/docs/) | [`garmin`](https://developer.garmin.com) | [`geeklist`](http://hackers.geekli.st) | [`genius`](https://docs.genius.com) | [`getbase`](https://developers.getbase.com) | [`getpocket`](https://getpocket.com/developer) | [`gitbook`](https://developer.gitbook.com) | [`github`](https://developer.github.com) | [`gitlab`](https://docs.gitlab.com/ce/api/) | [`gitter`](https://developer.gitter.im) | [`goodreads`](https://www.goodreads.com/api) | [`google`](https://developers.google.com) | [`groove`](https://www.groovehq.com/docs) | [`gumroad`](https://gumroad.com/api) | [`harvest`](https://help.getharvest.com/api-v2/) | [`hellosign`](https://www.hellosign.com/api) | [`heroku`](https://devcenter.heroku.com/categories/platform-api) | [`homeaway`](https://www.homeaway.com/platform) | [`hootsuite`](https://developer.hootsuite.com) | [`ibm`](https://www.ibm.com/support/knowledgecenter/SSAT72/com.ibm.help.ssm_adminguide.doc/t_RegisteringforblueID.html) | [`iconfinder`](https://developer.iconfinder.com) | [`idme`](https://developer.id.me) | [`idonethis`](https://i-done-this.readme.io/docs) | [`imgur`](https://apidocs.imgur.com) | [`infusionsoft`](https://developer.infusionsoft.com) | [`instagram`](https://instagram.com/developer) | [`intuit`](https://developer.intuit.com) | [`jamendo`](https://devportal.jamendo.com/) | [`jumplead`](https://developer.jumplead.com) | [`kakao`](https://developers.kakao.com) | [`line`](https://developers.line.biz) | [`linkedin`](https://www.linkedin.com/developers) | [`live`](https://docs.microsoft.com/en-us/onedrive/developer/rest-api/getting-started/msa-oauth?view=odsp-graph-online) | [`livechat`](https://developers.livechatinc.com) | [`logingov`](https://developers.login.gov) | [`lyft`](https://developer.lyft.com) | [`mailchimp`](https://developer.mailchimp.com) | [`mailup`](http://help.mailup.com/display/mailupapi/REST+API) | [`mailxpert`](https://dev.mailxpert.ch) | [`mapmyfitness`](https://developer.underarmour.com) | [`mastodon`](https://docs.joinmastodon.org/) | [`medium`](https://developers.medium.com) | [`meetup`](https://www.meetup.com/meetup_api/) | [`mention`](https://dev.mention.com) | [`microsoft`](https://developer.microsoft.com/en-us/graph) | [`mixcloud`](https://www.mixcloud.com/developers) | [`mixer`](https://dev.mixer.com) | [`moxtra`](https://developer.moxtra.com) | [`myob`](https://developer.myob.com) | [`naver`](https://developers.naver.com) | [`nest`](https://developers.nest.com) | [`nokotime`](https://developer.nokotime.com) | [`nylas`](https://docs.nylas.com) | [`okta`](https://developer.okta.com/) | [`onelogin`](https://developers.onelogin.com) | [`openstreetmap`](https://wiki.openstreetmap.org/wiki/API_v0.6) | [`optimizely`](https://developers.optimizely.com) | [`patreon`](https://docs.patreon.com) | [`paypal`](https://developer.paypal.com) | [`phantauth`](https://www.phantauth.net) | [`pinterest`](https://developers.pinterest.com) | [`plurk`](https://www.plurk.com/API) | [`podio`](https://developers.podio.com) | [`producthunt`](https://api.producthunt.com/v2/docs) | [`projectplace`](https://service.projectplace.com/apidocs) | [`pushbullet`](https://docs.pushbullet.com) | [`qq`](https://wiki.connect.qq.com/%E5%87%86%E5%A4%87%E5%B7%A5%E4%BD%9C_oauth2-0) | [`ravelry`](https://www.ravelry.com/api) | [`redbooth`](https://redbooth.com/api) | [`reddit`](https://www.reddit.com/dev/api) | [`runkeeper`](https://runkeeper.com/developer/healthgraph/) | [`salesforce`](https://developer.salesforce.com) | [`shoeboxed`](https://github.com/Shoeboxed/api) | [`shopify`](https://developers.shopify.com) | [`skyrock`](https://www.skyrock.com/developer) | [`slack`](https://api.slack.com) | [`slice`](https://developer.slice.com) | [`smartsheet`](https://smartsheet-platform.github.io/api-docs) | [`smugmug`](https://api.smugmug.com) | [`snapchat`](https://kit.snapchat.com) | [`socialpilot`](https://developer.socialpilot.co) | [`socrata`](https://dev.socrata.com) | [`soundcloud`](https://developers.soundcloud.com) | [`spotify`](https://developer.spotify.com) | [`square`](https://squareup.com/developers) | [`stackexchange`](https://api.stackexchange.com) | [`stocktwits`](https://api.stocktwits.com/developers) | [`stormz`](https://developer.stormz.me) | [`strava`](https://developers.strava.com) | [`stripe`](https://stripe.com/docs) | [`surveygizmo`](https://apihelp.surveygizmo.com) | [`surveymonkey`](https://developer.surveymonkey.com) | [`thingiverse`](https://www.thingiverse.com/developers) | [`ticketbud`](https://api.ticketbud.com) | [`timelyapp`](https://dev.timelyapp.com) | [`todoist`](https://developer.todoist.com) | [`trakt`](https://trakt.docs.apiary.io) | [`traxo`](https://developer.traxo.com) | [`trello`](https://developers.trello.com) | [`tripit`](https://www.tripit.com/developer) | [`tumblr`](https://www.tumblr.com/docs/en/api/v2) | [`twitch`](https://dev.twitch.tv) | [`twitter`](https://developer.twitter.com) | [`typeform`](https://developer.typeform.com) | [`uber`](https://developer.uber.com) | [`underarmour`](https://developer.underarmour.com) | [`unsplash`](https://unsplash.com/documentation) | [`upwork`](https://developers.upwork.com) | [`uservoice`](https://developer.uservoice.com) | [`vend`](https://developers.vendhq.com) | [`venmo`](https://developers.braintreepayments.com/guides/venmo/overview/) | [`verticalresponse`](http://developers.verticalresponse.com) | [`viadeo`](https://partners.viadeo.com) | [`vimeo`](https://developer.vimeo.com) | [`visualstudio`](https://docs.microsoft.com/en-us/vsts/integrate/get-started/authentication/oauth?view=vsts) | [`vk`](https://vk.com/dev) | [`wechat`](https://mp.weixin.qq.com) | [`weekdone`](https://weekdone.com/developer) | [`weibo`](https://open.weibo.com) | [`withings`](http://developer.withings.com) | [`wordpress`](https://developer.wordpress.com) | [`wrike`](https://developers.wrike.com) | [`xero`](https://developer.xero.com) | [`xing`](https://dev.xing.com) | [`yahoo`](https://developer.yahoo.com) | [`yammer`](https://developer.yammer.com/docs) | [`yandex`](https://tech.yandex.com) | [`zeit`](https://zeit.co/docs) | [`zendesk`](https://developer.zendesk.com) | [`zoom`](https://marketplace.zoom.us/docs)
 
 
 ## Table of Contents
@@ -26,7 +26,7 @@
 - **Dynamic Configuration**
   - [Instance](#dynamic-instance) / [State](#dynamic-state) / [HTTP](#dynamic-http) / [OAuth Proxy](#dynamic-oauth-proxy)
 - **Misc**
-  - [Configuration](#misc-redirect-uri) / [Middlewares](#misc-alternative-require) / [OAuth Quirks](#misc-oauth-quirks)
+  - [Configuration](#misc-redirect-uri) / [Handlers](#misc-handler-constructors) / [Request](#misc-request) / [OAuth Quirks](#misc-oauth-quirks)
 - **[Examples][examples]**
 - **[Changelog][changelog]**
 
@@ -37,14 +37,10 @@
 
 ## Express
 
-```bash
-npm install grant-express
-```
-
 ```js
 var express = require('express')
 var session = require('express-session')
-var grant = require('grant-express')
+var grant = require('grant').express()
 
 var app = express()
 // REQUIRED: any session store - see /examples/handler-express
@@ -56,14 +52,10 @@ app.use(grant({/*configuration - see below*/}))
 
 ## Koa
 
-```bash
-npm install grant-koa
-```
-
 ```js
 var Koa = require('koa')
 var session = require('koa-session')
-var grant = require('grant-koa')
+var grant = require('grant').koa()
 
 var app = new Koa()
 // REQUIRED: any session store - see /examples/handler-koa
@@ -76,14 +68,10 @@ app.use(grant({/*configuration - see below*/}))
 
 ## Hapi
 
-```bash
-npm install grant-hapi
-```
-
 ```js
 var Hapi = require('hapi')
 var yar = require('yar')
-var grant = require('grant-hapi')
+var grant = require('grant').hapi()
 
 var server = new Hapi.Server()
 server.register([
@@ -630,7 +618,7 @@ console.log(grant.config)
 
 You can use the `config` property to alter the Grant's behavior during runtime without having to restart your server.
 
-Keep in mind that this property contains the **generated** configuration that Grant uses internally, and changes to that configuration affects the **entire** Grant instance!
+Keep in mind that this property contains the **generated** configuration that Grant uses internally, and changes made to that configuration affects the **entire** Grant instance!
 
 
 ## Dynamic: State
@@ -661,7 +649,7 @@ For example `shopify` requires your shop name to be embedded into the OAuth URLs
 }
 ```
 
-Then you can have a web form in your website allowing the user to specify the shop name:
+Then you can have a web form on your website allowing the user to specify the shop name:
 
 ```html
 <form action="/connect/shopify" method="POST" accept-charset="utf-8">
@@ -689,7 +677,7 @@ Alternatively you can make a `GET` request to the `/connect/:provider/:override?
 https://awesome.com/connect/shopify?subdomain=usershop
 ```
 
-Note that `dynamic` configuration sent over HTTP GET/POST request override any other configuration.
+Note that the `dynamic` configuration sent over HTTP GET/POST request override any other configuration.
 
 ## Dynamic: OAuth Proxy
 
@@ -788,23 +776,20 @@ You can document your configuration by adding custom keys to it:
 }
 ```
 
-Note that `meta` is an arbitrary key, but it cannot be one of the [reserved keys][reserved-keys].
+Note that `meta` is arbitrary key, but it cannot be one of the [reserved keys][reserved-keys].
 
 
-## Misc: Alternative Require
+## Misc: Handler Constructors
 
-All middlewares can be required directly from `grant` (each pair is identical):
+Grant supports different ways of instantiation:
 
 ```js
 // Express
-var Grant = require('grant-express')
-var Grant = require('grant').express()
-// Koa
-var Grant = require('grant-koa')
-var Grant = require('grant').koa()
-// Hapi
-var Grant = require('grant-hapi')
-var Grant = require('grant').hapi()
+var grant = require('grant').express()(config)
+var grant = require('grant').express()({config, ...})
+var grant = require('grant').express(config)
+var grant = require('grant').express({config, ...})
+var grant = require('grant')({handler: 'express', config})
 ```
 
 
@@ -813,10 +798,8 @@ var Grant = require('grant').hapi()
 Grant can be instantiated with or without using the `new` keyword:
 
 ```js
-var Grant = require('grant-express|koa|hapi')
-// without using `new`
+var Grant = require('grant').express()
 var grant = Grant(config)
-// identical to
 var grant = new Grant(config)
 ```
 
@@ -824,7 +807,6 @@ Additionally Hapi accepts the configuration in two different ways:
 
 ```js
 server.register([{plugin: grant(config)}])
-// identical to
 server.register([{plugin: grant(), options: config}])
 ```
 
@@ -833,9 +815,12 @@ server.register([{plugin: grant(), options: config}])
 You can mount Grant under specific path prefix:
 
 ```js
-app.use('/oauth', grant(config)) // Express
-app.use(mount('/oauth', grant(config))) // Koa - using koa-mount
-server.register([{routes: {prefix: '/oauth'}, plugin: grant(config)}]) // Hapi
+// Express
+app.use('/oauth', grant(config))
+// Koa - using koa-mount
+app.use(mount('/oauth', grant(config)))
+// Hapi
+server.register([{routes: {prefix: '/oauth'}, plugin: grant(config)}])
 ```
 
 In this case the [`prefix`](#connect-prefix) configuration should reflect that + any other path parts that you may have:
@@ -861,6 +846,24 @@ Optionally you can prefix your [`callback`](#callback) routes as well:
     "callback": "/oauth/login/hello"
   }
 }
+```
+
+## Misc: Request
+
+The underlying [HTTP client] can be configured using the `request` option:
+
+```js
+var grant = require('grant').express({
+  config,
+  request: {agent, timeout: 5000}
+})
+```
+
+Fancy [request logs] are available too:
+
+```bash
+npm i --save-dev request-logs
+DEBUG=req,res,json node app.js
 ```
 
 ## Misc: OAuth Quirks
@@ -1023,6 +1026,8 @@ Set your Client Secret as `secret` not the App Secret:
 
   [grant-oauth]: https://grant.outofindex.com
   [oauth-like-a-boss]: https://dev.to/simov/oauth-like-a-boss-2m3b
+  [http client]: https://github.com/simov/request-compose
+  [request logs]: https://github.com/simov/request-logs
 
   [oauth.json]: https://github.com/simov/grant/blob/master/config/oauth.json
   [profile.json]: https://github.com/simov/grant/blob/master/config/profile.json
