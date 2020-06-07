@@ -39,13 +39,13 @@ var version = {
   })()
 }
 
-var client = async ({test, handler, config, hook, extend, port = 5001}) => {
+var client = async ({test, handler, config, request, hook, extend, port = 5001}) => {
   var _handler = () =>
     /koa/.test(handler) ? `${handler}${version.koa >= 2 ? '' : 1}` :
     /hapi/.test(handler) ? `${handler}${version.hapi >= 17 ? '' : 16}` :
     handler
 
-  var {grant, server, app} = await clients[test][_handler()]({config, hook, extend, port})
+  var {grant, server, app} = await clients[test][_handler()]({config, hook, request, extend, port})
   return {
     grant,
     server,
@@ -61,8 +61,8 @@ var client = async ({test, handler, config, hook, extend, port = 5001}) => {
 
 var clients = {
   'handlers': {
-    express: ({config, extend, port}) => new Promise((resolve) => {
-      var grant = Grant({config, extend, handler: 'express'})
+    express: ({config, request, extend, port}) => new Promise((resolve) => {
+      var grant = Grant({config, request, extend, handler: 'express'})
 
       var app = express()
       app.use(bodyParser.urlencoded({extended: true}))
@@ -72,8 +72,8 @@ var clients = {
 
       var server = app.listen(port, () => resolve({grant, server, app}))
     }),
-    koa: ({config, extend, port}) => new Promise((resolve) => {
-      var grant = Grant({config, extend, handler: 'koa'})
+    koa: ({config, request, extend, port}) => new Promise((resolve) => {
+      var grant = Grant({config, request, extend, handler: 'koa'})
 
       var app = new Koa()
       app.keys = ['grant']
@@ -85,8 +85,8 @@ var clients = {
 
       var server = app.listen(port, () => resolve({grant, server, app}))
     }),
-    hapi: ({config, extend, port}) => new Promise((resolve) => {
-      var grant = Grant({config, extend, handler: 'hapi'})
+    hapi: ({config, request, extend, port}) => new Promise((resolve) => {
+      var grant = Grant({config, request, extend, handler: 'hapi'})
 
       var server = new Hapi.Server({host: 'localhost', port})
       server.route({method: 'GET', path: '/', handler: callback.hapi})
@@ -98,8 +98,8 @@ var clients = {
       ])
       .then(() => server.start().then(() => resolve({grant, server})))
     }),
-    koa1: ({config, extend, port}) => new Promise((resolve) => {
-      var grant = Grant({config, extend, handler: 'koa'})
+    koa1: ({config, request, extend, port}) => new Promise((resolve) => {
+      var grant = Grant({config, request, extend, handler: 'koa'})
 
       var app = new Koa()
       app.keys = ['grant']
@@ -111,8 +111,8 @@ var clients = {
 
       var server = app.listen(port, () => resolve({grant, server, app}))
     }),
-    hapi16: ({config, extend, port}) => new Promise((resolve) => {
-      var grant = Grant({config, extend, handler: 'hapi'})
+    hapi16: ({config, request, extend, port}) => new Promise((resolve) => {
+      var grant = Grant({config, request, extend, handler: 'hapi'})
 
       var server = new Hapi.Server()
       server.connection({host: 'localhost', port})

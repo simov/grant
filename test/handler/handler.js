@@ -7,7 +7,7 @@ var request = require('request-compose').extend({
 }).client
 var profile = require('grant-profile')
 
-var Provider = require('../util/provider'), provider
+var Provider = require('../util/provider'), provider, oauth1
 var Client = require('../util/client'), client
 
 
@@ -16,6 +16,7 @@ describe('handler', () => {
 
   before(async () => {
     provider = await Provider({flow: 'oauth2'})
+    oauth1 = await Provider({flow: 'oauth1', port: 5002})
     config = {
       defaults: {
         origin: 'http://localhost:5001', callback: '/',
@@ -26,12 +27,21 @@ describe('handler', () => {
         profile_url: provider.url('/oauth2/profile_url'),
         oauth: 2,
         dynamic: true,
+      },
+      oauth1: {
+        request_url: oauth1.url('/oauth1/request_url'),
+        authorize_url: oauth1.url('/oauth1/authorize_url'),
+        access_url: oauth1.url('/oauth1/access_url'),
+        profile_url: oauth1.url('/oauth1/profile_url'),
+        oauth: 1,
+        dynamic: true,
       }
     }
   })
 
   after(async () => {
     await provider.close()
+    await oauth1.close()
   })
 
   describe('handlers', () => {
@@ -567,11 +577,82 @@ describe('handler', () => {
     })
   })
 
+  describe('request options', () => {
+    ;['express', 'koa', 'hapi'].forEach((handler) => {
+      describe(handler, () => {
+        var calls = []
+
+        before(async () => {
+          var agent = new require('http').Agent()
+          agent.createConnection = ((orig) => (...args) => {
+            var {method, headers} = args[0]
+            calls.push({method, headers})
+            return orig(...args)
+          })(agent.createConnection)
+          client = await Client({test: 'handlers', handler, config, request: {agent}})
+        })
+
+        after(async () => {
+          await client.close()
+        })
+
+        afterEach(() => calls = [])
+
+        it('oauth2', async () => {
+          var {body: {response}} = await request({
+            url: client.url('/connect/oauth2'),
+            qs: {response: ['tokens', 'raw', 'profile']},
+            cookie: {},
+          })
+          t.deepEqual(response, {
+            access_token: 'token',
+            refresh_token: 'refresh',
+            raw: {access_token: 'token', refresh_token: 'refresh', expires_in: '3600'},
+            profile: {user: 'simov'}
+          })
+          var {method, headers} = calls[0]
+          t.equal(method, 'POST')
+          t.equal(headers['content-type'], 'application/x-www-form-urlencoded')
+          t.ok(/^simov\/grant/.test(headers['user-agent']))
+          var {method, headers} = calls[1]
+          t.equal(method, 'GET')
+          t.equal(headers.authorization, 'Bearer token')
+          t.ok(/^simov\/grant/.test(headers['user-agent']))
+        })
+
+        it('oauth1', async () => {
+          var {body: {response}} = await request({
+            url: client.url('/connect/oauth1'),
+            qs: {response: ['tokens', 'raw', 'profile']},
+            cookie: {},
+          })
+          t.deepEqual(response, {
+            access_token: 'token',
+            access_secret: 'secret',
+            raw: {oauth_token: 'token', oauth_token_secret: 'secret'},
+            profile: {user: 'simov'}
+          })
+          var {method, headers} = calls[0]
+          t.equal(method, 'POST')
+          t.ok(/oauth_callback/.test(headers.Authorization))
+          t.ok(/^simov\/grant/.test(headers['user-agent']))
+          var {method, headers} = calls[1]
+          t.equal(method, 'POST')
+          t.ok(/oauth_verifier/.test(headers.Authorization))
+          t.ok(/^simov\/grant/.test(headers['user-agent']))
+          var {method, headers} = calls[2]
+          t.equal(method, 'GET')
+          t.ok(/oauth_token/.test(headers.Authorization))
+          t.ok(/^simov\/grant/.test(headers['user-agent']))
+        })
+      })
+    })
+  })
+
   describe('profile', () => {
     ;['express', 'koa', 'hapi'].forEach((handler) => {
       describe(handler, () => {
         before(async () => {
-          var state = {grant: 'simov'}
           var extend = [profile]
           client = await Client({test: 'handlers', handler, config, extend})
         })
