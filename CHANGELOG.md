@@ -1,6 +1,11 @@
 
 # Change Log
 
+## v5.2.0 (2020/06/07)
+- **New:** Support for [request options](https://github.com/simov/grant#misc-request)
+- **New:** Official support for 2 new providers: `apple`, `garmin`
+- **Deprecate:** Meta modules for [Express, Koa and Hapi](https://github.com/simov/grant/blob/master/MIGRATION.md#deprecate-meta-modules)
+
 ## v5.1.1 (2020/05/25)
 - **Fix:** The upcoming Grant constructor
 
