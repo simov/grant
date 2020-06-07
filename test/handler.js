@@ -4,44 +4,34 @@ var t = require('assert')
 
 describe('handler', () => {
 
-  describe('function handlers', () => {
+  describe('handlers', () => {
     var grant = require('../')
     var config = {defaults: {dynamic: true}}
     var output = {defaults: {prefix: '/connect', dynamic: true}}
 
     it('express', () => {
-      t.ok(typeof grant.express === 'function')
       t.deepEqual(grant.express()(config).config, output)
       t.deepEqual(grant.express()({config}).config, output)
+      t.deepEqual(grant.express(config).config, output)
+      t.deepEqual(grant.express({config}).config, output)
+      t.deepEqual(grant({config, handler: 'express'}).config, output)
+      t.deepEqual(grant({config, handler: 'express-4'}).config, output)
     })
     it('koa', () => {
-      t.ok(typeof grant.koa === 'function')
       t.deepEqual(grant.koa()(config).config, output)
       t.deepEqual(grant.koa()({config}).config, output)
-    })
-    it('hapi', () => {
-      t.ok(typeof grant.hapi === 'function')
-      t.ok(typeof grant.hapi()(config).register === 'function')
-      t.ok(typeof grant.hapi()({config}).register === 'function')
-    })
-  })
-
-  describe('grant', () => {
-    var grant = require('../')
-    var config = {defaults: {dynamic: true}}
-    var output = {defaults: {prefix: '/connect', dynamic: true}}
-
-    it('express', () => {
-      t.deepEqual(grant({config, handler: 'express'}).config, output)
-    })
-    it('koa', () => {
+      t.deepEqual(grant.koa(config).config, output)
+      t.deepEqual(grant.koa({config}).config, output)
       t.deepEqual(grant({config, handler: 'koa'}).config, output)
-    })
-    it('koa-2', () => {
       t.deepEqual(grant({config, handler: 'koa-2'}).config, output)
     })
     it('hapi', () => {
+      t.ok(typeof grant.hapi()(config).register === 'function')
+      t.ok(typeof grant.hapi()({config}).register === 'function')
+      t.ok(typeof grant.hapi(config).register === 'function')
+      t.ok(typeof grant.hapi({config}).register === 'function')
       t.ok(typeof grant({config, handler: 'hapi'}).register === 'function')
+      t.ok(typeof grant({config, handler: 'hapi-17'}).register === 'function')
     })
   })
 

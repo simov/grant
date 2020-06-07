@@ -46,50 +46,26 @@ describe('handler', () => {
 
   describe('handlers', () => {
     ;['express', 'koa', 'hapi'].forEach((handler) => {
-      describe(handler, () => {
-        before(async () => {
-          client = await Client({test: 'handlers', handler, config})
-        })
-
-        after(async () => {
-          await client.close()
-        })
-
-        it('success', async () => {
-          var {body: {response}} = await request({
-            url: client.url('/connect/oauth2'),
-            cookie: {},
+      Array.from({length: 5}).forEach((_, index) => {
+        describe(`${handler} - ${index}`, () => {
+          before(async () => {
+            client = await Client({test: 'handlers', handler, config, index})
           })
-          t.deepEqual(response, {
-            access_token: 'token',
-            refresh_token: 'refresh',
-            raw: {access_token: 'token', refresh_token: 'refresh', expires_in: '3600'}
+
+          after(async () => {
+            await client.close()
           })
-        })
-      })
-    })
-  })
 
-  describe('handlers function', () => {
-    ;['express', 'koa', 'hapi'].forEach((handler) => {
-      describe(handler, () => {
-        before(async () => {
-          client = await Client({test: 'handlers-function', handler, config})
-        })
-
-        after(async () => {
-          await client.close()
-        })
-
-        it('success', async () => {
-          var {body: {response}} = await request({
-            url: client.url('/connect/oauth2'),
-            cookie: {},
-          })
-          t.deepEqual(response, {
-            access_token: 'token',
-            refresh_token: 'refresh',
-            raw: {access_token: 'token', refresh_token: 'refresh', expires_in: '3600'}
+          it('success', async () => {
+            var {body: {response}} = await request({
+              url: client.url('/connect/oauth2'),
+              cookie: {},
+            })
+            t.deepEqual(response, {
+              access_token: 'token',
+              refresh_token: 'refresh',
+              raw: {access_token: 'token', refresh_token: 'refresh', expires_in: '3600'}
+            })
           })
         })
       })

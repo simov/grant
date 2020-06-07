@@ -8,16 +8,13 @@ function grant ({handler, ...rest}) {
       parseInt(require('koa/package.json').version.split('.')[0]) >= 2 ? 2 : 1
   }
   else if (handler === 'hapi') {
-    var version = (() => {
-      var pkg
-      try {
-        pkg = require('@hapi/hapi/package.json')
-      }
-      catch (err) {
-        pkg = require('hapi/package.json')
-      }
-      return parseInt(pkg.version.split('.')[0])
-    })() >= 17 ? 17 : 16
+    try {
+      var pkg = require('@hapi/hapi/package.json')
+    }
+    catch (err) {
+      var pkg = require('hapi/package.json')
+    }
+    var version = parseInt(pkg.version.split('.')[0]) >= 17 ? 17 : 16
   }
 
   if (/^(?:express|koa|hapi)$/.test(handler)) {
@@ -28,26 +25,44 @@ function grant ({handler, ...rest}) {
   }
 }
 
-grant.express = () => {
+grant.express = (options) => {
+  var handler = 'express'
   var version = 4
-  return require(`./lib/handler/express-${version}`)
+  if (options) {
+    return require(`./lib/handler/${handler}-${version}`)(options)
+  }
+  else {
+    return require(`./lib/handler/${handler}-${version}`)
+  }
 }
 
-grant.koa = () => {
-  var version = parseInt(require('koa/package.json').version.split('.')[0])
-  return require('./lib/handler/koa-' + (version >= 2 ? 2 : 1))
+grant.koa = (options) => {
+  var handler = 'koa'
+  var version =
+    parseInt(require('koa/package.json').version.split('.')[0]) >= 2 ? 2 : 1
+  if (options) {
+    return require(`./lib/handler/${handler}-${version}`)(options)
+  }
+  else {
+    return require(`./lib/handler/${handler}-${version}`)
+  }
 }
 
-grant.hapi = () => {
-  var pkg
+grant.hapi = (options) => {
+  var handler = 'hapi'
   try {
-    pkg = require('@hapi/hapi/package.json')
+    var pkg = require('@hapi/hapi/package.json')
   }
   catch (err) {
-    pkg = require('hapi/package.json')
+    var pkg = require('hapi/package.json')
   }
-  var version = parseInt(pkg.version.split('.')[0])
-  return require('./lib/handler/hapi-' + (version >= 17 ? 17 : 16))
+  var version = parseInt(pkg.version.split('.')[0]) >= 17 ? 17 : 16
+  if (options) {
+    return require(`./lib/handler/${handler}-${version}`)(options)
+  }
+  else {
+    return require(`./lib/handler/${handler}-${version}`)
+  }
 }
 
 module.exports = grant

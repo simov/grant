@@ -39,13 +39,13 @@ var version = {
   })()
 }
 
-var client = async ({test, handler, config, request, hook, extend, port = 5001}) => {
+var client = async ({test, handler, port = 5001, ...rest}) => {
   var _handler = () =>
     /koa/.test(handler) ? `${handler}${version.koa >= 2 ? '' : 1}` :
     /hapi/.test(handler) ? `${handler}${version.hapi >= 17 ? '' : 16}` :
     handler
 
-  var {grant, server, app} = await clients[test][_handler()]({config, hook, request, extend, port})
+  var {grant, server, app} = await clients[test][_handler()]({port, ...rest})
   return {
     grant,
     server,
@@ -61,8 +61,14 @@ var client = async ({test, handler, config, request, hook, extend, port = 5001})
 
 var clients = {
   'handlers': {
-    express: ({config, request, extend, port}) => new Promise((resolve) => {
-      var grant = Grant({config, request, extend, handler: 'express'})
+    express: ({config, request, extend, port, index}) => new Promise((resolve) => {
+      var grant =
+        index === 0 ? Grant.express()(config) :
+        index === 1 ? Grant.express()({config}) :
+        index === 2 ? Grant.express(config) :
+        index === 3 ? Grant.express({config}) :
+        index === 4 ? Grant({config, handler: 'express'}) :
+        Grant({config, request, extend, handler: 'express'})
 
       var app = express()
       app.use(bodyParser.urlencoded({extended: true}))
@@ -72,8 +78,14 @@ var clients = {
 
       var server = app.listen(port, () => resolve({grant, server, app}))
     }),
-    koa: ({config, request, extend, port}) => new Promise((resolve) => {
-      var grant = Grant({config, request, extend, handler: 'koa'})
+    koa: ({config, request, extend, port, index}) => new Promise((resolve) => {
+      var grant =
+        index === 0 ? Grant.koa()(config) :
+        index === 1 ? Grant.koa()({config}) :
+        index === 2 ? Grant.koa(config) :
+        index === 3 ? Grant.koa({config}) :
+        index === 4 ? Grant({config, handler: 'koa'}) :
+        Grant({config, request, extend, handler: 'koa'})
 
       var app = new Koa()
       app.keys = ['grant']
@@ -85,8 +97,14 @@ var clients = {
 
       var server = app.listen(port, () => resolve({grant, server, app}))
     }),
-    hapi: ({config, request, extend, port}) => new Promise((resolve) => {
-      var grant = Grant({config, request, extend, handler: 'hapi'})
+    hapi: ({config, request, extend, port, index}) => new Promise((resolve) => {
+      var grant =
+        index === 0 ? Grant.hapi()(config) :
+        index === 1 ? Grant.hapi()({config}) :
+        index === 2 ? Grant.hapi(config) :
+        index === 3 ? Grant.hapi({config}) :
+        index === 4 ? Grant({config, handler: 'hapi'}) :
+        Grant({config, request, extend, handler: 'hapi'})
 
       var server = new Hapi.Server({host: 'localhost', port})
       server.route({method: 'GET', path: '/', handler: callback.hapi})
@@ -98,8 +116,14 @@ var clients = {
       ])
       .then(() => server.start().then(() => resolve({grant, server})))
     }),
-    koa1: ({config, request, extend, port}) => new Promise((resolve) => {
-      var grant = Grant({config, request, extend, handler: 'koa'})
+    koa1: ({config, request, extend, port, index}) => new Promise((resolve) => {
+      var grant =
+        index === 0 ? Grant.koa()(config) :
+        index === 1 ? Grant.koa()({config}) :
+        index === 2 ? Grant.koa(config) :
+        index === 3 ? Grant.koa({config}) :
+        index === 4 ? Grant({config, handler: 'koa'}) :
+        Grant({config, request, extend, handler: 'koa'})
 
       var app = new Koa()
       app.keys = ['grant']
@@ -111,74 +135,14 @@ var clients = {
 
       var server = app.listen(port, () => resolve({grant, server, app}))
     }),
-    hapi16: ({config, request, extend, port}) => new Promise((resolve) => {
-      var grant = Grant({config, request, extend, handler: 'hapi'})
-
-      var server = new Hapi.Server()
-      server.connection({host: 'localhost', port})
-      server.route({method: 'GET', path: '/', handler: callback.hapi16})
-
-      server.register([
-        {register: grant},
-        {register: yar, options: {cookieOptions:
-          {password: '01234567890123456789012345678912', isSecure: false}}}
-      ],
-      () => server.start(() => resolve({grant, server})))
-    }),
-  },
-  'handlers-function': {
-    express: ({config, port}) => new Promise((resolve) => {
-      var grant = Grant.express()(config)
-
-      var app = express()
-      app.use(bodyParser.urlencoded({extended: true}))
-      app.use(session({secret: 'grant', saveUninitialized: true, resave: false}))
-      app.use(grant)
-      app.get('/', callback.express)
-
-      var server = app.listen(port, () => resolve({grant, server, app}))
-    }),
-    koa: ({config, port}) => new Promise((resolve) => {
-      var grant = Grant.koa()(config)
-
-      var app = new Koa()
-      app.keys = ['grant']
-      app.use(koasession(app))
-      app.use(koabody())
-      app.use(grant)
-      koaqs(app)
-      app.use(callback.koa)
-
-      var server = app.listen(port, () => resolve({grant, server, app}))
-    }),
-    hapi: ({config, port}) => new Promise((resolve) => {
-      var grant = Grant.hapi()(config)
-
-      var server = new Hapi.Server({host: 'localhost', port})
-      server.route({method: 'GET', path: '/', handler: callback.hapi})
-
-      server.register([
-        {plugin: grant},
-        {plugin: yar, options: {cookieOptions:
-          {password: '01234567890123456789012345678912', isSecure: false}}}
-      ])
-      .then(() => server.start().then(() => resolve({grant, server})))
-    }),
-    koa1: ({config, port}) => new Promise((resolve) => {
-      var grant = Grant.koa()(config)
-
-      var app = new Koa()
-      app.keys = ['grant']
-      app.use(koasession(app))
-      app.use(koabody())
-      app.use(grant)
-      koaqs(app)
-      app.use(callback.koa1)
-
-      var server = app.listen(port, () => resolve({grant, server, app}))
-    }),
-    hapi16: ({config, port}) => new Promise((resolve) => {
-      var grant = Grant.hapi()(config)
+    hapi16: ({config, request, extend, port, index}) => new Promise((resolve) => {
+      var grant =
+        index === 0 ? Grant.hapi()(config) :
+        index === 1 ? Grant.hapi()({config}) :
+        index === 2 ? Grant.hapi(config) :
+        index === 3 ? Grant.hapi({config}) :
+        index === 4 ? Grant({config, handler: 'hapi'}) :
+        Grant({config, request, extend, handler: 'hapi'})
 
       var server = new Hapi.Server()
       server.connection({host: 'localhost', port})
