@@ -142,7 +142,7 @@ describe('profile', () => {
       'tumblr',
       'vk',
       'weibo',
-      // 'twitter',
+      'twitter',
     ]
     for (var name of providers) {
       var version = oauth[name].oauth
@@ -171,7 +171,7 @@ describe('profile', () => {
         'tumblr' === name ? t.equal(query.api_key, 'token') :
         'vk' === name ? t.deepEqual(query, {access_token: 'token', v: '5.103'}) :
         'weibo' === name ? t.deepEqual(query, {access_token: 'token', uid: 'id'}) :
-        'twitter' === name ? t.equal(query.user_id, data.raw.user_id) :
+        'twitter' === name ? t.equal(query.user_id, 'id') :
         undefined
       }
       var {body: {response}} = await request({

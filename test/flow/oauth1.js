@@ -77,7 +77,7 @@ describe('oauth1', () => {
       t.deepEqual(response, {
         access_token: 'token',
         access_secret: 'secret',
-        raw: {oauth_token: 'token', oauth_token_secret: 'secret'}
+        raw: {oauth_token: 'token', oauth_token_secret: 'secret', user_id: 'id'}
       })
     })
   })

@@ -74,7 +74,11 @@ var oauth1 = (port) => new Promise((resolve) => {
         res.writeHead(200, {'content-type': 'application/json'})
         provider === 'getpocket'
           ? res.end(JSON.stringify({access_token: 'token'}))
-          : res.end(JSON.stringify({oauth_token: 'token', oauth_token_secret: 'secret'}))
+          : res.end(JSON.stringify({
+            oauth_token: 'token',
+            oauth_token_secret: 'secret',
+            user_id: provider === 'twitter' ? 'id' : undefined,
+          }))
       })
     }
     else if (/request_error_message/.test(url)) {
