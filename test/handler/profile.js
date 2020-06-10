@@ -142,7 +142,7 @@ describe('profile', () => {
       'tumblr',
       'vk',
       'weibo',
-      // 'twitter',
+      'twitter',
     ]
     for (var name of providers) {
       var version = oauth[name].oauth
@@ -170,8 +170,8 @@ describe('profile', () => {
         'trello' === name ? t.equal(query.key, 'token') :
         'tumblr' === name ? t.equal(query.api_key, 'token') :
         'vk' === name ? t.deepEqual(query, {access_token: 'token', v: '5.103'}) :
-        'weibo' === name ? t.equal(query.access_token, 'token') :
-        'twitter' === name ? t.equal(query.user_id, data.raw.user_id) :
+        'weibo' === name ? t.deepEqual(query, {access_token: 'token', uid: 'id'}) :
+        'twitter' === name ? t.equal(query.user_id, 'id') :
         undefined
       }
       var {body: {response}} = await request({
@@ -181,9 +181,11 @@ describe('profile', () => {
           authorize_url: provider[`oauth${version}`].url(`/${name}/authorize_url`),
           access_url: provider[`oauth${version}`].url(`/${name}/access_url`),
           profile_url: provider[`oauth${version}`].url(`/${name}/profile_url`),
+          response: ['tokens', 'raw', 'profile']
         },
         cookie: {},
       })
+      delete response.raw
       if (version === 2) {
         t.deepEqual(response, {
           access_token: 'token', refresh_token: 'refresh',

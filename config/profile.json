@@ -72,7 +72,7 @@
     "profile_url": "https://api.createsend.com/api/v3.1/clients.json"
   },
   "cas": {
-    "profile_url": ""
+    "profile_url": "https://[subdomain]/oidc/profile"
   },
   "cheddar": {
     "profile_url": "https://api.cheddarapp.com/v1/me"
