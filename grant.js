@@ -65,4 +65,14 @@ grant.hapi = (options) => {
   }
 }
 
+grant.node = (options) => {
+  var handler = 'node'
+  if (options) {
+    return require(`./lib/handler/${handler}`)(options)
+  }
+  else {
+    return require(`./lib/handler/${handler}`)
+  }
+}
+
 module.exports = grant

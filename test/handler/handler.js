@@ -45,7 +45,7 @@ describe('handler', () => {
   })
 
   describe('handlers', () => {
-    ;['express', 'koa', 'hapi'].forEach((handler) => {
+    ;['express', 'koa', 'hapi', 'node'].forEach((handler) => {
       Array.from({length: 5}).forEach((_, index) => {
         describe(`${handler} - ${index}`, () => {
           before(async () => {
@@ -123,7 +123,7 @@ describe('handler', () => {
   })
 
   describe('missing provider', () => {
-    ;['express', 'koa', 'hapi'].forEach((handler) => {
+    ;['express', 'koa', 'hapi', 'node'].forEach((handler) => {
       describe(handler, () => {
         before(async () => {
           client = await Client({test: 'handlers', handler, config})
@@ -163,7 +163,7 @@ describe('handler', () => {
   })
 
   describe('path matching regexp', () => {
-    ;['express', 'koa', 'hapi'].forEach((handler) => {
+    ;['express', 'koa', 'hapi', 'node'].forEach((handler) => {
       describe(handler, () => {
         before(async () => {
           client = await Client({test: 'handlers', handler, config: {
@@ -269,7 +269,7 @@ describe('handler', () => {
   })
 
   describe('dynamic state', () => {
-    ;['express', 'koa', 'hapi'].forEach((handler) => {
+    ;['express', 'koa', 'hapi', 'node'].forEach((handler) => {
       describe(handler, () => {
         before(async () => {
           client = await Client({test: 'dynamic-state', handler, config})
@@ -317,7 +317,7 @@ describe('handler', () => {
   })
 
   describe('transport querystring session', () => {
-    ;['express', 'koa', 'hapi'].forEach((handler) => {
+    ;['express', 'koa', 'hapi', 'node'].forEach((handler) => {
       ;['', 'querystring', 'session'].forEach((transport) => {
         describe(`${handler} - transport ${transport}`, () => {
           before(async () => {
@@ -356,7 +356,7 @@ describe('handler', () => {
   })
 
   describe('transport state', () => {
-    ;['express', 'koa', 'koa-before', 'hapi'].forEach((handler) => {
+    ;['express', 'koa', 'koa-before', 'hapi', 'node'].forEach((handler) => {
       describe(handler, () => {
         before(async () => {
           client = await Client({test: 'transport-state', handler, config: {
@@ -393,7 +393,7 @@ describe('handler', () => {
   })
 
   describe('response filter', () => {
-    ;['express', 'koa', 'hapi'].forEach((handler) => {
+    ;['express', 'koa', 'hapi', 'node'].forEach((handler) => {
       ;['token', ['tokens'], ['raw'], ['jwt'], ['profile'], ['raw', 'jwt'],
         ['tokens', 'raw', 'jwt', 'profile']].forEach((response) => {
         describe(`${handler} - ${JSON.stringify(response)}`, () => {
@@ -513,24 +513,24 @@ describe('handler', () => {
     })
   })
 
-  describe('extend + hook', () => {
+  describe('extend + state', () => {
     ;['express', 'koa', 'hapi'].forEach((handler) => {
       describe(handler, () => {
         before(async () => {
-          var state = {grant: 'simov'}
-          var hook = ({get, set}) =>
-            get ? Promise.resolve(state[get]) :
-            set ? (state[set.id] = set.value, Promise.resolve()) :
+          var db = {grant: 'simov'}
+          var state = ({get, set}) =>
+            get ? Promise.resolve(db[get]) :
+            set ? (db[set.id] = set.value, Promise.resolve()) :
             Promise.resolve()
           var extend = [
-            ({hook}) => async ({provider, input, output}) => {
-              output.profile = await hook({get: 'grant'})
-              await hook({set: {id: 'grant', value: 'purest'}})
-              t.deepEqual(state, {grant: 'purest'})
+            ({state}) => async ({provider, input, output}) => {
+              output.profile = await state({get: 'grant'})
+              await state({set: {id: 'grant', value: 'purest'}})
+              t.deepEqual(db, {grant: 'purest'})
               return {provider, input, output}
             }
           ]
-          client = await Client({test: 'extend-hook', handler, config, hook, extend})
+          client = await Client({test: 'handlers', handler, config, state, extend})
         })
 
         after(async () => {
@@ -554,7 +554,7 @@ describe('handler', () => {
   })
 
   describe('request options', () => {
-    ;['express', 'koa', 'hapi'].forEach((handler) => {
+    ;['express', 'koa', 'hapi', 'node'].forEach((handler) => {
       describe(handler, () => {
         var calls = []
 
@@ -626,7 +626,7 @@ describe('handler', () => {
   })
 
   describe('profile', () => {
-    ;['express', 'koa', 'hapi'].forEach((handler) => {
+    ;['express', 'koa', 'hapi', 'node'].forEach((handler) => {
       describe(handler, () => {
         before(async () => {
           var extend = [profile]
