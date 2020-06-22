@@ -25,6 +25,7 @@ catch (err) {
 }
 
 var Grant = require('../../')
+var Session = require('grant-session')
 
 var version = {
   express: 4,
@@ -118,36 +119,41 @@ var clients = {
       .then(() => server.start().then(() => resolve({grant, server})))
     }),
     node: ({config, request, state, extend, port, index}) => new Promise((resolve) => {
-      var db = {}
-      var state = async ({handler, get, set}) => get ? db[get] : db[set[0]] = set[1]
-      state.options = {secret: 'grant'}
-
       var grant =
         index === 1 ? Grant.node()({config, state}) :
         index === 3 ? Grant.node({config, state}) :
         index === 4 ? Grant({config, state, handler: 'node'}) :
         Grant({config, request, state, extend, handler: 'node'})
 
+      var db = {}
+      var session = Session({
+        handler: 'node',
+        options: {secret: 'grant'},
+        get: async (key) => db[key],
+        set: async (key, value) => db[key] = value,
+        remove: async (key) => delete db[key],
+      })
+
       var server = http.createServer()
       server.on('request', async (req, res) => {
-        if (/^\/connect/.test(req.url)) {
-          var state = {} // dynamic state
-          var state = await grant(req, res, state)
-          if (state) {
-            var session = db[Object.keys(db)[0]]
-            callback.node({req, res, session, state})
-            db = {} // cleanup store
+        var state = {} // dynamic state
+        var _session = session(req, res)
+        var resp = await grant(req, res, _session, state)
+        if (resp && resp.state) {
+          callback.node({req, res, session: await _session.get(), state})
+        }
+        else {
+          if (/^\/(?:\?|$)/.test(req.url)) {
+            callback.node({
+              req, res,
+              session: await _session.get(),
+              query: qs.parse(req.url.split('?')[1])
+            })
           }
           // not matching URL
-          if (!res.getHeader('location')) {
+          else {
             res.end()
           }
-        }
-        else if (/^\/(?:\?|$)/.test(req.url)) {
-          var query = qs.parse(req.url.split('?')[1])
-          var session = db[Object.keys(db)[0]]
-          callback.node({req, res, session, query})
-          db = {} // cleanup store
         }
       })
 
@@ -440,32 +446,39 @@ var clients = {
       .then(() => server.start().then(() => resolve({grant, server})))
     }),
     node: ({config, port}) => new Promise((resolve) => {
-      var db = {}
-      var state = async ({handler, get, set}) => get ? db[get] : db[set[0]] = set[1]
-      state.options = {secret: 'grant'}
+      var grant = Grant({config, handler: 'node'})
 
-      var grant = Grant({config, state, handler: 'node'})
+      var db = {}
+      var session = Session({
+        handler: 'node',
+        options: {secret: 'grant'},
+        get: async (key) => db[key],
+        set: async (key, value) => db[key] = value,
+        remove: async (key) => delete db[key],
+      })
 
       var server = http.createServer()
       server.on('request', async (req, res) => {
         if (/^\/connect/.test(req.url)) {
           var state = {dynamic: {key: 'very', secret: 'secret'}}
-          var state = await grant(req, res, state)
-          if (state) {
-            var session = db[Object.keys(db)[0]]
-            callback.node({req, res, session, state})
-            db = {} // cleanup store
+        }
+        var _session = session(req, res)
+        var resp = await grant(req, res, _session, state)
+        if (resp && resp.state) {
+          callback.node({req, res, session: await _session.get(), state})
+        }
+        else {
+          if (/^\/(?:\?|$)/.test(req.url)) {
+            callback.node({
+              req, res,
+              session: await _session.get(),
+              query: qs.parse(req.url.split('?')[1])
+            })
           }
           // not matching URL
-          if (!res.getHeader('location')) {
+          else {
             res.end()
           }
-        }
-        else if (/^\/(?:\?|$)/.test(req.url)) {
-          var query = qs.parse(req.url.split('?')[1])
-          var session = db[Object.keys(db)[0]]
-          callback.node({req, res, session, query})
-          db = {} // cleanup store
         }
       })
 
@@ -568,32 +581,37 @@ var clients = {
       .then(() => server.start().then(() => resolve({grant, server})))
     }),
     node: ({config, port}) => new Promise((resolve) => {
-      var db = {}
-      var state = async ({handler, get, set}) => get ? db[get] : db[set[0]] = set[1]
-      state.options = {secret: 'grant'}
+      var grant = Grant({config, handler: 'node'})
 
-      var grant = Grant({config, state, handler: 'node'})
+      var db = {}
+      var session = Session({
+        handler: 'node',
+        options: {secret: 'grant'},
+        get: async (key) => db[key],
+        set: async (key, value) => db[key] = value,
+        remove: async (key) => delete db[key],
+      })
 
       var server = http.createServer()
       server.on('request', async (req, res) => {
-        if (/^\/connect/.test(req.url)) {
-          var state = {} // dynamic state
-          var state = await grant(req, res, state)
-          if (state) {
-            var session = db[Object.keys(db)[0]]
-            callback.node({req, res, session, state})
-            db = {} // cleanup store
+        var state = {} // dynamic state
+        var _session = session(req, res)
+        var resp = await grant(req, res, _session, state)
+        if (resp && resp.state) {
+          callback.node({req, res, session: await _session.get(), state: resp.state})
+        }
+        else {
+          if (/^\/(?:\?|$)/.test(req.url)) {
+            callback.node({
+              req, res,
+              session: await _session.get(),
+              query: qs.parse(req.url.split('?')[1])
+            })
           }
           // not matching URL
-          if (!res.getHeader('location')) {
+          else {
             res.end()
           }
-        }
-        else if (/^\/(?:\?|$)/.test(req.url)) {
-          var query = qs.parse(req.url.split('?')[1])
-          var session = db[Object.keys(db)[0]]
-          callback.node({req, res, session, query})
-          db = {} // cleanup store
         }
       })
 
