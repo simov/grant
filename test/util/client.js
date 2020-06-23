@@ -56,7 +56,7 @@ var client = async ({test, handler, port = 5001, ...rest}) => {
     close: () => new Promise((resolve) => {
       handler === 'hapi' && version.hapi >= 17
         ? server.stop().then(resolve)
-        : server[/express|koa|node/.test(handler) ? 'close' : 'stop'](resolve)
+        : server[/express|koa|node|aws/.test(handler) ? 'close' : 'stop'](resolve)
     })
   }
 }
@@ -155,6 +155,57 @@ var clients = {
             res.end()
           }
         }
+      })
+
+      server.listen(port, () => resolve({grant, server}))
+    }),
+    aws: ({config, request, state, extend, port, index}) => new Promise((resolve) => {
+      var grant =
+        index === 0 ? Grant.aws()(config) :
+        index === 1 ? Grant.aws()({config}) :
+        index === 2 ? Grant.aws(config) :
+        index === 3 ? Grant.aws({config}) :
+        index === 4 ? Grant({config, handler: 'aws'}) :
+        Grant({config, request, state, extend, handler: 'aws'})
+
+      var db = {}
+      var session = Session({
+        handler: 'aws',
+        options: {secret: 'grant'},
+        get: async (key) => db[key],
+        set: async (key, value) => db[key] = value,
+        remove: async (key) => delete db[key],
+      })
+
+      var handler = async (req) => {
+        var state = {} // dynamic state
+        var _session = session(req)
+        var res = await grant(req, _session, state)
+        return res
+          ? res.state ? callback.aws({session: await _session.get(), state: res.state}) : res
+          : req.path === '/'
+            ? callback.aws({session: await _session.get(), query: req.queryStringParameters})
+            : {statusCode: 404, body: 'Not Found'}
+      }
+
+      var buffer = (req, body = []) => new Promise((resolve, reject) => req
+        .on('data', (chunk) => body.push(chunk))
+        .on('end', () => resolve(Buffer.concat(body).toString('utf8')))
+        .on('error', reject)
+      )
+
+      var server = http.createServer()
+      server.on('request', async (req, res) => {
+        var event = {
+          httpMethod: req.method,
+          path: req.url.split('?')[0],
+          queryStringParameters: qs.parse(req.url.split('?')[1]),
+          headers: req.headers,
+          body: await buffer(req),
+        }
+        var {statusCode, headers, body} = await handler(event)
+        res.writeHead(statusCode, headers)
+        res.end(JSON.stringify(body))
       })
 
       server.listen(port, () => resolve({grant, server}))
@@ -484,6 +535,47 @@ var clients = {
 
       server.listen(port, () => resolve({grant, server}))
     }),
+    aws: ({config, port}) => new Promise((resolve) => {
+      var grant = Grant({config, handler: 'aws'})
+
+      var db = {}
+      var session = Session({
+        handler: 'aws',
+        options: {secret: 'grant'},
+        get: async (key) => db[key],
+        set: async (key, value) => db[key] = value,
+        remove: async (key) => delete db[key],
+      })
+
+      var handler = async (req) => {
+        if (/^\/connect/.test(req.path)) {
+          var state = {dynamic: {key: 'very', secret: 'secret'}}
+        }
+        var _session = session(req)
+        var res = await grant(req, _session, state)
+        return res
+          ? res.state ? callback.aws({session: await _session.get(), state: res.state}) : res
+          : req.path === '/'
+            ? callback.aws({session: await _session.get(), query: req.queryStringParameters})
+            : {statusCode: 404, body: 'Not Found'}
+      }
+
+      var server = http.createServer()
+      server.on('request', async (req, res) => {
+        var event = {
+          httpMethod: req.method,
+          path: req.url.split('?')[0],
+          queryStringParameters: qs.parse(req.url.split('?')[1]),
+          headers: req.headers,
+          body: '',
+        }
+        var {statusCode, headers, body} = await handler(event)
+        res.writeHead(statusCode, headers)
+        res.end(JSON.stringify(body))
+      })
+
+      server.listen(port, () => resolve({grant, server}))
+    }),
     koa1: ({config, port}) => new Promise((resolve) => {
       var grant = Grant.koa()(config)
 
@@ -617,6 +709,45 @@ var clients = {
 
       server.listen(port, () => resolve({grant, server}))
     }),
+    aws: ({config, port}) => new Promise((resolve) => {
+      var grant = Grant({config, handler: 'aws'})
+
+      var db = {}
+      var session = Session({
+        handler: 'aws',
+        options: {secret: 'grant'},
+        get: async (key) => db[key],
+        set: async (key, value) => db[key] = value,
+        remove: async (key) => delete db[key],
+      })
+
+      var handler = async (req) => {
+        var state = {} // dynamic state
+        var _session = session(req)
+        var res = await grant(req, _session, state)
+        return res
+          ? res.state ? callback.aws({session: await _session.get(), state: res.state}) : res
+          : req.path === '/'
+            ? callback.aws({session: await _session.get(), query: req.queryStringParameters})
+            : {statusCode: 404, body: 'Not Found'}
+      }
+
+      var server = http.createServer()
+      server.on('request', async (req, res) => {
+        var event = {
+          httpMethod: req.method,
+          path: req.url.split('?')[0],
+          queryStringParameters: qs.parse(req.url.split('?')[1]),
+          headers: req.headers,
+          body: '',
+        }
+        var {statusCode, headers, body} = await handler(event)
+        res.writeHead(statusCode, headers)
+        res.end(JSON.stringify(body))
+      })
+
+      server.listen(port, () => resolve({grant, server}))
+    }),
     koa1: ({config, port}) => new Promise((resolve) => {
       var grant = Grant.koa()(config)
 
@@ -740,6 +871,17 @@ var callback = {
       response: (state.grant || {}).response || session.grant.response || query,
       state: state.grant,
     }))
+  },
+  aws: ({session, query, state = {}}) => {
+    return {
+      statusCode: 200,
+      headers: {'content-type': 'application/json'},
+      body: {
+        session: session.grant,
+        response: (state.grant || {}).response || session.grant.response || query,
+        state: state.grant,
+      }
+    }
   },
   'koa-before': async (ctx, next) => {
     await next()

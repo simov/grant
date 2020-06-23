@@ -75,4 +75,14 @@ grant.node = (options) => {
   }
 }
 
+grant.aws = (options) => {
+  var handler = 'aws'
+  if (options) {
+    return require(`./lib/handler/${handler}`)(options)
+  }
+  else {
+    return require(`./lib/handler/${handler}`)
+  }
+}
+
 module.exports = grant
