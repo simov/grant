@@ -59,11 +59,7 @@ var oauth1 = (port) => new Promise((resolve) => {
       })
     }
     else if (/authorize_url/.test(url)) {
-      var location = callback + '?' + (
-        provider === 'intuit'
-          ? qs.stringify({oauth_token: 'token', oauth_verifier: 'verifier', realmId: '123'})
-          : qs.stringify({oauth_token: 'token', oauth_verifier: 'verifier'})
-      )
+      var location = callback + '?' + qs.stringify({oauth_token: 'token', oauth_verifier: 'verifier'})
       on.authorize({url, headers, query})
       res.writeHead(302, {location})
       res.end()
@@ -148,7 +144,7 @@ var oauth2 = (port) => new Promise((resolve) => {
     if (/authorize_url/.test(req.url)) {
       openid = (query.scope || []).includes('openid')
       on.authorize({url, query, headers})
-      var location = query.redirect_uri + '?' + qs.stringify({code: 'code'})
+      var location = query.redirect_uri + "?" + (provider === "intuit" ? qs.stringify({ code: "code", realmId: "123" }) : qs.stringify({ code: "code" }));
       res.writeHead(302, {location})
       res.end()
     }
