@@ -508,10 +508,9 @@
     "scope_delimiter": " "
   },
   "intuit": {
-    "request_url": "https://oauth.intuit.com/oauth/v1/get_request_token",
-    "authorize_url": "https://appcenter.intuit.com/Connect/Begin",
-    "access_url": "https://oauth.intuit.com/oauth/v1/get_access_token",
-    "oauth": 1
+    "authorize_url": "https://appcenter.intuit.com/connect/oauth2",
+    "access_url": "https://oauth.platform.intuit.com/oauth2/v1/tokens/bearer",
+    "oauth": 2
   },
   "jamendo": {
     "authorize_url": "https://api.jamendo.com/v3.0/oauth/authorize",
