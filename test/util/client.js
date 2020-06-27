@@ -120,9 +120,11 @@ var clients = {
     }),
     node: ({config, request, state, extend, port, index}) => new Promise((resolve) => {
       var grant =
-        index === 1 ? Grant.node()({config, state}) :
-        index === 3 ? Grant.node({config, state}) :
-        index === 4 ? Grant({config, state, handler: 'node'}) :
+        index === 0 ? Grant.node()(config) :
+        index === 1 ? Grant.node()({config}) :
+        index === 2 ? Grant.node(config) :
+        index === 3 ? Grant.node({config}) :
+        index === 4 ? Grant({config, handler: 'node'}) :
         Grant({config, request, state, extend, handler: 'node'})
 
       var db = {}
