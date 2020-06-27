@@ -393,7 +393,7 @@
     "profile_url": ""
   },
   "qq": {
-    "profile_url": ""
+    "profile_url": "https://graph.qq.com/oauth2.0/me"
   },
   "ravelry": {
     "profile_url": ""
