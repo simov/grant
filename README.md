@@ -78,7 +78,7 @@ server.register([
   // REQUIRED: any session store - see /examples/handler-hapi
   {plugin: yar, options: {cookieOptions: {password: 'grant', isSecure: false}}},
   // mount grant
-  {plugin: grant(), options: {/*configuration - see below*/}}
+  {plugin: grant({/*configuration - see below*/})}
 ])
 ```
 
@@ -466,7 +466,7 @@ Lastly the request/response lifecycle `state` can be used as well:
 }
 ```
 
-In this case `callback` route is not needed, and it will be ignored if provided. The response data will be available in the request/response lifecycle `state` instead:
+In this case a `callback` route is not needed, and it will be ignored if provided. The response data will be available in the request/response lifecycle `state` instead:
 
 ```js
 res.locals.grant.response // Express
@@ -548,7 +548,7 @@ This will make the decoded JWT available in the response data:
     access_token: '...',
     refresh_token: '...',
     some: 'other data'
-  }
+  },
   jwt: {id_token: {header: {}, payload: {}, signature: '...'}}
 }
 ```
@@ -580,7 +580,7 @@ Additionaly a `profile` key will be available in the response data:
 
 The `profile` key contains either the raw response data returned from the user profile endpoint or an error message.
 
-Not all of the supported providers have their `profile_url` set, and some of them might require custom parameters. Usually the user profile endpoint is only accessible if you request certain `scope`s.
+Not all of the supported providers have their `profile_url` set, and some of them might require custom parameters. Usually the user profile endpoint is accessible only if you request certain `scope`s.
 
 
 ## Callback: Session
@@ -789,13 +789,10 @@ var grant = require('grant').express()(config)
 var grant = require('grant').express()({config, ...})
 var grant = require('grant').express(config)
 var grant = require('grant').express({config, ...})
-var grant = require('grant')({handler: 'express', config})
+var grant = require('grant')({handler: 'express', config, ...})
 ```
 
-
-## Misc: Alternative Instantiation
-
-Grant can be instantiated with or without using the `new` keyword:
+Using the `new` keyword is optional:
 
 ```js
 var Grant = require('grant').express()
