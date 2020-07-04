@@ -45,7 +45,7 @@ describe('handler', () => {
   })
 
   describe('handlers', () => {
-    ;['express', 'koa', 'hapi', 'node', 'aws'].forEach((handler) => {
+    ;['express', 'koa', 'hapi', 'node', 'aws', 'vercel'].forEach((handler) => {
       Array.from({length: 5}).forEach((_, index) => {
         describe(`${handler} - ${index}`, () => {
           before(async () => {
@@ -269,7 +269,7 @@ describe('handler', () => {
   })
 
   describe('dynamic state', () => {
-    ;['express', 'koa', 'hapi', 'node', 'aws'].forEach((handler) => {
+    ;['express', 'koa', 'hapi', 'node', 'aws', 'vercel'].forEach((handler) => {
       describe(handler, () => {
         before(async () => {
           client = await Client({test: 'dynamic-state', handler, config})
@@ -356,7 +356,7 @@ describe('handler', () => {
   })
 
   describe('transport state', () => {
-    ;['express', 'koa', 'koa-before', 'hapi', 'node', 'aws'].forEach((handler) => {
+    ;['express', 'koa', 'koa-before', 'hapi', 'node', 'aws', 'vercel'].forEach((handler) => {
       describe(handler, () => {
         before(async () => {
           client = await Client({test: 'transport-state', handler, config: {
@@ -487,8 +487,34 @@ describe('handler', () => {
     })
   })
 
+  describe('cookie-store', () => {
+    ;['express', 'node', 'aws', 'vercel'].forEach((handler) => {
+      describe(handler, () => {
+        before(async () => {
+          client = await Client({test: 'cookie-store', handler, config})
+        })
+
+        after(async () => {
+          await client.close()
+        })
+
+        it('success', async () => {
+          var {body: {response}} = await request({
+            url: client.url('/connect/oauth2'),
+            cookie: {},
+          })
+          t.deepEqual(response, {
+            access_token: 'token',
+            refresh_token: 'refresh',
+            raw: {access_token: 'token', refresh_token: 'refresh', expires_in: '3600'}
+          })
+        })
+      })
+    })
+  })
+
   describe('third-party middlewares', () => {
-    ;['koa-mount', 'express-cookie'].forEach((handler) => {
+    ;['koa-mount'].forEach((handler) => {
       describe(handler, () => {
         before(async () => {
           client = await Client({test: 'third-party', handler, config})

@@ -28,24 +28,18 @@ function grant ({handler, ...rest}) {
 grant.express = (options) => {
   var handler = 'express'
   var version = 4
-  if (options) {
-    return require(`./lib/handler/${handler}-${version}`)(options)
-  }
-  else {
-    return require(`./lib/handler/${handler}-${version}`)
-  }
+  return options
+    ? require(`./lib/handler/${handler}-${version}`)(options)
+    : require(`./lib/handler/${handler}-${version}`)
 }
 
 grant.koa = (options) => {
   var handler = 'koa'
   var version =
     parseInt(require('koa/package.json').version.split('.')[0]) >= 2 ? 2 : 1
-  if (options) {
-    return require(`./lib/handler/${handler}-${version}`)(options)
-  }
-  else {
-    return require(`./lib/handler/${handler}-${version}`)
-  }
+  return options
+    ? require(`./lib/handler/${handler}-${version}`)(options)
+    : require(`./lib/handler/${handler}-${version}`)
 }
 
 grant.hapi = (options) => {
@@ -57,32 +51,30 @@ grant.hapi = (options) => {
     var pkg = require('hapi/package.json')
   }
   var version = parseInt(pkg.version.split('.')[0]) >= 17 ? 17 : 16
-  if (options) {
-    return require(`./lib/handler/${handler}-${version}`)(options)
-  }
-  else {
-    return require(`./lib/handler/${handler}-${version}`)
-  }
+  return options
+    ? require(`./lib/handler/${handler}-${version}`)(options)
+    : require(`./lib/handler/${handler}-${version}`)
 }
 
 grant.node = (options) => {
   var handler = 'node'
-  if (options) {
-    return require(`./lib/handler/${handler}`)(options)
-  }
-  else {
-    return require(`./lib/handler/${handler}`)
-  }
+  return options
+    ? require(`./lib/handler/${handler}`)(options)
+    : require(`./lib/handler/${handler}`)
 }
 
 grant.aws = (options) => {
   var handler = 'aws'
-  if (options) {
-    return require(`./lib/handler/${handler}`)(options)
-  }
-  else {
-    return require(`./lib/handler/${handler}`)
-  }
+  return options
+    ? require(`./lib/handler/${handler}`)(options)
+    : require(`./lib/handler/${handler}`)
+}
+
+grant.vercel = (options) => {
+  var handler = 'vercel'
+  return options
+    ? require(`./lib/handler/${handler}`)(options)
+    : require(`./lib/handler/${handler}`)
 }
 
 module.exports = grant
