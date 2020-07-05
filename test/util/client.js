@@ -136,11 +136,11 @@ var clients = {
 
       var server = http.createServer()
       server.on('request', async (req, res) => {
-        var {session, response} = await grant(req, res)
+        var {session, response, redirect} = await grant(req, res)
         if (response || /^\/(?:\?|$)/.test(req.url)) {
           callback.handler(req, res, session, response)
         }
-        else {
+        else if (!redirect) {
           res.statusCode = 404
           res.end('Not Found')
         }
@@ -169,13 +169,13 @@ var clients = {
       server.on('request', async (req, res) => {
         // vercel
         req.query = req.url.split('?')[1]
-        req.body = await buffer(req)
+        req.body = qs.parse(await buffer(req))
         // handler
-        var {session, response} = await grant(req, res)
+        var {session, response, redirect} = await grant(req, res)
         if (response || /^\/(?:\?|$)/.test(req.url)) {
           callback.handler(req, res, session, response)
         }
-        else {
+        else if (!redirect) {
           res.statusCode = 404
           res.end('Not Found')
         }

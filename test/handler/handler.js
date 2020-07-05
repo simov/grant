@@ -123,7 +123,7 @@ describe('handler', () => {
   })
 
   describe('missing provider', () => {
-    ;['express', 'koa', 'hapi', 'node', 'aws'].forEach((handler) => {
+    ;['express', 'koa', 'hapi', 'node', 'vercel', 'aws'].forEach((handler) => {
       describe(handler, () => {
         before(async () => {
           client = await Client({test: 'handlers', handler, config})
@@ -163,7 +163,7 @@ describe('handler', () => {
   })
 
   describe('path matching regexp', () => {
-    ;['express', 'koa', 'hapi', 'node', 'aws'].forEach((handler) => {
+    ;['express', 'koa', 'hapi', 'node', 'vercel', 'aws'].forEach((handler) => {
       describe(handler, () => {
         before(async () => {
           client = await Client({test: 'handlers', handler, config: {
@@ -317,7 +317,7 @@ describe('handler', () => {
   })
 
   describe('transport querystring session', () => {
-    ;['express', 'koa', 'hapi', 'node', 'aws'].forEach((handler) => {
+    ;['express', 'koa', 'hapi', 'node', 'vercel', 'aws'].forEach((handler) => {
       ;['', 'querystring', 'session'].forEach((transport) => {
         describe(`${handler} - transport ${transport}`, () => {
           before(async () => {
@@ -393,7 +393,7 @@ describe('handler', () => {
   })
 
   describe('response filter', () => {
-    ;['express', 'koa', 'hapi', 'node', 'aws'].forEach((handler) => {
+    ;['express', 'koa', 'hapi', 'node', 'vercel', 'aws'].forEach((handler) => {
       ;['token', ['tokens'], ['raw'], ['jwt'], ['profile'], ['raw', 'jwt'],
         ['tokens', 'raw', 'jwt', 'profile']].forEach((response) => {
         describe(`${handler} - ${JSON.stringify(response)}`, () => {
@@ -540,7 +540,7 @@ describe('handler', () => {
   })
 
   describe('extend + state', () => {
-    ;['express', 'koa', 'hapi', 'aws'].forEach((handler) => {
+    ;['express', 'koa', 'hapi', 'vercel', 'aws'].forEach((handler) => {
       describe(handler, () => {
         before(async () => {
           var db = {grant: 'simov'}
@@ -580,7 +580,7 @@ describe('handler', () => {
   })
 
   describe('request options', () => {
-    ;['express', 'koa', 'hapi', 'node', 'aws'].forEach((handler) => {
+    ;['express', 'koa', 'hapi', 'node', 'vercel', 'aws'].forEach((handler) => {
       describe(handler, () => {
         var calls = []
 
@@ -652,7 +652,7 @@ describe('handler', () => {
   })
 
   describe('profile', () => {
-    ;['express', 'koa', 'hapi', 'node', 'aws'].forEach((handler) => {
+    ;['express', 'koa', 'hapi', 'node', 'vercel', 'aws'].forEach((handler) => {
       describe(handler, () => {
         before(async () => {
           var extend = [profile]
