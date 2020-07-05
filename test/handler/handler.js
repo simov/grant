@@ -45,7 +45,7 @@ describe('handler', () => {
   })
 
   describe('handlers', () => {
-    ;['express', 'koa', 'hapi', 'node', 'aws', 'vercel'].forEach((handler) => {
+    ;['express', 'koa', 'hapi', 'node', 'vercel', 'aws'].forEach((handler) => {
       Array.from({length: 5}).forEach((_, index) => {
         describe(`${handler} - ${index}`, () => {
           before(async () => {
@@ -269,7 +269,7 @@ describe('handler', () => {
   })
 
   describe('dynamic state', () => {
-    ;['express', 'koa', 'hapi', 'node', 'aws', 'vercel'].forEach((handler) => {
+    ;['express', 'koa', 'hapi', 'node', 'vercel', 'aws'].forEach((handler) => {
       describe(handler, () => {
         before(async () => {
           client = await Client({test: 'dynamic-state', handler, config})
@@ -356,7 +356,7 @@ describe('handler', () => {
   })
 
   describe('transport state', () => {
-    ;['express', 'koa', 'koa-before', 'hapi', 'node', 'aws', 'vercel'].forEach((handler) => {
+    ;['express', 'koa', 'koa-before', 'hapi', 'node', 'vercel', 'aws'].forEach((handler) => {
       describe(handler, () => {
         before(async () => {
           client = await Client({test: 'transport-state', handler, config: {
@@ -488,7 +488,7 @@ describe('handler', () => {
   })
 
   describe('cookie-store', () => {
-    ;['express', 'node', 'aws', 'vercel'].forEach((handler) => {
+    ;['express', 'node', 'vercel', 'aws'].forEach((handler) => {
       describe(handler, () => {
         before(async () => {
           client = await Client({test: 'cookie-store', handler, config})

@@ -28,6 +28,8 @@
     "request-oauth": "^1.0.0"
   },
   "optionalDependencies": {
+    "cookie": "^0.4.1",
+    "cookie-signature": "^1.1.0",
     "jwk-to-pem": "^2.0.3",
     "jws": "^4.0.0"
   },
@@ -40,7 +42,6 @@
     "express": "^4.17.1",
     "express-session": "^1.17.1",
     "grant-profile": "^1.0.2",
-    "grant-session": "0.0.3",
     "koa": "^2.13.0",
     "koa-bodyparser": "^4.2.1",
     "koa-mount": "^4.0.0",

@@ -25,7 +25,6 @@ catch (err) {
 }
 
 var Grant = require('../../')
-var Session = require('grant-session')
 
 var version = {
   express: 4,
@@ -119,134 +118,68 @@ var clients = {
       .then(() => server.start().then(() => resolve({grant, server})))
     }),
     node: ({config, request, state, extend, port, index}) => new Promise((resolve) => {
-      var grant =
-        index === 0 ? Grant.node()(config) :
-        index === 1 ? Grant.node()({config}) :
-        index === 2 ? Grant.node(config) :
-        index === 3 ? Grant.node({config}) :
-        index === 4 ? Grant({config, handler: 'node'}) :
-        Grant({config, request, state, extend, handler: 'node'})
-
       var db = {}
-      var session = Session({
-        handler: 'node',
+      var session = {
         secret: 'grant',
         store: {
           get: async (key) => db[key],
           set: async (key, value) => db[key] = value,
           remove: async (key) => delete db[key],
         }
-      })
-
-      var server = http.createServer()
-      server.on('request', async (req, res) => {
-        var state = {} // dynamic state
-        var _session = session(req, res)
-        var resp = await grant(req, res, _session, state)
-        if (resp && resp.state) {
-          callback.node({req, res, session: await _session.get(), state})
-        }
-        else {
-          if (/^\/(?:\?|$)/.test(req.url)) {
-            callback.node({
-              req, res,
-              session: await _session.get(),
-              query: qs.parse(req.url.split('?')[1])
-            })
-          }
-          // not matching URL
-          else {
-            res.end()
-          }
-        }
-      })
-
-      server.listen(port, () => resolve({grant, server}))
-    }),
-    aws: ({config, request, state, extend, port, index}) => new Promise((resolve) => {
-      var grant =
-        index === 0 ? Grant.aws()(config) :
-        index === 1 ? Grant.aws()({config}) :
-        index === 2 ? Grant.aws(config) :
-        index === 3 ? Grant.aws({config}) :
-        index === 4 ? Grant({config, handler: 'aws'}) :
-        Grant({config, request, state, extend, handler: 'aws'})
-
-      var db = {}
-      var session = Session({
-        handler: 'aws',
-        secret: 'grant',
-        store: {
-          get: async (key) => db[key],
-          set: async (key, value) => db[key] = value,
-          remove: async (key) => delete db[key],
-        }
-      })
-
-      var handler = async (req) => {
-        var state = {} // dynamic state
-        var _session = session(req)
-        var res = await grant(req, _session, state)
-        return res
-          ? res.state ? callback.aws({session: await _session.get(), state: res.state}) : res
-          : req.path === '/'
-            ? callback.aws({session: await _session.get(), query: req.queryStringParameters})
-            : {statusCode: 404, body: 'Not Found'}
       }
 
-      var buffer = (req, body = []) => new Promise((resolve, reject) => req
-        .on('data', (chunk) => body.push(chunk))
-        .on('end', () => resolve(Buffer.concat(body).toString('utf8')))
-        .on('error', reject)
-      )
+      var grant =
+        index === 1 ? Grant.node()({config, session}) :
+        index === 3 ? Grant.node({config, session}) :
+        index === 4 ? Grant({config, session, handler: 'node'}) :
+        Grant({config, session, request, state, extend, handler: 'node'})
 
       var server = http.createServer()
       server.on('request', async (req, res) => {
-        var event = {
-          httpMethod: req.method,
-          path: req.url.split('?')[0],
-          queryStringParameters: qs.parse(req.url.split('?')[1]),
-          headers: req.headers,
-          body: await buffer(req),
+        var {session, response} = await grant(req, res)
+        if (response || /^\/(?:\?|$)/.test(req.url)) {
+          callback.handler(req, res, session, response)
         }
-        var {statusCode, headers, body} = await handler(event)
-        res.writeHead(statusCode, headers)
-        res.end(JSON.stringify(body))
+        else {
+          res.statusCode = 404
+          res.end('Not Found')
+        }
       })
 
       server.listen(port, () => resolve({grant, server}))
     }),
     vercel: ({config, request, state, extend, port, index}) => new Promise((resolve) => {
-      var grant =
-        index === 0 ? Grant.vercel()(config) :
-        index === 1 ? Grant.vercel()({config}) :
-        index === 2 ? Grant.vercel(config) :
-        index === 3 ? Grant.vercel({config}) :
-        index === 4 ? Grant({config, handler: 'vercel'}) :
-        Grant({config, request, state, extend, handler: 'vercel'})
-
       var db = {}
-      var session = Session({
-        handler: 'vercel',
+      var session = {
         secret: 'grant',
         store: {
           get: async (key) => db[key],
           set: async (key, value) => db[key] = value,
           remove: async (key) => delete db[key],
         }
-      })
+      }
 
-      var handler = async (req, res) => {
-        var state = {} // dynamic state
-        var _session = session(req, res)
-        var resp = await grant(req, res, _session, state)
-        if (resp && resp.state) {
-          callback.vercel({req, res, session: await _session.get(), state: resp.state})
+      var grant =
+        index === 1 ? Grant.vercel()({config, session}) :
+        index === 3 ? Grant.vercel({config, session}) :
+        index === 4 ? Grant({config, session, handler: 'vercel'}) :
+        Grant({config, session, request, state, extend, handler: 'vercel'})
+
+      var server = http.createServer()
+      server.on('request', async (req, res) => {
+        // vercel
+        req.query = req.url.split('?')[1]
+        req.body = await buffer(req)
+        // handler
+        var {session, response} = await grant(req, res)
+        if (response || /^\/(?:\?|$)/.test(req.url)) {
+          callback.handler(req, res, session, response)
         }
         else {
-          return 'not found'
+          res.statusCode = 404
+          res.end('Not Found')
         }
-      }
+      })
 
       var buffer = (req, body = []) => new Promise((resolve, reject) => req
         .on('data', (chunk) => body.push(chunk))
@@ -254,26 +187,56 @@ var clients = {
         .on('error', reject)
       )
 
+      server.listen(port, () => resolve({grant, server}))
+    }),
+    aws: ({config, request, state, extend, port, index}) => new Promise((resolve) => {
+      var db = {}
+      var session = {
+        secret: 'grant',
+        store: {
+          get: async (key) => db[key],
+          set: async (key, value) => db[key] = value,
+          remove: async (key) => delete db[key],
+        }
+      }
+      var grant =
+        index === 1 ? Grant.aws()({config, session}) :
+        index === 3 ? Grant.aws({config, session}) :
+        index === 4 ? Grant({config, session, handler: 'aws'}) :
+        Grant({config, session, request, state, extend, handler: 'aws'})
+
       var server = http.createServer()
       server.on('request', async (req, res) => {
-        req.query = req.url.split('?')[1]
-        req.body = await buffer(req)
-        var message = await handler(req, res)
-        if (message === 'not found') {
-          if (/^\/(?:\?|$)/.test(req.url)) {
-            var _session = session(req, res)
-            callback.vercel({
-              req, res,
-              session: await _session.get(),
-              query: qs.parse(req.url.split('?')[1])
-            })
-          }
-          // not matching URL
-          else {
-            res.end()
-          }
+        // aws
+        var event = {
+          httpMethod: req.method,
+          path: req.url.split('?')[0],
+          queryStringParameters: qs.parse(req.url.split('?')[1]),
+          headers: req.headers,
+          multiValueHeaders: {'Set-Cookie': req.headers['set-cookie']},
+          body: await buffer(req),
+        }
+        // handler
+        var {session, redirect, response} = await grant(event)
+        if (redirect) {
+          var {statusCode, headers, body} = redirect
+          res.writeHead(statusCode, headers)
+          res.end(JSON.stringify(body))
+        }
+        else if (response || /^\/(?:\?|$)/.test(req.url)) {
+          callback.handler(req, res, session, response)
+        }
+        else {
+          res.statusCode = 404
+          res.end('Not Found')
         }
       })
+
+      var buffer = (req, body = []) => new Promise((resolve, reject) => req
+        .on('data', (chunk) => body.push(chunk))
+        .on('end', () => resolve(Buffer.concat(body).toString('utf8')))
+        .on('error', reject)
+      )
 
       server.listen(port, () => resolve({grant, server}))
     }),
@@ -564,132 +527,62 @@ var clients = {
       .then(() => server.start().then(() => resolve({grant, server})))
     }),
     node: ({config, port}) => new Promise((resolve) => {
-      var grant = Grant({config, handler: 'node'})
-
-      var db = {}
-      var session = Session({
-        handler: 'node',
-        secret: 'grant',
-        store: {
-          get: async (key) => db[key],
-          set: async (key, value) => db[key] = value,
-          remove: async (key) => delete db[key],
-        }
-      })
+      var session = {secret: 'grant'}
+      var grant = Grant.node({config, session})
 
       var server = http.createServer()
       server.on('request', async (req, res) => {
-        if (/^\/connect/.test(req.url)) {
-          var state = {dynamic: {key: 'very', secret: 'secret'}}
+        var state = {dynamic: {key: 'very', secret: 'secret'}}
+        var {session, response} = await grant(req, res, state)
+        if (response || /^\/(?:\?|$)/.test(req.url)) {
+          callback.handler(req, res, session, response)
         }
-        var _session = session(req, res)
-        var resp = await grant(req, res, _session, state)
-        if (resp && resp.state) {
-          callback.node({req, res, session: await _session.get(), state})
-        }
-        else {
-          if (/^\/(?:\?|$)/.test(req.url)) {
-            callback.node({
-              req, res,
-              session: await _session.get(),
-              query: qs.parse(req.url.split('?')[1])
-            })
-          }
-          // not matching URL
-          else {
-            res.end()
-          }
+      })
+
+      server.listen(port, () => resolve({grant, server}))
+    }),
+    vercel: ({config, port}) => new Promise((resolve) => {
+      var session = {secret: 'grant'}
+      var grant = Grant.vercel({config, session})
+
+      var server = http.createServer()
+      server.on('request', async (req, res) => {
+        // vercel
+        req.query = req.url.split('?')[1]
+        // handler
+        var state = {dynamic: {key: 'very', secret: 'secret'}}
+        var {session, response} = await grant(req, res, state)
+        if (response || /^\/(?:\?|$)/.test(req.url)) {
+          callback.handler(req, res, session, response)
         }
       })
 
       server.listen(port, () => resolve({grant, server}))
     }),
     aws: ({config, port}) => new Promise((resolve) => {
-      var grant = Grant({config, handler: 'aws'})
-
-      var db = {}
-      var session = Session({
-        handler: 'aws',
-        secret: 'grant',
-        store: {
-          get: async (key) => db[key],
-          set: async (key, value) => db[key] = value,
-          remove: async (key) => delete db[key],
-        }
-      })
-
-      var handler = async (req) => {
-        if (/^\/connect/.test(req.path)) {
-          var state = {dynamic: {key: 'very', secret: 'secret'}}
-        }
-        var _session = session(req)
-        var res = await grant(req, _session, state)
-        return res
-          ? res.state ? callback.aws({session: await _session.get(), state: res.state}) : res
-          : req.path === '/'
-            ? callback.aws({session: await _session.get(), query: req.queryStringParameters})
-            : {statusCode: 404, body: 'Not Found'}
-      }
+      var session = {secret: 'grant'}
+      var grant = Grant.aws({config, session})
 
       var server = http.createServer()
       server.on('request', async (req, res) => {
+        // aws
         var event = {
           httpMethod: req.method,
           path: req.url.split('?')[0],
           queryStringParameters: qs.parse(req.url.split('?')[1]),
           headers: req.headers,
-          body: '',
+          multiValueHeaders: {'Set-Cookie': req.headers['set-cookie']},
         }
-        var {statusCode, headers, body} = await handler(event)
-        res.writeHead(statusCode, headers)
-        res.end(JSON.stringify(body))
-      })
-
-      server.listen(port, () => resolve({grant, server}))
-    }),
-    vercel: ({config, port}) => new Promise((resolve) => {
-      var grant = Grant({config, handler: 'vercel'})
-
-      var db = {}
-      var session = Session({
-        handler: 'vercel',
-        secret: 'grant',
-        store: {
-          get: async (key) => db[key],
-          set: async (key, value) => db[key] = value,
-          remove: async (key) => delete db[key],
-        }
-      })
-
-      var handler = async (req, res) => {
+        // handler
         var state = {dynamic: {key: 'very', secret: 'secret'}}
-        var _session = session(req, res)
-        var resp = await grant(req, res, _session, state)
-        if (resp && resp.state) {
-          callback.vercel({req, res, session: await _session.get(), state: resp.state})
+        var {session, redirect, response} = await grant(event, state)
+        if (redirect) {
+          var {statusCode, headers, body} = redirect
+          res.writeHead(statusCode, headers)
+          res.end(JSON.stringify(body))
         }
-        else {
-          return 'not found'
-        }
-      }
-
-      var server = http.createServer()
-      server.on('request', async (req, res) => {
-        req.query = req.url.split('?')[1]
-        var message = await handler(req, res)
-        if (message === 'not found') {
-          if (/^\/(?:\?|$)/.test(req.url)) {
-            var _session = session(req, res)
-            callback.vercel({
-              req, res,
-              session: await _session.get(),
-              query: qs.parse(req.url.split('?')[1])
-            })
-          }
-          // not matching URL
-          else {
-            res.end()
-          }
+        else if (response || /^\/(?:\?|$)/.test(req.url)) {
+          callback.handler(req, res, session, response)
         }
       })
 
@@ -792,128 +685,59 @@ var clients = {
       .then(() => server.start().then(() => resolve({grant, server})))
     }),
     node: ({config, port}) => new Promise((resolve) => {
-      var grant = Grant({config, handler: 'node'})
-
-      var db = {}
-      var session = Session({
-        handler: 'node',
-        secret: 'grant',
-        store: {
-          get: async (key) => db[key],
-          set: async (key, value) => db[key] = value,
-          remove: async (key) => delete db[key],
-        }
-      })
+      var session = {secret: 'grant'}
+      var grant = Grant.node({config, session})
 
       var server = http.createServer()
       server.on('request', async (req, res) => {
-        var state = {} // dynamic state
-        var _session = session(req, res)
-        var resp = await grant(req, res, _session, state)
-        if (resp && resp.state) {
-          callback.node({req, res, session: await _session.get(), state: resp.state})
+        var {session, response} = await grant(req, res)
+        if (response || /^\/(?:\?|$)/.test(req.url)) {
+          callback.handler(req, res, session, response)
         }
-        else {
-          if (/^\/(?:\?|$)/.test(req.url)) {
-            callback.node({
-              req, res,
-              session: await _session.get(),
-              query: qs.parse(req.url.split('?')[1])
-            })
-          }
-          // not matching URL
-          else {
-            res.end()
-          }
+      })
+
+      server.listen(port, () => resolve({grant, server}))
+    }),
+    vercel: ({config, port}) => new Promise((resolve) => {
+      var session = {secret: 'grant'}
+      var grant = Grant.vercel({config, session})
+
+      var server = http.createServer()
+      server.on('request', async (req, res) => {
+        // vercel
+        req.query = req.url.split('?')[1]
+        // handler
+        var {session, response} = await grant(req, res)
+        if (response || /^\/(?:\?|$)/.test(req.url)) {
+          callback.handler(req, res, session, response)
         }
       })
 
       server.listen(port, () => resolve({grant, server}))
     }),
     aws: ({config, port}) => new Promise((resolve) => {
-      var grant = Grant({config, handler: 'aws'})
-
-      var db = {}
-      var session = Session({
-        handler: 'aws',
-        secret: 'grant',
-        store: {
-          get: async (key) => db[key],
-          set: async (key, value) => db[key] = value,
-          remove: async (key) => delete db[key],
-        }
-      })
-
-      var handler = async (req) => {
-        var state = {} // dynamic state
-        var _session = session(req)
-        var res = await grant(req, _session, state)
-        return res
-          ? res.state ? callback.aws({session: await _session.get(), state: res.state}) : res
-          : req.path === '/'
-            ? callback.aws({session: await _session.get(), query: req.queryStringParameters})
-            : {statusCode: 404, body: 'Not Found'}
-      }
+      var session = {secret: 'grant'}
+      var grant = Grant.aws({config, session})
 
       var server = http.createServer()
       server.on('request', async (req, res) => {
+        // aws
         var event = {
           httpMethod: req.method,
           path: req.url.split('?')[0],
           queryStringParameters: qs.parse(req.url.split('?')[1]),
           headers: req.headers,
-          body: '',
+          multiValueHeaders: {'Set-Cookie': req.headers['set-cookie']},
         }
-        var {statusCode, headers, body} = await handler(event)
-        res.writeHead(statusCode, headers)
-        res.end(JSON.stringify(body))
-      })
-
-      server.listen(port, () => resolve({grant, server}))
-    }),
-    vercel: ({config, port}) => new Promise((resolve) => {
-      var grant = Grant({config, handler: 'vercel'})
-
-      var db = {}
-      var session = Session({
-        handler: 'vercel',
-        secret: 'grant',
-        store: {
-          get: async (key) => db[key],
-          set: async (key, value) => db[key] = value,
-          remove: async (key) => delete db[key],
+        // handler
+        var {session, redirect, response} = await grant(event)
+        if (redirect) {
+          var {statusCode, headers, body} = redirect
+          res.writeHead(statusCode, headers)
+          res.end(JSON.stringify(body))
         }
-      })
-
-      var handler = async (req, res) => {
-        var state = {} // dynamic
-        var _session = session(req, res)
-        var resp = await grant(req, res, _session, state)
-        if (resp && resp.state) {
-          callback.vercel({req, res, session: await _session.get(), state: resp.state})
-        }
-        else {
-          return 'not found'
-        }
-      }
-
-      var server = http.createServer()
-      server.on('request', async (req, res) => {
-        req.query = req.url.split('?')[1]
-        var message = await handler(req, res)
-        if (message === 'not found') {
-          if (/^\/(?:\?|$)/.test(req.url)) {
-            var _session = session(req, res)
-            callback.vercel({
-              req, res,
-              session: await _session.get(),
-              query: qs.parse(req.url.split('?')[1])
-            })
-          }
-          // not matching URL
-          else {
-            res.end()
-          }
+        else if (response || /^\/(?:\?|$)/.test(req.url)) {
+          callback.handler(req, res, session, response)
         }
       })
 
@@ -979,120 +803,59 @@ var clients = {
       var server = app.listen(port, () => resolve({grant, server, app}))
     }),
     node: ({config, port}) => new Promise((resolve) => {
-      var grant = Grant({config, handler: 'node'})
-
-      var session = Session({
-        handler: 'node',
-        secret: 'grant',
-        embed: true
-      })
+      var session = {secret: 'grant'}
+      var grant = Grant.node({config, session})
 
       var server = http.createServer()
       server.on('request', async (req, res) => {
-        var state = {} // dynamic state
-        var _session = session(req, res)
-        var resp = await grant(req, res, _session, state)
-        if (resp && resp.state) {
-          callback.node({req, res, session: await _session.get(), state})
+        var {session, response} = await grant(req, res)
+        if (response || /^\/(?:\?|$)/.test(req.url)) {
+          callback.handler(req, res, session, response)
         }
-        else {
-          if (/^\/(?:\?|$)/.test(req.url)) {
-            callback.node({
-              req, res,
-              session: await _session.get(),
-              query: qs.parse(req.url.split('?')[1])
-            })
-          }
-          // not matching URL
-          else {
-            res.end()
-          }
+      })
+
+      server.listen(port, () => resolve({grant, server}))
+    }),
+    vercel: ({config, port}) => new Promise((resolve) => {
+      var session = {secret: 'grant'}
+      var grant = Grant.vercel({config, session})
+
+      var server = http.createServer()
+      server.on('request', async (req, res) => {
+        // vercel
+        req.query = req.url.split('?')[1]
+        // handler
+        var {session, response} = await grant(req, res)
+        if (response || /^\/(?:\?|$)/.test(req.url)) {
+          callback.handler(req, res, session, response)
         }
       })
 
       server.listen(port, () => resolve({grant, server}))
     }),
     aws: ({config, port}) => new Promise((resolve) => {
-      var grant = Grant({config, handler: 'aws'})
-
-      var session = Session({
-        handler: 'aws',
-        secret: 'grant',
-        embed: true
-      })
-
-      var handler = async (req) => {
-        var state = {} // dynamic state
-        var _session = session(req)
-        var res = await grant(req, _session, state)
-        return res
-          ? res.state ? callback.aws({session: await _session.get(), state: res.state}) : res
-          : req.path === '/'
-            ? callback.aws({session: await _session.get(), query: req.queryStringParameters})
-            : {statusCode: 404, body: 'Not Found'}
-      }
-
-      var buffer = (req, body = []) => new Promise((resolve, reject) => req
-        .on('data', (chunk) => body.push(chunk))
-        .on('end', () => resolve(Buffer.concat(body).toString('utf8')))
-        .on('error', reject)
-      )
+      var session = {secret: 'grant'}
+      var grant = Grant.aws({config, session})
 
       var server = http.createServer()
       server.on('request', async (req, res) => {
+        // aws
         var event = {
           httpMethod: req.method,
           path: req.url.split('?')[0],
           queryStringParameters: qs.parse(req.url.split('?')[1]),
           headers: req.headers,
-          body: await buffer(req),
+          multiValueHeaders: {'Set-Cookie': req.headers['set-cookie']},
         }
-        var {statusCode, headers, body} = await handler(event)
-        res.writeHead(statusCode, headers)
-        res.end(JSON.stringify(body))
-      })
-
-      server.listen(port, () => resolve({grant, server}))
-    }),
-    vercel: ({config, port}) => new Promise((resolve) => {
-      var grant = Grant({config, handler: 'vercel'})
-
-      var db = {}
-      var session = Session({
-        handler: 'vercel',
-        secret: 'grant',
-        embed: true,
-      })
-
-      var handler = async (req, res) => {
-        var state = {} // dynamic
-        var _session = session(req, res)
-        var resp = await grant(req, res, _session, state)
-        if (resp && resp.state) {
-          callback.vercel({req, res, session: await _session.get(), state: resp.state})
+        // handler
+        var {session, redirect, response} = await grant(event)
+        if (redirect) {
+          var {statusCode, headers, body} = redirect
+          res.writeHead(statusCode, headers)
+          res.end(JSON.stringify(body))
         }
-        else {
-          return 'not found'
-        }
-      }
-
-      var server = http.createServer()
-      server.on('request', async (req, res) => {
-        req.query = req.url.split('?')[1]
-        var message = await handler(req, res)
-        if (message === 'not found') {
-          if (/^\/(?:\?|$)/.test(req.url)) {
-            var _session = session(req, res)
-            callback.vercel({
-              req, res,
-              session: await _session.get(),
-              query: qs.parse(req.url.split('?')[1])
-            })
-          }
-          // not matching URL
-          else {
-            res.end()
-          }
+        else if (response || /^\/(?:\?|$)/.test(req.url)) {
+          callback.handler(req, res, session, response)
         }
       })
 
@@ -1157,31 +920,14 @@ var callback = {
       state: req.plugins.grant,
     })
   },
-  node: ({req, res, session, query, state = {}}) => {
+  handler: async (req, res, session, state) => {
+    var query = qs.parse(req.url.split('?')[1])
+    session = await session.get()
     res.writeHead(200, {'content-type': 'application/json'})
     res.end(JSON.stringify({
       session: session.grant,
-      response: (state.grant || {}).response || session.grant.response || query,
-      state: state.grant,
-    }))
-  },
-  aws: ({session, query, state = {}}) => {
-    return {
-      statusCode: 200,
-      headers: {'content-type': 'application/json'},
-      body: {
-        session: session.grant,
-        response: (state.grant || {}).response || session.grant.response || query,
-        state: state.grant,
-      }
-    }
-  },
-  vercel: ({req, res, session, query, state = {}}) => {
-    res.writeHead(200, {'content-type': 'application/json'})
-    res.end(JSON.stringify({
-      session: session.grant,
-      response: (state.grant || {}).response || session.grant.response || query,
-      state: state.grant,
+      response: session.grant.response || state || query,
+      state: {response: state},
     }))
   },
   'koa-before': async (ctx, next) => {
