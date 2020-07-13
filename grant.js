@@ -46,19 +46,11 @@ grant.hapi = (options) => {
   return options ? handler(options) : handler
 }
 
-grant.node = (options) => {
-  var handler = require('./lib/handler/node')
-  return options ? handler(options) : handler
-}
-
-grant.vercel = (options) => {
-  var handler = require('./lib/handler/vercel')
-  return options ? handler(options) : handler
-}
-
-grant.aws = (options) => {
-  var handler = require('./lib/handler/aws')
-  return options ? handler(options) : handler
-}
+;['node', 'aws', 'gcloud', 'vercel'].forEach((provider) => {
+  grant[provider] = (options) => {
+    var handler = require(`./lib/handler/${provider}`)
+    return options ? handler(options) : handler
+  }
+})
 
 module.exports = grant
