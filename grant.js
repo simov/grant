@@ -46,7 +46,7 @@ grant.hapi = (options) => {
   return options ? handler(options) : handler
 }
 
-;['node', 'aws', 'gcloud', 'vercel'].forEach((provider) => {
+;['node', 'aws', 'azure', 'gcloud', 'vercel'].forEach((provider) => {
   grant[provider] = (options) => {
     var handler = require(`./lib/handler/${provider}`)
     return options ? handler(options) : handler
