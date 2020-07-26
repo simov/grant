@@ -210,7 +210,7 @@ var clients = {
         // aws
         var event = {
           httpMethod: req.method,
-          path: req.url.split('?')[0],
+          requestContext: {path: req.url.split('?')[0]},
           queryStringParameters: qs.parse(req.url.split('?')[1]),
           headers: req.headers,
           multiValueHeaders: {'Set-Cookie': req.headers['set-cookie']},
@@ -219,8 +219,8 @@ var clients = {
         // handler
         var {session, redirect, response} = await grant(event)
         if (redirect) {
-          var {statusCode, headers, body} = redirect
-          res.writeHead(statusCode, headers)
+          var {statusCode, headers, multiValueHeaders, body} = redirect
+          res.writeHead(statusCode, {...headers, ...multiValueHeaders})
           res.end(JSON.stringify(body))
         }
         else if (response || /^\/(?:\?|$)/.test(req.url)) {
@@ -568,7 +568,7 @@ var clients = {
         // aws
         var event = {
           httpMethod: req.method,
-          path: req.url.split('?')[0],
+          requestContext: {path: req.url.split('?')[0]},
           queryStringParameters: qs.parse(req.url.split('?')[1]),
           headers: req.headers,
           multiValueHeaders: {'Set-Cookie': req.headers['set-cookie']},
@@ -577,8 +577,8 @@ var clients = {
         var state = {dynamic: {key: 'very', secret: 'secret'}}
         var {session, redirect, response} = await grant(event, state)
         if (redirect) {
-          var {statusCode, headers, body} = redirect
-          res.writeHead(statusCode, headers)
+          var {statusCode, headers, multiValueHeaders, body} = redirect
+          res.writeHead(statusCode, {...headers, ...multiValueHeaders})
           res.end(JSON.stringify(body))
         }
         else if (response || /^\/(?:\?|$)/.test(req.url)) {
@@ -724,7 +724,7 @@ var clients = {
         // aws
         var event = {
           httpMethod: req.method,
-          path: req.url.split('?')[0],
+          requestContext: {path: req.url.split('?')[0]},
           queryStringParameters: qs.parse(req.url.split('?')[1]),
           headers: req.headers,
           multiValueHeaders: {'Set-Cookie': req.headers['set-cookie']},
@@ -732,8 +732,8 @@ var clients = {
         // handler
         var {session, redirect, response} = await grant(event)
         if (redirect) {
-          var {statusCode, headers, body} = redirect
-          res.writeHead(statusCode, headers)
+          var {statusCode, headers, multiValueHeaders, body} = redirect
+          res.writeHead(statusCode, {...headers, ...multiValueHeaders})
           res.end(JSON.stringify(body))
         }
         else if (response || /^\/(?:\?|$)/.test(req.url)) {
@@ -842,7 +842,7 @@ var clients = {
         // aws
         var event = {
           httpMethod: req.method,
-          path: req.url.split('?')[0],
+          requestContext: {path: req.url.split('?')[0]},
           queryStringParameters: qs.parse(req.url.split('?')[1]),
           headers: req.headers,
           multiValueHeaders: {'Set-Cookie': req.headers['set-cookie']},
@@ -850,8 +850,8 @@ var clients = {
         // handler
         var {session, redirect, response} = await grant(event)
         if (redirect) {
-          var {statusCode, headers, body} = redirect
-          res.writeHead(statusCode, headers)
+          var {statusCode, headers, multiValueHeaders, body} = redirect
+          res.writeHead(statusCode, {...headers, ...multiValueHeaders})
           res.end(JSON.stringify(body))
         }
         else if (response || /^\/(?:\?|$)/.test(req.url)) {
