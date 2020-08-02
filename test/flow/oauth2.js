@@ -435,6 +435,18 @@ describe('oauth2', () => {
         raw: {access_token: 'token', refresh_token: 'refresh', expires_in: '3600'}
       })
     })
+
+    it('access - realmId - intuit', async () => {
+      var {body: {response}} = await request({
+        url: client.url('/connect/intuit'),
+        cookie: {},
+      })
+      t.deepEqual(response, {
+        access_token: 'token',
+        refresh_token: 'refresh',
+        raw: {access_token: 'token', refresh_token: 'refresh', expires_in: '3600', realmId: '123'}
+      })
+    })
   })
 
   describe('error', () => {

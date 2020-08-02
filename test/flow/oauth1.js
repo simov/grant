@@ -252,18 +252,6 @@ describe('oauth1', () => {
       })
     })
 
-    it('realmId - access - intuit', async () => {
-      var {body: {response}} = await request({
-        url: client.url('/connect/intuit'),
-        cookie: {},
-      })
-      t.deepEqual(response, {
-        access_token: 'token',
-        access_secret: 'secret',
-        raw: {oauth_token: 'token', oauth_token_secret: 'secret', realmId: '123'}
-      })
-    })
-
     it('oauth_callback - authorize, oauth_verifier - access - tripit', async () => {
       provider.on.authorize = ({query}) => {
         t.deepEqual(query, {
