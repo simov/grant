@@ -102,5 +102,8 @@
       "kid": "pqDyUxlr4XOLW3RwYQjwzSeY97t55itusThf5g9uNgg",
       "use": "sig"
     }
+  },
+  "RSA-SHA1": {
+    "private_key": "-----BEGIN PRIVATE KEY-----\nMIICdgIBADANBgkqhkiG9w0BAQEFAASCAmAwggJcAgEAAoGBANEYHOlxym0mrt5S\n3f2vUjxEvmfb8XQ1vdFCO567mYpHgT3CEGedXycCkZJWG5fxwZ9I1Widem0rslHL\n7/vOXTx0YzbSc3MT3Sk6efolv5MejNZJkx4iCs9y/K1IfGRKSBNlxDBigHsmmewd\n8qhsGJS/jWlXLoZET0X+iTRgEk5/AgMBAAECgYADoxu9o9EVnPqlu2NJKmePzNJT\nFCxbDSREI5bN6A1/rka9QEbwxngFQbIujXjlZ7sqfiXYMAUVKRFtAtMl2i0c/Av5\ncz2gFYo5Jz1oqF/NCm57ZX6533mry0uZSEhvqlo8ik8oKJ8tUH6gIHWcwQf4lzaD\nWfaig2oI4l+e5utygQJBAO3CUSQVzu/Zee0LvEr1fSkitfxnNeh/QPWNGUCIJGNq\nmJgfZb8DRG9sWbfa9M2xFnX+48C+c+IesPgaUeVEk28CQQDhIs6Aw0tm3VqJ75yr\nFFKJu3S937K75KWgmpB281zq7eWSbXHDE68neOKMU5yRqn9eauoViumAm2gFa+dM\ndy3xAkEA4fFvuqMe7L/3JlWosnNoZdceqqZKjI+h47ga70BxlCiQqr/rqQIp3tlQ\nyW/ChFZtyeRX+6sB5TjVZHFeskng8QJAQicRGKLJ8CLQrME8fsSM8C2lwvkNMsqf\npE5mbp1Zyyo2D82a5OBO0kFiCCu1UNQRcvPlbokPzZtceGNZZo2KcQJAK2WmRoyp\njyxyLOsNuEc6Xh9M/AUJQTbwLVimQAo5rcBFT3oRagNIzGajQwYiWtunOJQa3415\nlKdNZ/SDTwH5cA==\n-----END PRIVATE KEY-----\n\n"
   }
 }

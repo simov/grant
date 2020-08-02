@@ -7,6 +7,7 @@ var request = require('request-compose').extend({
 }).client
 
 var oauth = require('../../config/oauth')
+var keys = require('../util/keys')
 
 var Provider = require('../util/provider'), provider
 var Client = require('../util/client'), client
@@ -107,6 +108,31 @@ describe('oauth1', () => {
         access_token: 'token',
         access_secret: 'secret',
         raw: {oauth_token: 'token', oauth_token_secret: 'secret'}
+      })
+    })
+  })
+
+  describe('private_key', () => {
+    it('freshbooks', async () => {
+      provider.on.request = ({url, headers, query, form, oauth}) => {
+        t.equal(oauth.oauth_signature_method, 'RSA-SHA1')
+        t.equal(oauth.oauth_consumer_secret, undefined)
+      }
+      provider.on.access = ({url, headers, query, form, oauth}) => {
+        t.equal(oauth.oauth_signature_method, 'RSA-SHA1')
+        t.equal(oauth.oauth_consumer_secret, undefined)
+      }
+      var {body: {response}} = await request({
+        url: client.url('/connect/twitter'),
+        qs: {
+          private_key: keys['RSA-SHA1'].private_key,
+        },
+        cookie: {},
+      })
+      t.deepEqual(response, {
+        access_token: 'token',
+        access_secret: 'secret',
+        raw: {oauth_token: 'token', oauth_token_secret: 'secret', user_id: 'id'}
       })
     })
   })

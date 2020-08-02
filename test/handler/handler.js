@@ -45,7 +45,7 @@ describe('handler', () => {
   })
 
   describe('handlers', () => {
-    ;['express', 'koa', 'hapi', 'node', 'vercel', 'aws'].forEach((handler) => {
+    ;['express', 'koa', 'hapi', 'node', 'aws', 'azure', 'gcloud', 'vercel'].forEach((handler) => {
       Array.from({length: 5}).forEach((_, index) => {
         describe(`${handler} - ${index}`, () => {
           before(async () => {
@@ -268,8 +268,58 @@ describe('handler', () => {
     })
   })
 
+  describe('lambda prefix', () => {
+    ;['aws', 'gcloud'].forEach((handler) => {
+      ;[
+        {defaults: {prefix: '/prefix/connect'}},
+        {oauth2: {redirect_uri: 'http://localhost:5001/prefix/connect/oauth2/callback'}},
+        {
+          defaults: {prefix: '/prefix/connect'},
+          oauth2: {redirect_uri: 'http://localhost:5001/prefix/connect/oauth2/callback'}
+        }
+      ]
+      .forEach((test) => {
+        describe(`${handler} ${JSON.stringify(test)}`, () => {
+          before(async () => {
+            var config = {
+              defaults: {
+                origin: 'http://localhost:5001',
+                ...(test.defaults || {})
+              },
+              oauth2: {
+                authorize_url: provider.url('/oauth2/authorize_url'),
+                access_url: provider.url('/oauth2/access_url'),
+                oauth: 2,
+                transport: 'state',
+                ...(test.oauth2 || {})
+              },
+            }
+            client = await Client({test: 'lambda-prefix', handler, config})
+          })
+
+          after(async () => {
+            await client.close()
+            delete process.env.FUNCTION_TARGET
+          })
+
+          it('success', async () => {
+            var {body: {response}} = await request({
+              url: client.url('/prefix/connect/oauth2'),
+              cookie: {},
+            })
+            t.deepEqual(response, {
+              access_token: 'token',
+              refresh_token: 'refresh',
+              raw: {access_token: 'token', refresh_token: 'refresh', expires_in: '3600'}
+            })
+          })
+        })
+      })
+    })
+  })
+
   describe('dynamic state', () => {
-    ;['express', 'koa', 'hapi', 'node', 'vercel', 'aws'].forEach((handler) => {
+    ;['express', 'koa', 'hapi', 'node', 'aws', 'azure', 'gcloud', 'vercel'].forEach((handler) => {
       describe(handler, () => {
         before(async () => {
           client = await Client({test: 'dynamic-state', handler, config})
@@ -356,7 +406,7 @@ describe('handler', () => {
   })
 
   describe('transport state', () => {
-    ;['express', 'koa', 'koa-before', 'hapi', 'node', 'vercel', 'aws'].forEach((handler) => {
+    ;['express', 'koa', 'koa-before', 'hapi', 'node', 'aws', 'azure', 'gcloud', 'vercel'].forEach((handler) => {
       describe(handler, () => {
         before(async () => {
           client = await Client({test: 'transport-state', handler, config: {
@@ -488,7 +538,7 @@ describe('handler', () => {
   })
 
   describe('cookie-store', () => {
-    ;['express', 'node', 'vercel', 'aws'].forEach((handler) => {
+    ;['express', 'node', 'aws', 'azure', 'gcloud', 'vercel'].forEach((handler) => {
       describe(handler, () => {
         before(async () => {
           client = await Client({test: 'cookie-store', handler, config})
@@ -508,6 +558,30 @@ describe('handler', () => {
             refresh_token: 'refresh',
             raw: {access_token: 'token', refresh_token: 'refresh', expires_in: '3600'}
           })
+        })
+      })
+    })
+  })
+
+  describe('next tick', () => {
+    ;['node', 'gcloud', 'vercel'].forEach((handler) => {
+      describe(handler, () => {
+        before(async () => {
+          client = await Client({test: 'next-tick', handler, config})
+        })
+
+        after(async () => {
+          await client.close()
+        })
+
+        it('success', async () => {
+          var {res, body} = await request({
+            url: client.url('/connect/oauth2'),
+            cookie: {},
+          })
+          t.equal(res.statusCode, 200)
+          t.equal(res.headers['content-type'], 'application/json')
+          t.deepEqual(body, {status: 'redirect prevented'})
         })
       })
     })

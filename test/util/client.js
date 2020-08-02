@@ -53,9 +53,9 @@ var client = async ({test, handler, port = 5001, ...rest}) => {
     app,
     url: (path) => `http://localhost:${port}${path}`,
     close: () => new Promise((resolve) => {
-      handler === 'hapi' && version.hapi >= 17
-        ? server.stop().then(resolve)
-        : server[/express|koa|node|aws|vercel/.test(handler) ? 'close' : 'stop'](resolve)
+      handler === 'hapi' ? version.hapi >= 17
+        ? server.stop().then(resolve) : server.stop(resolve)
+        : server.close(resolve)
     })
   }
 }
@@ -148,47 +148,6 @@ var clients = {
 
       server.listen(port, () => resolve({grant, server}))
     }),
-    vercel: ({config, request, state, extend, port, index}) => new Promise((resolve) => {
-      var db = {}
-      var session = {
-        secret: 'grant',
-        store: {
-          get: async (key) => db[key],
-          set: async (key, value) => db[key] = value,
-          remove: async (key) => delete db[key],
-        }
-      }
-
-      var grant =
-        index === 1 ? Grant.vercel()({config, session}) :
-        index === 3 ? Grant.vercel({config, session}) :
-        index === 4 ? Grant({config, session, handler: 'vercel'}) :
-        Grant({config, session, request, state, extend, handler: 'vercel'})
-
-      var server = http.createServer()
-      server.on('request', async (req, res) => {
-        // vercel
-        req.query = req.url.split('?')[1]
-        req.body = qs.parse(await buffer(req))
-        // handler
-        var {session, response, redirect} = await grant(req, res)
-        if (response || /^\/(?:\?|$)/.test(req.url)) {
-          callback.handler(req, res, session, response)
-        }
-        else if (!redirect) {
-          res.statusCode = 404
-          res.end('Not Found')
-        }
-      })
-
-      var buffer = (req, body = []) => new Promise((resolve, reject) => req
-        .on('data', (chunk) => body.push(chunk))
-        .on('end', () => resolve(Buffer.concat(body).toString('utf8')))
-        .on('error', reject)
-      )
-
-      server.listen(port, () => resolve({grant, server}))
-    }),
     aws: ({config, request, state, extend, port, index}) => new Promise((resolve) => {
       var db = {}
       var session = {
@@ -227,6 +186,138 @@ var clients = {
           callback.handler(req, res, session, response)
         }
         else {
+          res.statusCode = 404
+          res.end('Not Found')
+        }
+      })
+
+      var buffer = (req, body = []) => new Promise((resolve, reject) => req
+        .on('data', (chunk) => body.push(chunk))
+        .on('end', () => resolve(Buffer.concat(body).toString('utf8')))
+        .on('error', reject)
+      )
+
+      server.listen(port, () => resolve({grant, server}))
+    }),
+    azure: ({config, request, state, extend, port, index}) => new Promise((resolve) => {
+      var db = {}
+      var session = {
+        secret: 'grant',
+        store: {
+          get: async (key) => db[key],
+          set: async (key, value) => db[key] = value,
+          remove: async (key) => delete db[key],
+        }
+      }
+      var grant =
+        index === 1 ? Grant.azure()({config, session}) :
+        index === 3 ? Grant.azure({config, session}) :
+        index === 4 ? Grant({config, session, handler: 'azure'}) :
+        Grant({config, session, request, state, extend, handler: 'azure'})
+
+      var server = http.createServer()
+      server.on('request', async (req, res) => {
+        // azure
+        req.originalUrl = `http://localhost:${port}${req.url.split('?')[0]}`
+        req.query = qs.parse(req.url.split('?')[1])
+        req.body = qs.parse(await buffer(req))
+        if (req.query.code) {
+          req.query.oauth_code = req.query.code
+          delete req.query.code
+        }
+        // handler
+        var {session, redirect, response} = await grant(req)
+        if (redirect) {
+          var {status, headers, body} = redirect
+          res.writeHead(status, headers)
+          res.end(JSON.stringify(body))
+        }
+        else if (response || /^\/(?:\?|$)/.test(req.url)) {
+          callback.handler(req, res, session, response)
+        }
+        else {
+          res.statusCode = 404
+          res.end('Not Found')
+        }
+      })
+
+      var buffer = (req, body = []) => new Promise((resolve, reject) => req
+        .on('data', (chunk) => body.push(chunk))
+        .on('end', () => resolve(Buffer.concat(body).toString('utf8')))
+        .on('error', reject)
+      )
+
+      server.listen(port, () => resolve({grant, server}))
+    }),
+    gcloud: ({config, request, state, extend, port, index}) => new Promise((resolve) => {
+      var db = {}
+      var session = {
+        secret: 'grant',
+        store: {
+          get: async (key) => db[key],
+          set: async (key, value) => db[key] = value,
+          remove: async (key) => delete db[key],
+        }
+      }
+
+      var grant =
+        index === 1 ? Grant.gcloud()({config, session}) :
+        index === 3 ? Grant.gcloud({config, session}) :
+        index === 4 ? Grant({config, session, handler: 'gcloud'}) :
+        Grant({config, session, request, state, extend, handler: 'gcloud'})
+
+      var server = http.createServer()
+      server.on('request', async (req, res) => {
+        // gcloud
+        req.query = req.url.split('?')[1]
+        req.body = qs.parse(await buffer(req))
+        // handler
+        var {session, response, redirect} = await grant(req, res)
+        if (response || /^\/(?:\?|$)/.test(req.url)) {
+          callback.handler(req, res, session, response)
+        }
+        else if (!redirect) {
+          res.statusCode = 404
+          res.end('Not Found')
+        }
+      })
+
+      var buffer = (req, body = []) => new Promise((resolve, reject) => req
+        .on('data', (chunk) => body.push(chunk))
+        .on('end', () => resolve(Buffer.concat(body).toString('utf8')))
+        .on('error', reject)
+      )
+
+      server.listen(port, () => resolve({grant, server}))
+    }),
+    vercel: ({config, request, state, extend, port, index}) => new Promise((resolve) => {
+      var db = {}
+      var session = {
+        secret: 'grant',
+        store: {
+          get: async (key) => db[key],
+          set: async (key, value) => db[key] = value,
+          remove: async (key) => delete db[key],
+        }
+      }
+
+      var grant =
+        index === 1 ? Grant.vercel()({config, session}) :
+        index === 3 ? Grant.vercel({config, session}) :
+        index === 4 ? Grant({config, session, handler: 'vercel'}) :
+        Grant({config, session, request, state, extend, handler: 'vercel'})
+
+      var server = http.createServer()
+      server.on('request', async (req, res) => {
+        // vercel
+        req.query = req.url.split('?')[1]
+        req.body = qs.parse(await buffer(req))
+        // handler
+        var {session, response, redirect} = await grant(req, res)
+        if (response || /^\/(?:\?|$)/.test(req.url)) {
+          callback.handler(req, res, session, response)
+        }
+        else if (!redirect) {
           res.statusCode = 404
           res.end('Not Found')
         }
@@ -470,6 +561,58 @@ var clients = {
       () => server.start(() => resolve({grant, server})))
     }),
   },
+  'lambda-prefix': {
+    aws: ({config, port}) => new Promise((resolve) => {
+      var session = {secret: 'grant'}
+      var grant = Grant.aws({config, session})
+
+      var server = http.createServer()
+      server.on('request', async (req, res) => {
+        // path is always prefixed by stage, but stage is also set as env var
+        var stage = /^\/(.*?)\//.exec(req.url)[1]
+        // aws
+        var event = {
+          httpMethod: req.method,
+          requestContext: {path: req.url.split('?')[0], stage},
+          queryStringParameters: qs.parse(req.url.split('?')[1]),
+          headers: req.headers,
+          multiValueHeaders: {'Set-Cookie': req.headers['set-cookie']},
+        }
+        // handler
+        var {session, redirect, response} = await grant(event)
+        if (redirect) {
+          var {statusCode, headers, multiValueHeaders, body} = redirect
+          res.writeHead(statusCode, {...headers, ...multiValueHeaders})
+          res.end(JSON.stringify(body))
+        }
+        else if (response || /^\/(?:\?|$)/.test(req.url)) {
+          callback.handler(req, res, session, response)
+        }
+      })
+
+      server.listen(port, () => resolve({grant, server}))
+    }),
+    gcloud: ({config, port}) => new Promise((resolve) => {
+      var session = {secret: 'grant'}
+      var grant = Grant.gcloud({config, session})
+
+      var server = http.createServer()
+      server.on('request', async (req, res) => {
+        // gcloud strips the lambda prefix from path, but sets it as env var
+        process.env.FUNCTION_TARGET = /^\/(.*?)\//.exec(req.url)[1]
+        req.url = req.url.replace(`/${process.env.FUNCTION_TARGET}`, '')
+        // gcloud
+        req.query = req.url.split('?')[1]
+        // handler
+        var {session, response} = await grant(req, res)
+        if (response || /^\/(?:\?|$)/.test(req.url)) {
+          callback.handler(req, res, session, response)
+        }
+      })
+
+      server.listen(port, () => resolve({grant, server}))
+    }),
+  },
   'dynamic-state': {
     express: ({config, port}) => new Promise((resolve) => {
       var grant = Grant.express()(config)
@@ -541,24 +684,6 @@ var clients = {
 
       server.listen(port, () => resolve({grant, server}))
     }),
-    vercel: ({config, port}) => new Promise((resolve) => {
-      var session = {secret: 'grant'}
-      var grant = Grant.vercel({config, session})
-
-      var server = http.createServer()
-      server.on('request', async (req, res) => {
-        // vercel
-        req.query = req.url.split('?')[1]
-        // handler
-        var state = {dynamic: {key: 'very', secret: 'secret'}}
-        var {session, response} = await grant(req, res, state)
-        if (response || /^\/(?:\?|$)/.test(req.url)) {
-          callback.handler(req, res, session, response)
-        }
-      })
-
-      server.listen(port, () => resolve({grant, server}))
-    }),
     aws: ({config, port}) => new Promise((resolve) => {
       var session = {secret: 'grant'}
       var grant = Grant.aws({config, session})
@@ -582,6 +707,70 @@ var clients = {
           res.end(JSON.stringify(body))
         }
         else if (response || /^\/(?:\?|$)/.test(req.url)) {
+          callback.handler(req, res, session, response)
+        }
+      })
+
+      server.listen(port, () => resolve({grant, server}))
+    }),
+    azure: ({config, port}) => new Promise((resolve) => {
+      var session = {secret: 'grant'}
+      var grant = Grant.azure({config, session})
+
+      var server = http.createServer()
+      server.on('request', async (req, res) => {
+        // azure
+        req.originalUrl = `http://localhost:${port}${req.url.split('?')[0]}`
+        req.query = qs.parse(req.url.split('?')[1])
+        if (req.query.code) {
+          req.query.oauth_code = req.query.code
+          delete req.query.code
+        }
+        // handler
+        var state = {dynamic: {key: 'very', secret: 'secret'}}
+        var {session, redirect, response} = await grant(req, state)
+        if (redirect) {
+          var {status, headers, body} = redirect
+          res.writeHead(status, headers)
+          res.end(JSON.stringify(body))
+        }
+        else if (response || /^\/(?:\?|$)/.test(req.url)) {
+          callback.handler(req, res, session, response)
+        }
+      })
+
+      server.listen(port, () => resolve({grant, server}))
+    }),
+    gcloud: ({config, port}) => new Promise((resolve) => {
+      var session = {secret: 'grant'}
+      var grant = Grant.gcloud({config, session})
+
+      var server = http.createServer()
+      server.on('request', async (req, res) => {
+        // gcloud
+        req.query = req.url.split('?')[1]
+        // handler
+        var state = {dynamic: {key: 'very', secret: 'secret'}}
+        var {session, response} = await grant(req, res, state)
+        if (response || /^\/(?:\?|$)/.test(req.url)) {
+          callback.handler(req, res, session, response)
+        }
+      })
+
+      server.listen(port, () => resolve({grant, server}))
+    }),
+    vercel: ({config, port}) => new Promise((resolve) => {
+      var session = {secret: 'grant'}
+      var grant = Grant.vercel({config, session})
+
+      var server = http.createServer()
+      server.on('request', async (req, res) => {
+        // vercel
+        req.query = req.url.split('?')[1]
+        // handler
+        var state = {dynamic: {key: 'very', secret: 'secret'}}
+        var {session, response} = await grant(req, res, state)
+        if (response || /^\/(?:\?|$)/.test(req.url)) {
           callback.handler(req, res, session, response)
         }
       })
@@ -698,23 +887,6 @@ var clients = {
 
       server.listen(port, () => resolve({grant, server}))
     }),
-    vercel: ({config, port}) => new Promise((resolve) => {
-      var session = {secret: 'grant'}
-      var grant = Grant.vercel({config, session})
-
-      var server = http.createServer()
-      server.on('request', async (req, res) => {
-        // vercel
-        req.query = req.url.split('?')[1]
-        // handler
-        var {session, response} = await grant(req, res)
-        if (response || /^\/(?:\?|$)/.test(req.url)) {
-          callback.handler(req, res, session, response)
-        }
-      })
-
-      server.listen(port, () => resolve({grant, server}))
-    }),
     aws: ({config, port}) => new Promise((resolve) => {
       var session = {secret: 'grant'}
       var grant = Grant.aws({config, session})
@@ -737,6 +909,67 @@ var clients = {
           res.end(JSON.stringify(body))
         }
         else if (response || /^\/(?:\?|$)/.test(req.url)) {
+          callback.handler(req, res, session, response)
+        }
+      })
+
+      server.listen(port, () => resolve({grant, server}))
+    }),
+    azure: ({config, port}) => new Promise((resolve) => {
+      var session = {secret: 'grant'}
+      var grant = Grant.azure({config, session})
+
+      var server = http.createServer()
+      server.on('request', async (req, res) => {
+        // azure
+        req.originalUrl = `http://localhost:${port}${req.url.split('?')[0]}`
+        req.query = qs.parse(req.url.split('?')[1])
+        if (req.query.code) {
+          req.query.oauth_code = req.query.code
+          delete req.query.code
+        }
+        // handler
+        var {session, redirect, response} = await grant(req)
+        if (redirect) {
+          var {status, headers, body} = redirect
+          res.writeHead(status, headers)
+          res.end(JSON.stringify(body))
+        }
+        else if (response || /^\/(?:\?|$)/.test(req.url)) {
+          callback.handler(req, res, session, response)
+        }
+      })
+
+      server.listen(port, () => resolve({grant, server}))
+    }),
+    gcloud: ({config, port}) => new Promise((resolve) => {
+      var session = {secret: 'grant'}
+      var grant = Grant.gcloud({config, session})
+
+      var server = http.createServer()
+      server.on('request', async (req, res) => {
+        // gcloud
+        req.query = req.url.split('?')[1]
+        // handler
+        var {session, response} = await grant(req, res)
+        if (response || /^\/(?:\?|$)/.test(req.url)) {
+          callback.handler(req, res, session, response)
+        }
+      })
+
+      server.listen(port, () => resolve({grant, server}))
+    }),
+    vercel: ({config, port}) => new Promise((resolve) => {
+      var session = {secret: 'grant'}
+      var grant = Grant.vercel({config, session})
+
+      var server = http.createServer()
+      server.on('request', async (req, res) => {
+        // vercel
+        req.query = req.url.split('?')[1]
+        // handler
+        var {session, response} = await grant(req, res)
+        if (response || /^\/(?:\?|$)/.test(req.url)) {
           callback.handler(req, res, session, response)
         }
       })
@@ -816,23 +1049,6 @@ var clients = {
 
       server.listen(port, () => resolve({grant, server}))
     }),
-    vercel: ({config, port}) => new Promise((resolve) => {
-      var session = {secret: 'grant'}
-      var grant = Grant.vercel({config, session})
-
-      var server = http.createServer()
-      server.on('request', async (req, res) => {
-        // vercel
-        req.query = req.url.split('?')[1]
-        // handler
-        var {session, response} = await grant(req, res)
-        if (response || /^\/(?:\?|$)/.test(req.url)) {
-          callback.handler(req, res, session, response)
-        }
-      })
-
-      server.listen(port, () => resolve({grant, server}))
-    }),
     aws: ({config, port}) => new Promise((resolve) => {
       var session = {secret: 'grant'}
       var grant = Grant.aws({config, session})
@@ -857,6 +1073,136 @@ var clients = {
         else if (response || /^\/(?:\?|$)/.test(req.url)) {
           callback.handler(req, res, session, response)
         }
+      })
+
+      server.listen(port, () => resolve({grant, server}))
+    }),
+    azure: ({config, port}) => new Promise((resolve) => {
+      var session = {secret: 'grant'}
+      var grant = Grant.azure({config, session})
+
+      var server = http.createServer()
+      server.on('request', async (req, res) => {
+        // azure
+        req.originalUrl = `http://localhost:${port}${req.url.split('?')[0]}`
+        req.query = qs.parse(req.url.split('?')[1])
+        if (req.query.code) {
+          req.query.oauth_code = req.query.code
+          delete req.query.code
+        }
+        // handler
+        var {session, redirect, response} = await grant(req)
+        if (redirect) {
+          var {status, headers, body} = redirect
+          res.writeHead(status, headers)
+          res.end(JSON.stringify(body))
+        }
+        else if (response || /^\/(?:\?|$)/.test(req.url)) {
+          callback.handler(req, res, session, response)
+        }
+      })
+
+      server.listen(port, () => resolve({grant, server}))
+    }),
+    gcloud: ({config, port}) => new Promise((resolve) => {
+      var session = {secret: 'grant'}
+      var grant = Grant.gcloud({config, session})
+
+      var server = http.createServer()
+      server.on('request', async (req, res) => {
+        // gcloud
+        req.query = req.url.split('?')[1]
+        // handler
+        var {session, response} = await grant(req, res)
+        if (response || /^\/(?:\?|$)/.test(req.url)) {
+          callback.handler(req, res, session, response)
+        }
+      })
+
+      server.listen(port, () => resolve({grant, server}))
+    }),
+    vercel: ({config, port}) => new Promise((resolve) => {
+      var session = {secret: 'grant'}
+      var grant = Grant.vercel({config, session})
+
+      var server = http.createServer()
+      server.on('request', async (req, res) => {
+        // vercel
+        req.query = req.url.split('?')[1]
+        // handler
+        var {session, response} = await grant(req, res)
+        if (response || /^\/(?:\?|$)/.test(req.url)) {
+          callback.handler(req, res, session, response)
+        }
+      })
+
+      server.listen(port, () => resolve({grant, server}))
+    }),
+  },
+  'next-tick': {
+    node: ({config, port}) => new Promise((resolve) => {
+      var session = {secret: 'grant'}
+      var grant = Grant.node({config, session})
+
+      var server = http.createServer()
+      server.on('request', async (req, res) => {
+        if (req.url !== '/connect/oauth2') {
+          res.statusCode = 200
+          res.setHeader('content-type', 'application/json')
+          res.end(JSON.stringify({status: 'redirect followed'}))
+          return
+        }
+        // handler
+        await grant(req, res)
+        res.statusCode = 200
+        res.setHeader('content-type', 'application/json')
+        res.end(JSON.stringify({status: 'redirect prevented'}))
+      })
+
+      server.listen(port, () => resolve({grant, server}))
+    }),
+    gcloud: ({config, port}) => new Promise((resolve) => {
+      var session = {secret: 'grant'}
+      var grant = Grant.gcloud({config, session})
+
+      var server = http.createServer()
+      server.on('request', async (req, res) => {
+        if (req.url !== '/connect/oauth2') {
+          res.statusCode = 200
+          res.setHeader('content-type', 'application/json')
+          res.end(JSON.stringify({status: 'redirect followed'}))
+          return
+        }
+        // gcloud
+        req.query = req.url.split('?')[1]
+        // handler
+        await grant(req, res)
+        res.statusCode = 200
+        res.setHeader('content-type', 'application/json')
+        res.end(JSON.stringify({status: 'redirect prevented'}))
+      })
+
+      server.listen(port, () => resolve({grant, server}))
+    }),
+    vercel: ({config, port}) => new Promise((resolve) => {
+      var session = {secret: 'grant'}
+      var grant = Grant.vercel({config, session})
+
+      var server = http.createServer()
+      server.on('request', async (req, res) => {
+        if (req.url !== '/connect/oauth2') {
+          res.statusCode = 200
+          res.setHeader('content-type', 'application/json')
+          res.end(JSON.stringify({status: 'redirect followed'}))
+          return
+        }
+        // vercel
+        req.query = req.url.split('?')[1]
+        // handler
+        await grant(req, res)
+        res.statusCode = 200
+        res.setHeader('content-type', 'application/json')
+        res.end(JSON.stringify({status: 'redirect prevented'}))
       })
 
       server.listen(port, () => resolve({grant, server}))
