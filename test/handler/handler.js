@@ -268,56 +268,6 @@ describe('handler', () => {
     })
   })
 
-  describe('lambda prefix', () => {
-    ;['aws', 'gcloud'].forEach((handler) => {
-      ;[
-        {defaults: {prefix: '/prefix/connect'}},
-        {oauth2: {redirect_uri: 'http://localhost:5001/prefix/connect/oauth2/callback'}},
-        {
-          defaults: {prefix: '/prefix/connect'},
-          oauth2: {redirect_uri: 'http://localhost:5001/prefix/connect/oauth2/callback'}
-        }
-      ]
-      .forEach((test) => {
-        describe(`${handler} ${JSON.stringify(test)}`, () => {
-          before(async () => {
-            var config = {
-              defaults: {
-                origin: 'http://localhost:5001',
-                ...(test.defaults || {})
-              },
-              oauth2: {
-                authorize_url: provider.url('/oauth2/authorize_url'),
-                access_url: provider.url('/oauth2/access_url'),
-                oauth: 2,
-                transport: 'state',
-                ...(test.oauth2 || {})
-              },
-            }
-            client = await Client({test: 'lambda-prefix', handler, config})
-          })
-
-          after(async () => {
-            await client.close()
-            delete process.env.FUNCTION_TARGET
-          })
-
-          it('success', async () => {
-            var {body: {response}} = await request({
-              url: client.url('/prefix/connect/oauth2'),
-              cookie: {},
-            })
-            t.deepEqual(response, {
-              access_token: 'token',
-              refresh_token: 'refresh',
-              raw: {access_token: 'token', refresh_token: 'refresh', expires_in: '3600'}
-            })
-          })
-        })
-      })
-    })
-  })
-
   describe('dynamic state', () => {
     ;['express', 'koa', 'hapi', 'node', 'aws', 'azure', 'gcloud', 'vercel'].forEach((handler) => {
       describe(handler, () => {
