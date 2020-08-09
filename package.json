@@ -11,9 +11,14 @@
     "authorization",
     "proxy",
     "middleware",
+    "lambda",
     "express",
     "koa",
-    "hapi"
+    "hapi",
+    "aws",
+    "azure",
+    "google-cloud",
+    "vercel"
   ],
   "license": "MIT",
   "homepage": "https://github.com/simov/grant",
