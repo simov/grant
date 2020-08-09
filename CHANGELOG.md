@@ -3,13 +3,13 @@
 
 ## v5.3.0 (2020/08/09)
 - **New:** Serverless handlers for [AWS Lambda](https://github.com/simov/grant-aws), [Azure Function](https://github.com/simov/grant-azure), [Google Cloud Function](https://github.com/simov/grant-gcloud) and [Vercel](https://github.com/simov/grant-vercel)
+- **New:** RSA-SHA1 signature method support for OAuth1.0a
 - **Fix:** OAuth2 support for `intuit`
 - **Fix:** Profile endpoints for `qq` and `weibo`
 
 ## v5.2.0 (2020/06/07)
 - **New:** Support for [request options](https://github.com/simov/grant#misc-request)
 - **New:** Official support for 2 new providers: `apple`, `garmin`
-- **Deprecate:** Meta modules for [Express, Koa and Hapi](https://github.com/simov/grant/blob/master/MIGRATION.md#deprecate-meta-modules)
 
 ## v5.1.1 (2020/05/25)
 - **Fix:** The upcoming Grant constructor
