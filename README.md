@@ -37,7 +37,7 @@
 # Handlers
 
 
-<details><summary style="font-size: 18px; line-height: 28px">Express</summary>
+<details><summary>Express</summary>
 
 ```js
 var express = require('express')
@@ -52,7 +52,7 @@ app.use(grant({/*configuration - see below*/}))
 ```
 </details>
 
-<details><summary style="font-size: 18px; line-height: 28px">Koa</summary>
+<details><summary>Koa</summary>
 
 ```js
 var Koa = require('koa')
@@ -68,7 +68,7 @@ app.use(grant({/*configuration - see below*/}))
 ```
 </details>
 
-<details><summary style="font-size: 18px; line-height: 28px">Hapi</summary>
+<details><summary>Hapi</summary>
 
 ```js
 var Hapi = require('hapi')
@@ -87,7 +87,7 @@ server.register([
 
 <br />
 
-<details><summary style="font-size: 18px; line-height: 28px">AWS Lambda</summary>
+<details><summary>AWS Lambda</summary>
 
 ```js
 var grant = require('grant').aws({
@@ -105,7 +105,7 @@ exports.handler = async (event) => {
 ```
 </details>
 
-<details><summary style="font-size: 18px; line-height: 28px">Azure Function</summary>
+<details><summary>Azure Function</summary>
 
 ```js
 var grant = require('grant').azure({
@@ -123,7 +123,7 @@ module.exports = async (context, req) => {
 ```
 </details>
 
-<details><summary style="font-size: 18px; line-height: 28px">Google Cloud Function</summary>
+<details><summary>Google Cloud Function</summary>
 
 ```js
 var grant = require('grant').gcloud({
@@ -141,7 +141,7 @@ exports.handler = async (req, res) => {
 ```
 </details>
 
-<details><summary style="font-size: 18px; line-height: 28px">Vercel</summary>
+<details><summary>Vercel</summary>
 
 ```js
 var grant = require('grant').vercel({
