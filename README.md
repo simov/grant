@@ -37,6 +37,8 @@
 # Handlers
 
 
+#### HTTP Framewors
+
 <details><summary>Express</summary>
 
 ```js
@@ -85,7 +87,7 @@ server.register([
 ```
 </details>
 
-<br />
+#### Serverless Functions
 
 <details><summary>AWS Lambda</summary>
 
@@ -158,8 +160,6 @@ module.exports = async (req, res) => {
 }
 ```
 </details>
-
-<br />
 
 **Examples:** [express][examples] / [koa][examples] / [hapi][examples] / [aws][grant-aws] / [azure][grant-azure] / [gcloud][grant-gcloud] / [vercel][grant-vercel]
 
