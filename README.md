@@ -5,7 +5,7 @@
 
 > _OAuth Proxy_
 
-## 180+ Supported Providers / [OAuth Playground][grant-oauth]
+## 200+ Supported Providers / [OAuth Playground][grant-oauth]
 
 [`23andme`](https://api.23andme.com) | [`500px`](https://github.com/500px/api-documentation) | [`acton`](https://developer.act-on.com) | [`acuityscheduling`](https://developers.acuityscheduling.com) | [`aha`](https://www.aha.io/api) | [`amazon`](https://login.amazon.com/documentation) | [`angellist`](https://angel.co/api) | [`apple`](https://developer.apple.com) | [`arcgis`](https://developers.arcgis.com) | [`asana`](https://asana.com/developers) | [`assembla`](https://api-docs.assembla.cc) | [`atlassian`](https://developer.atlassian.com) | [`auth0`](https://auth0.com/docs) | [`authentiq`](https://www.authentiq.com/developers) | [`aweber`](https://api.aweber.com) | [`axosoft`](https://developer.axosoft.com) | [`baidu`](https://developer.baidu.com) | [`basecamp`](https://github.com/basecamp/bc3-api) | [`battlenet`](https://develop.battle.net) | [`beatport`](https://oauth-api.beatport.com) | [`bitbucket`](https://developer.atlassian.com/bitbucket/api/2/reference/) | [`bitly`](https://dev.bitly.com) | [`box`](https://developer.box.com) | [`buffer`](https://buffer.com/developers) | [`campaignmonitor`](https://www.campaignmonitor.com/api) | [`cas`](https://apereo.github.io/cas/) | [`cheddar`](https://cheddarapp.com/developer) | [`clio`](https://app.clio.com/api/v4/documentation) | [`cognito`](https://aws.amazon.com/cognito/) | [`coinbase`](https://developers.coinbase.com) | [`concur`](https://developer.concur.com) | [`constantcontact`](https://developer.constantcontact.com) | [`coursera`](https://building.coursera.org) | [`dailymotion`](https://developer.dailymotion.com) | [`deezer`](https://developers.deezer.com) | [`delivery`](https://developers.delivery.com) | [`deputy`](https://www.deputy.com/api-doc/) | [`deviantart`](https://www.deviantart.com/developers/) | [`digitalocean`](https://developers.digitalocean.com) | [`discogs`](https://www.discogs.com/developers/) | [`discord`](https://discordapp.com/developers/docs/intro) | [`disqus`](https://disqus.com/api/docs) | [`docusign`](https://developers.docusign.com) | [`dribbble`](https://developer.dribbble.com) | [`dropbox`](https://www.dropbox.com/developers) | [`ebay`](https://developer.ebay.com) | [`echosign`](https://secure.echosign.com/public/docs/restapi/v3) | [`ecwid`](https://developers.ecwid.com) | [`edmodo`](https://partnerships.edmodo.com) | [`egnyte`](https://developers.egnyte.com) | [`etsy`](https://www.etsy.com/developers) | [`eventbrite`](https://www.eventbrite.com/platform) | [`evernote`](https://dev.evernote.com) | [`eyeem`](https://github.com/eyeem/Public-API) | [`facebook`](https://developers.facebook.com) | [`familysearch`](https://www.familysearch.org/developers/) | [`feedly`](https://developer.feedly.com) | [`fitbit`](https://dev.fitbit.com) | [`flattr`](http://developers.flattr.net) | [`flickr`](https://www.flickr.com/services) | [`flowdock`](https://www.flowdock.com/api) | [`formstack`](https://developers.formstack.com) | [`foursquare`](https://developer.foursquare.com) | [`freeagent`](https://dev.freeagent.com) | [`freelancer`](https://developers.freelancer.com) | [`freshbooks`](https://www.freshbooks.com/developers) | [`fusionauth`](https://fusionauth.io/docs/) | [`garmin`](https://developer.garmin.com) | [`geeklist`](http://hackers.geekli.st) | [`genius`](https://docs.genius.com) | [`getbase`](https://developers.getbase.com) | [`getpocket`](https://getpocket.com/developer) | [`gitbook`](https://developer.gitbook.com) | [`github`](https://docs.github.com/developers) | [`gitlab`](https://docs.gitlab.com/ce/api/) | [`gitter`](https://developer.gitter.im) | [`goodreads`](https://www.goodreads.com/api) | [`google`](https://developers.google.com) | [`groove`](https://www.groovehq.com/docs) | [`gumroad`](https://gumroad.com/api) | [`harvest`](https://help.getharvest.com/api-v2/) | [`hellosign`](https://www.hellosign.com/api) | [`heroku`](https://devcenter.heroku.com/categories/platform-api) | [`homeaway`](https://www.homeaway.com/platform) | [`hootsuite`](https://developer.hootsuite.com) | [`ibm`](https://www.ibm.com/support/knowledgecenter/SSAT72/com.ibm.help.ssm_adminguide.doc/t_RegisteringforblueID.html) | [`iconfinder`](https://developer.iconfinder.com) | [`idme`](https://developer.id.me) | [`idonethis`](https://i-done-this.readme.io/docs) | [`imgur`](https://apidocs.imgur.com) | [`infusionsoft`](https://developer.infusionsoft.com) | [`instagram`](https://instagram.com/developer) | [`intuit`](https://developer.intuit.com) | [`jamendo`](https://devportal.jamendo.com/) | [`jumplead`](https://developer.jumplead.com) | [`kakao`](https://developers.kakao.com) | [`line`](https://developers.line.biz) | [`linkedin`](https://www.linkedin.com/developers) | [`live`](https://docs.microsoft.com/en-us/onedrive/developer/rest-api/getting-started/msa-oauth?view=odsp-graph-online) | [`livechat`](https://developers.livechatinc.com) | [`logingov`](https://developers.login.gov) | [`lyft`](https://developer.lyft.com) | [`mailchimp`](https://developer.mailchimp.com) | [`mailup`](http://help.mailup.com/display/mailupapi/REST+API) | [`mailxpert`](https://dev.mailxpert.ch) | [`mapmyfitness`](https://developer.underarmour.com) | [`mastodon`](https://docs.joinmastodon.org/) | [`medium`](https://developers.medium.com) | [`meetup`](https://www.meetup.com/meetup_api/) | [`mention`](https://dev.mention.com) | [`microsoft`](https://developer.microsoft.com/en-us/graph) | [`mixcloud`](https://www.mixcloud.com/developers) | [`mixer`](https://dev.mixer.com) | [`moxtra`](https://developer.moxtra.com) | [`myob`](https://developer.myob.com) | [`naver`](https://developers.naver.com) | [`nest`](https://developers.nest.com) | [`nokotime`](https://developer.nokotime.com) | [`nylas`](https://docs.nylas.com) | [`okta`](https://developer.okta.com/) | [`onelogin`](https://developers.onelogin.com) | [`openstreetmap`](https://wiki.openstreetmap.org/wiki/API_v0.6) | [`optimizely`](https://developers.optimizely.com) | [`patreon`](https://docs.patreon.com) | [`paypal`](https://developer.paypal.com) | [`phantauth`](https://www.phantauth.net) | [`pinterest`](https://developers.pinterest.com) | [`plurk`](https://www.plurk.com/API) | [`podio`](https://developers.podio.com) | [`producthunt`](https://api.producthunt.com/v2/docs) | [`projectplace`](https://service.projectplace.com/apidocs) | [`pushbullet`](https://docs.pushbullet.com) | [`qq`](https://wiki.connect.qq.com/%E5%87%86%E5%A4%87%E5%B7%A5%E4%BD%9C_oauth2-0) | [`ravelry`](https://www.ravelry.com/api) | [`redbooth`](https://redbooth.com/api) | [`reddit`](https://www.reddit.com/dev/api) | [`runkeeper`](https://runkeeper.com/developer/healthgraph/) | [`salesforce`](https://developer.salesforce.com) | [`shoeboxed`](https://github.com/Shoeboxed/api) | [`shopify`](https://developers.shopify.com) | [`skyrock`](https://www.skyrock.com/developer) | [`slack`](https://api.slack.com) | [`slice`](https://developer.slice.com) | [`smartsheet`](https://smartsheet-platform.github.io/api-docs) | [`smugmug`](https://api.smugmug.com) | [`snapchat`](https://kit.snapchat.com) | [`socialpilot`](https://developer.socialpilot.co) | [`socrata`](https://dev.socrata.com) | [`soundcloud`](https://developers.soundcloud.com) | [`spotify`](https://developer.spotify.com) | [`square`](https://squareup.com/developers) | [`stackexchange`](https://api.stackexchange.com) | [`stocktwits`](https://api.stocktwits.com/developers) | [`stormz`](https://developer.stormz.me) | [`strava`](https://developers.strava.com) | [`stripe`](https://stripe.com/docs) | [`surveygizmo`](https://apihelp.surveygizmo.com) | [`surveymonkey`](https://developer.surveymonkey.com) | [`thingiverse`](https://www.thingiverse.com/developers) | [`ticketbud`](https://api.ticketbud.com) | [`timelyapp`](https://dev.timelyapp.com) | [`todoist`](https://developer.todoist.com) | [`trakt`](https://trakt.docs.apiary.io) | [`traxo`](https://developer.traxo.com) | [`trello`](https://developers.trello.com) | [`tripit`](https://www.tripit.com/developer) | [`tumblr`](https://www.tumblr.com/docs/en/api/v2) | [`twitch`](https://dev.twitch.tv) | [`twitter`](https://developer.twitter.com) | [`typeform`](https://developer.typeform.com) | [`uber`](https://developer.uber.com) | [`underarmour`](https://developer.underarmour.com) | [`unsplash`](https://unsplash.com/documentation) | [`upwork`](https://developers.upwork.com) | [`uservoice`](https://developer.uservoice.com) | [`vend`](https://developers.vendhq.com) | [`venmo`](https://developers.braintreepayments.com/guides/venmo/overview/) | [`verticalresponse`](http://developers.verticalresponse.com) | [`viadeo`](https://partners.viadeo.com) | [`vimeo`](https://developer.vimeo.com) | [`visualstudio`](https://docs.microsoft.com/en-us/vsts/integrate/get-started/authentication/oauth?view=vsts) | [`vk`](https://vk.com/dev) | [`wechat`](https://mp.weixin.qq.com) | [`weekdone`](https://weekdone.com/developer) | [`weibo`](https://open.weibo.com) | [`withings`](http://developer.withings.com) | [`wordpress`](https://developer.wordpress.com) | [`wrike`](https://developers.wrike.com) | [`xero`](https://developer.xero.com) | [`xing`](https://dev.xing.com) | [`yahoo`](https://developer.yahoo.com) | [`yammer`](https://developer.yammer.com/docs) | [`yandex`](https://tech.yandex.com) | [`zeit`](https://zeit.co/docs) | [`zendesk`](https://developer.zendesk.com) | [`zoom`](https://marketplace.zoom.us/docs)
 
@@ -37,7 +37,7 @@
 # Handlers
 
 
-#### HTTP Framewors
+### HTTP Frameworks
 
 <details><summary>Express</summary>
 
@@ -87,7 +87,7 @@ server.register([
 ```
 </details>
 
-#### Serverless Functions
+### Serverless Functions
 
 <details><summary>AWS Lambda</summary>
 
@@ -161,7 +161,9 @@ module.exports = async (req, res) => {
 ```
 </details>
 
-**Examples:** [express][examples] / [koa][examples] / [hapi][examples] / [aws][grant-aws] / [azure][grant-azure] / [gcloud][grant-gcloud] / [vercel][grant-vercel]
+### Examples
+
+> __[express][examples] | [koa][examples] | [hapi][examples] | [aws][grant-aws] | [azure][grant-azure] | [gcloud][grant-gcloud] | [vercel][grant-vercel]__
 
 ---
 
@@ -195,13 +197,13 @@ module.exports = async (req, res) => {
 
 - **defaults** - default configuration for all providers
   - **origin** - where your client server can be reached `http://localhost:3000` | `https://site.com` ...
-  - **transport** - a [transport](#callback-transport) to use to deliver the [response data](#callback-response) in your `callback` route
-  - **state** - generate random state string on each authorization attempt
+  - **transport** - a [transport](#callback-transport) used to deliver the [response data](#callback-response) in your `callback` route
+  - **state** - generate random state string
 - **provider** - any [supported provider](#grant) `google` | `twitter` ...
   - **key** - `consumer_key` or `client_id` of your OAuth app
   - **secret** - `consumer_secret` or `client_secret` of your OAuth app
   - **scope** - array of OAuth scopes to request
-  - **nonce** - generate random nonce string on each authorization attempt ([OpenID Connect](#connect-openid-connect) only)
+  - **nonce** - generate random nonce string ([OpenID Connect](#connect-openid-connect) only)
   - **custom_params** - custom [authorization parameters](#connect-custom-parameters)
   - **callback** - relative route or absolute URL to receive the response data `/hello` | `https://site.com/hey` ...
 
@@ -219,11 +221,11 @@ Key | Location | Description
 **`token_endpoint_auth_method`** | `[provider]` | Authentication method for the token endpoint
 **`token_endpoint_auth_signing_alg`** | `[provider]` | Signing algorithm for the token endpoint
 ***Client Server*** |
-**`origin`** | `defaults` | Where your server and Grant can be reached
+**`origin`** | `defaults` | Where your client server can be reached
 **`prefix`** | `defaults` | Path prefix for the Grant internal routes
-**`state`** | `defaults` | Random state string for OAuth2
+**`state`** | `defaults` | Random state string for OAuth 2.0
 **`nonce`** | `defaults` | Random nonce string for OpenID Connect
-**`pkce`** | `defaults` | PKCE support
+**`pkce`** | `defaults` | Toggle PKCE support
 **`response`** | `defaults` | Response data to receive
 **`transport`** | `defaults` | A way to deliver the response data
 **`callback`** | `[provider]` | Relative or absolute URL to receive the response data
@@ -264,7 +266,7 @@ Key | Location | Value
 **`pkce`** | `defaults` | `true`
 **`response`** | `defaults` | `['tokens', 'raw', 'jwt', 'profile']`
 **`transport`** | `defaults` | `'querystring'` `'session'` `'state'`
-**`callback`** | `[provider]` | `'/hello'` `'https://site.com/hey'`
+**`callback`** | `[provider]` | `'/hello'` `'https://site.com/hi'`
 **`overrides`** | `[provider]` | `{something: {scope: ['..']}}`
 **`dynamic`** | `[provider]` | `['scope', 'subdomain']`
 ***Client App*** |
@@ -294,7 +296,7 @@ Grant relies on configuration gathered from **6** different places:
 
 4. The **fourth** place for configuration are the provider's [`overrides`](#connect-static-overrides). The static overrides inherit their parent provider, essentially creating new provider of the same type.
 
-5. The **fifth** place for configuration is the dynamic [`state`](#dynamic-state) override. The request/response lifecycle state of your HTTP framework of choice can be used to dynamically override configuration.
+5. The **fifth** place for configuration is the dynamic [state](#dynamic-state) override. The request/response lifecycle state of your HTTP framework of choice can be used to dynamically override configuration.
 
 6. The **sixth** place for configuration, that _[potentially](#dynamic-oauth-proxy)_ can override all of the above, and make all of the above optional, is the [`dynamic`](#dynamic-http) HTTP override.
 
@@ -313,7 +315,7 @@ Grant relies on configuration gathered from **6** different places:
 }
 ```
 
-The `origin` is where your client server is listening to and can be reached.
+The `origin` is where your client server can be reached.
 
 You login by navigating to the `/connect/:provider` route where `:provider` is a key in your configuration, usually one of the [officially supported](#grant) ones, but you can define [your own](#misc-custom-providers) as well. Additionally you can login through a [static override](#connect-static-overrides) defined for that provider by navigating to the `/connect/:provider/:override?` route.
 
@@ -355,7 +357,7 @@ This redirect URI is used internally by Grant. Depending on the [`transport`](#c
 
 ## Connect: Custom Parameters
 
-Some providers may employ custom authorization parameters, that you can configure using the `custom_params` option:
+Some providers may employ custom authorization parameters that you can configure using the `custom_params` key:
 
 ```json
 {
@@ -374,7 +376,7 @@ Some providers may employ custom authorization parameters, that you can configur
 
 ## Connect: OpenID Connect
 
-The `openid` scope is required, and the `nonce` is optional but recommended:
+The `openid` scope is required, and generating a random `nonce` string is optional but recommended:
 
 ```json
 {
@@ -445,11 +447,11 @@ Navigate to:
 
 ## Callback: Data
 
-By default the response data is returned in your `callback` route or absolute URL encoded as querystring.
+By default the response data will be returned in your `callback` route or absolute URL encoded as querystring.
 
-Depending on the [`transport`](#callback-transport) being used the response data can also be returned in the `session` or in the `state` object.
+Depending on the [`transport`](#callback-transport) being used the response data can be returned in the `session` or in the `state` object instead.
 
-The amount of the returned data can also be controlled using the [`response`](#callback-response) option.
+The amount of the returned data can be controlled through the [`response`](#callback-response) configuration.
 
 ### OAuth 2.0
 
@@ -510,7 +512,7 @@ By default Grant will encode the OAuth [response data](#callback-data) as `query
 }
 ```
 
-This is useful when using Grant as [OAuth Proxy](#dynamic-oauth-proxy). However this final `https://site.com/hello?access_token=...` redirect can potentially leak private data in your server logs, especially when sitting behind reverse proxy.
+This is useful when using Grant as [OAuth Proxy](#dynamic-oauth-proxy). However this final `https://site.com/hello?access_token=...` redirect can potentially leak private data in your server logs, especially when sitting behind a reverse proxy.
 
 ### session
 
@@ -537,7 +539,7 @@ req.yar.get('grant').response // Hapi
 
 ### state
 
-Lastly the request/response lifecycle `state` can be used as well:
+The request/response lifecycle `state` can be used as well:
 
 ```json
 {
@@ -547,7 +549,7 @@ Lastly the request/response lifecycle `state` can be used as well:
 }
 ```
 
-In this case a `callback` route is not needed, and it will be ignored if provided. The response data will be available in the request/response lifecycle `state` instead:
+In this case a `callback` route is not needed, and it will be ignored if provided. The response data will be available in the request/response lifecycle state object instead:
 
 ```js
 res.locals.grant.response // Express
@@ -557,7 +559,7 @@ req.plugins.grant.response // Hapi
 
 ## Callback: Response
 
-By default Grant returns all of the available tokens and the `raw` response data returned from the Authorization server:
+By default Grant returns all of the available tokens and the `raw` response data returned by the Authorization server:
 
 ```js
 {
@@ -634,7 +636,7 @@ This will make the decoded JWT available in the response data:
 }
 ```
 
-Make sure you include all response keys that you want returned when configuring the `response` data explicitly.
+Make sure you include all of the response keys that you want to be returned when configuring the `response` data explicitly.
 
 
 ### profile
@@ -659,24 +661,24 @@ Additionaly a `profile` key will be available in the response data:
 }
 ```
 
-The `profile` key contains either the raw response data returned from the user profile endpoint or an error message.
+The `profile` key contains either the raw response data returned by the user profile endpoint or an error message.
 
-Not all of the supported providers have their `profile_url` set, and some of them might require custom parameters. Usually the user profile endpoint is accessible only if you request certain `scope`s.
+Not all of the supported providers have their `profile_url` set, and some of them might require custom parameters. Usually the user profile endpoint is accessible only when certain `scope`s were requested.
 
 
 ## Callback: Session
 
 Grant uses session to persist state between HTTP redirects occurring during the OAuth flow. This session, however, was never meant to be used as persistent storage, even if that's totally possible.
 
-Once you receive the [response data](#callback-data), in your `callback` route you are free to destroy that session.
+Once you receive the [response data](#callback-data) in your `callback` route you are free to destroy that session.
 
 However, there are a few session keys returned in your `callback` route, that you may find useful:
 
 Key        | Availability            | Description
 :--        | :--                     | :--
-`provider` | **Always**              | The provider [name](#grant) this authorization was called for
+`provider` | **Always**              | The provider [name](#grant) used for this authorization
 `override` | Depends on URL          | The [static override](#connect-static-overrides) name used for this authorization
-`dynamic`  | Depends on request type | The [dynamic override](#dynamic-http) configuration passed for this authorization
+`dynamic`  | Depends on request type | The [dynamic override](#dynamic-http) configuration passed to this authorization
 `state`    | OAuth 2.0 only          | OAuth 2.0 state string that was generated
 `nonce`    | OpenID Connect only     | [OpenID Connect](#connect-openid-connect) nonce string that was generated
 `code_verifier` | PKCE only     | The code verifier that was generated for [PKCE](#connect-pkce)
@@ -699,12 +701,12 @@ console.log(grant.config)
 
 You can use the `config` property to alter the Grant's behavior during runtime without having to restart your server.
 
-Keep in mind that this property contains the **generated** configuration that Grant uses internally, and changes made to that configuration affects the **entire** Grant instance!
+This property contains the **generated** configuration used internally by Grant, and changes made to that configuration affects the **entire** Grant instance!
 
 
 ## Dynamic: State
 
-The request/response lifecycle state can be used to alter your configuration on every request:
+The request/response lifecycle state can be used to alter configuration on every request:
 
 ```js
 res.locals.grant = {dynamic: {subdomain: 'usershop'}} // Express
@@ -712,9 +714,11 @@ ctx.state.grant = {dynamic: {subdomain: 'usershop'}} // Koa
 request.plugins.grant = {dynamic: {subdomain: 'usershop'}} // Hapi
 ```
 
-Note that the request/response lifecycle `state` is not controlled by the [`dynamic`](#dynamic-http) configuration, meaning that you can override any configuration key.
+This is useful in cases when you want to configure Grant dynamically with potentially sensitive data that you don't want to send over HTTP.
 
-Any allowed [`dynamic`](#dynamic-http) configuration key sent through HTTP GET/POST request will override the identical one set in `state`.
+The request/response lifecycle state is not controlled by the [`dynamic`](#dynamic-http) configuration, meaning that you can override any configuration key.
+
+Any allowed [`dynamic`](#dynamic-http) configuration key sent through HTTP GET/POST request will override the identical one set using a state override.
 
 ## Dynamic: HTTP
 
@@ -739,7 +743,7 @@ Then you can have a web form on your website allowing the user to specify the sh
 </form>
 ```
 
-Keep in mind that when making a `POST` request to the `/connect/:provider/:override?` route you have to mount the `body-parser` middleware for Express and Koa before mounting Grant:
+When making a `POST` request to the `/connect/:provider/:override?` route you have to mount the `body-parser` middleware for Express and Koa before mounting Grant:
 
 ```js
 // express
@@ -758,7 +762,7 @@ Alternatively you can make a `GET` request to the `/connect/:provider/:override?
 https://awesome.com/connect/shopify?subdomain=usershop
 ```
 
-Note that the `dynamic` configuration sent over HTTP GET/POST request override any other configuration.
+Any `dynamic` configuration sent over HTTP GET/POST request overrides any other configuration.
 
 ## Dynamic: OAuth Proxy
 
@@ -815,7 +819,7 @@ The above configuration is identical to:
 }
 ```
 
-Note that explicitly specifying the `redirect_uri` overrides the one generated by default.
+Explicitly specifying the `redirect_uri` overrides the one generated by default.
 
 
 ## Misc: Custom Providers
@@ -865,7 +869,7 @@ Note that `meta` is arbitrary key, but it cannot be one of the [reserved keys][r
 Grant supports different ways of instantiation:
 
 ```js
-// Express
+// Express or any other handler
 var grant = require('grant').express()(config)
 var grant = require('grant').express()({config, ...})
 var grant = require('grant').express(config)
