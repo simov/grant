@@ -1,5 +1,6 @@
 
 var t = require('assert')
+var qs = require('qs')
 
 var request = require('request-compose').extend({
   Request: {cookie: require('request-cookie').Request},
@@ -75,12 +76,16 @@ describe('session', () => {
         var {body: {session}} = await request({
           method: 'POST',
           url: client.url('/connect/oauth2/contacts'),
-          form: {scope: ['scope1', 'scope2'], state: 'Grant', nonce: 'simov'},
+          form: qs.stringify({
+            scope: ['scope1', 'scope2'], state: 'Grant', nonce: 'simov',
+            custom_params: {access_type: 'offline'}
+          }, {arrayFormat: 'repeat'}),
           cookie: {},
           redirect: {all: true, method: false},
         })
         t.deepEqual(session, {provider: 'oauth2', override: 'contacts',
-          dynamic: {scope: ['scope1', 'scope2'], state: 'Grant', nonce: 'simov'},
+          dynamic: {scope: ['scope1', 'scope2'], state: 'Grant', nonce: 'simov',
+            custom_params: {access_type: 'offline'}},
           state: 'Grant', nonce: 'simov'
         })
       })
@@ -88,11 +93,15 @@ describe('session', () => {
       it('dynamic - GET', async () => {
         var {body: {session}} = await request({
           url: client.url('/connect/oauth2/contacts'),
-          qs: {scope: ['scope1', 'scope2'], state: 'Grant', nonce: 'simov'},
+          qs: qs.stringify({
+            scope: ['scope1', 'scope2'], state: 'Grant', nonce: 'simov',
+            custom_params: {access_type: 'offline'}
+          }, {arrayFormat: 'repeat'}),
           cookie: {},
         })
         t.deepEqual(session, {provider: 'oauth2', override: 'contacts',
-          dynamic: {scope: ['scope1', 'scope2'], state: 'Grant', nonce: 'simov'},
+          dynamic: {scope: ['scope1', 'scope2'], state: 'Grant', nonce: 'simov',
+            custom_params: {access_type: 'offline'}},
           state: 'Grant', nonce: 'simov'
         })
       })
