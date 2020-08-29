@@ -45,7 +45,7 @@ describe('handler', () => {
   })
 
   describe('handlers', () => {
-    ;['express', 'koa', 'hapi', 'node', 'aws', 'azure', 'gcloud', 'vercel'].forEach((handler) => {
+    ;['express', 'koa', 'hapi', 'fastify', 'node', 'aws', 'azure', 'gcloud', 'vercel'].forEach((handler) => {
       Array.from({length: 5}).forEach((_, index) => {
         describe(`${handler} - ${index}`, () => {
           before(async () => {
@@ -73,7 +73,7 @@ describe('handler', () => {
   })
 
   describe('missing session middleware', () => {
-    ;['express', 'koa', 'hapi'].forEach((handler) => {
+    ;['express', 'koa', 'hapi', 'fastify'].forEach((handler) => {
       describe(handler, () => {
         before(async () => {
           client = await Client({test: 'missing-session', handler, config})
@@ -92,7 +92,7 @@ describe('handler', () => {
             t.equal(body, 'Grant: mount session middleware first')
           }
           catch (err) {
-            // hapi - assertion is in the client
+            // fastify, hapi - assertion is in the client
           }
         })
       })
@@ -123,7 +123,7 @@ describe('handler', () => {
   })
 
   describe('missing provider', () => {
-    ;['express', 'koa', 'hapi', 'node', 'vercel', 'aws'].forEach((handler) => {
+    ;['express', 'koa', 'hapi', 'fastify', 'node', 'aws', 'azure', 'gcloud', 'vercel'].forEach((handler) => {
       describe(handler, () => {
         before(async () => {
           client = await Client({test: 'handlers', handler, config})
@@ -163,7 +163,7 @@ describe('handler', () => {
   })
 
   describe('path matching regexp', () => {
-    ;['express', 'koa', 'hapi', 'node', 'vercel', 'aws'].forEach((handler) => {
+    ;['express', 'koa', 'hapi', 'fastify', 'node', 'aws', 'azure', 'gcloud', 'vercel'].forEach((handler) => {
       describe(handler, () => {
         before(async () => {
           client = await Client({test: 'handlers', handler, config: {
@@ -198,7 +198,7 @@ describe('handler', () => {
           for (var path of paths) {
             for (var end of endings) {
               if (
-                'hapi' === handler &&
+                /fastify|hapi/.test(handler) &&
                 '/connect/oauth2/override' === path &&
                 ['/', '/?a=/'].includes(end)) {
                 continue
@@ -229,7 +229,7 @@ describe('handler', () => {
   })
 
   describe('path prefix', () => {
-    ;['express', 'koa', 'hapi'].forEach((handler) => {
+    ;['express', 'koa', 'hapi', 'fastify'].forEach((handler) => {
       ;[
         {config: {path: '/oauth'},         connect: '/oauth/connect/oauth2'},
         {config: {prefix: '/oauth'},       connect: '/oauth/oauth2'},
@@ -269,7 +269,7 @@ describe('handler', () => {
   })
 
   describe('dynamic state', () => {
-    ;['express', 'koa', 'hapi', 'node', 'aws', 'azure', 'gcloud', 'vercel'].forEach((handler) => {
+    ;['express', 'koa', 'hapi', 'fastify', 'node', 'aws', 'azure', 'gcloud', 'vercel'].forEach((handler) => {
       describe(handler, () => {
         before(async () => {
           client = await Client({test: 'dynamic-state', handler, config})
@@ -317,7 +317,7 @@ describe('handler', () => {
   })
 
   describe('transport querystring session', () => {
-    ;['express', 'koa', 'hapi', 'node', 'vercel', 'aws'].forEach((handler) => {
+    ;['express', 'koa', 'hapi', 'fastify', 'node', 'aws', 'azure', 'gcloud', 'vercel'].forEach((handler) => {
       ;['', 'querystring', 'session'].forEach((transport) => {
         describe(`${handler} - transport ${transport}`, () => {
           before(async () => {
@@ -356,7 +356,7 @@ describe('handler', () => {
   })
 
   describe('transport state', () => {
-    ;['express', 'koa', 'koa-before', 'hapi', 'node', 'aws', 'azure', 'gcloud', 'vercel'].forEach((handler) => {
+    ;['express', 'koa', 'koa-before', 'hapi', 'fastify', 'node', 'aws', 'azure', 'gcloud', 'vercel'].forEach((handler) => {
       describe(handler, () => {
         before(async () => {
           client = await Client({test: 'transport-state', handler, config: {
@@ -393,7 +393,7 @@ describe('handler', () => {
   })
 
   describe('response filter', () => {
-    ;['express', 'koa', 'hapi', 'node', 'vercel', 'aws'].forEach((handler) => {
+    ;['express', 'koa', 'hapi', 'fastify', 'node', 'aws', 'azure', 'gcloud', 'vercel'].forEach((handler) => {
       ;['token', ['tokens'], ['raw'], ['jwt'], ['profile'], ['raw', 'jwt'],
         ['tokens', 'raw', 'jwt', 'profile']].forEach((response) => {
         describe(`${handler} - ${JSON.stringify(response)}`, () => {
@@ -564,7 +564,7 @@ describe('handler', () => {
   })
 
   describe('extend + state', () => {
-    ;['express', 'koa', 'hapi', 'vercel', 'aws'].forEach((handler) => {
+    ;['express', 'koa', 'hapi', 'fastify', 'node', 'aws', 'azure', 'gcloud', 'vercel'].forEach((handler) => {
       describe(handler, () => {
         before(async () => {
           var db = {grant: 'simov'}
@@ -604,7 +604,7 @@ describe('handler', () => {
   })
 
   describe('request options', () => {
-    ;['express', 'koa', 'hapi', 'node', 'vercel', 'aws'].forEach((handler) => {
+    ;['express', 'koa', 'hapi', 'fastify', 'node', 'aws', 'azure', 'gcloud', 'vercel'].forEach((handler) => {
       describe(handler, () => {
         var calls = []
 
@@ -676,7 +676,7 @@ describe('handler', () => {
   })
 
   describe('profile', () => {
-    ;['express', 'koa', 'hapi', 'node', 'vercel', 'aws'].forEach((handler) => {
+    ;['express', 'koa', 'hapi', 'fastify', 'node', 'aws', 'azure', 'gcloud', 'vercel'].forEach((handler) => {
       describe(handler, () => {
         before(async () => {
           var extend = [profile]

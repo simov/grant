@@ -24,6 +24,13 @@ catch (err) {
   var yar = require('yar')
 }
 
+var fastify = {
+  server: require('fastify'),
+  cookie: require('fastify-cookie'),
+  session: require('fastify-session'),
+  parser: require('fastify-formbody'),
+}
+
 var Grant = require('../../')
 
 var version = {
@@ -116,6 +123,26 @@ var clients = {
           {password: '01234567890123456789012345678912', isSecure: false}}}
       ])
       .then(() => server.start().then(() => resolve({grant, server})))
+    }),
+    fastify: ({config, request, state, extend, port, index}) => new Promise((resolve) => {
+      var grant =
+        index === 0 ? Grant.fastify()(config) :
+        index === 1 ? Grant.fastify()({config}) :
+        index === 2 ? Grant.fastify(config) :
+        index === 3 ? Grant.fastify({config}) :
+        index === 4 ? Grant({config, handler: 'fastify'}) :
+        Grant({config, request, state, extend, handler: 'fastify'})
+
+      var server = fastify.server()
+      server
+        .register(fastify.cookie)
+        .register(fastify.session, {
+          secret: '01234567890123456789012345678912', cookie: {secure: false}})
+        .register(fastify.parser)
+        .register(grant)
+        .route({method: 'GET', path: '/', handler: callback.fastify})
+        .listen(port)
+        .then(() => resolve({grant, server}))
     }),
     node: ({config, request, state, extend, port, index}) => new Promise((resolve) => {
       var db = {}
@@ -412,6 +439,19 @@ var clients = {
       ])
       .then(() => server.start().then(() => resolve({grant, server})))
     }),
+    fastify: ({config, port}) => new Promise((resolve) => {
+      var grant = Grant.fastify()(config)
+
+      var server = fastify.server()
+      server
+        .decorateReply('grant', {})
+        .addHook('onError', async (req, res, err) => {
+          t.equal(err.message, 'Grant: register session plugin first')
+        })
+        .register(grant)
+        .listen(port)
+        .then(() => resolve({grant, server}))
+    }),
     koa1: ({config, port}) => new Promise((resolve) => {
       var grant = Grant.koa()(config)
 
@@ -532,6 +572,19 @@ var clients = {
           {password: '01234567890123456789012345678912', isSecure: false}}}
       ])
       .then(() => server.start().then(() => resolve({grant, server})))
+    }),
+    fastify: ({config, port}) => new Promise((resolve) => {
+      var grant = Grant.fastify()(config)
+
+      var server = fastify.server()
+      server
+        .register(fastify.cookie)
+        .register(fastify.session, {
+          secret: '01234567890123456789012345678912', cookie: {secure: false}})
+        .register(grant, {prefix: '/oauth'})
+        .route({method: 'GET', path: '/', handler: callback.fastify})
+        .listen(port)
+        .then(() => resolve({grant, server}))
     }),
     koa1: ({config, port}) => new Promise((resolve) => {
       var grant = Grant.koa()(config)
@@ -668,6 +721,23 @@ var clients = {
           {password: '01234567890123456789012345678912', isSecure: false}}}
       ])
       .then(() => server.start().then(() => resolve({grant, server})))
+    }),
+    fastify: ({config, port}) => new Promise((resolve) => {
+      var grant = Grant.fastify()(config)
+
+      var server = fastify.server()
+      server
+        .decorateRequest('grant', {})
+        .addHook('preHandler', async (req, res) => {
+          req.grant = {dynamic: {key: 'very', 'secret': 'secret'}}
+        })
+        .register(fastify.cookie)
+        .register(fastify.session, {
+          secret: '01234567890123456789012345678912', cookie: {secure: false}})
+        .register(grant)
+        .route({method: 'GET', path: '/', handler: callback.fastify})
+        .listen(port)
+        .then(() => resolve({grant, server}))
     }),
     node: ({config, port}) => new Promise((resolve) => {
       var session = {secret: 'grant'}
@@ -872,6 +942,27 @@ var clients = {
           {password: '01234567890123456789012345678912', isSecure: false}}}
       ])
       .then(() => server.start().then(() => resolve({grant, server})))
+    }),
+    fastify: ({config, port}) => new Promise((resolve) => {
+      var grant = Grant.fastify()(config)
+
+      var server = fastify.server()
+      server
+        .decorateReply('grant', {})
+        .addHook('onSend', async (req, res, payload) => {
+          if (/\/callback(?:$|\?)/.test(req.url)) {
+            res.header('content-type', 'application/json')
+            payload = callback.fastify(req, res)
+            return payload
+          }
+          return payload
+        })
+        .register(fastify.cookie)
+        .register(fastify.session, {
+          secret: '01234567890123456789012345678912', cookie: {secure: false}})
+        .register(grant)
+        .listen(port)
+        .then(() => resolve({grant, server}))
     }),
     node: ({config, port}) => new Promise((resolve) => {
       var session = {secret: 'grant'}
@@ -1265,6 +1356,15 @@ var callback = {
       response: (req.plugins.grant || {}).response || req.yar.get('grant').response || query,
       state: req.plugins.grant,
     })
+  },
+  fastify: (req, res) => {
+    var query = qs.parse(req.query)
+    var body = {
+      session: req.session.grant,
+      response: (res.grant || {}).response || req.session.grant.response || query,
+      state: res.grant,
+    }
+    return Object.keys(res.grant || {}).length ? JSON.stringify(body) : res.send(body)
   },
   handler: async (req, res, session, state) => {
     var query = qs.parse(req.url.split('?')[1])
