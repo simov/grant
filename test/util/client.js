@@ -93,13 +93,13 @@ var clients = {
 
       var app = new koa()
       app.keys = ['grant']
-      app.use(koa.session(app))
-      app.use(koa.parser())
-      app.use(grant)
-      koa.qs(app)
-      app.use(callback.koa)
 
-      var server = app.listen(port, () => resolve({grant, server, app}))
+      var server = app
+        .use(koa.session(app))
+        .use(koa.parser())
+        .use(grant)
+        .use(callback.koa)
+        .listen(port, () => resolve({grant, server}))
     }),
     hapi: ({config, request, state, extend, port, index}) => new Promise((resolve) => {
       var grant =
@@ -363,15 +363,15 @@ var clients = {
         index === 4 ? Grant({config, handler: 'koa'}) :
         Grant({config, request, state, extend, handler: 'koa'})
 
-      var app = new Koa()
+      var app = new koa()
       app.keys = ['grant']
-      app.use(koa.session(app))
-      app.use(koa.parser())
-      app.use(grant)
-      koa.qs(app)
-      app.use(callback.koa1)
 
-      var server = app.listen(port, () => resolve({grant, server, app}))
+      var server = app
+        .use(koa.session(app))
+        .use(koa.parser())
+        .use(grant)
+        .use(callback.koa1)
+        .listen(port, () => resolve({grant, server}))
     }),
     hapi16: ({config, request, state, extend, port, index}) => new Promise((resolve) => {
       var grant =
@@ -409,17 +409,18 @@ var clients = {
       var grant = Grant.koa()(config)
 
       var app = new koa()
-      app.use(async (ctx, next) => {
-        try {
-          await next()
-        }
-        catch (err) {
-          ctx.body = err.message
-        }
-      })
-      app.use(grant)
 
-      var server = app.listen(port, () => resolve({grant, server}))
+      var server = app
+        .use(async (ctx, next) => {
+          try {
+            await next()
+          }
+          catch (err) {
+            ctx.body = err.message
+          }
+        })
+        .use(grant)
+        .listen(port, () => resolve({grant, server}))
     }),
     hapi: ({config, port}) => new Promise((resolve) => {
       var grant = Grant.hapi()(config)
@@ -451,17 +452,18 @@ var clients = {
       var grant = Grant.koa()(config)
 
       var app = new koa()
-      app.use(function* (next) {
-        try {
-          yield next
-        }
-        catch (err) {
-          this.body = err.message
-        }
-      })
-      app.use(grant)
 
-      var server = app.listen(port, () => resolve({grant, server, app}))
+      var server = app
+        .use(function* (next) {
+          try {
+            yield next
+          }
+          catch (err) {
+            this.body = err.message
+          }
+        })
+        .use(grant)
+        .listen(port, () => resolve({grant, server}))
     }),
     hapi16: ({config, port}) => new Promise((resolve) => {
       var grant = Grant.hapi()(config)
@@ -497,36 +499,38 @@ var clients = {
 
       var app = new koa()
       app.keys = ['grant']
-      app.use(koa.session(app))
-      app.use(async (ctx, next) => {
-        try {
-          await next()
-        }
-        catch (err) {
-          ctx.body = err.message
-        }
-      })
-      app.use(grant)
 
-      var server = app.listen(port, () => resolve({grant, server}))
+      var server = app
+        .use(koa.session(app))
+        .use(async (ctx, next) => {
+          try {
+            await next()
+          }
+          catch (err) {
+            ctx.body = err.message
+          }
+        })
+        .use(grant)
+        .listen(port, () => resolve({grant, server}))
     }),
     koa1: ({config, port}) => new Promise((resolve) => {
       var grant = Grant.koa()(config)
 
       var app = new koa()
       app.keys = ['grant']
-      app.use(koa.session(app))
-      app.use(function* (next) {
-        try {
-          yield next
-        }
-        catch (err) {
-          this.body = err.message
-        }
-      })
-      app.use(grant)
 
-      var server = app.listen(port, () => resolve({grant, server}))
+      var server = app
+        .use(koa.session(app))
+        .use(function* (next) {
+          try {
+            yield next
+          }
+          catch (err) {
+            this.body = err.message
+          }
+        })
+        .use(grant)
+        .listen(port, () => resolve({grant, server}))
     }),
   },
   'path-prefix': {
@@ -545,13 +549,13 @@ var clients = {
 
       var app = new koa()
       app.keys = ['grant']
-      app.use(koa.session(app))
-      app.use(koa.parser())
-      app.use(koa.mount('/oauth', grant))
-      koa.qs(app)
-      app.use(callback.koa)
 
-      var server = app.listen(port, () => resolve({grant, server}))
+      var server = app
+        .use(koa.session(app))
+        .use(koa.parser())
+        .use(koa.mount('/oauth', grant))
+        .use(callback.koa)
+        .listen(port, () => resolve({grant, server}))
     }),
     hapi: ({config, port}) => new Promise((resolve) => {
       var grant = Grant.hapi()(config)
@@ -584,13 +588,13 @@ var clients = {
 
       var app = new koa()
       app.keys = ['grant']
-      app.use(koa.session(app))
-      app.use(koa.parser())
-      app.use(koa.mount('/oauth', grant))
-      koa.qs(app)
-      app.use(callback.koa1)
 
-      var server = app.listen(port, () => resolve({grant, server}))
+      var server = app
+        .use(koa.session(app))
+        .use(koa.parser())
+        .use(koa.mount('/oauth', grant))
+        .use(callback.koa1)
+        .listen(port, () => resolve({grant, server}))
     }),
     hapi16: ({config, port}) => new Promise((resolve) => {
       var grant = Grant.hapi()(config)
@@ -682,19 +686,19 @@ var clients = {
 
       var app = new koa()
       app.keys = ['grant']
-      app.use(koa.session(app))
-      app.use(koa.parser())
-      app.use(async (ctx, next) => {
-        if (/^\/connect/.test(ctx.path)) {
-          ctx.state.grant = {dynamic: {key: 'very', 'secret': 'secret'}}
-        }
-        await next()
-      })
-      app.use(grant)
-      koa.qs(app)
-      app.use(callback.koa)
 
-      var server = app.listen(port, () => resolve({grant, server, app}))
+      var server = app
+        .use(koa.session(app))
+        .use(koa.parser())
+        .use(async (ctx, next) => {
+          if (/^\/connect/.test(ctx.path)) {
+            ctx.state.grant = {dynamic: {key: 'very', 'secret': 'secret'}}
+          }
+          await next()
+        })
+        .use(grant)
+        .use(callback.koa)
+        .listen(port, () => resolve({grant, server}))
     }),
     hapi: ({config, port}) => new Promise((resolve) => {
       var grant = Grant.hapi()(config)
@@ -845,19 +849,19 @@ var clients = {
 
       var app = new koa()
       app.keys = ['grant']
-      app.use(koa.session(app))
-      app.use(koa.parser())
-      app.use(function* (next) {
-        if (/^\/connect/.test(this.path)) {
-          this.state.grant = {dynamic: {key: 'very', 'secret': 'secret'}}
-        }
-        yield next
-      })
-      app.use(grant)
-      koa.qs(app)
-      app.use(callback.koa1)
 
-      var server = app.listen(port, () => resolve({grant, server}))
+      var server = app
+        .use(koa.session(app))
+        .use(koa.parser())
+        .use(function* (next) {
+          if (/^\/connect/.test(this.path)) {
+            this.state.grant = {dynamic: {key: 'very', 'secret': 'secret'}}
+          }
+          yield next
+        })
+        .use(grant)
+        .use(callback.koa1)
+        .listen(port, () => resolve({grant, server}))
     }),
     hapi16: ({config, port}) => new Promise((resolve) => {
       var grant = Grant.hapi()(config)
@@ -896,26 +900,26 @@ var clients = {
 
       var app = new koa()
       app.keys = ['grant']
-      app.use(koa.session(app))
-      app.use(koa.parser())
-      app.use(grant)
-      koa.qs(app)
-      app.use(callback.koa)
 
-      var server = app.listen(port, () => resolve({grant, server}))
+      var server = app
+        .use(koa.session(app))
+        .use(koa.parser())
+        .use(grant)
+        .use(callback.koa)
+        .listen(port, () => resolve({grant, server}))
     }),
     'koa-before': ({config, port}) => new Promise((resolve) => {
       var grant = Grant.koa()(config)
 
       var app = new koa()
       app.keys = ['grant']
-      app.use(koa.session(app))
-      app.use(koa.parser())
-      app.use(callback['koa-before'])
-      app.use(grant)
-      koa.qs(app)
 
-      var server = app.listen(port, () => resolve({grant, server}))
+      var server = app
+        .use(koa.session(app))
+        .use(koa.parser())
+        .use(callback['koa-before'])
+        .use(grant)
+        .listen(port, () => resolve({grant, server}))
     }),
     hapi: ({config, port}) => new Promise((resolve) => {
       var grant = Grant.hapi()(config)
@@ -1064,26 +1068,26 @@ var clients = {
 
       var app = new koa()
       app.keys = ['grant']
-      app.use(koa.session(app))
-      app.use(koa.parser())
-      app.use(grant)
-      koa.qs(app)
-      app.use(callback.koa1)
 
-      var server = app.listen(port, () => resolve({grant, server}))
+      var server = app
+        .use(koa.session(app))
+        .use(koa.parser())
+        .use(grant)
+        .use(callback.koa1)
+        .listen(port, () => resolve({grant, server}))
     }),
     'koa-before1': ({config, port}) => new Promise((resolve) => {
       var grant = Grant.koa()(config)
 
       var app = new koa()
       app.keys = ['grant']
-      app.use(koa.session(app))
-      app.use(koa.parser())
-      app.use(callback['koa-before1'])
-      app.use(grant)
-      koa.qs(app)
 
-      var server = app.listen(port, () => resolve({grant, server}))
+      var server = app
+        .use(koa.session(app))
+        .use(koa.parser())
+        .use(callback['koa-before1'])
+        .use(grant)
+        .listen(port, () => resolve({grant, server}))
     }),
     hapi16: ({config, port}) => new Promise((resolve) => {
       var grant = Grant.hapi()(config)
@@ -1296,26 +1300,52 @@ var clients = {
 
       var app = new koa()
       app.keys = ['grant']
-      app.use(koa.session(app))
-      app.use(koa.parser())
-      app.use(koa.mount(grant))
-      koa.qs(app)
-      app.use(callback.koa)
 
-      var server = app.listen(port, () => resolve({grant, server}))
+      var server = app
+        .use(koa.session(app))
+        .use(koa.parser())
+        .use(koa.mount(grant))
+        .use(callback.koa)
+        .listen(port, () => resolve({grant, server}))
+    }),
+    'koa-qs': ({config, port}) => new Promise((resolve) => {
+      var grant = Grant.koa()(config)
+
+      var app = new koa()
+      app.keys = ['grant']
+
+      var server = koa.qs(app)
+        .use(koa.session(app))
+        .use(koa.parser())
+        .use(koa.mount(grant))
+        .use(callback['koa-qs'])
+        .listen(port, () => resolve({grant, server}))
     }),
     'koa-mount1': ({config, port}) => new Promise((resolve) => {
       var grant = Grant.koa()(config)
 
       var app = new koa()
       app.keys = ['grant']
-      app.use(koa.session(app))
-      app.use(koa.parser())
-      app.use(koa.mount(grant))
-      koa.qs(app)
-      app.use(callback.koa1)
 
-      var server = app.listen(port, () => resolve({grant, server}))
+      var server = app
+        .use(koa.session(app))
+        .use(koa.parser())
+        .use(koa.mount(grant))
+        .use(callback.koa1)
+        .listen(port, () => resolve({grant, server}))
+    }),
+    'koa-qs1': ({config, port}) => new Promise((resolve) => {
+      var grant = Grant.koa()(config)
+
+      var app = new koa()
+      app.keys = ['grant']
+
+      var server = koa.qs(app)
+        .use(koa.session(app))
+        .use(koa.parser())
+        .use(koa.mount(grant))
+        .use(callback['koa-qs1'])
+        .listen(port, () => resolve({grant, server}))
     }),
   },
 }
@@ -1335,7 +1365,7 @@ var callback = {
       ctx.set('content-type', 'application/json')
       ctx.body = JSON.stringify({
         session: ctx.session.grant,
-        response: (ctx.state.grant || {}).response || ctx.session.grant.response || ctx.request.query,
+        response: (ctx.state.grant || {}).response || ctx.session.grant.response || qs.parse(ctx.request.query),
         state: ctx.state.grant,
       })
     }
@@ -1374,7 +1404,18 @@ var callback = {
       ctx.set('content-type', 'application/json')
       ctx.body = JSON.stringify({
         session: ctx.session.grant,
-        response: (ctx.state.grant || {}).response || ctx.session.grant.response || ctx.request.query,
+        response: (ctx.state.grant || {}).response || ctx.session.grant.response || qs.parse(ctx.request.query),
+        state: ctx.state.grant,
+      })
+    }
+  },
+  'koa-qs': (ctx) => {
+    if (ctx.path === '/') {
+      ctx.response.status = 200
+      ctx.set('content-type', 'application/json')
+      ctx.body = JSON.stringify({
+        session: ctx.session.grant,
+        response: ctx.request.query,
         state: ctx.state.grant,
       })
     }
@@ -1385,7 +1426,7 @@ var callback = {
       this.set('content-type', 'application/json')
       this.body = JSON.stringify({
         session: this.session.grant,
-        response: (this.state.grant || {}).response || this.session.grant.response || this.request.query,
+        response: (this.state.grant || {}).response || this.session.grant.response || qs.parse(this.request.query),
         state: this.state.grant,
       })
     }
@@ -1398,6 +1439,17 @@ var callback = {
       this.body = JSON.stringify({
         session: this.session.grant,
         response: (this.state.grant || {}).response || this.session.grant.response || this.request.query,
+        state: this.state.grant,
+      })
+    }
+  },
+  'koa-qs1': function* () {
+    if (this.path === '/') {
+      this.response.status = 200
+      this.set('content-type', 'application/json')
+      this.body = JSON.stringify({
+        session: this.session.grant,
+        response: this.request.query,
         state: this.state.grant,
       })
     }

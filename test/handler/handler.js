@@ -538,7 +538,7 @@ describe('handler', () => {
   })
 
   describe('third-party middlewares', () => {
-    ;['koa-mount'].forEach((handler) => {
+    ;['koa-mount', 'koa-qs'].forEach((handler) => {
       describe(handler, () => {
         before(async () => {
           client = await Client({test: 'third-party', handler, config})
