@@ -1,6 +1,9 @@
 
 # Change Log
 
+## v5.4.0 (2020/09/01)
+- **New:** HTTP Framework handler for Fastify
+
 ## v5.3.0 (2020/08/09)
 - **New:** Serverless handlers for [AWS Lambda](https://github.com/simov/grant-aws), [Azure Function](https://github.com/simov/grant-azure), [Google Cloud Function](https://github.com/simov/grant-gcloud) and [Vercel](https://github.com/simov/grant-vercel)
 - **New:** RSA-SHA1 signature method support for OAuth1.0a
