@@ -16,7 +16,7 @@
 
 - **[Providers](#grant)**
 - **Handlers**
-  - [Express](#handlers) / [Koa](#handlers) / [Hapi](#handlers)
+  - [Express](#handlers) / [Koa](#handlers) / [Hapi](#handlers) / [Fastify](#handlers)
   - [AWS Lambda](#handlers) / [Azure Function](#handlers) / [Google Cloud Function](#handlers) / [Vercel](#handlers)
 - **Configuration**
   - [Basics](#configuration-basics) / [Description](#configuration-description) / [Values](#configuration-values) / [Scopes](#configuration-scopes)
@@ -84,6 +84,21 @@ server.register([
   // mount grant
   {plugin: grant({/*configuration - see below*/})}
 ])
+```
+</details>
+
+<details><summary>Fastify</summary>
+
+```js
+var fastify = require('fastify')
+var cookie = require('fastify-cookie')
+var session = require('fastify-session')
+var grant = require('grant').fastify()
+
+fastify()
+  .register(cookie)
+  .register(session, {secret: 'grant', cookie: {secure: false}})
+  .register(grant({/*configuration - see below*/}))
 ```
 </details>
 
@@ -163,7 +178,7 @@ module.exports = async (req, res) => {
 
 ### Examples
 
-> __[express][examples] | [koa][examples] | [hapi][examples] | [aws][grant-aws] | [azure][grant-azure] | [gcloud][grant-gcloud] | [vercel][grant-vercel]__
+> __[express][examples] | [koa][examples] | [hapi][examples] | [fastify][examples] | [aws][grant-aws] | [azure][grant-azure] | [gcloud][grant-gcloud] | [vercel][grant-vercel]__
 
 ---
 
@@ -555,6 +570,7 @@ In this case a `callback` route is not needed, and it will be ignored if provide
 res.locals.grant.response // Express
 ctx.state.grant.response // Koa
 req.plugins.grant.response // Hapi
+res.grant.response // Fastify
 ```
 
 ## Callback: Response
@@ -712,6 +728,7 @@ The request/response lifecycle state can be used to alter configuration on every
 res.locals.grant = {dynamic: {subdomain: 'usershop'}} // Express
 ctx.state.grant = {dynamic: {subdomain: 'usershop'}} // Koa
 request.plugins.grant = {dynamic: {subdomain: 'usershop'}} // Hapi
+req.grant = {dynamic: {subdomain: 'usershop'}} // Fastify
 ```
 
 This is useful in cases when you want to configure Grant dynamically with potentially sensitive data that you don't want to send over HTTP.
@@ -743,7 +760,7 @@ Then you can have a web form on your website allowing the user to specify the sh
 </form>
 ```
 
-When making a `POST` request to the `/connect/:provider/:override?` route you have to mount the `body-parser` middleware for Express and Koa before mounting Grant:
+When making a `POST` request to the `/connect/:provider/:override?` route you have to mount a form body parser middleware before mounting Grant:
 
 ```js
 // express
@@ -754,6 +771,10 @@ app.use(grant(config))
 var parser = require('koa-bodyparser')
 app.use(parser())
 app.use(grant(config))
+// fastify
+var parser = require('fastify-formbody')
+.register(parser)
+.register(grant(config))
 ```
 
 Alternatively you can make a `GET` request to the `/connect/:provider/:override?` route:
@@ -903,6 +924,8 @@ app.use('/oauth', grant(config))
 app.use(mount('/oauth', grant(config)))
 // Hapi
 server.register([{routes: {prefix: '/oauth'}, plugin: grant(config)}])
+// Fastify
+server.register(grant(config), {prefix: '/oauth'})
 ```
 
 In this case the [`prefix`](#connect-prefix) configuration should reflect that + any other path parts that you may have:
