@@ -440,7 +440,6 @@ var clients = {
 
       var server = fastify()
       server
-        .decorateReply('grant', {})
         .addHook('onError', async (req, res, err) => {
           t.equal(err.message, 'Grant: register session plugin first')
         })
