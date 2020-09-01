@@ -29,7 +29,7 @@
 - **Misc**
   - [Configuration](#misc-redirect-uri) / [Handlers](#misc-handler-constructors) / [Request](#misc-request) / [OAuth Quirks](#misc-oauth-quirks)
 - **Examples**
-  - [express][examples] / [koa][examples] / [hapi][examples] / [aws][grant-aws] / [azure][grant-azure] / [gcloud][grant-gcloud] / [vercel][grant-vercel]
+  - [express][examples] / [koa][examples] / [hapi][examples] / [fastify][examples] / [aws][grant-aws] / [azure][grant-azure] / [gcloud][grant-gcloud] / [vercel][grant-vercel]
 - **[Changelog][changelog]**
 
 ----
