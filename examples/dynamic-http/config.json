@@ -7,7 +7,7 @@
     "key": "APP_ID",
     "secret": "APP_SECRET",
     "dynamic": ["scope"],
-    "response": ["raw", "jwt"],
+    "response": ["tokens", "raw", "jwt"],
     "callback": "/hello"
   }
 }

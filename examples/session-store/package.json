@@ -11,11 +11,22 @@
     "url": "https://github.com/simov/grant.git"
   },
   "dependencies": {
+    "@hapi/catbox-redis": "^5.0.5",
+    "@hapi/hapi": "^20.0.0",
+    "@hapi/yar": "^10.1.0",
+    "connect-mongo": "^3.2.0",
+    "connect-redis": "^4.0.4",
+    "cookie-session": "^1.4.0",
+    "express": "^4.17.1",
+    "express-session": "^1.17.1",
+    "fastify": "^3.3.0",
+    "fastify-cookie": "^4.0.2",
+    "fastify-session": "^5.0.0",
     "koa": "^2.11.0",
     "koa-generic-session": "^2.0.4",
-    "koa-qs": "^2.0.0",
     "koa-redis": "^4.0.1",
-    "koa-router": "^8.0.8",
-    "koa-session": "^5.13.1"
+    "koa-router": "^9.4.0",
+    "koa-session": "^6.0.0",
+    "redis": "^3.0.2"
   }
 }

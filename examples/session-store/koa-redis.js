@@ -1,6 +1,7 @@
 
 var Koa = require('koa')
-var session = require('koa-session')
+var session = require('koa-generic-session')
+var Redis = require('koa-redis')
 var Router = require('koa-router')
 var grant = require('../../').koa()
 
@@ -9,17 +10,7 @@ var app = new Koa()
 app.keys = ['grant']
 
 app
-  .use(session(app))
-  .use(new Router()
-    .all('/connect/google', async (ctx, next) => {
-      ctx.state.grant = {dynamic: {scope: ['openid']}}
-      await next()
-    })
-    .all('/connect/twitter', async (ctx, next) => {
-      ctx.state.grant = {dynamic: {key: 'CONSUMER_KEY', secret: 'CONSUMER_SECRET'}}
-      await next()
-    })
-    .routes())
+  .use(session({store: Redis()}))
   .use(grant(require('./config.json')))
   .use(new Router()
     .get('/hello', (ctx) => {

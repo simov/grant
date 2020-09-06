@@ -1,7 +1,7 @@
 {
   "defaults": {
     "origin": "http://localhost:3000",
-    "transport": "session"
+    "transport": "querystring"
   },
   "google": {
     "key": "APP_ID",

@@ -1,17 +1,15 @@
 
 var Koa = require('koa')
-var session = require('koa-generic-session')
-var Redis = require('koa-redis')
-var grant = require('../../').koa()
+var session = require('koa-session')
 var Router = require('koa-router')
-var koaqs = require('koa-qs')
+var grant = require('../../').koa()
 
 
 var app = new Koa()
 app.keys = ['grant']
 
-koaqs(app)
-  .use(session({store: Redis()}))
+app
+  .use(session(app))
   .use(grant(require('./config.json')))
   .use(new Router()
     .get('/hello', (ctx) => {
