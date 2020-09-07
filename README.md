@@ -178,7 +178,7 @@ module.exports = async (req, res) => {
 
 ### Examples
 
-> __[express][examples] | [koa][examples] | [hapi][examples] | [fastify][examples] | [aws][grant-aws] | [azure][grant-azure] | [gcloud][grant-gcloud] | [vercel][grant-vercel]__
+> __[express][examples] / [koa][examples] / [hapi][examples] / [fastify][examples] / [aws][grant-aws] / [azure][grant-azure] / [gcloud][grant-gcloud] / [vercel][grant-vercel]__
 
 ---
 
@@ -322,6 +322,8 @@ Grant relies on configuration gathered from **6** different places:
 
 ## Connect: Origin
 
+The `origin` is where your client server can be reached:
+
 ```json
 {
   "defaults": {
@@ -329,8 +331,6 @@ Grant relies on configuration gathered from **6** different places:
   }
 }
 ```
-
-The `origin` is where your client server can be reached.
 
 You login by navigating to the `/connect/:provider` route where `:provider` is a key in your configuration, usually one of the [officially supported](#grant) ones, but you can define [your own](#misc-custom-providers) as well. Additionally you can login through a [static override](#connect-static-overrides) defined for that provider by navigating to the `/connect/:provider/:override?` route.
 
@@ -529,6 +529,7 @@ By default Grant will encode the OAuth [response data](#callback-data) as `query
 
 This is useful when using Grant as [OAuth Proxy](#dynamic-oauth-proxy). However this final `https://site.com/hello?access_token=...` redirect can potentially leak private data in your server logs, especially when sitting behind a reverse proxy.
 
+
 ### session
 
 For local `callback` routes the session `transport` is recommended:
@@ -550,7 +551,10 @@ This will make the OAuth [response data](#callback-data) available in the `sessi
 req.session.grant.response // Express
 ctx.session.grant.response // Koa
 req.yar.get('grant').response // Hapi
+req.session.grant.response // Fastify
+(await session.get()).grant.response // Serverless Function
 ```
+
 
 ### state
 
@@ -571,7 +575,9 @@ res.locals.grant.response // Express
 ctx.state.grant.response // Koa
 req.plugins.grant.response // Hapi
 res.grant.response // Fastify
+var {response} = await grant(...) // Serverless Function
 ```
+
 
 ## Callback: Response
 
@@ -725,10 +731,12 @@ This property contains the **generated** configuration used internally by Grant,
 The request/response lifecycle state can be used to alter configuration on every request:
 
 ```js
-res.locals.grant = {dynamic: {subdomain: 'usershop'}} // Express
-ctx.state.grant = {dynamic: {subdomain: 'usershop'}} // Koa
-request.plugins.grant = {dynamic: {subdomain: 'usershop'}} // Hapi
-req.grant = {dynamic: {subdomain: 'usershop'}} // Fastify
+var state = {dynamic: {subdomain: 'usershop'}}
+res.locals.grant = state // Express
+ctx.state.grant = state // Koa
+req.plugins.grant = state // Hapi
+req.grant = state // Fastify
+await grant(..., state) // Serverless Function
 ```
 
 This is useful in cases when you want to configure Grant dynamically with potentially sensitive data that you don't want to send over HTTP.
@@ -736,6 +744,7 @@ This is useful in cases when you want to configure Grant dynamically with potent
 The request/response lifecycle state is not controlled by the [`dynamic`](#dynamic-http) configuration, meaning that you can override any configuration key.
 
 Any allowed [`dynamic`](#dynamic-http) configuration key sent through HTTP GET/POST request will override the identical one set using a state override.
+
 
 ## Dynamic: HTTP
 
@@ -760,21 +769,12 @@ Then you can have a web form on your website allowing the user to specify the sh
 </form>
 ```
 
-When making a `POST` request to the `/connect/:provider/:override?` route you have to mount a form body parser middleware before mounting Grant:
+Making `POST` request to the `/connect/:provider/:override?` route requires form body parser middleware:
 
 ```js
-// express
-var parser = require('body-parser')
-app.use(parser.urlencoded({extended: true}))
-app.use(grant(config))
-// koa
-var parser = require('koa-bodyparser')
-app.use(parser())
-app.use(grant(config))
-// fastify
-var parser = require('fastify-formbody')
-.register(parser)
-.register(grant(config))
+.use(require('body-parser').urlencoded({extended: true})) // Express
+.use(require('koa-bodyparser')()) // Koa
+.register(require('fastify-formbody')) // Fastify
 ```
 
 Alternatively you can make a `GET` request to the `/connect/:provider/:override?` route:
@@ -784,6 +784,7 @@ https://awesome.com/connect/shopify?subdomain=usershop
 ```
 
 Any `dynamic` configuration sent over HTTP GET/POST request overrides any other configuration.
+
 
 ## Dynamic: OAuth Proxy
 
@@ -970,6 +971,7 @@ Fancy [request logs] are available too:
 npm i --save-dev request-logs
 DEBUG=req,res,json node app.js
 ```
+
 
 ## Misc: OAuth Quirks
 
