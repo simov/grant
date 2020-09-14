@@ -989,6 +989,11 @@
     "oauth": 2,
     "scope_delimiter": " "
   },
+  "vercel": {
+    "authorize_url": "https://vercel.com/oauth/authorize",
+    "access_url": "https://api.vercel.com/v2/oauth/access_token",
+    "oauth": 2
+  },
   "verticalresponse": {
     "authorize_url": "https://vrapi.verticalresponse.com/api/v1/oauth/authorize",
     "access_url": "https://vrapi.verticalresponse.com/api/v1/oauth/access_token",
@@ -1071,11 +1076,6 @@
   "yandex": {
     "authorize_url": "https://oauth.yandex.com/authorize",
     "access_url": "https://oauth.yandex.com/token",
-    "oauth": 2
-  },
-  "zeit": {
-    "authorize_url": "https://zeit.co/oauth/authorize",
-    "access_url": "https://api.zeit.co/v2/oauth/access_token",
     "oauth": 2
   },
   "zendesk": {

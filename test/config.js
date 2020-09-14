@@ -258,12 +258,12 @@ describe('config', () => {
         output, {
           fitbit2: {
             authorize_url: 'https://www.fitbit.com/oauth2/authorize',
-             access_url: 'https://api.fitbit.com/oauth2/token',
-             profile_url: 'https://api.fitbit.com/1/user/-/profile.json',
-             oauth: 2,
-             scope_delimiter: ' ',
-             key: 'key',
-             secret: 'secret'
+            access_url: 'https://api.fitbit.com/oauth2/token',
+            profile_url: 'https://api.fitbit.com/1/user/-/profile.json',
+            oauth: 2,
+            scope_delimiter: ' ',
+            key: 'key',
+            secret: 'secret'
            }
          },
         'output config should be merged with oauth.fitbit'
@@ -281,15 +281,37 @@ describe('config', () => {
         output, {
           linkedin2: {
             authorize_url: 'https://www.linkedin.com/oauth/v2/authorization',
-             access_url: 'https://www.linkedin.com/oauth/v2/accessToken',
-             profile_url: 'https://api.linkedin.com/v1/people/~',
-             oauth: 2,
-             scope_delimiter: ' ',
-             key: 'key',
-             secret: 'secret'
+            access_url: 'https://www.linkedin.com/oauth/v2/accessToken',
+            profile_url: 'https://api.linkedin.com/v1/people/~',
+            oauth: 2,
+            scope_delimiter: ' ',
+            key: 'key',
+            secret: 'secret'
            }
          },
-        'output config should be merged with oauth.fitbit'
+        'output config should be merged with oauth.linkedin'
+      )
+    })
+    it('zeit - zeit to vercel', () => {
+      var input = {zeit: {key: 'key', secret: 'secret'}}
+      var output = config.compat(input)
+      t.deepEqual(
+        input,
+        {zeit: {key: 'key', secret: 'secret'}},
+        'input config should be unchanged'
+      )
+      t.deepEqual(
+        output, {
+          zeit: {
+            authorize_url: 'https://vercel.com/oauth/authorize',
+            access_url: 'https://api.vercel.com/v2/oauth/access_token',
+            profile_url: 'https://api.vercel.com/www/user',
+            oauth: 2,
+            key: 'key',
+            secret: 'secret'
+           }
+         },
+        'output config should be merged with oauth.vercel'
       )
     })
   })

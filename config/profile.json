@@ -533,6 +533,9 @@
   "venmo": {
     "profile_url": ""
   },
+  "vercel": {
+    "profile_url": "https://api.vercel.com/www/user"
+  },
   "verticalresponse": {
     "profile_url": ""
   },
@@ -580,9 +583,6 @@
   },
   "yandex": {
     "profile_url": ""
-  },
-  "zeit": {
-    "profile_url": "https://api.zeit.co/www/user"
   },
   "zendesk": {
     "profile_url": "https://[subdomain].zendesk.com/api/v2/users/me.json"
