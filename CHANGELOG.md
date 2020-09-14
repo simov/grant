@@ -1,6 +1,11 @@
 
 # Change Log
 
+## v5.4.1 (2020/09/14)
+- **Fix:** Improved path mathching for `aws`
+- **New:** Official support for 2 new providers: `autodesk`, `storyblok`
+- **Change:** Renamed `zeit` to `vercel`
+
 ## v5.4.0 (2020/09/01)
 - **New:** HTTP Framework handler for Fastify
 
