@@ -38,6 +38,9 @@
   "authentiq": {
     "profile_url": "https://connect.authentiq.io/userinfo"
   },
+  "autodesk": {
+    "profile_url": "https://developer.api.autodesk.com/userprofile/v1/users/@me"
+  },
   "aweber": {
     "profile_url": "https://api.aweber.com/1.0/accounts/me"
   },
@@ -457,6 +460,9 @@
   },
   "stormz": {
     "profile_url": "https://api.stormz.me/v1/user/me"
+  },
+  "storyblok": {
+    "profile_url": ""
   },
   "strava": {
     "profile_url": "https://www.strava.com/api/v3/athlete"

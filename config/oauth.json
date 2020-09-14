@@ -78,6 +78,12 @@
     "oauth": 2,
     "scope_delimiter": " "
   },
+  "autodesk": {
+    "authorize_url": "https://developer.api.autodesk.com/authentication/v1/authorize",
+    "access_url": "https://developer.api.autodesk.com/authentication/v1/gettoken",
+    "oauth": 2,
+    "scope_delimiter": " "
+  },
   "aweber": {
     "authorize_url": "https://auth.aweber.com/oauth2/authorize",
     "access_url": "https://auth.aweber.com/oauth2/token",
@@ -848,6 +854,12 @@
   "stormz": {
     "authorize_url": "https://stormz.me/oauth/authorize",
     "access_url": "https://stormz.me/oauth/token",
+    "oauth": 2,
+    "scope_delimiter": " "
+  },
+  "storyblok": {
+    "authorize_url": "https://app.storyblok.com/oauth/authorize",
+    "access_url": "https://app.storyblok.com/oauth/token",
     "oauth": 2,
     "scope_delimiter": " "
   },
