@@ -10,7 +10,7 @@ express()
   .use(session({secret: 'grant', saveUninitialized: true, resave: false}))
   .use(parser.urlencoded({extended: true}))
   .use(grant(require('./config.json')))
-  .get('/form', (req, res) => {
+  .get('/login', (req, res) => {
     res.writeHead(200, {'content-type': 'text/html'})
     res.end(fs.readFileSync('./form.html', 'utf8'))
   })

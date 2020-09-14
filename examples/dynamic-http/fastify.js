@@ -12,7 +12,7 @@ fastify()
   .register(session, {secret: '01234567890123456789012345678912', cookie: {secure: false}})
   .register(parser)
   .register(grant(require('./config')))
-  .route({method: 'GET', path: '/form', handler: async (req, res) => {
+  .route({method: 'GET', path: '/login', handler: async (req, res) => {
     res.header('content-type', 'text/html')
     res.send(fs.readFileSync('./form.html', 'utf8'))
   }})

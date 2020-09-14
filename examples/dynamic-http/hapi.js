@@ -7,7 +7,7 @@ var fs = require('fs')
 
 var server = new Hapi.Server({host: 'localhost', port: 3000})
 
-server.route({method: 'GET', path: '/form', handler: (req, res) => {
+server.route({method: 'GET', path: '/login', handler: (req, res) => {
   return res
     .response(fs.readFileSync('./form.html', 'utf8'))
     .header('content-type', 'text/html')

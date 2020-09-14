@@ -15,7 +15,7 @@ app
   .use(parser())
   .use(grant(require('./config.json')))
   .use(new Router()
-    .get('/form', (ctx) => {
+    .get('/login', (ctx) => {
       ctx.body = fs.readFileSync('./form.html', 'utf8')
     })
     .get('/hello', (ctx) => {
