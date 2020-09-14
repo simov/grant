@@ -2,7 +2,7 @@
 # Change Log
 
 ## v5.4.1 (2020/09/14)
-- **Fix:** Improved path mathching for `aws`
+- **Fix:** Improved path mathching for `aws` + support for event format v2
 - **New:** Official support for 2 new providers: `autodesk`, `storyblok`
 - **Change:** Renamed `zeit` to `vercel`
 
