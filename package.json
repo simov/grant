@@ -15,6 +15,7 @@
     "express",
     "koa",
     "hapi",
+    "fastify",
     "aws",
     "azure",
     "google-cloud",
@@ -47,9 +48,9 @@
     "express": "^4.17.1",
     "express-session": "^1.17.1",
     "fastify": "^3.3.0",
-    "fastify-cookie": "^4.0.2",
+    "fastify-cookie": "^4.1.0",
     "fastify-formbody": "^5.0.0",
-    "fastify-session": "^5.0.0",
+    "fastify-session": "^5.1.0",
     "grant-profile": "^1.0.2",
     "koa": "^2.13.0",
     "koa-bodyparser": "^4.2.1",
@@ -59,7 +60,7 @@
     "mocha": "^7.2.0",
     "nyc": "^15.1.0",
     "request-cookie": "^1.0.0",
-    "request-logs": "^2.1.1"
+    "request-logs": "^2.1.2"
   },
   "main": "./grant.js",
   "files": [
