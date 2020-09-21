@@ -1,8 +1,11 @@
 
 # Change Log
 
+## v5.4.3 (2020/09/21)
+- **Fix:** Path matching for `gcloud` handler - [docs](https://github.com/simov/grant-gcloud#routes)
+
 ## v5.4.2 (2020/09/17)
-- **Fix:** Path matching for `aws` handler [docs](https://github.com/simov/grant-aws#routes)
+- **Fix:** Path matching for `aws` handler - [docs](https://github.com/simov/grant-aws#routes)
 
 ## v5.4.1 (2020/09/14)
 - **Fix:** Improved path mathching for `aws` handler + support for event format v2
