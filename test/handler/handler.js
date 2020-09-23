@@ -1,5 +1,6 @@
 
 var t = require('assert')
+var qs = require('qs')
 
 var request = require('request-compose').extend({
   Request: {cookie: require('request-cookie').Request},
@@ -481,6 +482,46 @@ describe('handler', () => {
                 }
               }[[].concat(response).join()]
             )
+          })
+        })
+      })
+    })
+  })
+
+  describe('oauth2 response_mode form_post', () => {
+    ;['express', 'koa', 'hapi', 'fastify', 'node', 'aws', 'azure', 'gcloud', 'vercel'].forEach((handler) => {
+      describe(handler, () => {
+        before(async () => {
+          client = await Client({test: 'handlers', handler, config})
+        })
+
+        after(async () => {
+          await client.close()
+        })
+
+        it('success', async () => {
+          var cookie = {}
+          var {body} = await request({
+            url: client.url('/connect/oauth2'),
+            qs: qs.stringify({custom_params: {response_mode: 'form_post'}}),
+            cookie,
+          })
+          t.equal(body, 'code')
+          var {body: {response, session}} = await request({
+            method: 'POST',
+            url: client.url('/connect/oauth2/callback'),
+            form: {code: 'code'},
+            cookie,
+            redirect: {all: true, method: false}
+          })
+          t.deepEqual(response, {
+            access_token: 'token',
+            refresh_token: 'refresh',
+            raw: {access_token: 'token', refresh_token: 'refresh', expires_in: '3600'}
+          })
+          t.deepEqual(session, {
+            provider: 'oauth2',
+            dynamic: {custom_params: {response_mode: 'form_post'}}
           })
         })
       })

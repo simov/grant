@@ -145,6 +145,10 @@ var oauth2 = (port) => new Promise((resolve) => {
     if (/authorize_url/.test(req.url)) {
       openid = (query.scope || []).includes('openid')
       on.authorize({url, query, headers})
+      if (query.response_mode === 'form_post') {
+        res.end('code')
+        return
+      }
       var location = query.redirect_uri + '?' + (
         provider === 'intuit'
           ? qs.stringify({code: 'code', realmId: '123'})
