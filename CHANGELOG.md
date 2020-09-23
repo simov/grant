@@ -1,6 +1,9 @@
 
 # Change Log
 
+## v5.4.4 (2020/09/23)
+- **New:** Support for `response_mode: form_post`
+
 ## v5.4.3 (2020/09/21)
 - **Fix:** Path matching for `gcloud` handler - [docs](https://github.com/simov/grant-gcloud#routes)
 
