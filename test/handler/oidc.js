@@ -55,7 +55,7 @@ describe('oidc', () => {
     t.equal(jwt.payload.iss, jwt.payload.sub)
     t.equal(jwt.payload.aud, 'http://localhost:5000/oauth2/access_url')
     t.equal(jwt.payload.jti.length, 40)
-    t.equal(jwt.payload.exp, jwt.payload.iat + 300)
+    t.equal(jwt.payload.exp, jwt.payload.iat + 420)
     t.equal(jwt.payload.iat, jwt.payload.nbf)
     t.ok(typeof jwt.signature === 'string')
 
