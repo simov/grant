@@ -170,6 +170,9 @@
   "feedly": {
     "profile_url": "https://cloud.feedly.com/v3/profile"
   },
+  "figma": {
+    "profile_url": "https://api.figma.com/v1/me"
+  },
   "fitbit": {
     "profile_url": "https://api.fitbit.com/1/user/-/profile.json"
   },
@@ -322,6 +325,9 @@
   },
   "meetup": {
     "profile_url": "https://api.meetup.com/2/members"
+  },
+  "mendeley": {
+    "profile_url": "https://api.mendeley.com/profiles/me"
   },
   "mention": {
     "profile_url": ""

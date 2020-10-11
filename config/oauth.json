@@ -322,6 +322,11 @@
     "access_url": "https://cloud.feedly.com/v3/auth/token",
     "oauth": 2
   },
+  "figma": {
+    "authorize_url": "https://www.figma.com/oauth",
+    "access_url": "https://www.figma.com/api/oauth/token",
+    "oauth": 2
+  },
   "fitbit": {
     "authorize_url": "https://www.fitbit.com/oauth2/authorize",
     "access_url": "https://api.fitbit.com/oauth2/token",
@@ -604,6 +609,11 @@
     "access_url": "https://secure.meetup.com/oauth2/access",
     "oauth": 2,
     "scope_delimiter": " "
+  },
+  "mendeley": {
+    "authorize_url": "https://api.mendeley.com/oauth/authorize",
+    "access_url": "https://api.mendeley.com/oauth/token",
+    "oauth": 2
   },
   "mention": {
     "authorize_url": "https://web.mention.com/authorize",
