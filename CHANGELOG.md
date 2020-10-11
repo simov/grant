@@ -1,6 +1,11 @@
 
 # Change Log
 
+## v5.4.5 (2020/10/11)
+- **Fix:** Allow for more clock skew for the `iat` and `nbf` claims when using `private_key_jwt` authentication for the token endpoint
+- **New:** HTTP Framework handler for Curveball
+- **New:** Official support for 2 new providers: `figma`, `mendeley`
+
 ## v5.4.4 (2020/09/23)
 - **New:** Support for `response_mode: form_post`
 
@@ -13,7 +18,7 @@
 ## v5.4.1 (2020/09/14)
 - **Fix:** Improved path mathching for `aws` handler + support for event format v2
 - **New:** Official support for 2 new providers: `autodesk`, `storyblok`
-- **Change:** Renamed `zeit` to `vercel`
+- **Change:** Renamed provider `zeit` to `vercel`
 
 ## v5.4.0 (2020/09/01)
 - **New:** HTTP Framework handler for Fastify
