@@ -29,6 +29,11 @@ fastify.cookie = require('fastify-cookie')
 fastify.session = require('fastify-session')
 fastify.parser = require('fastify-formbody')
 
+var {Application:curveball} = require('@curveball/core')
+curveball.router = require('@curveball/router').default
+curveball.parser = require('@curveball/bodyparser').default
+curveball.session = require('@curveball/session').default
+
 var Grant = require('../../')
 
 var version = {
@@ -139,6 +144,33 @@ var clients = {
         .route({method: 'GET', path: '/', handler: callback.fastify})
         .listen(port)
         .then(() => resolve({grant, server}))
+    }),
+    curveball: ({config, request, state, extend, port, index}) => new Promise((resolve) => {
+      var grant =
+        index === 0 ? Grant.curveball()(config) :
+        index === 1 ? Grant.curveball()({config}) :
+        index === 2 ? Grant.curveball(config) :
+        index === 3 ? Grant.curveball({config}) :
+        index === 4 ? Grant({config, handler: 'curveball'}) :
+        Grant({config, request, state, extend, handler: 'curveball'})
+
+      var timeout, _setTimeout = global.setTimeout
+      global.setTimeout = (cb, interval) => {
+        timeout = _setTimeout(cb, interval)
+      }
+
+      var app = new curveball()
+      app.use(curveball.session({store: 'memory'}))
+      app.use(curveball.parser())
+      app.use(grant)
+      app.use(curveball.router('/', callback.curveball))
+      var server = app.listen(port)
+      resolve({grant, server})
+
+      server.on('close', () => {
+        clearTimeout(timeout)
+        global.setTimeout = _setTimeout
+      })
     }),
     node: ({config, request, state, extend, port, index}) => new Promise((resolve) => {
       var db = {}
@@ -447,6 +479,22 @@ var clients = {
         .listen(port)
         .then(() => resolve({grant, server}))
     }),
+    curveball: ({config, request, state, extend, port, index}) => new Promise((resolve) => {
+      var grant = Grant.curveball()(config)
+
+      var app = new curveball()
+      app.use(async (ctx, next) => {
+        try {
+          await next()
+        }
+        catch (err) {
+          ctx.response.body = err.message
+        }
+      })
+      app.use(grant)
+      var server = app.listen(port)
+      resolve({grant, server})
+    }),
     koa1: ({config, port}) => new Promise((resolve) => {
       var grant = Grant.koa()(config)
 
@@ -511,6 +559,33 @@ var clients = {
         })
         .use(grant)
         .listen(port, () => resolve({grant, server}))
+    }),
+    curveball: ({config, port}) => new Promise((resolve) => {
+      var grant = Grant.curveball()(config)
+
+      var timeout, _setTimeout = global.setTimeout
+      global.setTimeout = (cb, interval) => {
+        timeout = _setTimeout(cb, interval)
+      }
+
+      var app = new curveball()
+      app.use(curveball.session({store: 'memory'}))
+      app.use(async (ctx, next) => {
+        try {
+          await next()
+        }
+        catch (err) {
+          ctx.response.body = err.message
+        }
+      })
+      app.use(grant)
+      var server = app.listen(port)
+      resolve({grant, server})
+
+      server.on('close', () => {
+        clearTimeout(timeout)
+        global.setTimeout = _setTimeout
+      })
     }),
     koa1: ({config, port}) => new Promise((resolve) => {
       var grant = Grant.koa()(config)
@@ -735,6 +810,32 @@ var clients = {
         .listen(port)
         .then(() => resolve({grant, server}))
     }),
+    curveball: ({config, port}) => new Promise((resolve) => {
+      var grant = Grant.curveball()(config)
+
+      var timeout, _setTimeout = global.setTimeout
+      global.setTimeout = (cb, interval) => {
+        timeout = _setTimeout(cb, interval)
+      }
+
+      var app = new curveball()
+      app.use(curveball.session({store: 'memory'}))
+      app.use(async (ctx, next) => {
+        if (/^\/connect/.test(ctx.path)) {
+          ctx.state.grant = {dynamic: {key: 'very', 'secret': 'secret'}}
+        }
+        await next()
+      })
+      app.use(grant)
+      app.use(curveball.router('/', callback.curveball))
+      var server = app.listen(port)
+      resolve({grant, server})
+
+      server.on('close', () => {
+        clearTimeout(timeout)
+        global.setTimeout = _setTimeout
+      })
+    }),
     node: ({config, port}) => new Promise((resolve) => {
       var session = {secret: 'grant'}
       var grant = Grant.node({config, session})
@@ -958,6 +1059,26 @@ var clients = {
         .register(grant)
         .listen(port)
         .then(() => resolve({grant, server}))
+    }),
+    curveball: ({config, port}) => new Promise((resolve) => {
+      var grant = Grant.curveball()(config)
+
+      var timeout, _setTimeout = global.setTimeout
+      global.setTimeout = (cb, interval) => {
+        timeout = _setTimeout(cb, interval)
+      }
+
+      var app = new curveball()
+      app.use(curveball.session({store: 'memory'}))
+      app.use(grant)
+      app.use(callback.curveball)
+      var server = app.listen(port)
+      resolve({grant, server})
+
+      server.on('close', () => {
+        clearTimeout(timeout)
+        global.setTimeout = _setTimeout
+      })
     }),
     node: ({config, port}) => new Promise((resolve) => {
       var session = {secret: 'grant'}
@@ -1385,6 +1506,13 @@ var callback = {
       state: res.grant,
     }
     return Object.keys(res.grant || {}).length ? JSON.stringify(body) : res.send(body)
+  },
+  curveball: (ctx) => {
+    ctx.response.body = {
+      session: ctx.state.session.grant,
+      response: (ctx.state.grant || {}).response || ctx.state.session.grant.response || qs.parse(ctx.request.query),
+      state: ctx.state.grant,
+    }
   },
   handler: async (req, res, session, state) => {
     var query = qs.parse(req.url.split('?')[1])

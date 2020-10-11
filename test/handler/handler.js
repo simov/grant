@@ -46,7 +46,7 @@ describe('handler', () => {
   })
 
   describe('handlers', () => {
-    ;['express', 'koa', 'hapi', 'fastify', 'node', 'aws', 'azure', 'gcloud', 'vercel'].forEach((handler) => {
+    ;['express', 'koa', 'hapi', 'fastify', 'curveball', 'node', 'aws', 'azure', 'gcloud', 'vercel'].forEach((handler) => {
       Array.from({length: 5}).forEach((_, index) => {
         describe(`${handler} - ${index}`, () => {
           before(async () => {
@@ -74,7 +74,7 @@ describe('handler', () => {
   })
 
   describe('missing session middleware', () => {
-    ;['express', 'koa', 'hapi', 'fastify'].forEach((handler) => {
+    ;['express', 'koa', 'hapi', 'fastify', 'curveball'].forEach((handler) => {
       describe(handler, () => {
         before(async () => {
           client = await Client({test: 'missing-session', handler, config})
@@ -101,7 +101,7 @@ describe('handler', () => {
   })
 
   describe('missing body-parser middleware', () => {
-    ;['express', 'koa'].forEach((handler) => {
+    ;['express', 'koa', 'curveball'].forEach((handler) => {
       describe(handler, () => {
         before(async () => {
           client = await Client({test: 'missing-parser', handler, config})
@@ -270,7 +270,7 @@ describe('handler', () => {
   })
 
   describe('dynamic state', () => {
-    ;['express', 'koa', 'hapi', 'fastify', 'node', 'aws', 'azure', 'gcloud', 'vercel'].forEach((handler) => {
+    ;['express', 'koa', 'hapi', 'fastify', 'curveball', 'node', 'aws', 'azure', 'gcloud', 'vercel'].forEach((handler) => {
       describe(handler, () => {
         before(async () => {
           client = await Client({test: 'dynamic-state', handler, config})
@@ -357,7 +357,7 @@ describe('handler', () => {
   })
 
   describe('transport state', () => {
-    ;['express', 'koa', 'koa-before', 'hapi', 'fastify', 'node', 'aws', 'azure', 'gcloud', 'vercel'].forEach((handler) => {
+    ;['express', 'koa', 'koa-before', 'hapi', 'fastify', 'curveball', 'node', 'aws', 'azure', 'gcloud', 'vercel'].forEach((handler) => {
       describe(handler, () => {
         before(async () => {
           client = await Client({test: 'transport-state', handler, config: {

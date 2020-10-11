@@ -41,7 +41,7 @@ describe('session', () => {
     await oauth1.close()
   })
 
-  ;['express', 'koa', 'hapi', 'fastify', 'node', 'aws', 'azure', 'gcloud', 'vercel'].forEach((handler) => {
+  ;['express', 'koa', 'hapi', 'fastify', 'curveball', 'node', 'aws', 'azure', 'gcloud', 'vercel'].forEach((handler) => {
     describe(handler, () => {
       before(async () => {
         client = await Client({test: 'handlers', handler, config})
