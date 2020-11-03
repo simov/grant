@@ -539,6 +539,12 @@
     "access_url": "https://kauth.kakao.com/oauth/token",
     "oauth": 2
   },
+  "keycloak": {
+    "authorize_url": "https://[subdomain]/protocol/openid-connect/auth",
+    "access_url": "https://[subdomain]/protocol/openid-connect/token",
+    "oauth": 2,
+    "scope_delimiter": " "
+  },
   "line": {
     "authorize_url": "https://access.line.me/oauth2/v2.1/authorize",
     "access_url": "https://api.line.me/oauth2/v2.1/token",

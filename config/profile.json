@@ -287,6 +287,9 @@
   "kakao": {
     "profile_url": "https://kapi.kakao.com/v1/user/me"
   },
+  "keycloak": {
+    "profile_url": "https://[subdomain]/protocol/openid-connect/userinfo"
+  },
   "line": {
     "profile_url": "https://api.line.me/v2/profile"
   },
