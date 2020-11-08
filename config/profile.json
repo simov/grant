@@ -552,7 +552,7 @@
     "profile_url": "https://api.vimeo.com/me"
   },
   "visualstudio": {
-    "profile_url": ""
+    "profile_url": "https://app.vssps.visualstudio.com/_apis/profile/profiles/me?api-version=6.0"
   },
   "vk": {
     "profile_url": "https://api.vk.com/method/users.get"
