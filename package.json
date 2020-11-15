@@ -71,11 +71,13 @@
     "config/",
     "lib/",
     "grant.js",
+    "grant.d.ts",
     "CHANGELOG.md",
     "LICENSE",
     "README.md",
     "package.json"
   ],
+  "types": "grant.d.ts",
   "scripts": {
     "test": "npm run test:ci",
     "test:ci": "npx mocha --recursive",
