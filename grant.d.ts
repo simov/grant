@@ -241,7 +241,7 @@ export type GrantHandler = (
   /**
    * Response object
    */
-  res?: object
+  res?: object,
   /**
    * Grant dynamic state overrides
    */
