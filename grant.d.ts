@@ -237,11 +237,11 @@ export type GrantHandler = (
   /**
    * Request object
    */
-  req: object
+  req: object,
   /**
    * Response object
    */
-  res?: object
+  res?: object,
   /**
    * Grant dynamic state overrides
    */
