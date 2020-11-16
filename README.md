@@ -995,7 +995,7 @@ Importing a `.json` file may require additional flag:
 node --experimental-json-modules app.mjs
 ```
 
-Grant ships with extensive [type definitions][type-definitions] for TypeScript. However, a few additional type definitions that extend the typings of your HTTP framework of choice can be found [here][grant-types].
+Grant ships with extensive [type definitions][type-definitions] for TypeScript. Additonal type definitions and examples can be found [here][grant-types].
 
 
 ## Misc: OAuth Quirks
