@@ -1,6 +1,10 @@
 
 # Change Log
 
+## v5.4.6 (2020/11/16)
+- **New:** Type definitions for TypeScript
+- **New:** Official support for 1 new provider: `keycloak`
+
 ## v5.4.5 (2020/10/11)
 - **Fix:** Allow for more clock skew for the `iat` and `nbf` claims when using `private_key_jwt` authentication for the token endpoint
 - **New:** HTTP Framework handler for Curveball
