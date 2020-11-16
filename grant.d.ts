@@ -31,16 +31,16 @@ export interface GrantConfig {
   /**
    * Default configuration for all providers
    */
-  defaults?: GrantProvider
+  defaults: GrantProvider
   /**
    * Provider configuration
    */
   [provider: string]: GrantProvider
   // exclude
-  handler?: never
-  config?: never
-  request?: never
-  session?: never
+  handler: never
+  config: never
+  request: never
+  session: never
 }
 
 /**
@@ -237,7 +237,7 @@ export type GrantHandler = (
   /**
    * Request object
    */
-  req: object
+  req: object,
   /**
    * Response object
    */
