@@ -35,7 +35,7 @@ export interface GrantConfig {
   /**
    * Provider configuration
    */
-  [provider: string]: GrantProvider
+  [provider: string]: GrantProvider | undefined
   // exclude
   handler?: never
   config?: never
