@@ -56,4 +56,5 @@ grant.hapi = (options) => {
   }
 })
 
+grant.default = grant
 module.exports = grant
