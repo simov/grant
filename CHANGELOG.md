@@ -1,6 +1,9 @@
 
 # Change Log
 
+## v5.4.8 (2020/11/17)
+- **Fix:** Type definitions for TypeScript
+
 ## v5.4.7 (2020/11/16)
 - **Fix:** Type definitions for TypeScript
 
