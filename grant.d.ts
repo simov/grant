@@ -349,7 +349,7 @@ export interface GrantResponse {
 /**
  * Express middleware
  */
-export type ExpressMiddleware = (req: any, res: any, next?: () => Promise<void>) => Promise<void>
+export type ExpressMiddleware = () => Promise<void>
 /**
  * Koa middleware
  */
