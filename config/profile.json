@@ -255,7 +255,7 @@
     "profile_url": ""
   },
   "ibm": {
-    "profile_url": ""
+    "profile_url": "https://login.ibm.com/oidc/endpoint/default/userinfo"
   },
   "iconfinder": {
     "profile_url": ""
