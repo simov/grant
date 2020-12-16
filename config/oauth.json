@@ -664,6 +664,11 @@
     "access_url": "https://api.home.nest.com/oauth2/access_token",
     "oauth": 2
   },
+  "netlify": {
+    "authorize_url": "https://app.netlify.com/authorize",
+    "access_url": "https://api.netlify.com/oauth/token",
+    "oauth": 2
+  },
   "nokotime": {
     "authorize_url": "https://secure.nokotime.com/oauth/2/authorize",
     "access_url": "https://secure.nokotime.com/oauth/2/access_token",
