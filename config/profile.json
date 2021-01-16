@@ -120,7 +120,7 @@
     "profile_url": "https://api.discogs.com/oauth/identity"
   },
   "discord": {
-    "profile_url": "https://discordapp.com/api/users/@me"
+    "profile_url": "https://discord.com/api/users/@me"
   },
   "disqus": {
     "profile_url": "https://disqus.com/api/3.0/users/details.json"
