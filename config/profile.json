@@ -363,7 +363,7 @@
     "profile_url": ""
   },
   "okta": {
-    "profile_url": ""
+    "profile_url": "https://[subdomain].okta.com/oauth2/v1/userinfo"
   },
   "onelogin": {
     "profile_url": ""
