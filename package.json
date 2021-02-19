@@ -26,6 +26,10 @@
     "request-compose": "^1.2.1",
     "request-oauth": "0.0.3"
   },
+  "optionalDependencies": {
+    "jwk-to-pem": "^2.0.3",
+    "jws": "^4.0.0"
+  },
   "devDependencies": {
     "babel-cli": "^6.26.0",
     "babel-polyfill": "^6.26.0",
