@@ -32,6 +32,8 @@
   "token_endpoint_auth_signing_alg",
   "public_key",
   "private_key",
+  "issuer",
+  "subject",
 
   "name",
   "redirect_uri",
