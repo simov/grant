@@ -29,6 +29,10 @@
   "response",
   "token_endpoint_auth_method",
 
+  "token_endpoint_auth_signing_alg",
+  "public_key",
+  "private_key",
+
   "name",
   "redirect_uri",
 
