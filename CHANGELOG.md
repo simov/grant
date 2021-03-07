@@ -1,6 +1,13 @@
 
 # Change Log
 
+## v5.4.10 (2021/03/07)
+- **New:** Official support for 3 new providers: `huddle`, `netlify`, `snowflake`
+- **Change:** Removed 1 discontinued provider: `mixer`
+- **Change:** Renamed provider `surveygizmo` to `alchemer`
+- **Change:** Updated 4 providers: `discord`, `ibm`, `okta`, `twitch`
+- **Fix:** Error on missing `state` and `nonce`
+
 ## v5.4.9 (2020/11/22)
 - **Fix:** Type definitions for TypeScript
 
