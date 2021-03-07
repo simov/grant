@@ -194,12 +194,21 @@ var oauth2 = (port) => new Promise((resolve) => {
       res.writeHead(302, {location})
       res.end()
     }
-    else if (/access_error_nonce/.test(req.url)) {
+    else if (/access_error_nonce_mismatch/.test(req.url)) {
       buffer(req, (form) => {
         on.access({method, url, query, headers, form})
         res.writeHead(200, {'content-type': 'application/json'})
         res.end(JSON.stringify({
           id_token: sign({typ: 'JWT'}, {nonce: 'whatever'}, 'signature')
+        }))
+      })
+    }
+    else if (/access_error_nonce_missing/.test(req.url)) {
+      buffer(req, (form) => {
+        on.access({method, url, query, headers, form})
+        res.writeHead(200, {'content-type': 'application/json'})
+        res.end(JSON.stringify({
+          id_token: sign({typ: 'JWT'}, {}, 'signature')
         }))
       })
     }

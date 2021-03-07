@@ -57,7 +57,7 @@ describe('response', () => {
 
   it('oauth2', () => {
     var provider = {oauth: 2}
-    var input = {}
+    var input = {session: {}}
     var output = {
       id_token: sign({typ: 'JWT'}, {hey: 'hi'}, 'signature'),
       access_token: 'token', refresh_token: 'refresh'

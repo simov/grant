@@ -505,7 +505,22 @@ describe('oauth2', () => {
       var {body: {response}} = await request({
         url: client.url('/connect/google'),
         qs: {
-          access_url: provider.url('/access_error_nonce'),
+          access_url: provider.url('/access_error_nonce_mismatch'),
+          nonce: true
+        },
+        cookie: {},
+      })
+      t.deepEqual(response, {error: 'Grant: OpenID Connect nonce mismatch'})
+    })
+
+    it('access - nonce missing', async () => {
+      provider.on.authorize = ({url, headers, query}) => {
+        t.equal(query.nonce.length, 40)
+      }
+      var {body: {response}} = await request({
+        url: client.url('/connect/google'),
+        qs: {
+          access_url: provider.url('/access_error_nonce_missing'),
           nonce: true
         },
         cookie: {},
