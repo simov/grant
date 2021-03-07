@@ -475,7 +475,22 @@ describe('oauth2', () => {
       var {body: {response}} = await request({
         url: client.url('/connect/google'),
         qs: {
-          authorize_url: provider.url('/authorize_error_state'),
+          authorize_url: provider.url('/authorize_error_state_mismatch'),
+          state: true
+        },
+        cookie: {},
+      })
+      t.deepEqual(response, {error: 'Grant: OAuth2 state mismatch'})
+    })
+
+    it('authorize - state missing', async () => {
+      provider.on.authorize = ({url, headers, query}) => {
+        t.equal(query.state.length, 40)
+      }
+      var {body: {response}} = await request({
+        url: client.url('/connect/google'),
+        qs: {
+          authorize_url: provider.url('/authorize_error_state_missing'),
           state: true
         },
         cookie: {},

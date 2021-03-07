@@ -182,9 +182,15 @@ var oauth2 = (port) => new Promise((resolve) => {
       res.writeHead(302, {location})
       res.end()
     }
-    else if (/authorize_error_state/.test(req.url)) {
+    else if (/authorize_error_state_mismatch/.test(req.url)) {
       on.authorize({url, query, headers})
       var location = query.redirect_uri + '?' + qs.stringify({code: 'code', state: 'whatever'})
+      res.writeHead(302, {location})
+      res.end()
+    }
+    else if (/authorize_error_state_missing/.test(req.url)) {
+      on.authorize({url, query, headers})
+      var location = query.redirect_uri + '?' + qs.stringify({code: 'code'})
       res.writeHead(302, {location})
       res.end()
     }
