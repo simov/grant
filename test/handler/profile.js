@@ -138,7 +138,6 @@ describe('profile', () => {
       'soundcloud',
       'stackexchange',
       'stocktwits',
-      'trello',
       'tumblr',
       'vk',
       'weibo',
@@ -167,7 +166,6 @@ describe('profile', () => {
         'soundcloud' === name ? t.equal(query.oauth_token, 'token') :
         'stackexchange' === name ? t.equal(query.key, 'token') :
         'stocktwits' === name ? t.equal(query.access_token, 'token') :
-        'trello' === name ? t.equal(query.key, 'token') :
         'tumblr' === name ? t.equal(query.api_key, 'token') :
         'vk' === name ? t.deepEqual(query, {access_token: 'token', v: '5.103'}) :
         'weibo' === name ? t.deepEqual(query, {access_token: 'token', uid: 'id'}) :

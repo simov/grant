@@ -14,11 +14,17 @@
   "aha": {
     "profile_url": "https://[subdomain].aha.io/api/v1/me"
   },
+  "alchemer": {
+    "profile_url": "https://api.alchemer.com/v4/accountuser"
+  },
   "amazon": {
     "profile_url": "https://api.amazon.com/user/profile"
   },
   "angellist": {
     "profile_url": "https://api.angel.co/1/me"
+  },
+  "apple": {
+    "profile_url": ""
   },
   "arcgis": {
     "profile_url": "https://www.arcgis.com/sharing/rest/community/self"
@@ -254,6 +260,9 @@
   "hootsuite": {
     "profile_url": ""
   },
+  "huddle": {
+    "profile_url": ""
+  },
   "ibm": {
     "profile_url": "https://login.ibm.com/oidc/endpoint/default/userinfo"
   },
@@ -341,9 +350,6 @@
   "mixcloud": {
     "profile_url": "https://api.mixcloud.com/me"
   },
-  "mixer": {
-    "profile_url": ""
-  },
   "moxtra": {
     "profile_url": ""
   },
@@ -355,6 +361,9 @@
   },
   "nest": {
     "profile_url": ""
+  },
+  "netlify": {
+    "profile_url": "https://api.netlify.com/api/v1/user"
   },
   "nokotime": {
     "profile_url": ""
@@ -478,9 +487,6 @@
   },
   "stripe": {
     "profile_url": "https://api.stripe.com/v1/account"
-  },
-  "surveygizmo": {
-    "profile_url": "https://restapi.surveygizmo.com/v4/accountuser"
   },
   "surveymonkey": {
     "profile_url": "https://api.surveymonkey.net/v2/users/me"

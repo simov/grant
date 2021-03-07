@@ -26,6 +26,12 @@
     "access_url": "https://[subdomain].aha.io/oauth/token",
     "oauth": 2
   },
+  "alchemer": {
+    "request_url": "https://api.alchemer.com/head/oauth/request_token",
+    "authorize_url": "https://api.alchemer.com/head/oauth/authenticate",
+    "access_url": "https://api.alchemer.com/head/oauth/access_token",
+    "oauth": 1
+  },
   "amazon": {
     "authorize_url": "https://www.amazon.com/ap/oa",
     "access_url": "https://api.amazon.com/auth/o2/token",
@@ -427,7 +433,8 @@
   "gitlab": {
     "authorize_url": "https://gitlab.com/oauth/authorize",
     "access_url": "https://gitlab.com/oauth/token",
-    "oauth": 2
+    "oauth": 2,
+    "scope_delimiter": " "
   },
   "gitter": {
     "authorize_url": "https://gitter.im/login/oauth/authorize",
@@ -480,6 +487,11 @@
   "hootsuite": {
     "authorize_url": "https://platform.hootsuite.com/oauth2/auth",
     "access_url": "https://platform.hootsuite.com/oauth2/token",
+    "oauth": 2
+  },
+  "huddle": {
+    "authorize_url": "https://login.huddle.net/request",
+    "access_url": "https://login.huddle.net/token",
     "oauth": 2
   },
   "ibm": {
@@ -636,12 +648,6 @@
     "authorize_url": "https://www.mixcloud.com/oauth/authorize",
     "access_url": "https://www.mixcloud.com/oauth/access_token",
     "oauth": 2
-  },
-  "mixer": {
-    "authorize_url": "https://mixer.com/oauth/authorize",
-    "access_url": "https://mixer.com/api/v1/oauth/token",
-    "oauth": 2,
-    "scope_delimiter": " "
   },
   "moxtra": {
     "authorize_url": "https://api.moxtra.com/oauth/authorize",
@@ -835,6 +841,12 @@
     "oauth": 2,
     "scope_delimiter": " "
   },
+  "snowflake": {
+    "authorize_url": "https://[subdomain].snowflakecomputing.com/oauth/authorize",
+    "access_url": "https://[subdomain].snowflakecomputing.com/oauth/token-request",
+    "oauth": 2,
+    "scope_delimiter": " "
+  },
   "socialpilot": {
     "authorize_url": "https://panel.socialpilot.co/oauth",
     "access_url": "https://panel.socialpilot.co/oauth/accesstoken",
@@ -893,12 +905,6 @@
     "authorize_url": "https://connect.stripe.com/oauth/authorize",
     "access_url": "https://connect.stripe.com/oauth/token",
     "oauth": 2
-  },
-  "surveygizmo": {
-    "request_url": "https://restapi.surveygizmo.com/head/oauth/request_token",
-    "authorize_url": "https://restapi.surveygizmo.com/head/oauth/authenticate",
-    "access_url": "https://restapi.surveygizmo.com/head/oauth/access_token",
-    "oauth": 1
   },
   "surveymonkey": {
     "authorize_url": "https://api.surveymonkey.com/oauth/authorize",
