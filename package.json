@@ -40,10 +40,10 @@
     "jws": "^4.0.0"
   },
   "devDependencies": {
-    "@curveball/bodyparser": "^0.4.14",
-    "@curveball/core": "^0.14.3",
-    "@curveball/router": "^0.2.4",
-    "@curveball/session": "^0.5.0",
+    "@curveball/bodyparser": "0.4.6",
+    "@curveball/core": "0.14.2",
+    "@curveball/router": "0.2.4",
+    "@curveball/session": "0.5.0",
     "@hapi/hapi": "^18.4.1",
     "@hapi/yar": "^9.2.1",
     "body-parser": "^1.19.0",
