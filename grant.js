@@ -22,8 +22,7 @@ function grant ({handler, ...rest}) {
 }
 
 grant.express = (options) => {
-  var version = 4
-  var handler = require(`./lib/handler/express-${version}`)
+  var handler = require('./lib/handler/express-4')
   return options ? handler(options) : handler
 }
 
