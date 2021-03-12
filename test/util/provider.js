@@ -167,6 +167,7 @@ var oauth2 = (port) => new Promise((resolve) => {
             access_token: 'token', refresh_token: 'refresh', expires_in: 3600,
             id_token: openid ? sign({typ: 'JWT'}, {nonce: 'whatever'}, 'signature') : undefined,
             uid: provider === 'weibo' ? 'id' : undefined,
+            openid: provider === 'wechat' ? 'openid' : undefined,
           }))
       })
     }

@@ -567,7 +567,7 @@
     "profile_url": "https://api.vk.com/method/users.get"
   },
   "wechat": {
-    "profile_url": ""
+    "profile_url": "https://api.weixin.qq.com/sns/userinfo"
   },
   "weekdone": {
     "profile_url": ""
