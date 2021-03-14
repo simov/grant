@@ -140,9 +140,9 @@ describe('profile', () => {
       'stocktwits',
       'tumblr',
       'vk',
+      'wechat',
       'weibo',
       'twitter',
-      'wechat',
     ]
     for (var name of providers) {
       var version = oauth[name].oauth
@@ -169,9 +169,9 @@ describe('profile', () => {
         'stocktwits' === name ? t.equal(query.access_token, 'token') :
         'tumblr' === name ? t.equal(query.api_key, 'token') :
         'vk' === name ? t.deepEqual(query, {access_token: 'token', v: '5.103'}) :
+        'wechat' === name ? t.deepEqual(query, {access_token: 'token', openid: 'openid', lang: 'zh_CN'}) :
         'weibo' === name ? t.deepEqual(query, {access_token: 'token', uid: 'id'}) :
         'twitter' === name ? t.equal(query.user_id, 'id') :
-        'wechat' === name ? t.deepEqual(query, {access_token: 'token', openid: 'openid', lang: 'zh_CN'}) :
         undefined
       }
       var {body: {response}} = await request({

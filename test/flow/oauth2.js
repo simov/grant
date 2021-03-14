@@ -262,7 +262,7 @@ describe('oauth2', () => {
       t.deepEqual(response, {
         access_token: 'token',
         refresh_token: 'refresh',
-        raw: {access_token: 'token', refresh_token: 'refresh', expires_in: '3600'}
+        raw: {access_token: 'token', refresh_token: 'refresh', expires_in: '3600', openid: 'openid'}
       })
     })
 
@@ -390,7 +390,7 @@ describe('oauth2', () => {
       t.deepEqual(response, {
         access_token: 'token',
         refresh_token: 'refresh',
-        raw: {access_token: 'token', refresh_token: 'refresh', expires_in: '3600'}
+        raw: {access_token: 'token', refresh_token: 'refresh', expires_in: '3600', openid: 'openid'}
       })
     })
 
