@@ -30,7 +30,7 @@
   },
   "dependencies": {
     "qs": "^6.10.0",
-    "request-compose": "^2.1.2",
+    "request-compose": "^2.1.3",
     "request-oauth": "^1.0.1"
   },
   "optionalDependencies": {
