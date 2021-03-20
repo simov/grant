@@ -1,6 +1,10 @@
 
 # Change Log
 
+## v5.4.11 (2021/03/20)
+- **Fix:** Better support for JavaScript bundlers
+- **Change:** Updated 1 provider: `wechat`
+
 ## v5.4.10 (2021/03/07)
 - **New:** Official support for 3 new providers: `huddle`, `netlify`, `snowflake`
 - **Change:** Removed 1 discontinued provider: `mixer`
