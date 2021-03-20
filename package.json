@@ -29,8 +29,8 @@
     "url": "https://github.com/simov/grant.git"
   },
   "dependencies": {
-    "qs": "^6.9.6",
-    "request-compose": "^2.1.0",
+    "qs": "^6.10.0",
+    "request-compose": "^2.1.2",
     "request-oauth": "^1.0.1"
   },
   "optionalDependencies": {
@@ -51,8 +51,8 @@
     "coveralls": "^3.1.0",
     "express": "^4.17.1",
     "express-session": "^1.17.1",
-    "fastify": "^3.13.0",
-    "fastify-cookie": "^5.1.0",
+    "fastify": "^3.14.0",
+    "fastify-cookie": "^5.3.0",
     "fastify-formbody": "^5.0.0",
     "fastify-session": "^5.2.1",
     "grant-profile": "^1.0.2",
