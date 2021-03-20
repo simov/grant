@@ -1,4 +1,10 @@
 
+import {
+  RequestOptions as RequestComposeOptions,
+} from 'request-compose'
+
+// ----------------------------------------------------------------------------
+
 /**
  * Grant options
  */
@@ -15,7 +21,7 @@ export interface GrantOptions {
   /**
    * HTTP client options
    */
-  request?: object
+  request?: RequestComposeOptions
   /**
    * Grant session options
    */
