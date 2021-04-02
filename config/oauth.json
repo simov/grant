@@ -1065,7 +1065,7 @@
   },
   "withings": {
     "authorize_url": "https://account.withings.com/oauth2_user/authorize2",
-    "access_url": "https://account.withings.com/oauth2/token",
+    "access_url": "https://wbsapi.withings.net/v2/oauth2",
     "oauth": 2
   },
   "wordpress": {
