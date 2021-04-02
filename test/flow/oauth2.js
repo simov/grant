@@ -447,6 +447,27 @@ describe('oauth2', () => {
         raw: {access_token: 'token', refresh_token: 'refresh', expires_in: '3600', realmId: '123'}
       })
     })
+
+    it('access - action + response - withings', async () => {
+      provider.on.access = ({url, headers, query, form}) => {
+        t.deepEqual(form, {
+          action: 'requesttoken',
+          grant_type: 'authorization_code',
+          code: 'code',
+          redirect_uri: 'http://localhost:5001/connect/withings/callback',
+        })
+      }
+      var {body: {response}} = await request({
+        url: client.url('/connect/withings'),
+        qs: {access_url: provider.url(`/withings/access_url_wbsapi`)},
+        cookie: {},
+      })
+      t.deepEqual(response, {
+        access_token: 'token',
+        refresh_token: 'refresh',
+        raw: {access_token: 'token', refresh_token: 'refresh', expires_in: '3600'}
+      })
+    })
   })
 
   describe('error', () => {

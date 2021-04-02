@@ -162,13 +162,17 @@ var oauth2 = (port) => new Promise((resolve) => {
         on.access({method, url, query, headers, form})
         res.writeHead(200, {'content-type': 'application/json'})
         provider === 'concur'
-          ? res.end(' <Token>token</Token> <Refresh_Token>refresh</Refresh_Token> ')
-          : res.end(JSON.stringify({
-            access_token: 'token', refresh_token: 'refresh', expires_in: 3600,
-            id_token: openid ? sign({typ: 'JWT'}, {nonce: 'whatever'}, 'signature') : undefined,
-            uid: provider === 'weibo' ? 'id' : undefined,
-            openid: provider === 'wechat' ? 'openid' : undefined,
-          }))
+        ? res.end(' <Token>token</Token> <Refresh_Token>refresh</Refresh_Token> ')
+        : provider === 'withings'
+        ? res.end(JSON.stringify({body: {
+          access_token: 'token', refresh_token: 'refresh', expires_in: 3600
+        }}))
+        : res.end(JSON.stringify({
+          access_token: 'token', refresh_token: 'refresh', expires_in: 3600,
+          id_token: openid ? sign({typ: 'JWT'}, {nonce: 'whatever'}, 'signature') : undefined,
+          uid: provider === 'weibo' ? 'id' : undefined,
+          openid: provider === 'wechat' ? 'openid' : undefined,
+        }))
       })
     }
     else if (/authorize_error_message/.test(req.url)) {
