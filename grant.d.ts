@@ -122,7 +122,9 @@ export interface GrantProvider {
   /**
    * Static configuration overrides for a provider
    */
-  overrides?: any
+  overrides?: {
+    [key: string]: Omit<GrantProvider, 'overrides'>
+  }
   /**
    * Configuration keys that can be overridden dynamically over HTTP
    */
@@ -161,7 +163,7 @@ export interface GrantProvider {
   /**
    * Custom authorization parameters and their values
    */
-  custom_params?: any
+  custom_params?: obj
   /**
    * String to embed into the authorization server URLs
    */
@@ -169,11 +171,11 @@ export interface GrantProvider {
   /**
    * Public PEM or JWK
    */
-  public_key?: string | any
+  public_key?: string | obj
   /**
    * Private PEM or JWK
    */
-  private_key?: string | any
+  private_key?: string | obj
   /**
    * Absolute redirect URL of the OAuth app
    */
@@ -199,7 +201,7 @@ export interface GrantSessionConfig {
   /**
    * Cookie options
    */
-  cookie?: any
+  cookie?: obj
   /**
    * Session store
    */
@@ -213,11 +215,11 @@ export interface GrantSessionStore {
   /**
    * Get item from session store
    */
-  get: (sid: string) => any
+  get: (sid: string) => obj
   /**
    * Set item in session store
    */
-  set: (sid: string, json: any) => void
+  set: (sid: string, json: obj) => void
   /**
    * Remove item from session store
    */
@@ -233,7 +235,7 @@ export interface GrantInstance {
   /**
    * Grant instance configuration
    */
-  config: any
+  config: obj
 }
 
 /**
@@ -265,7 +267,7 @@ export interface GrantHandlerResult {
   /**
    * HTTP redirect
    */
-  redirect?: any | boolean
+  redirect?: obj | boolean
   /**
    * Grant response
    */
@@ -289,7 +291,7 @@ export interface GrantSession {
   /**
    * The dynamic override configuration passed to this authorization
    */
-  dynamic?: any
+  dynamic?: GrantProvider & obj
   /**
    * OAuth 2.0 state string that was generated
    */
@@ -335,20 +337,29 @@ export interface GrantResponse {
   /**
    * Raw response data
    */
-  raw?: any
+  raw?: obj
   /**
    * Parsed id_token JWT
    */
-  jwt?: any
+  jwt?: {
+    id_token?: {header: obj, payload: obj, signature: string}
+  }
   /**
    * User profile response
    */
-  profile?: any
+  profile?: obj
   /**
    * Error response
    */
-  error?: any
+  error?: obj
 }
+
+// ----------------------------------------------------------------------------
+
+/**
+ * Object with unknown keys
+ */
+type obj = {[key: string]: any}
 
 // ----------------------------------------------------------------------------
 
@@ -363,11 +374,11 @@ export type KoaMiddleware = (ctx: any, next?: () => Promise<void>) => Promise<vo
 /**
  * Hapi middleware
  */
-export type HapiMiddleware = {register: (server: any, options?: any) => void, pkg: any}
+export type HapiMiddleware = {register: (server: any, options?: obj) => void, pkg: obj}
 /**
  * Fastify middleware
  */
-export type FastifyMiddleware = (server: any, options: any, next: () => void) => void
+export type FastifyMiddleware = (server: any, options: obj, next: () => void) => void
 /**
  * Curveball middleware
  */
