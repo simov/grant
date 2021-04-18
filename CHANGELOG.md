@@ -1,6 +1,10 @@
 
 # Change Log
 
+## v5.4.13 (2021/04/18)
+- **Change:** Updated 1 provider: `withings`
+- **Fix:** Type definitions for TypeScript
+
 ## v5.4.12 (2021/03/20)
 - **Fix:** Type definitions for TypeScript
 
