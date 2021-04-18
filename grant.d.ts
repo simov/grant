@@ -163,7 +163,7 @@ export interface GrantProvider {
   /**
    * Custom authorization parameters and their values
    */
-  custom_params?: obj
+  custom_params?: any
   /**
    * String to embed into the authorization server URLs
    */
@@ -171,11 +171,11 @@ export interface GrantProvider {
   /**
    * Public PEM or JWK
    */
-  public_key?: string | obj
+  public_key?: any
   /**
    * Private PEM or JWK
    */
-  private_key?: string | obj
+  private_key?: any
   /**
    * Absolute redirect URL of the OAuth app
    */
@@ -201,7 +201,7 @@ export interface GrantSessionConfig {
   /**
    * Cookie options
    */
-  cookie?: obj
+  cookie?: any
   /**
    * Session store
    */
@@ -215,11 +215,11 @@ export interface GrantSessionStore {
   /**
    * Get item from session store
    */
-  get: (sid: string) => obj
+  get: (sid: string) => any
   /**
    * Set item in session store
    */
-  set: (sid: string, json: obj) => void
+  set: (sid: string, json: any) => void
   /**
    * Remove item from session store
    */
@@ -235,7 +235,7 @@ export interface GrantInstance {
   /**
    * Grant instance configuration
    */
-  config: obj
+  config: any
 }
 
 /**
@@ -267,7 +267,7 @@ export interface GrantHandlerResult {
   /**
    * HTTP redirect
    */
-  redirect?: obj | boolean
+  redirect?: any
   /**
    * Grant response
    */
@@ -291,7 +291,7 @@ export interface GrantSession {
   /**
    * The dynamic override configuration passed to this authorization
    */
-  dynamic?: GrantProvider & obj
+  dynamic?: any
   /**
    * OAuth 2.0 state string that was generated
    */
@@ -337,29 +337,22 @@ export interface GrantResponse {
   /**
    * Raw response data
    */
-  raw?: obj
+  raw?: any
   /**
    * Parsed id_token JWT
    */
   jwt?: {
-    id_token?: {header: obj, payload: obj, signature: string}
+    id_token?: {header: any, payload: any, signature: string}
   }
   /**
    * User profile response
    */
-  profile?: obj
+  profile?: any
   /**
    * Error response
    */
-  error?: obj
+  error?: any
 }
-
-// ----------------------------------------------------------------------------
-
-/**
- * Object with unknown keys
- */
-type obj = {[key: string]: any}
 
 // ----------------------------------------------------------------------------
 
@@ -374,11 +367,11 @@ export type KoaMiddleware = (ctx: any, next?: () => Promise<void>) => Promise<vo
 /**
  * Hapi middleware
  */
-export type HapiMiddleware = {register: (server: any, options?: obj) => void, pkg: obj}
+export type HapiMiddleware = {register: (server: any, options?: any) => void, pkg: any}
 /**
  * Fastify middleware
  */
-export type FastifyMiddleware = (server: any, options: obj, next: () => void) => void
+export type FastifyMiddleware = (server: any, options: any, next: () => void) => void
 /**
  * Curveball middleware
  */
