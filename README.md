@@ -1,7 +1,7 @@
 
 # Grant
 
-[![npm-version]][npm] [![travis-ci]][travis] [![coveralls-status]][coveralls]
+[![npm-version]][npm] [![travis-ci]][travis] [![coveralls-status]][coveralls] [![snyk-vulnerabilities]][snyk]
 
 > _OAuth Proxy_
 
@@ -1151,10 +1151,12 @@ Set your Client Secret as `secret` not the App Secret:
   [npm-version]: https://img.shields.io/npm/v/grant.svg?style=flat-square (NPM Version)
   [travis-ci]: https://img.shields.io/travis/simov/grant/master.svg?style=flat-square (Build Status)
   [coveralls-status]: https://img.shields.io/coveralls/simov/grant.svg?style=flat-square (Test Coverage)
+  [snyk-vulnerabilities]: https://img.shields.io/snyk/vulnerabilities/npm/grant.svg?style=flat-square (Vulnerabilities)
 
   [npm]: https://www.npmjs.com/package/grant
   [travis]: https://travis-ci.org/simov/grant
   [coveralls]: https://coveralls.io/r/simov/grant?branch=master
+  [snyk]: https://snyk.io/test/npm/grant
 
   [grant-oauth]: https://grant.outofindex.com
   [oauth-like-a-boss]: https://dev.to/simov/oauth-like-a-boss-2m3b
