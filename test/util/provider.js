@@ -146,7 +146,12 @@ var oauth2 = (port) => new Promise((resolve) => {
       openid = (query.scope || []).includes('openid')
       on.authorize({url, query, headers})
       if (query.response_mode === 'form_post') {
-        res.end('code')
+        provider === 'apple'
+        ? res.end(qs.stringify({
+          code: 'code',
+          user: {name: {firstName: 'jon', lastName: 'doe'}, email: 'jon@doe.com'}
+        }))
+        : res.end('code')
         return
       }
       var location = query.redirect_uri + '?' + (

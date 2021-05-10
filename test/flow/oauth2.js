@@ -1,5 +1,6 @@
 
 var t = require('assert')
+var qs = require('qs')
 
 var request = require('request-compose').extend({
   Request: {cookie: require('request-cookie').Request},
@@ -99,6 +100,65 @@ describe('oauth2', () => {
   })
 
   describe('custom', () => {
+    it('authorize - user - apple', async () => {
+      provider.on.authorize = ({url, headers, query}) => {
+        t.equal(query.response_mode, 'form_post')
+      }
+      var cookie = {}
+      var {body:form} = await request({
+        url: client.url('/connect/apple'),
+        // request-compose:querystring can't handle nested objects
+        qs: qs.stringify({
+          custom_params: {response_mode: 'form_post'},
+          response: ['tokens', 'raw', 'profile'],
+        }),
+        cookie,
+      })
+      var {body: {response}} = await request({
+        method: 'POST',
+        url: client.url('/connect/apple/callback'),
+        form,
+        cookie,
+        redirect: {all: true, method: false}
+      })
+      t.deepEqual(response, {
+        access_token: 'token',
+        refresh_token: 'refresh',
+        raw: {access_token: 'token', refresh_token: 'refresh', expires_in: '3600'},
+        profile: {name: {firstName: 'jon', lastName: 'doe'}, email: 'jon@doe.com'}
+      })
+    })
+
+    it('authorize - profile_url - apple', async () => {
+      provider.on.authorize = ({url, headers, query}) => {
+        t.equal(query.response_mode, 'form_post')
+      }
+      var cookie = {}
+      var {body:form} = await request({
+        url: client.url('/connect/apple'),
+        // request-compose:querystring can't handle nested objects
+        qs: qs.stringify({
+          custom_params: {response_mode: 'form_post'},
+          response: ['tokens', 'raw', 'profile'],
+          profile_url: provider.url('/profile_url')
+        }),
+        cookie,
+      })
+      var {body: {response}} = await request({
+        method: 'POST',
+        url: client.url('/connect/apple/callback'),
+        form,
+        cookie,
+        redirect: {all: true, method: false}
+      })
+      t.deepEqual(response, {
+        access_token: 'token',
+        refresh_token: 'refresh',
+        raw: {access_token: 'token', refresh_token: 'refresh', expires_in: '3600'},
+        profile: {user: 'simov'}
+      })
+    })
+
     it('authorize - web_server - basecamp', async () => {
       provider.on.authorize = ({url, headers, query}) => {
         t.equal(query.type, 'web_server')
