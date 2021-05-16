@@ -1,4 +1,3 @@
-
 import {
   RequestOptions as RequestComposeOptions,
 } from 'request-compose'
@@ -53,7 +52,6 @@ export interface GrantConfig {
  * Grant provider
  */
 export interface GrantProvider {
-
   // Authorization Server
 
   /**
@@ -367,7 +365,7 @@ export type KoaMiddleware = (ctx: any, next?: () => Promise<void>) => Promise<vo
 /**
  * Hapi middleware
  */
-export type HapiMiddleware = {register: (server: any, options?: any) => void, pkg: any}
+export interface HapiMiddleware {register: (server: any, options?: any) => void, pkg: any}
 /**
  * Fastify middleware
  */
@@ -382,63 +380,63 @@ export type CurveballMiddleware = (ctx: any, next?: () => Promise<void>) => Prom
 /**
  * Grant OAuth Proxy
  */
-declare function grant (): (config: GrantConfig | GrantOptions) => any
-declare function grant (config: GrantConfig | GrantOptions): any
+declare function grant(): (config: GrantConfig | GrantOptions) => any
+declare function grant(config: GrantConfig | GrantOptions): any
 
 /**
  * Grant OAuth Proxy
  */
-declare module grant {
+declare namespace grant {
   /**
    * Express handler
    */
-  export function express (): (config: GrantConfig | GrantOptions) => ExpressMiddleware & GrantInstance
-  export function express (config: GrantConfig | GrantOptions): ExpressMiddleware & GrantInstance
+  function express(): (config: GrantConfig | GrantOptions) => ExpressMiddleware & GrantInstance
+  function express(config: GrantConfig | GrantOptions): ExpressMiddleware & GrantInstance
   /**
    * Koa handler
    */
-  export function koa (): (config: GrantConfig | GrantOptions) => KoaMiddleware & GrantInstance
-  export function koa (config: GrantConfig | GrantOptions): KoaMiddleware & GrantInstance
+  function koa(): (config: GrantConfig | GrantOptions) => KoaMiddleware & GrantInstance
+  function koa(config: GrantConfig | GrantOptions): KoaMiddleware & GrantInstance
   /**
    * Hapi handler
    */
-  export function hapi (): (config: GrantConfig | GrantOptions) => HapiMiddleware & GrantInstance
-  export function hapi (config: GrantConfig | GrantOptions): HapiMiddleware & GrantInstance
+  function hapi(): (config: GrantConfig | GrantOptions) => HapiMiddleware & GrantInstance
+  function hapi(config: GrantConfig | GrantOptions): HapiMiddleware & GrantInstance
   /**
    * Fastify handler
    */
-  export function fastify (): (config: GrantConfig | GrantOptions) => FastifyMiddleware & GrantInstance
-  export function fastify (config: GrantConfig | GrantOptions): FastifyMiddleware & GrantInstance
+  function fastify(): (config: GrantConfig | GrantOptions) => FastifyMiddleware & GrantInstance
+  function fastify(config: GrantConfig | GrantOptions): FastifyMiddleware & GrantInstance
   /**
    * Curveball handler
    */
-  export function curveball (): (config: GrantConfig | GrantOptions) => CurveballMiddleware & GrantInstance
-  export function curveball (config: GrantConfig | GrantOptions): CurveballMiddleware & GrantInstance
+  function curveball(): (config: GrantConfig | GrantOptions) => CurveballMiddleware & GrantInstance
+  function curveball(config: GrantConfig | GrantOptions): CurveballMiddleware & GrantInstance
   /**
    * Node handler
    */
-  export function node (): (config: GrantConfig | GrantOptions) => GrantHandler & GrantInstance
-  export function node (config: GrantConfig | GrantOptions): GrantHandler & GrantInstance
+  function node(): (config: GrantConfig | GrantOptions) => GrantHandler & GrantInstance
+  function node(config: GrantConfig | GrantOptions): GrantHandler & GrantInstance
   /**
    * AWS Lambda handler
    */
-  export function aws (): (config: GrantConfig | GrantOptions) => GrantHandler & GrantInstance
-  export function aws (config: GrantConfig | GrantOptions): GrantHandler & GrantInstance
+  function aws(): (config: GrantConfig | GrantOptions) => GrantHandler & GrantInstance
+  function aws(config: GrantConfig | GrantOptions): GrantHandler & GrantInstance
   /**
    * Azure Function handler
    */
-  export function azure (): (config: GrantConfig | GrantOptions) => GrantHandler & GrantInstance
-  export function azure (config: GrantConfig | GrantOptions): GrantHandler & GrantInstance
+  function azure(): (config: GrantConfig | GrantOptions) => GrantHandler & GrantInstance
+  function azure(config: GrantConfig | GrantOptions): GrantHandler & GrantInstance
   /**
    * Google Cloud Function handler
    */
-  export function gcloud (): (config: GrantConfig | GrantOptions) => GrantHandler & GrantInstance
-  export function gcloud (config: GrantConfig | GrantOptions): GrantHandler & GrantInstance
+  function gcloud(): (config: GrantConfig | GrantOptions) => GrantHandler & GrantInstance
+  function gcloud(config: GrantConfig | GrantOptions): GrantHandler & GrantInstance
   /**
    * Vercel Function handler
    */
-  export function vercel (): (config: GrantConfig | GrantOptions) => GrantHandler & GrantInstance
-  export function vercel (config: GrantConfig | GrantOptions): GrantHandler & GrantInstance
+  function vercel(): (config: GrantConfig | GrantOptions) => GrantHandler & GrantInstance
+  function vercel(config: GrantConfig | GrantOptions): GrantHandler & GrantInstance
 }
 
 export default grant
