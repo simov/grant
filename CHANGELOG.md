@@ -1,6 +1,9 @@
 
 # Change Log
 
+## v5.4.14 (2021/05/16)
+- **Change:** Return user profile for `apple`
+
 ## v5.4.13 (2021/04/18)
 - **Change:** Updated 1 provider: `withings`
 - **Fix:** Type definitions for TypeScript
