@@ -680,6 +680,11 @@
     "access_url": "https://secure.nokotime.com/oauth/2/access_token",
     "oauth": 2
   },
+  "notion": {
+    "authorize_url": "https://api.notion.com/v1/oauth/authorize",
+    "access_url": "https://api.notion.com/v1/oauth/token",
+    "oauth": 2
+  },
   "nylas": {
     "authorize_url": "https://api.nylas.com/oauth/authorize",
     "access_url": "https://api.nylas.com/oauth/token",

@@ -382,7 +382,7 @@ describe('oauth2', () => {
         )
       }
       await Promise.all(
-        ['ebay', 'fitbit', 'homeaway', 'hootsuite', 'reddit'].map((provider) =>
+        ['ebay', 'fitbit', 'homeaway', 'hootsuite', 'notion', 'reddit'].map((provider) =>
           request({
             url: client.url(`/connect/${provider}`),
             qs: {key: 'key', secret: 'secret'},
@@ -407,6 +407,30 @@ describe('oauth2', () => {
       var {body: {response}} = await request({
         url: client.url('/connect/google'),
         qs: {key: 'key', secret: 'secret', token_endpoint_auth_method: 'client_secret_basic'},
+        cookie: {},
+      })
+      t.deepEqual(response, {
+        access_token: 'token',
+        refresh_token: 'refresh',
+        raw: {access_token: 'token', refresh_token: 'refresh', expires_in: '3600'}
+      })
+    })
+
+    it('access - JSON encoded body - notion', async () => {
+      provider.on.access = ({method, url, headers, query, form}) => {
+        t.deepEqual(
+          Buffer.from(headers.authorization.replace('Basic ', ''), 'base64').toString().split(':'),
+          ['key', 'secret']
+        )
+        t.deepEqual(form, {
+          grant_type: 'authorization_code',
+          code: 'code',
+          redirect_uri: 'http://localhost:5001/connect/notion/callback'
+        })
+      }
+      var {body: {response}} = await request({
+        url: client.url('/connect/notion'),
+        qs: {key: 'key', secret: 'secret'},
         cookie: {},
       })
       t.deepEqual(response, {

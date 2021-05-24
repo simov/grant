@@ -6,7 +6,8 @@ var qs = require('qs')
 var buffer = (req, done) => {
   var data = ''
   req.on('data', (chunk) => data += chunk)
-  req.on('end', () => done(qs.parse(data)))
+  req.on('end', () => done(
+    /^{.*}$/.test(data) ? JSON.parse(data) : qs.parse(data)))
 }
 var _query = (req) => {
   var parsed = _url.parse(req.url, false)
