@@ -802,6 +802,12 @@
     "oauth": 2,
     "scope_delimiter": " "
   },
+  "sellsy": {
+    "request_url": "https://apifeed.sellsy.com/0/request_token",
+    "authorize_url": "https://apifeed.sellsy.com/0/login.php",
+    "access_url": "https://apifeed.sellsy.com/0/oauth/access_token",
+    "oauth": 1
+  },
   "shoeboxed": {
     "authorize_url": "https://id.shoeboxed.com/oauth/authorize",
     "access_url": "https://id.shoeboxed.com/oauth/token",

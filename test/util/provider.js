@@ -53,9 +53,13 @@ var oauth1 = (port) => new Promise((resolve) => {
           callback = form.redirect_uri
         }
         on.request({url, headers, query, form, oauth})
-        res.writeHead(200, {'content-type': 'application/x-www-form-urlencoded'})
+        provider === 'sellsy'
+          ? res.writeHead(200, {'content-type': 'application/json'})
+          : res.writeHead(200, {'content-type': 'application/x-www-form-urlencoded'})
         provider === 'getpocket'
           ? res.end(qs.stringify({code: 'code'}))
+          : provider === 'sellsy'
+          ? res.end('authentification_url=https://apifeed.sellsy.com/0/login.php&oauth_token=token&oauth_token_secret=secret&oauth_callback_confirmed=true')
           : res.end(qs.stringify({oauth_token: 'token', oauth_token_secret: 'secret'}))
       })
     }

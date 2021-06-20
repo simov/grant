@@ -154,6 +154,24 @@ describe('oauth1', () => {
       })
     })
 
+    it('incorrect reponse content type - request - sellsy', async () => {
+      var {res, body} = await request({
+        url: provider.url('/sellsy/request_url')
+      })
+      t.equal(res.headers['content-type'], 'application/json')
+      t.equal(body, 'authentification_url=https://apifeed.sellsy.com/0/login.php&oauth_token=token&oauth_token_secret=secret&oauth_callback_confirmed=true')
+
+      var {body: {response}} = await request({
+        url: client.url('/connect/sellsy'),
+        cookie: {},
+      })
+      t.deepEqual(response, {
+        access_token: 'token',
+        access_secret: 'secret',
+        raw: {oauth_token: 'token', oauth_token_secret: 'secret'}
+      })
+    })
+
     it('signature_method - request/access - freshbooks', async () => {
       provider.on.request = ({headers}) => {
         t.ok(/oauth_signature_method="PLAINTEXT"/.test(headers.authorization))
