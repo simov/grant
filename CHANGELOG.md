@@ -1,6 +1,9 @@
 
 # Change Log
 
+## v5.4.15 (2021/06/20)
+- **New:** Official support for 2 new providers: `notion`, `sellsy`
+
 ## v5.4.14 (2021/05/16)
 - **Change:** Return user profile for `apple`
 
