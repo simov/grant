@@ -303,7 +303,7 @@
     "profile_url": "https://api.line.me/v2/profile"
   },
   "linkedin": {
-    "profile_url": "https://api.linkedin.com/v1/people/~"
+    "profile_url": "https://api.linkedin.com/v2/me"
   },
   "live": {
     "profile_url": "https://apis.live.net/v5.0/me"

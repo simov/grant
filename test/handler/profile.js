@@ -158,7 +158,6 @@ describe('profile', () => {
         'foursquare' === name ? t.equal(query.oauth_token, 'token') :
         'getpocket' === name ? t.deepEqual(query, {consumer_key: 'key', access_token: 'token'}) :
         'instagram' === name ? t.equal(query.access_token, 'token') :
-        'linkedin' === name ? t.equal(headers['x-li-format'], 'json') :
         'mailchimp' === name ? t.equal(query.apikey, 'token') :
         'meetup' === name ? t.equal(query.member_id, 'self') :
         'mixcloud' === name ? t.equal(query.access_token, 'token') :

@@ -282,7 +282,7 @@ describe('config', () => {
           linkedin2: {
             authorize_url: 'https://www.linkedin.com/oauth/v2/authorization',
             access_url: 'https://www.linkedin.com/oauth/v2/accessToken',
-            profile_url: 'https://api.linkedin.com/v1/people/~',
+            profile_url: 'https://api.linkedin.com/v2/me',
             oauth: 2,
             scope_delimiter: ' ',
             key: 'key',
