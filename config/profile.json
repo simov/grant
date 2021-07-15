@@ -610,5 +610,5 @@
   }, 
   "procore": {
     "profile_url": "https://api.procore.com/rest/v1.0/me"
-  },
+  }
 }
