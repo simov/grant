@@ -1127,5 +1127,10 @@
     "access_url": "https://zoom.us/oauth/token",
     "oauth": 2,
     "scope_delimiter": " "
+  },
+  "procore": {
+    "authorize_url": "https://login.procore.com/oauth/authorize",
+    "access_url": "https://login.procore.com/oauth/token",
+    "oauth": 2
   }
 }
