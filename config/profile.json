@@ -404,6 +404,9 @@
   "podio": {
     "profile_url": "https://api.podio.com/user"
   },
+  "procore": {
+    "profile_url": "https://api.procore.com/rest/v1.0/me"
+  },
   "producthunt": {
     "profile_url": ""
   },

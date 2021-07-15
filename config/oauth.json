@@ -747,6 +747,11 @@
     "access_url": "https://podio.com/oauth/token",
     "oauth": 2
   },
+  "procore": {
+    "authorize_url": "https://login.procore.com/oauth/authorize",
+    "access_url": "https://login.procore.com/oauth/token",
+    "oauth": 2
+  },
   "producthunt": {
     "authorize_url": "https://api.producthunt.com/v1/oauth/authorize",
     "access_url": "https://api.producthunt.com/v1/oauth/token",
