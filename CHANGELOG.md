@@ -1,6 +1,10 @@
 
 # Change Log
 
+## v5.4.16 (2021/07/18)
+- **New:** Official support for 2 new providers: `adobe`, `procore`
+- **Change:** Updated 1 provider: `linkedin`
+
 ## v5.4.15 (2021/06/20)
 - **New:** Official support for 2 new providers: `notion`, `sellsy`
 
