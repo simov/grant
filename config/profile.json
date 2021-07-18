@@ -11,6 +11,9 @@
   "acuityscheduling": {
     "profile_url": "https://acuityscheduling.com/api/v1/me"
   },
+  "adobe": {
+    "profile_url": "https://ims-na1.adobelogin.com/ims/userinfo/v2"
+  },
   "aha": {
     "profile_url": "https://[subdomain].aha.io/api/v1/me"
   },

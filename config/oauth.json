@@ -21,6 +21,11 @@
     "access_url": "https://acuityscheduling.com/oauth2/token",
     "oauth": 2
   },
+  "adobe": {
+    "authorize_url": "https://ims-na1.adobelogin.com/ims/authorize/v2",
+    "access_url": "https://ims-na1.adobelogin.com/ims/token/v3",
+    "oauth": 2
+  },
   "aha": {
     "authorize_url": "https://[subdomain].aha.io/oauth/authorize",
     "access_url": "https://[subdomain].aha.io/oauth/token",
