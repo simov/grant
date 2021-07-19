@@ -539,6 +539,9 @@
   "uber": {
     "profile_url": "https://[subdomain].uber.com/v1/me"
   },
+  "unbounce": {
+    "profile_url": "https://api.unbounce.com/users/self"
+  },
   "underarmour": {
     "profile_url": "https://api.ua.com/v7.1/user/self"
   },
