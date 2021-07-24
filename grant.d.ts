@@ -3,7 +3,215 @@ import {
 } from 'request-compose'
 
 // ----------------------------------------------------------------------------
-
+export type ProviderName = "23andme" |
+  "500px" |
+  "acton" |
+  "acuityscheduling" |
+  "adobe" |
+  "aha" |
+  "alchemer" |
+  "amazon" |
+  "angellist" |
+  "apple" |
+  "arcgis" |
+  "asana" |
+  "assembla" |
+  "atlassian" |
+  "auth0" |
+  "authentiq" |
+  "autodesk" |
+  "aweber" |
+  "axosoft" |
+  "baidu" |
+  "basecamp" |
+  "battlenet" |
+  "beatport" |
+  "bitbucket" |
+  "bitly" |
+  "box" |
+  "buffer" |
+  "campaignmonitor" |
+  "cas" |
+  "cheddar" |
+  "clio" |
+  "cognito" |
+  "coinbase" |
+  "concur" |
+  "constantcontact" |
+  "coursera" |
+  "dailymotion" |
+  "deezer" |
+  "delivery" |
+  "deputy" |
+  "deviantart" |
+  "digitalocean" |
+  "discogs" |
+  "discord" |
+  "disqus" |
+  "docusign" |
+  "dribbble" |
+  "dropbox" |
+  "ebay" |
+  "echosign" |
+  "ecwid" |
+  "edmodo" |
+  "egnyte" |
+  "etsy" |
+  "eventbrite" |
+  "evernote" |
+  "eyeem" |
+  "facebook" |
+  "familysearch" |
+  "feedly" |
+  "figma" |
+  "fitbit" |
+  "flattr" |
+  "flickr" |
+  "flowdock" |
+  "formstack" |
+  "foursquare" |
+  "freeagent" |
+  "freelancer" |
+  "freshbooks" |
+  "fusionauth" |
+  "garmin" |
+  "geeklist" |
+  "genius" |
+  "getbase" |
+  "getpocket" |
+  "gitbook" |
+  "github" |
+  "gitlab" |
+  "gitter" |
+  "goodreads" |
+  "google" |
+  "groove" |
+  "gumroad" |
+  "harvest" |
+  "hellosign" |
+  "heroku" |
+  "homeaway" |
+  "hootsuite" |
+  "huddle" |
+  "ibm" |
+  "iconfinder" |
+  "idme" |
+  "idonethis" |
+  "imgur" |
+  "infusionsoft" |
+  "instagram" |
+  "intuit" |
+  "jamendo" |
+  "jumplead" |
+  "kakao" |
+  "keycloak" |
+  "line" |
+  "linkedin" |
+  "live" |
+  "livechat" |
+  "logingov" |
+  "lyft" |
+  "mailchimp" |
+  "mailup" |
+  "mailxpert" |
+  "mapmyfitness" |
+  "mastodon" |
+  "medium" |
+  "meetup" |
+  "mendeley" |
+  "mention" |
+  "microsoft" |
+  "mixcloud" |
+  "moxtra" |
+  "myob" |
+  "naver" |
+  "nest" |
+  "netlify" |
+  "nokotime" |
+  "notion" |
+  "nylas" |
+  "okta" |
+  "onelogin" |
+  "openstreetmap" |
+  "optimizely" |
+  "patreon" |
+  "paypal" |
+  "phantauth" |
+  "pinterest" |
+  "plurk" |
+  "podio" |
+  "procore" |
+  "producthunt" |
+  "projectplace" |
+  "projectplace2" |
+  "pushbullet" |
+  "qq" |
+  "ravelry" |
+  "redbooth" |
+  "reddit" |
+  "runkeeper" |
+  "salesforce" |
+  "sellsy" |
+  "shoeboxed" |
+  "shopify" |
+  "skyrock" |
+  "slack" |
+  "slice" |
+  "smartsheet" |
+  "smugmug" |
+  "snapchat" |
+  "snowflake" |
+  "socialpilot" |
+  "socrata" |
+  "soundcloud" |
+  "spotify" |
+  "square" |
+  "stackexchange" |
+  "stocktwits" |
+  "stormz" |
+  "storyblok" |
+  "strava" |
+  "stripe" |
+  "surveymonkey" |
+  "thingiverse" |
+  "ticketbud" |
+  "timelyapp" |
+  "todoist" |
+  "trakt" |
+  "traxo" |
+  "trello" |
+  "tripit" |
+  "tumblr" |
+  "twitch" |
+  "twitter" |
+  "typeform" |
+  "uber" |
+  "underarmour" |
+  "unsplash" |
+  "upwork" |
+  "uservoice" |
+  "vend" |
+  "venmo" |
+  "vercel" |
+  "verticalresponse" |
+  "viadeo" |
+  "vimeo" |
+  "visualstudio" |
+  "vk" |
+  "wechat" |
+  "weekdone" |
+  "weibo" |
+  "withings" |
+  "wordpress" |
+  "wrike" |
+  "xero" |
+  "xing" |
+  "yahoo" |
+  "yammer" |
+  "yandex" |
+  "zendesk" |
+  "zoom"
+  
 /**
  * Grant options
  */
@@ -40,7 +248,7 @@ export interface GrantConfig {
   /**
    * Provider configuration
    */
-  [provider: string]: GrantProvider | undefined
+  [provider: ProviderName | string]: GrantProvider | undefined
   // exclude
   handler?: never
   config?: never
@@ -69,7 +277,7 @@ export interface GrantProvider {
   /**
    * OAuth version number
    */
-  oauth?: number
+  oauth?: 1 | 2
   /**
    * String delimiter used for concatenating multiple scopes
    */
@@ -281,7 +489,7 @@ export interface GrantSession {
   /**
    * The provider name used for this authorization
    */
-  provider: string
+  provider: ProviderName | string
   /**
    * The static override name used for this authorization
    */
