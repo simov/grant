@@ -609,7 +609,7 @@
     "profile_url": "https://www.yammer.com/api/v1/users/current.json"
   },
   "yandex": {
-    "profile_url": ""
+    "profile_url": "https://login.yandex.ru/info"
   },
   "zendesk": {
     "profile_url": "https://[subdomain].zendesk.com/api/v2/users/me.json"
