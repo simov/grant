@@ -1,6 +1,10 @@
 
 # Change Log
 
+## v5.4.17 (2021/09/04)
+- **New:** Official support for 2 new providers: `trustpilot`, `unbounce`
+- **Change:** Updated 1 provider: `yandex`
+
 ## v5.4.16 (2021/07/18)
 - **New:** Official support for 2 new providers: `adobe`, `procore`
 - **Change:** Updated 1 provider: `linkedin`
