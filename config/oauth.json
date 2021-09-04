@@ -974,6 +974,11 @@
     "access_url": "https://api.tripit.com/oauth/access_token",
     "oauth": 1
   },
+  "trustpilot": {
+    "authorize_url": "https://authenticate.trustpilot.com",
+    "access_url": "https://api.trustpilot.com/v1/oauth/oauth-business-users-for-applications/accesstoken",
+    "oauth": 2
+  },
   "tumblr": {
     "request_url": "https://www.tumblr.com/oauth/request_token",
     "authorize_url": "https://www.tumblr.com/oauth/authorize",
