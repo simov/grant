@@ -11,6 +11,7 @@
     "url": "https://github.com/simov/grant.git"
   },
   "dependencies": {
+    "@fastify/session": "^6.1.1",
     "@hapi/hapi": "^20.0.0",
     "@hapi/yar": "^10.1.0",
     "express": "^4.17.1",
@@ -18,7 +19,6 @@
     "fastify": "^3.3.0",
     "fastify-cookie": "^4.0.2",
     "fastify-qs": "^2.0.0",
-    "fastify-session": "^5.0.0",
     "koa": "^2.11.0",
     "koa-qs": "^3.0.0",
     "koa-router": "^9.4.0",

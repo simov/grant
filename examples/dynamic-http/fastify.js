@@ -1,7 +1,7 @@
 
 var fastify = require('fastify')
 var cookie = require('fastify-cookie')
-var session = require('fastify-session')
+var session = require('@fastify/session')
 var parser = require('fastify-formbody')
 var grant = require('../../').fastify()
 var fs = require('fs')

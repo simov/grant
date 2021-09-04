@@ -26,7 +26,7 @@ catch (err) {
 
 var fastify = require('fastify')
 fastify.cookie = require('fastify-cookie')
-fastify.session = require('fastify-session')
+fastify.session = require('@fastify/session')
 fastify.parser = require('fastify-formbody')
 
 var {Application:curveball} = require('@curveball/core')
