@@ -107,6 +107,9 @@
   "coursera": {
     "profile_url": "https://api.coursera.org/api/externalBasicProfiles.v1"
   },
+  "crossid": {
+    "profile_url": "https://[subdomain].crossid.io/oauth2/userinfo"
+  },
   "dailymotion": {
     "profile_url": "https://api.dailymotion.com/user/me"
   },
