@@ -1147,5 +1147,11 @@
     "access_url": "https://zoom.us/oauth/token",
     "oauth": 2,
     "scope_delimiter": " "
+  },
+  "crossid": {
+    "authorize_url": "https://[subdomain].crossid.io/oauth2/auth",
+    "access_url": "https://[subdomain].crossid.io/oauth2/token",
+    "oauth": 2,
+    "scope_delimiter": " "
   }
 }

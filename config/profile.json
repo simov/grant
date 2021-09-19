@@ -616,5 +616,8 @@
   },
   "zoom": {
     "profile_url": "https://api.zoom.us/v2/users/me"
+  },
+  "crossid": {
+    "profile_url": "https://[subdomain].crossid.io/oauth2/userinfo"
   }
 }
