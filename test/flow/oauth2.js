@@ -443,6 +443,11 @@ describe('oauth2', () => {
     it('access - GET - qq', async () => {
       provider.on.access = ({method, url, headers, query, form}) => {
         t.equal(method, 'GET')
+        t.deepEqual(query, {
+          grant_type: 'authorization_code',
+          code: 'code',
+          redirect_uri: client.url('/connect/qq/callback')
+        })
       }
       var {body: {response}} = await request({
         url: client.url('/connect/qq'),
@@ -452,6 +457,25 @@ describe('oauth2', () => {
         access_token: 'token',
         refresh_token: 'refresh',
         raw: {access_token: 'token', refresh_token: 'refresh', expires_in: '3600'}
+      })
+    })
+
+    it('access - GET - untappd', async () => {
+      provider.on.access = ({method, url, headers, query, form}) => {
+        t.equal(method, 'GET')
+        t.deepEqual(query, {
+          grant_type: 'authorization_code',
+          code: 'code',
+          redirect_uri: client.url('/connect/untappd/callback')
+        })
+      }
+      var {body: {response}} = await request({
+        url: client.url('/connect/untappd'),
+        cookie: {},
+      })
+      t.deepEqual(response, {
+        access_token: 'token',
+        raw: {access_token: 'token'}
       })
     })
 

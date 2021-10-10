@@ -551,6 +551,9 @@
   "unsplash": {
     "profile_url": ""
   },
+  "untappd": {
+    "profile_url": ""
+  },
   "upwork": {
     "profile_url": "https://www.upwork.com/api/info.json"
   },

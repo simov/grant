@@ -1030,6 +1030,11 @@
     "oauth": 2,
     "scope_delimiter": "+"
   },
+  "untappd": {
+    "authorize_url": "https://untappd.com/oauth/authenticate",
+    "access_url": "https://untappd.com/oauth/authorize",
+    "oauth": 2
+  },
   "upwork": {
     "request_url": "https://www.upwork.com/api/auth/v1/oauth/token/request",
     "authorize_url": "https://www.upwork.com/services/api/auth",

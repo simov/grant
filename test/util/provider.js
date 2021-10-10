@@ -173,6 +173,10 @@ var oauth2 = (port) => new Promise((resolve) => {
         res.writeHead(200, {'content-type': 'application/json'})
         provider === 'concur'
         ? res.end(' <Token>token</Token> <Refresh_Token>refresh</Refresh_Token> ')
+        : provider === 'untappd'
+        ? res.end(JSON.stringify({response: {
+          access_token: 'token'
+        }}))
         : provider === 'withings'
         ? res.end(JSON.stringify({body: {
           access_token: 'token', refresh_token: 'refresh', expires_in: 3600
