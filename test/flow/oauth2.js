@@ -464,7 +464,7 @@ describe('oauth2', () => {
       provider.on.access = ({method, url, headers, query, form}) => {
         t.equal(method, 'GET')
         t.deepEqual(query, {
-          grant_type: 'authorization_code',
+          response_type: 'code',
           code: 'code',
           redirect_uri: client.url('/connect/untappd/callback')
         })
