@@ -1,6 +1,9 @@
 
 # Change Log
 
+## v5.4.18 (2021/10/19)
+- **New:** Official support for 2 new providers: `crossid`, `untappd`
+
 ## v5.4.17 (2021/09/04)
 - **New:** Official support for 2 new providers: `trustpilot`, `unbounce`
 - **Change:** Updated 1 provider: `yandex`
