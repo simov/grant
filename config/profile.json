@@ -503,6 +503,9 @@
   "surveymonkey": {
     "profile_url": "https://api.surveymonkey.net/v2/users/me"
   },
+  "surveysparrow": {
+    "profile_url": ""
+  },
   "thingiverse": {
     "profile_url": "https://api.thingiverse.com/users/me"
   },
