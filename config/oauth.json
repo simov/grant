@@ -938,6 +938,11 @@
     "access_url": "https://api.surveymonkey.net/oauth/token",
     "oauth": 2
   },
+  "surveysparrow": {
+    "authorize_url": "https://app.surveysparrow.com/o/oauth/auth",
+    "access_url": "https://app.surveysparrow.com/o/oauth/token",
+    "oauth": 2
+  },
   "thingiverse": {
     "authorize_url": "https://www.thingiverse.com/login/oauth/authorize",
     "access_url": "https://www.thingiverse.com/login/oauth/access_token",
