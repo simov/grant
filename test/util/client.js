@@ -3,6 +3,7 @@ var t = require('assert')
 var http = require('http')
 var url = require('url')
 var qs = require('qs')
+var cookie = require('cookie')
 
 var express = () => require('express')()
 express.session = require('express-session')
@@ -365,6 +366,7 @@ var clients = {
       var server = http.createServer()
       server.on('request', async (req, res) => {
         // vercel
+        req.cookies = cookie.parse(req.headers.cookie || '')
         req.query = req.url.split('?')[1]
         req.body = qs.parse(await buffer(req))
         // handler
@@ -933,6 +935,7 @@ var clients = {
       var server = http.createServer()
       server.on('request', async (req, res) => {
         // vercel
+        req.cookies = cookie.parse(req.headers.cookie || '')
         req.query = req.url.split('?')[1]
         // handler
         var state = {dynamic: {key: 'very', secret: 'secret'}}
@@ -1173,6 +1176,7 @@ var clients = {
       var server = http.createServer()
       server.on('request', async (req, res) => {
         // vercel
+        req.cookies = cookie.parse(req.headers.cookie || '')
         req.query = req.url.split('?')[1]
         // handler
         var {session, response} = await grant(req, res)
@@ -1334,6 +1338,7 @@ var clients = {
       var server = http.createServer()
       server.on('request', async (req, res) => {
         // vercel
+        req.cookies = cookie.parse(req.headers.cookie || '')
         req.query = req.url.split('?')[1]
         // handler
         var {session, response} = await grant(req, res)
@@ -1403,6 +1408,7 @@ var clients = {
           return
         }
         // vercel
+        req.cookies = cookie.parse(req.headers.cookie || '')
         req.query = req.url.split('?')[1]
         // handler
         await grant(req, res)
