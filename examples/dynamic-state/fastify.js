@@ -6,7 +6,7 @@ var grant = require('../../').fastify()
 
 
 fastify()
-  .decorateRequest('grant', {})
+  .decorateRequest('grant', null)
   .addHook('preHandler', async (req, res) => {
     if (/^\/connect\/google/.test(req.url)) {
       req.grant = {dynamic: {scope: ['openid']}}

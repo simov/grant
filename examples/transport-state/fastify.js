@@ -6,7 +6,7 @@ var grant = require('../../').fastify()
 
 
 fastify()
-  .decorateReply('grant', {})
+  .decorateReply('grant', null)
   .addHook('onSend', async (req, res, payload) => {
     if (/^\/connect\/.*?\/callback/.test(req.url)) {
       res.header('content-type', 'text/plain')

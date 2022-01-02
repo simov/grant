@@ -800,7 +800,7 @@ var clients = {
 
       var server = fastify()
       server
-        .decorateRequest('grant', {})
+        .decorateRequest('grant', null)
         .addHook('preHandler', async (req, res) => {
           req.grant = {dynamic: {key: 'very', 'secret': 'secret'}}
         })
@@ -1047,7 +1047,7 @@ var clients = {
 
       var server = fastify()
       server
-        .decorateReply('grant', {})
+        .decorateReply('grant', null)
         .addHook('onSend', async (req, res, payload) => {
           if (/\/callback(?:$|\?)/.test(req.url)) {
             res.header('content-type', 'application/json')
