@@ -1,6 +1,10 @@
 
 # Change Log
 
+## v5.4.19 (2022/01/03)
+- **New:** Official support for 1 new provider: `surveysparrow`
+- **Fix:** Vercel handler cookie handling
+
 ## v5.4.18 (2021/10/19)
 - **New:** Official support for 2 new providers: `crossid`, `untappd`
 
