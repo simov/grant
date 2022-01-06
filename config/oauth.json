@@ -459,8 +459,8 @@
     "oauth": 1
   },
   "google": {
-    "authorize_url": "https://accounts.google.com/o/oauth2/auth",
-    "access_url": "https://accounts.google.com/o/oauth2/token",
+    "authorize_url": "https://accounts.google.com/o/oauth2/v2/auth",
+    "access_url": "https://oauth2.googleapis.com/token",
     "oauth": 2,
     "scope_delimiter": " "
   },
