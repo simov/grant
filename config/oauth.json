@@ -1008,6 +1008,12 @@
     "access_url": "https://api.twitter.com/oauth/access_token",
     "oauth": 1
   },
+  "twitter2": {
+    "authorize_url": "https://twitter.com/i/oauth2/authorize",
+    "access_url": "https://api.twitter.com/2/oauth2/token",
+    "oauth": 2,
+    "scope_delimiter": " "
+  },
   "typeform": {
     "authorize_url": "https://api.typeform.com/oauth/authorize",
     "access_url": "https://api.typeform.com/oauth/token",
