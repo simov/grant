@@ -1134,6 +1134,24 @@ Set your Mashery user name as `key` and your application key as `api_key`:
 ```
 
 
+> **Twitter**
+
+Twitter OAuth 2.0 applications have to use the `twitter2` provider:
+
+```json
+{
+  "twitter2": {
+    "state": true,
+    "pkce": true,
+    "scope": [
+      "users.read",
+      "tweet.read"
+    ]
+  }
+}
+```
+
+
 > **VisualStudio**
 
 Set your Client Secret as `secret` not the App Secret:
