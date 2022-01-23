@@ -1,6 +1,10 @@
 
 # Change Log
 
+## v5.4.20 (2022/01/23)
+- **New:** Official support for Twitter OAuth 2.0 apps: `twitter2` [quirks](https://github.com/simov/grant#provider-quirks)
+- **Change:** Updated 1 provider: `google` id_token `iss: accounts.google.com -> https://accounts.google.com`
+
 ## v5.4.19 (2022/01/03)
 - **New:** Official support for 1 new provider: `surveysparrow`
 - **Fix:** Vercel handler cookie handling
