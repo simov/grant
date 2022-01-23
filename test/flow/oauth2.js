@@ -375,11 +375,16 @@ describe('oauth2', () => {
     })
 
     it('access - basic auth', async () => {
-      provider.on.access = ({url, headers, query, form}) => {
+      provider.on.access = ({provider, url, headers, query, form}) => {
         t.deepEqual(
           Buffer.from(headers.authorization.replace('Basic ', ''), 'base64').toString().split(':'),
           ['key', 'secret']
         )
+        t.deepEqual(form, {
+          grant_type: 'authorization_code',
+          code: 'code',
+          redirect_uri: client.url(`/connect/${provider}/callback`)
+        })
       }
       await Promise.all(
         ['ebay', 'fitbit', 'homeaway', 'hootsuite', 'notion', 'reddit', 'trustpilot'].map((provider) =>
@@ -398,15 +403,44 @@ describe('oauth2', () => {
       }))
     })
     it('access - basic auth - token_endpoint_auth_method -> client_secret_basic', async () => {
-      provider.on.access = ({url, headers, query, form}) => {
+      provider.on.access = ({provider, url, headers, query, form}) => {
         t.deepEqual(
           Buffer.from(headers.authorization.replace('Basic ', ''), 'base64').toString().split(':'),
           ['key', 'secret']
         )
+        t.deepEqual(form, {
+          grant_type: 'authorization_code',
+          code: 'code',
+          redirect_uri: client.url(`/connect/${provider}/callback`)
+        })
       }
       var {body: {response}} = await request({
         url: client.url('/connect/google'),
         qs: {key: 'key', secret: 'secret', token_endpoint_auth_method: 'client_secret_basic'},
+        cookie: {},
+      })
+      t.deepEqual(response, {
+        access_token: 'token',
+        refresh_token: 'refresh',
+        raw: {access_token: 'token', refresh_token: 'refresh', expires_in: '3600'}
+      })
+    })
+    it('access - basic auth - twitter2', async () => {
+      provider.on.access = ({provider, url, headers, query, form}) => {
+        t.deepEqual(
+          Buffer.from(headers.authorization.replace('Basic ', ''), 'base64').toString().split(':'),
+          ['key', 'secret']
+        )
+        t.deepEqual(form, {
+          grant_type: 'authorization_code',
+          code: 'code',
+          client_id: 'key',
+          redirect_uri: client.url(`/connect/${provider}/callback`)
+        })
+      }
+      var {body: {response}} = await request({
+        url: client.url('/connect/twitter2'),
+        qs: {key: 'key', secret: 'secret'},
         cookie: {},
       })
       t.deepEqual(response, {

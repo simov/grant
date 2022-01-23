@@ -149,7 +149,7 @@ var oauth2 = (port) => new Promise((resolve) => {
 
     if (/authorize_url/.test(req.url)) {
       openid = (query.scope || []).includes('openid')
-      on.authorize({url, query, headers})
+      on.authorize({provider, method, url, headers, query})
       if (query.response_mode === 'form_post') {
         provider === 'apple'
         ? res.end(qs.stringify({
@@ -169,7 +169,7 @@ var oauth2 = (port) => new Promise((resolve) => {
     }
     else if (/access_url/.test(req.url)) {
       buffer(req, (form) => {
-        on.access({method, url, query, headers, form})
+        on.access({provider, method, url, headers, query, form})
         res.writeHead(200, {'content-type': 'application/json'})
         provider === 'concur'
         ? res.end(' <Token>token</Token> <Refresh_Token>refresh</Refresh_Token> ')
