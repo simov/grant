@@ -953,6 +953,11 @@
     "access_url": "https://api.ticketbud.com/oauth/token",
     "oauth": 2
   },
+  "tiktok": {
+    "authorize_url": "https://open-api.tiktok.com/platform/oauth/connect/",
+    "access_url": "https://open-api.tiktok.com/oauth/access_token/",
+    "oauth": 2
+  },
   "timelyapp": {
     "authorize_url": "https://api.timelyapp.com/1.1/oauth/authorize",
     "access_url": "https://api.timelyapp.com/1.1/oauth/token",

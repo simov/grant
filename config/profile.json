@@ -512,6 +512,9 @@
   "ticketbud": {
     "profile_url": ""
   },
+  "tiktok": {
+    "profile_url": "https://open-api.tiktok.com/user/info/"
+  },
   "timelyapp": {
     "profile_url": ""
   },
