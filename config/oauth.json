@@ -77,6 +77,12 @@
     "oauth": 2,
     "scope_delimiter": " "
   },
+  "authing": {
+    "authorize_url": "https://[subdomain]/",
+    "access_url": "https://[subdomain]/oidc/token",
+    "oauth": 2,
+    "scope_delimiter": " "
+  },
   "auth0": {
     "authorize_url": "https://[subdomain].auth0.com/authorize",
     "access_url": "https://[subdomain].auth0.com/oauth/token",

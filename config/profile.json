@@ -41,8 +41,11 @@
   "atlassian": {
     "profile_url": "https://api.atlassian.com/me"
   },
+  "authing": {
+    "profile_url": "https://[subdomain]/userinfo"
+  },
   "auth0": {
-    "profile_url": "https://[subdomain].auth0.com/userinfo"
+    "profile_url": "https://[subdomain].auth0.com/oidc/me"
   },
   "authentiq": {
     "profile_url": "https://connect.authentiq.io/userinfo"
