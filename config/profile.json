@@ -47,6 +47,9 @@
   "authentiq": {
     "profile_url": "https://connect.authentiq.io/userinfo"
   },
+  "authing": {
+    "profile_url": "https://[subdomain].authing.cn/oidc/me"
+  },
   "autodesk": {
     "profile_url": "https://developer.api.autodesk.com/userprofile/v1/users/@me"
   },

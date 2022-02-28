@@ -89,6 +89,12 @@
     "oauth": 2,
     "scope_delimiter": " "
   },
+  "authing": {
+    "authorize_url": "https://[subdomain].authing.cn/oidc/auth",
+    "access_url": "https://[subdomain].authing.cn/oidc/token",
+    "oauth": 2,
+    "scope_delimiter": " "
+  },
   "autodesk": {
     "authorize_url": "https://developer.api.autodesk.com/authentication/v1/authorize",
     "access_url": "https://developer.api.autodesk.com/authentication/v1/gettoken",
