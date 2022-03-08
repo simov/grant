@@ -190,6 +190,39 @@ describe('oauth1', () => {
       })
     })
 
+    it('scope - request - twitter', async () => {
+      provider.on.request = ({query}) => {
+        t.deepEqual(query, {x_auth_access_type: 'read'})
+      }
+      var {body: {response}} = await request({
+        url: client.url('/connect/twitter'),
+        qs: {scope: ['read']},
+        cookie: {},
+      })
+      t.deepEqual(response, {
+        access_token: 'token',
+        access_secret: 'secret',
+        raw: {oauth_token: 'token', oauth_token_secret: 'secret', user_id: 'id'}
+      })
+    })
+
+    it('custom_params - request - twitter', async () => {
+      provider.on.request = ({query}) => {
+        t.deepEqual(query, {x_auth_access_type: 'read'})
+      }
+      var {body: {response}} = await request({
+        url: client.url('/connect/twitter'),
+        // request-compose:querystring can't handle nested objects
+        qs: 'custom_params%5Bx_auth_access_type%5D=read',
+        cookie: {},
+      })
+      t.deepEqual(response, {
+        access_token: 'token',
+        access_secret: 'secret',
+        raw: {oauth_token: 'token', oauth_token_secret: 'secret', user_id: 'id'}
+      })
+    })
+
     it('scope - authorize - flickr', async () => {
       provider.on.authorize = ({query}) => {
         t.deepEqual(query, {perms: 'a,b', oauth_token: 'token'})
