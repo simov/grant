@@ -206,6 +206,23 @@ describe('oauth2', () => {
       })
     })
 
+    it('authorize - client_key/client_id - tiktok', async () => {
+      provider.on.authorize = ({query}) => {
+        t.equal(query.client_id, undefined)
+        t.equal(query.client_key, 'key')
+      }
+      var {body: {response}} = await request({
+        url: client.url('/connect/tiktok'),
+        qs: {key: 'key'},
+        cookie: {},
+      })
+      t.deepEqual(response, {
+        access_token: 'token',
+        refresh_token: 'refresh',
+        raw: {access_token: 'token', refresh_token: 'refresh', expires_in: '3600', open_id: 'id'}
+      })
+    })
+
     it('authorize - response_type - visualstudio', async () => {
       provider.on.authorize = ({url, headers, query}) => {
         t.equal(query.response_type, 'Assertion')
@@ -371,6 +388,23 @@ describe('oauth2', () => {
         access_token: 'token',
         refresh_token: 'refresh',
         raw: {access_token: 'token', refresh_token: 'refresh', expires_in: '3600'}
+      })
+    })
+
+    it('access - client_key/client_id - tiktok', async () => {
+      provider.on.access = ({form}) => {
+        t.equal(form.client_id, undefined)
+        t.equal(form.client_key, 'key')
+      }
+      var {body: {response}} = await request({
+        url: client.url('/connect/tiktok'),
+        qs: {key: 'key'},
+        cookie: {},
+      })
+      t.deepEqual(response, {
+        access_token: 'token',
+        refresh_token: 'refresh',
+        raw: {access_token: 'token', refresh_token: 'refresh', expires_in: '3600', open_id: 'id'}
       })
     })
 

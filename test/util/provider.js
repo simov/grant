@@ -180,6 +180,7 @@ var oauth2 = (port) => new Promise((resolve) => {
         : res.end(JSON.stringify({
           access_token: 'token', refresh_token: 'refresh', expires_in: 3600,
           id_token: openid ? sign({typ: 'JWT'}, {nonce: 'whatever'}, 'signature') : undefined,
+          open_id: provider === 'tiktok' ? 'id' : undefined,
           uid: provider === 'weibo' ? 'id' : undefined,
           openid: provider === 'wechat' ? 'openid' : undefined,
         }))
@@ -242,9 +243,18 @@ var oauth2 = (port) => new Promise((resolve) => {
       })
     }
     else if (/profile_url/.test(req.url)) {
-      on.profile({method, url, query, headers})
-      res.writeHead(200, {'content-type': 'application/json'})
-      res.end(JSON.stringify({user: 'simov'}))
+      if (method === 'POST') {
+        buffer(req, (form) => {
+          on.profile({method, url, query, headers, form})
+          res.writeHead(200, {'content-type': 'application/json'})
+          res.end(JSON.stringify({user: 'simov'}))
+        })
+      }
+      else {
+        on.profile({method, url, query, headers})
+        res.writeHead(200, {'content-type': 'application/json'})
+        res.end(JSON.stringify({user: 'simov'}))
+      }
     }
     else if (/profile_error/.test(req.url)) {
       on.profile({method, url, query, headers})

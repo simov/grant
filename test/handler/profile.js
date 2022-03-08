@@ -138,6 +138,7 @@ describe('profile', () => {
       'soundcloud',
       'stackexchange',
       'stocktwits',
+      'tiktok',
       'tumblr',
       'vk',
       'wechat',
@@ -146,7 +147,7 @@ describe('profile', () => {
     ]
     for (var name of providers) {
       var version = oauth[name].oauth
-      provider[`oauth${version}`].on.profile = ({method, query, headers}) => {
+      provider[`oauth${version}`].on.profile = ({method, query, headers, form}) => {
         'arcgis' === name ? t.equal(query.f, 'json') :
         'constantcontact' === name ? t.equal(query.api_key, 'key') :
         'baidu' === name ? t.equal(query.access_token, 'token') :
@@ -166,6 +167,7 @@ describe('profile', () => {
         'soundcloud' === name ? t.equal(query.oauth_token, 'token') :
         'stackexchange' === name ? t.equal(query.key, 'token') :
         'stocktwits' === name ? t.equal(query.access_token, 'token') :
+        'tiktok' === name ? (t.equal(method, 'POST'), t.deepEqual(form, {access_token: 'token', open_id: 'id', fields: ['open_id', 'union_id', 'avatar_url', 'display_name']})) :
         'tumblr' === name ? t.equal(query.api_key, 'token') :
         'vk' === name ? t.deepEqual(query, {access_token: 'token', v: '5.103'}) :
         'wechat' === name ? t.deepEqual(query, {access_token: 'token', openid: 'openid', lang: 'zh_CN'}) :
