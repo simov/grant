@@ -1,6 +1,10 @@
 
 # Change Log
 
+## v5.4.21 (2022/03/09)
+- **New:** Official support for 2 new providers: `authing`, `tiktok`
+- **New:** Official support for Twitter OAuth 1.0a `x_auth_access_type` custom scope parameter: [quirks](https://github.com/simov/grant#provider-quirks)
+
 ## v5.4.20 (2022/01/23)
 - **New:** Official support for Twitter OAuth 2.0 apps: `twitter2` [quirks](https://github.com/simov/grant#provider-quirks)
 - **Change:** Updated 1 provider: `google` id_token `iss: accounts.google.com -> https://accounts.google.com`
