@@ -64,6 +64,9 @@ function grant ({handler, ...rest}) {
   else if (handler === 'vercel') {
     return require('./lib/handler/vercel')(rest)
   }
+  else if (handler === 'electron') {
+    return require('./lib/handler/electron')(rest)
+  }
 }
 
 grant.express = (options) => {
@@ -132,6 +135,11 @@ grant.gcloud = (options) => {
 
 grant.vercel = (options) => {
   var handler = require('./lib/handler/vercel')
+  return options ? handler(options) : handler
+}
+
+grant.electron = (options) => {
+  var handler = require('./lib/handler/electron')
   return options ? handler(options) : handler
 }
 

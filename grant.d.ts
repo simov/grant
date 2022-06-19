@@ -12,7 +12,7 @@ export interface GrantOptions {
    * Handler name
    */
   handler?: 'express' | 'koa' | 'hapi' | 'fastify' | 'curveball' |
-            'node' | 'aws' | 'azure' | 'gcloud' | 'vercel'
+            'node' | 'aws' | 'azure' | 'gcloud' | 'vercel' | 'electron'
   /**
    * Grant configuration
    */
@@ -374,6 +374,10 @@ export type FastifyMiddleware = (server: any, options: any, next: () => void) =>
  * Curveball middleware
  */
 export type CurveballMiddleware = (ctx: any, next?: () => Promise<void>) => Promise<void>
+/**
+ * Electron middleware
+ */
+export type ElectronMiddleware = (details: Electron.OnBeforeRequestListenerDetails, callback: (response: Electron.Response) => void) => Promise<void>
 
 // ----------------------------------------------------------------------------
 
@@ -437,6 +441,11 @@ declare namespace grant {
    */
   function vercel(): (config: GrantConfig | GrantOptions) => GrantHandler & GrantInstance
   function vercel(config: GrantConfig | GrantOptions): GrantHandler & GrantInstance
+  /**
+   * Electron Function handler
+   */
+   function electron(): (config: GrantConfig | GrantOptions) => ElectronMiddleware & GrantInstance
+   function electron(config: GrantConfig | GrantOptions): ElectronMiddleware & GrantInstance
 }
 
 export default grant
