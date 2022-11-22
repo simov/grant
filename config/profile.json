@@ -611,6 +611,9 @@
   "wordpress": {
     "profile_url": "https://public-api.wordpress.com/rest/v1/me"
   },
+  "workos": {
+    "profile_url": "https://api.workos.com/sso/profile"
+  },
   "wrike": {
     "profile_url": ""
   },

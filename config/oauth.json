@@ -1137,6 +1137,11 @@
     "access_url": "https://public-api.wordpress.com/oauth2/token",
     "oauth": 2
   },
+  "workos": {
+    "authorize_url": "https://api.workos.com/sso/authorize",
+    "access_url": "https://api.workos.com/sso/token",
+    "oauth": 2
+  },
   "wrike": {
     "authorize_url": "https://www.wrike.com/oauth2/authorize",
     "access_url": "https://www.wrike.com/oauth2/token",
