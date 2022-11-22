@@ -354,7 +354,7 @@
     "profile_url": ""
   },
   "microsoft": {
-    "profile_url": "https://graph.microsoft.com/oidc/userinfo"
+    "profile_url": "https://login.microsoftonline.com/[subdomain]/openid/userinfo"
   },
   "mixcloud": {
     "profile_url": "https://api.mixcloud.com/me"
