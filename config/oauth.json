@@ -658,7 +658,7 @@
   "microsoft": {
     "authorize_url": "https://login.microsoftonline.com/[subdomain]/oauth2/authorize",
     "access_url": "https://login.microsoftonline.com/[subdomain]/oauth2/token",
-    "subdomain": "common",
+    "subdomain": "consumers",
     "oauth": 2,
     "scope_delimiter": " "
   },
