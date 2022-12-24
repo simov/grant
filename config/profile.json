@@ -543,7 +543,7 @@
     "profile_url": "https://api.twitch.tv/helix/users"
   },
   "twitter": {
-    "profile_url": "https://api.twitter.com/1.1/account/verify_credentials.json?include_email=true"
+    "profile_url": "https://api.twitter.com/1.1/account/verify_credentials.json?include_email=true&skip_status=true&include_entities=false"
   },
   "twitter2": {
     "profile_url": "https://api.twitter.com/2/users/me"
