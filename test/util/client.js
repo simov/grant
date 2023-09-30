@@ -748,7 +748,7 @@ var clients = {
       app.use(express.session({secret: 'grant', saveUninitialized: true, resave: false}))
       app.use((req, res, next) => {
         if (/^\/connect/.test(req.url)) {
-          res.locals.grant = {dynamic: {key: 'very', secret: 'secret'}}
+          res.locals.grant = {dynamic: {key: 'very', secret: 'secret', foo: 'bar'}}
         }
         next()
       })

@@ -269,6 +269,87 @@ describe('handler', () => {
     })
   })
 
+  describe('dynamic session', () => {
+    ;['express', 'koa', 'hapi', 'fastify', 'node', 'aws', 'azure', 'gcloud', 'vercel'].forEach((handler) => {
+      describe(handler, () => {
+        before(async () => {
+          client = await Client({test: 'handlers', handler, config})
+        })
+
+        after(async () => {
+          await client.close()
+        })
+
+        afterEach(() => {
+          provider.on.authorize = () => {}
+          provider.on.access = () => {}
+        })
+
+        it('get', async () => {
+          provider.on.authorize = ({query}) => {
+            t.deepEqual(query, {
+              client_id: 'very',
+              response_type: 'code',
+              redirect_uri: 'http://localhost:5001/connect/oauth2/callback'
+            })
+          }
+          provider.on.access = ({form}) => {
+            t.deepEqual(form, {
+              grant_type: 'authorization_code',
+              code: 'code',
+              client_id: 'very',
+              client_secret: 'secret',
+              redirect_uri: 'http://localhost:5001/connect/oauth2/callback'
+            })
+          }
+          var {body: {response, session}} = await request({
+            url: client.url('/connect/oauth2'),
+            qs: {key: 'very', secret: 'secret', foo: 'bar'},
+            cookie: {},
+          })
+          t.deepEqual(response, {
+            access_token: 'token',
+            refresh_token: 'refresh',
+            raw: {access_token: 'token', refresh_token: 'refresh', expires_in: '3600'}
+          })
+          t.deepEqual(session, {provider: 'oauth2', dynamic: {key: 'very', secret: 'secret', foo: 'bar'}})
+        })
+
+        it('post', async () => {
+          var {body: {response, session}} = await request({
+            method: 'POST',
+            url: client.url('/connect/oauth2'),
+            form: {key: 'very', secret: 'secret', foo: 'bar'},
+            cookie: {},
+            redirect: {all: true, method: false},
+          })
+          provider.on.authorize = ({query}) => {
+            t.deepEqual(query, {
+              client_id: 'very',
+              response_type: 'code',
+              redirect_uri: 'http://localhost:5001/connect/oauth2/callback'
+            })
+          }
+          provider.on.access = ({form}) => {
+            t.deepEqual(form, {
+              grant_type: 'authorization_code',
+              code: 'code',
+              client_id: 'very',
+              client_secret: 'secret',
+              redirect_uri: 'http://localhost:5001/connect/oauth2/callback'
+            })
+          }
+          t.deepEqual(response, {
+            access_token: 'token',
+            refresh_token: 'refresh',
+            raw: {access_token: 'token', refresh_token: 'refresh', expires_in: '3600'}
+          })
+          t.deepEqual(session, {provider: 'oauth2', dynamic: {key: 'very', secret: 'secret', foo: 'bar'}})
+        })
+      })
+    })
+  })
+
   describe('dynamic state', () => {
     ;['express', 'koa', 'hapi', 'fastify', 'curveball', 'node', 'aws', 'azure', 'gcloud', 'vercel'].forEach((handler) => {
       describe(handler, () => {
