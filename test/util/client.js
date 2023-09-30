@@ -26,9 +26,15 @@ catch (err) {
 }
 
 var fastify = require('fastify')
-fastify.cookie = require('fastify-cookie')
 fastify.session = require('@fastify/session')
-fastify.parser = require('fastify-formbody')
+try {
+  fastify.cookie = require('@fastify/cookie')
+  fastify.parser = require('@fastify/formbody')
+}
+catch (err) {
+  fastify.cookie = require('fastify-cookie')
+  fastify.parser = require('fastify-formbody')
+}
 
 var {Application:curveball} = require('@curveball/core')
 curveball.router = require('@curveball/router').default
@@ -143,7 +149,7 @@ var clients = {
         .register(fastify.parser)
         .register(grant)
         .route({method: 'GET', path: '/', handler: callback.fastify})
-        .listen(port)
+        .listen({port})
         .then(() => resolve({grant, server}))
     }),
     curveball: ({config, request, state, extend, port, index}) => new Promise((resolve) => {
@@ -478,7 +484,7 @@ var clients = {
           t.equal(err.message, 'Grant: register session plugin first')
         })
         .register(grant)
-        .listen(port)
+        .listen({port})
         .then(() => resolve({grant, server}))
     }),
     curveball: ({config, request, state, extend, port, index}) => new Promise((resolve) => {
@@ -656,7 +662,7 @@ var clients = {
           secret: '01234567890123456789012345678912', cookie: {secure: false}})
         .register(grant, {prefix: '/oauth'})
         .route({method: 'GET', path: '/', handler: callback.fastify})
-        .listen(port)
+        .listen({port})
         .then(() => resolve({grant, server}))
     }),
     koa1: ({config, port}) => new Promise((resolve) => {
@@ -809,7 +815,7 @@ var clients = {
           secret: '01234567890123456789012345678912', cookie: {secure: false}})
         .register(grant)
         .route({method: 'GET', path: '/', handler: callback.fastify})
-        .listen(port)
+        .listen({port})
         .then(() => resolve({grant, server}))
     }),
     curveball: ({config, port}) => new Promise((resolve) => {
@@ -1060,7 +1066,7 @@ var clients = {
         .register(fastify.session, {
           secret: '01234567890123456789012345678912', cookie: {secure: false}})
         .register(grant)
-        .listen(port)
+        .listen({port})
         .then(() => resolve({grant, server}))
     }),
     curveball: ({config, port}) => new Promise((resolve) => {
