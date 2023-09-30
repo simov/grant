@@ -1,6 +1,6 @@
 
 var fastify = require('fastify')
-var cookie = require('fastify-cookie')
+var cookie = require('@fastify/cookie')
 var session = require('@fastify/session')
 var grant = require('../../').fastify()
 
@@ -18,4 +18,4 @@ fastify()
   .register(cookie)
   .register(session, {secret: '01234567890123456789012345678912', cookie: {secure: false}})
   .register(grant(require('./config')))
-  .listen(3000)
+  .listen({port: 3000})

@@ -1,7 +1,7 @@
 
 process.env.NODE_TLS_REJECT_UNAUTHORIZED = 0
 
-var proxy = require('proxy-agent')
+var proxy = require('proxy-agent').ProxyAgent
 var agent = new proxy('http://localhost:8009')
 
 var express = require('express')

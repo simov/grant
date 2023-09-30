@@ -11,17 +11,17 @@
     "url": "https://github.com/simov/grant.git"
   },
   "dependencies": {
-    "@fastify/session": "^6.1.1",
-    "@hapi/hapi": "^20.0.0",
-    "@hapi/yar": "^10.1.0",
-    "express": "^4.17.1",
-    "express-session": "^1.17.1",
-    "fastify": "^3.3.0",
-    "fastify-cookie": "^4.0.2",
-    "fastify-qs": "^2.0.0",
-    "koa": "^2.11.0",
+    "@fastify/cookie": "^9.1.0",
+    "@fastify/session": "^10.5.0",
+    "@hapi/hapi": "^21.3.2",
+    "@hapi/yar": "^11.0.1",
+    "express": "^4.18.2",
+    "express-session": "^1.17.3",
+    "fastify": "^4.23.2",
+    "fastify-qs": "^4.0.2",
+    "koa": "^2.14.2",
     "koa-qs": "^3.0.0",
     "koa-router": "^9.4.0",
-    "koa-session": "^6.0.0"
+    "koa-session": "^6.4.0"
   }
 }

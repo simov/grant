@@ -1,8 +1,8 @@
 
 var fastify = require('fastify')
-var cookie = require('fastify-cookie')
+var cookie = require('@fastify/cookie')
 var session = require('@fastify/session')
-var parser = require('fastify-formbody')
+var parser = require('@fastify/formbody')
 var grant = require('../../').fastify()
 var fs = require('fs')
 
@@ -19,4 +19,4 @@ fastify()
   .route({method: 'GET', path: '/hello', handler: async (req, res) => {
     res.send(JSON.stringify(req.session.grant.response, null, 2))
   }})
-  .listen(3000)
+  .listen({port: 3000})

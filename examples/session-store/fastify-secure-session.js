@@ -1,6 +1,6 @@
 
 var fastify = require('fastify')
-var session = require('fastify-secure-session')
+var session = require('@fastify/secure-session')
 var grant = require('../../').fastify()
 
 
@@ -24,4 +24,4 @@ fastify()
   .route({method: 'GET', path: '/hi', handler: async (req, res) => {
     res.send(JSON.stringify(req.session.grant.response, null, 2))
   }})
-  .listen(3000)
+  .listen({port: 3000})
