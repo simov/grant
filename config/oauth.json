@@ -96,8 +96,8 @@
     "scope_delimiter": " "
   },
   "autodesk": {
-    "authorize_url": "https://developer.api.autodesk.com/authentication/v1/authorize",
-    "access_url": "https://developer.api.autodesk.com/authentication/v1/gettoken",
+    "authorize_url": "https://developer.api.autodesk.com/authentication/v2/authorize",
+    "access_url": "https://developer.api.autodesk.com/authentication/v2/token",
     "oauth": 2,
     "scope_delimiter": " "
   },

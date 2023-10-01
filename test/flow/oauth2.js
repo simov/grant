@@ -421,7 +421,7 @@ describe('oauth2', () => {
         })
       }
       await Promise.all(
-        ['ebay', 'fitbit', 'homeaway', 'hootsuite', 'notion', 'reddit', 'trustpilot'].map((provider) =>
+        ['autodesk', 'ebay', 'fitbit', 'homeaway', 'hootsuite', 'notion', 'reddit', 'trustpilot'].map((provider) =>
           request({
             url: client.url(`/connect/${provider}`),
             qs: {key: 'key', secret: 'secret'},
