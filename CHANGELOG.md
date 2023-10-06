@@ -1,6 +1,11 @@
 
 # Change Log
 
+## v5.4.22 (2023/10/06)
+- **New:** Official support for 2 new providers: `osu`, `workos`
+- **Change:** Updated 2 providers: `autodesk`, `withings`
+- **Change:** Removed 2 discontinued providers: `flattr`, `flowdock`
+
 ## v5.4.21 (2022/03/09)
 - **New:** Official support for 2 new providers: `authing`, `tiktok`
 - **New:** Official support for Twitter OAuth 1.0a `x_auth_access_type` custom scope parameter: [quirks](https://github.com/simov/grant#provider-quirks)
