@@ -191,14 +191,8 @@
   "fitbit": {
     "profile_url": "https://api.fitbit.com/1/user/-/profile.json"
   },
-  "flattr": {
-    "profile_url": "https://api.flattr.com/rest/v2/user"
-  },
   "flickr": {
     "profile_url": "https://api.flickr.com/services/rest/"
-  },
-  "flowdock": {
-    "profile_url": "https://api.flowdock.com/v1/user"
   },
   "formstack": {
     "profile_url": ""
@@ -394,6 +388,9 @@
   },
   "optimizely": {
     "profile_url": ""
+  },
+  "osu": {
+    "profile_url": "https://osu.ppy.sh/api/v2/me"
   },
   "patreon": {
     "profile_url": ""

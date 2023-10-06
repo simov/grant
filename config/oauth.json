@@ -356,23 +356,11 @@
     "oauth": 2,
     "scope_delimiter": " "
   },
-  "flattr": {
-    "authorize_url": "https://flattr.com/oauth/authorize",
-    "access_url": "https://flattr.com/oauth/token",
-    "oauth": 2,
-    "scope_delimiter": " "
-  },
   "flickr": {
     "request_url": "https://www.flickr.com/services/oauth/request_token",
     "authorize_url": "https://www.flickr.com/services/oauth/authorize",
     "access_url": "https://www.flickr.com/services/oauth/access_token",
     "oauth": 1
-  },
-  "flowdock": {
-    "authorize_url": "https://api.flowdock.com/oauth/authorize",
-    "access_url": "https://api.flowdock.com/oauth/token",
-    "oauth": 2,
-    "scope_delimiter": " "
   },
   "formstack": {
     "authorize_url": "https://www.formstack.com/api/v2/oauth2/authorize",
@@ -729,6 +717,12 @@
     "authorize_url": "https://app.optimizely.com/oauth2/authorize",
     "access_url": "https://app.optimizely.com/oauth2/token",
     "oauth": 2
+  },
+  "osu": {
+    "authorize_url": "https://osu.ppy.sh/oauth/authorize",
+    "access_url": "https://osu.ppy.sh/oauth/token",
+    "oauth": 2,
+    "scope_delimiter": " "
   },
   "patreon": {
     "authorize_url": "https://www.patreon.com/oauth2/authorize",
