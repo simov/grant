@@ -1121,6 +1121,22 @@ Mastodon requires the entire domain of your server to be embedded in the OAuth U
 ```
 
 
+> **Openstreetmap**
+
+
+Openstreetmap OAuth 2.0 applications have to use the `openstreetmap2` provider:
+
+```json
+"openstreetmap2": {
+  "state": true,
+  "scope": [
+    "openid",
+    "read_prefs"
+  ]
+}
+```
+
+
 > **SurveyMonkey**
 
 Set your Mashery user name as `key` and your application key as `api_key`:

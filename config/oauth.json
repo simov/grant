@@ -713,6 +713,12 @@
     "access_url": "https://www.openstreetmap.org/oauth/access_token",
     "oauth": 1
   },
+  "openstreetmap2": {
+    "authorize_url": "https://www.openstreetmap.org/oauth2/authorize",
+    "access_url": "https://www.openstreetmap.org/oauth2/token",
+    "oauth": 2,
+    "scope_delimiter": " "
+  },
   "optimizely": {
     "authorize_url": "https://app.optimizely.com/oauth2/authorize",
     "access_url": "https://app.optimizely.com/oauth2/token",

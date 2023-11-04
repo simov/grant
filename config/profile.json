@@ -384,7 +384,10 @@
     "profile_url": ""
   },
   "openstreetmap": {
-    "profile_url": "http://api.openstreetmap.org/api/0.6/user/details"
+    "profile_url": "https://api.openstreetmap.org/api/0.6/user/details.json"
+  },
+  "openstreetmap2": {
+    "profile_url": "https://api.openstreetmap.org/api/0.6/user/details.json"
   },
   "optimizely": {
     "profile_url": ""
