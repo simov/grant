@@ -123,24 +123,22 @@ describe('handler', () => {
     })
   })
 
-  describe('missing provider', () => {
+  describe('missing provider + missing callback', () => {
     ;['express', 'koa', 'hapi', 'fastify', 'node', 'aws', 'azure', 'gcloud', 'vercel'].forEach((handler) => {
       describe(handler, () => {
         before(async () => {
-          client = await Client({test: 'handlers', handler, config})
+          client = await Client({
+            test: 'handlers',
+            handler,
+            config: {
+              defaults: {origin: config.defaults.origin}, // no callback!
+              oauth2: config.oauth2
+            }
+          })
         })
 
         after(async () => {
           await client.close()
-        })
-
-        it('/connect - misconfigured provider', async () => {
-          var {body: {response}} = await request({
-            url: client.url('/connect/oauth2'),
-            qs: {oauth: 5},
-            cookie: {},
-          })
-          t.deepEqual(response, {error: 'Grant: missing or misconfigured provider'})
         })
 
         it('/connect - missing provider', async () => {
@@ -150,6 +148,33 @@ describe('handler', () => {
             cookie: {},
           })
           t.deepEqual(response, {error: 'Grant: missing or misconfigured provider'})
+        })
+
+        it('/connect - unsupported oauth version', async () => {
+          var {body: {response}} = await request({
+            url: client.url('/connect/oauth2'),
+            qs: {oauth: 5},
+            cookie: {},
+          })
+          t.deepEqual(response, {error: 'Grant: missing or misconfigured provider'})
+        })
+
+        it('/connect - authorize error', async () => {
+          var {body: {response}} = await request({
+            url: client.url('/connect/oauth2'),
+            qs: {authorize_url: provider.url('/authorize_error_message')},
+            cookie: {},
+          })
+          t.deepEqual(response, {error: {message: 'invalid'}})
+        })
+
+        it('/connect - access error', async () => {
+          var {body: {response}} = await request({
+            url: client.url('/connect/oauth2'),
+            qs: {access_url: provider.url('/access_error_status')},
+            cookie: {},
+          })
+          t.deepEqual(response, {error: {invalid: 'access_url'}})
         })
 
         it('/callback - missing session', async () => {
