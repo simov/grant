@@ -83,6 +83,12 @@
     "oauth": 2,
     "scope_delimiter": " "
   },
+  "authentik": {
+    "authorize_url": "https://[subdomain]/application/o/authorize/",
+    "access_url": "https://[subdomain]/application/o/token/",
+    "oauth": 2,
+    "scope_delimiter": " "
+  },
   "authentiq": {
     "authorize_url": "https://connect.authentiq.io/sign-in",
     "access_url": "https://connect.authentiq.io/token",
