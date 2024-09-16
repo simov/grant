@@ -1,6 +1,10 @@
 
 # Change Log
 
+## v5.4.23 (2024/09/16)
+- **New:** Official support for 1 new providers: `authentik`
+- **New:** Official support for Openstreetmap OAuth 2.0 apps: `openstreetmap2` [quirks](https://github.com/simov/grant#provider-quirks)
+
 ## v5.4.22 (2023/10/06)
 - **New:** Official support for 2 new providers: `osu`, `workos`
 - **Change:** Updated 2 providers: `autodesk`, `withings`
